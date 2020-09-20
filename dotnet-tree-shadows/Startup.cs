@@ -85,21 +85,17 @@ namespace dotnet_tree_shadows {
                                  options.SaveToken = true;
                                  options.RequireHttpsMetadata = false;
                                  options.TokenValidationParameters = new TokenValidationParameters {
-                                                                                                       ValidateIssuer = true,
-                                                                                                       ValidateAudience = true,
-                                                                                                       ValidAudience =
-                                                                                                           Configuration
-                                                                                                               ["AuthenticationSettings:Jwt:ValidAudience"],
-                                                                                                       ValidIssuer =
-                                                                                                           Configuration[
-                                                                                                               "AuthenticationSettings:Jwt:ValidIssuer"],
-                                                                                                       IssuerSigningKey = new SymmetricSecurityKey(
-                                                                                                               Encoding.UTF8.GetBytes(
-                                                                                                                       Configuration[
-                                                                                                                           "AuthenticationSettings:Jwt:Secret"]
-                                                                                                                   )
-                                                                                                           )
-                                                                                                   };
+                                                                         ValidateIssuer = true,  
+                                                                         ValidateAudience = true,  
+                                                                         ValidAudience = Configuration["AuthenticationSettings:JWT:ValidAudience"],  
+                                                                         ValidIssuer = Configuration["AuthenticationSettings:JWT:ValidIssuer"],
+                                                                         IssuerSigningKey = new SymmetricSecurityKey(
+                                                                                 Encoding.UTF8.GetBytes(
+                                                                                         Configuration[
+                                                                                             "AuthenticationSettings:JWT:Secret"]
+                                                                                     )
+                                                                             )
+                                                                     };
                              }
                          );
 
