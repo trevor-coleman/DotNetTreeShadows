@@ -16,14 +16,21 @@ namespace dotnet_tree_shadows.Controllers {
     [Route( "api/[controller]" ), ApiController, Authorize(Roles=UserRoles.User, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class SessionsController : ControllerBase {
         private readonly SessionService sessionService;
-        private Random random = new Random();
+        private UserManager<ApplicationUser> userManager;
 
-        public SessionsController (SessionService sessionService) {
+        public SessionsController (SessionService sessionService, UserManager<ApplicationUser> userManager) {
             this.sessionService = sessionService;
+            this.userManager = userManager;
         }
 
         [HttpGet]
-        public ActionResult<List<Session>> Get () => sessionService.Get();
+        public async Task<List<SessionService.SessionSummary>> Get () {
+            ApplicationUser currentUser = await userManager.GetUserAsync( HttpContext.User );
+            
+            string userId = currentUser.Id.ToString();
+            
+            return sessionService.GetSessionSummariesForHost(userId);
+        }
 
         [HttpGet( "id:length(24)", Name = "GetSession" )]
         public ActionResult<Session> Get (string id) {
