@@ -25,9 +25,10 @@ namespace dotnet_tree_shadows.Models {
             Host = "";
         }
         
-        public Session (string host, string? name) {
+        public Session (string host, string hostName, string? name) {
             Id = "";
-            Players = new Dictionary<string, Player>();
+            Players = new Dictionary<string, Player> { { host, new Player() } };
+            Players[host].Name = hostName;
             Game = new Game();
             Name = name ?? $"New Session - {DateTime.Now.ToString()}";
             Host = host;
@@ -36,7 +37,6 @@ namespace dotnet_tree_shadows.Models {
         public void AddPlayer (string playerId) {
             Players.Add( playerId, new Player() );
         }
-        
     }
 
 }

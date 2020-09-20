@@ -1,7 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using dotnet_tree_shadows.Authentication;
 using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotnet_tree_shadows.Controllers {
@@ -28,9 +36,19 @@ namespace dotnet_tree_shadows.Controllers {
             return session;
         }
 
-        [HttpPost]
-        public ActionResult<Session> Create () {
-            Session session = new Session( $"host{random.Next()}", DateTime.Now.ToString() );
+        [HttpGet, Route("new")]
+        public async Task<ActionResult<Session>> Create () {
+            
+            ApplicationUser currentUser = await userManager.GetUserAsync( HttpContext.User );
+            
+            string userId = currentUser.Id.ToString();
+            
+            if ( userId == null )
+                return StatusCode(
+                        StatusCodes.Status401Unauthorized,
+                        new Response { Status = "Unauthorized", Message = "userId is null" }
+                    );
+                                                             Session session = new Session( userId, currentUser.UserName, null );
             sessionService.Create(session );
             return CreatedAtRoute( "GetSession", new { id = session.Id.ToString() }, session );
         }
