@@ -1,4 +1,7 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using AspNetCore.Identity.Mongo;
 using AspNetCore.Identity.Mongo.Model;
 using dotnet_tree_shadows.Authentication;
@@ -7,7 +10,6 @@ using dotnet_tree_shadows.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,23 +28,21 @@ namespace dotnet_tree_shadows {
             //MongoDb
             services.Configure<GameDatabaseSettings>( Configuration.GetSection( nameof(GameDatabaseSettings) ) );
 
-            services
-               .AddIdentityMongoDbProvider<ApplicationUser,
-                        MongoRole>(
-                        identityOptions => {
-                            identityOptions.Password.RequiredLength = 6;
-                            identityOptions.Password.RequireLowercase = false;
-                            identityOptions.Password.RequireUppercase = false;
-                            identityOptions.Password.RequireNonAlphanumeric = false;
-                            identityOptions.Password.RequireDigit = false;
-                        },
-                        mongoIdentityOptions => {
-                            mongoIdentityOptions.ConnectionString =
-                                Configuration.GetSection( nameof(GameDatabaseSettings) )["ConnectionString"];
+            services.AddIdentityMongoDbProvider<ApplicationUser, MongoRole>(
+                    identityOptions => {
+                        identityOptions.Password.RequiredLength = 6;
+                        identityOptions.Password.RequireLowercase = false;
+                        identityOptions.Password.RequireUppercase = false;
+                        identityOptions.Password.RequireNonAlphanumeric = false;
+                        identityOptions.Password.RequireDigit = false;
+                    },
+                    mongoIdentityOptions => {
+                        mongoIdentityOptions.ConnectionString =
+                            Configuration.GetSection( nameof(AuthDatabaseSettings) )["ConnectionString"];
 
-                            mongoIdentityOptions.UsersCollection = "users";
-                        }
-                    );
+                        mongoIdentityOptions.UsersCollection = "users";
+                    }
+                );
 
             services.AddSingleton<SessionService>();
 
@@ -60,6 +60,28 @@ namespace dotnet_tree_shadows {
                      )
                     .AddJwtBearer(
                              options => {
+                                 options.Events = new JwtBearerEvents {
+                                                                          OnTokenValidated = context => {
+                                                                              if ( context.SecurityToken is
+                                                                                  JwtSecurityToken
+                                                                                  accessToken ) {
+                                                                                  if ( context.Principal.Identity is
+                                                                                      ClaimsIdentity
+                                                                                      identity ) {
+                                                                                      identity.AddClaim(
+                                                                                              new Claim(
+                                                                                                      "access_token",
+                                                                                                      accessToken
+                                                                                                         .RawData
+                                                                                                  )
+                                                                                          );
+                                                                                  }
+                                                                              }
+
+                                                                              return Task.CompletedTask;
+                                                                          }
+                                                                      };
+
                                  options.SaveToken = true;
                                  options.RequireHttpsMetadata = false;
                                  options.TokenValidationParameters = new TokenValidationParameters {
@@ -101,10 +123,10 @@ namespace dotnet_tree_shadows {
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
+            app.UseRouting();
+
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseRouting();
 
             app.UseEndpoints(
                     endpoints => {

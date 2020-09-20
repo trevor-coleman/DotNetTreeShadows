@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -13,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Bson;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 //https://www.c-sharpcorner.com/article/authentication-and-authorization-in-asp-net-core-web-api-with-json-web-tokens/
@@ -23,14 +25,57 @@ namespace dotnet_tree_shadows.Controllers {
     [Route( "api/[controller]" ), ApiController]
     public class AuthenticateController:ControllerBase {
 
-        private UserManager<ApplicationUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly RoleManager<MongoRole> roleManager;
+        private IConfiguration configuration;
         
         public AuthenticateController (
                 UserManager<ApplicationUser> userManager,
+                RoleManager<MongoRole> roleManager,
                 IConfiguration configuration
             ) {
-            userManager.FindByEmailAsync( "email" );
+            this.userManager =userManager;
+            this.roleManager = roleManager;
+            this.configuration = configuration;
         }
+        
+        [HttpPost]  
+        [Route("login")]  
+        public async Task<IActionResult> Login([FromBody] LoginModel model)  
+        {  
+            ApplicationUser user = await userManager.FindByEmailAsync(model.Email);
+            if ( user == null || !await userManager.CheckPasswordAsync( user, model.Password ) ) return Unauthorized();
+            IList<string> userRoles = await userManager.GetRolesAsync(user);  
+  
+            List<Claim> authClaims = new List<Claim>  
+                                     {
+                                         new Claim( ClaimTypes.NameIdentifier, user.Id.ToString()  ),
+                                         new Claim(ClaimTypes.Name, user.UserName),
+                                         new Claim(ClaimTypes.Email, user.Email),
+                                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),  
+                                     };  
+  
+            foreach (string userRole in userRoles)  
+            {  
+                authClaims.Add(new Claim(ClaimTypes.Role, userRole));  
+            }  
+  
+            SymmetricSecurityKey authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["AuthenticationSettings:JWT:Secret"]));  
+  
+            JwtSecurityToken token = new JwtSecurityToken(  
+                    issuer: configuration["AuthenticationSettings:JWT:ValidIssuer"],  
+                    audience: configuration["AuthenticationSettings:JWT:ValidAudience"],  
+                    expires: DateTime.Now.AddHours(3),  
+                    claims: authClaims,  
+                    signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)  
+                );  
+  
+            return Ok(new  
+                      {  
+                          token = new JwtSecurityTokenHandler().WriteToken(token),  
+                          expiration = token.ValidTo  
+                      });
+        }  
 
         [HttpPost]
         [Route( "register" )]
@@ -45,6 +90,15 @@ namespace dotnet_tree_shadows.Controllers {
                                                          };
 
             IdentityResult result = await userManager.CreateAsync( user, model.Password );
+            if (!await roleManager.RoleExistsAsync(UserRoles.User))  
+                await roleManager.CreateAsync(new MongoRole(UserRoles.User));  
+  
+            if (await roleManager.RoleExistsAsync(UserRoles.User))  
+            {  
+                await userManager.AddToRoleAsync(user, UserRoles.User);  
+            }  
+            
+            
             return result.Succeeded
                        ? Ok( new Response { Status = "Success", Message = "Created user successfully." } )
                        : StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed. Please try again." });
@@ -64,16 +118,16 @@ namespace dotnet_tree_shadows.Controllers {
             IdentityResult result = await userManager.CreateAsync( user, model.Password );
             if(!result.Succeeded) return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed. Please try again." });
 
-            // if ( !await roleManager.RoleExistsAsync( UserRoles.Admin.Name ) )
-            //     await roleManager.CreateAsync( new MongoRole( UserRoles.Admin.Name ) );
-            //
-            // if ( !await roleManager.RoleExistsAsync( UserRoles.Admin.Name ) ) {
-            //     await roleManager.CreateAsync( new MongoRole( UserRoles.User.Name ) );
-            // }
-            //
-            // if ( await roleManager.RoleExistsAsync( UserRoles.Admin.Name ) ) {
-            //     await userManager.AddToRoleAsync( user, UserRoles.Admin.Name );
-            // }
+            if ( !await roleManager.RoleExistsAsync( UserRoles.Admin ) )
+                await roleManager.CreateAsync( new MongoRole( UserRoles.Admin ) );
+            
+            if ( !await roleManager.RoleExistsAsync( UserRoles.Admin ) ) {
+                await roleManager.CreateAsync( new MongoRole( UserRoles.User ) );
+            }
+            
+            if ( await roleManager.RoleExistsAsync( UserRoles.Admin ) ) {
+                await userManager.AddToRoleAsync( user, UserRoles.Admin );
+            }
 
             return Ok( new Response { Status = "Success", Message = "User created successfully" } );
 
