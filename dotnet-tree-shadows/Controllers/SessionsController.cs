@@ -13,8 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotnet_tree_shadows.Controllers {
-    [Route("api/[controller]")]
-    [ApiController]
+    [Route( "api/[controller]" ), ApiController, Authorize(Roles=UserRoles.User, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class SessionsController : ControllerBase {
         private readonly SessionService sessionService;
         private Random random = new Random();
