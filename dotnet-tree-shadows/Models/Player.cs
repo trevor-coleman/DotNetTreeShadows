@@ -1,27 +1,31 @@
 using System;
 using System.Collections.Generic;
 using dotnet_tree_shadows.Utilities;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Options;
 
 namespace dotnet_tree_shadows.Models {
     public class Player {
         public TreeType? TreeType { get; set; }
         public PlayerScore Score { get; set; }
-        
+        public string Name { get; set; }
         private int light;
         public int Light {
             get => light;
             set => light = Math.Clamp( value, 0, 20 );
         }
 
-        public Dictionary<PieceType, Resource> Pieces;
+        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
+        public Dictionary<int, Resource> Pieces;
         
 
         public Player () {
             TreeType = null;
             Score = new PlayerScore();
             Light = 0;
+            Pieces = new Dictionary<int, Resource>();
             foreach ( PieceType pieceType in EnumUtil.GetValues<PieceType>()) {
-                Pieces[pieceType] = Resource.StartingAmount( pieceType );
+                Pieces[(int)pieceType] = Resource.StartingAmount( pieceType );
             }
         }
         
