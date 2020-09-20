@@ -6,6 +6,13 @@
         <e p=".gitignore" t="Include" />
         <e p="appsettings.Development.json" t="Include" />
         <e p="appsettings.json" t="Include" />
+        <e p="Authentication" t="Include">
+          <e p="ApplicationUser.cs" t="Include" />
+          <e p="LoginModel.cs" t="Include" />
+          <e p="RegisterModel.cs" t="Include" />
+          <e p="Response.cs" t="Include" />
+          <e p="UserRoles.cs" t="Include" />
+        </e>
         <e p="bin" t="ExcludeRecursive" />
         <e p="ClientApp" t="Include">
           <e p=".gitignore" t="Include" />
@@ -208,7 +215,8 @@
           <e p="yarn.lock" t="Include" />
         </e>
         <e p="Controllers" t="Include">
-          <e p="SessionsContro.cs" t="Include" />
+          <e p="AuthenticateController.cs" t="Include" />
+          <e p="SessionsController.cs" t="Include" />
         </e>
         <e p="dotnet-tree-shadows.csproj" t="IncludeRecursive" />
         <e p="Models" t="Include">
@@ -244,6 +252,9 @@
         <e p="Program.cs" t="Include" />
         <e p="Properties" t="Include">
           <e p="launchSettings.json" t="Include" />
+        </e>
+        <e p="Registration" t="Include">
+          <e p="MongoDbSettings.cs" t="Include" />
         </e>
         <e p="Services" t="Include">
           <e p="SessionService.cs" t="Include" />
