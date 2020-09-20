@@ -9,11 +9,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b67e1f5d-a9c2-4af3-8e08-c69ba7789bcf" name="Default Changelist" comment="Create NoBrowser run config">
-      <change afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Utilities/ObjectIdConverter.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/ProfilesController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Services/ProfileService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.dotnet-tree-shadows/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.dotnet-tree-shadows/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Models/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Models/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.dotnet-tree-shadows/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.dotnet-tree-shadows/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/AuthenticateController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/AuthenticateController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Models/GameDatabaseSettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Models/GameDatabaseSettings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Models/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Models/Profile.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Startup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/dotnet-tree-shadows.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/dotnet-tree-shadows.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/appsettings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +40,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Startup.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Authentication/UserRoles.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Controllers/SessionsController.cs" root0="SKIP_HIGHLIGHTING" />
@@ -54,6 +59,7 @@
     <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Startup.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/Game.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/IGameData.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/Player.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Controllers/AuthenticateController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/Player.cs" root0="SKIP_HIGHLIGHTING" />
@@ -88,24 +94,31 @@
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/Response.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/LoginModel.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Registration/MongoDbSettings.cs" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/appsettings.json" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/AuthDatabaseSettings.cs" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/GameDatabaseSettings.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Utilities/ObjectIdConverter.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/UserRoles.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/TokenValidation.cs" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/AuthenticateController.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Properties/launchSettings.json" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/json.json" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/Player.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/Session.cs" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/SessionsController.cs" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Services/SessionService.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/ApplicationUser.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/User.cs" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Startup.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/IGameData.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/Game.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/UserController.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Services/UserService.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/UserAccount.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/GameDatabaseSettings.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Services/ProfleService.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Services/SessionService.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/Profile.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/ProfilesController.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Services/ProfileService.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/AuthenticateController.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Startup.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/appsettings.json" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/SessionsController.cs" />
       </list>
     </option>
   </component>

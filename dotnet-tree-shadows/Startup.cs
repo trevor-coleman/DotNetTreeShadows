@@ -40,11 +40,12 @@ namespace dotnet_tree_shadows {
                         mongoIdentityOptions.ConnectionString =
                             Configuration.GetSection( nameof(AuthDatabaseSettings) )["ConnectionString"];
 
-                        mongoIdentityOptions.UsersCollection = "users";
+                        mongoIdentityOptions.UsersCollection = Configuration["AuthDatabaseSettings:UsersCollection"];
                     }
                 );
 
             services.AddSingleton<SessionService>();
+            services.AddSingleton<ProfileService>();
 
             services.AddSingleton<IGameDatabaseSettings>(
                     sp => sp.GetRequiredService<IOptions<GameDatabaseSettings>>().Value

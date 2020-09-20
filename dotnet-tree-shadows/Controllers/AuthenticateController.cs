@@ -9,6 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using AspNetCore.Identity.Mongo.Model;
 using dotnet_tree_shadows.Authentication;
+using dotnet_tree_shadows.Models;
+using dotnet_tree_shadows.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -27,12 +29,13 @@ namespace dotnet_tree_shadows.Controllers {
 
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<MongoRole> roleManager;
+        private readonly ProfileService profileService;
         private IConfiguration configuration;
         
         public AuthenticateController (
                 UserManager<ApplicationUser> userManager,
                 RoleManager<MongoRole> roleManager,
-                IConfiguration configuration
+                IConfiguration configuration, ProfileService profileService
             ) {
             this.userManager =userManager;
             this.roleManager = roleManager;
@@ -82,13 +85,13 @@ namespace dotnet_tree_shadows.Controllers {
         public async Task<IActionResult> Register ([FromBody] RegisterModel model) {
             ApplicationUser userExists = await userManager.FindByEmailAsync( model.Email );
             if(userExists != null) return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User already exists!" });
-
+            
             ApplicationUser user = new ApplicationUser() {
                                                              Email = model.Email,
                                                              SecurityStamp = Guid.NewGuid().ToString(),
                                                              UserName = model.Username
                                                          };
-
+            
             IdentityResult result = await userManager.CreateAsync( user, model.Password );
             if (!await roleManager.RoleExistsAsync(UserRoles.User))  
                 await roleManager.CreateAsync(new MongoRole(UserRoles.User));  
@@ -96,8 +99,9 @@ namespace dotnet_tree_shadows.Controllers {
             if (await roleManager.RoleExistsAsync(UserRoles.User))  
             {  
                 await userManager.AddToRoleAsync(user, UserRoles.User);  
-            }  
+            }
             
+            profileService.Create( new Profile(user) );
             
             return result.Succeeded
                        ? Ok( new Response { Status = "Success", Message = "Created user successfully." } )
