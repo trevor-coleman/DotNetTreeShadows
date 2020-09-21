@@ -1,8 +1,4 @@
 using System;
-using System.Threading.Tasks;
-using dotnet_tree_shadows.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace dotnet_tree_shadows.Models {
     public class Invitation {
@@ -13,8 +9,18 @@ namespace dotnet_tree_shadows.Models {
         public string? StatusMessage { get; set; }
         public InvitationType InvitationType { get; set; }
 
-        public Invitation (string senderId, string resourceId, DateTime created, InvitationStatus status, string statusMessage) {
+        public Invitation (string senderId, string recipientId, DateTime created, InvitationStatus status, string statusMessage) {
             SenderId = senderId;
+            RecipientId = recipientId ;
+            ResourceId = null;
+            Created = created;
+            Status = status;
+            StatusMessage = statusMessage;
+        }
+        
+        public Invitation (string senderId, string recipientId, string resourceId, DateTime created, InvitationStatus status, string statusMessage) {
+            SenderId = senderId;
+            RecipientId = recipientId ;
             ResourceId = resourceId;
             Created = created;
             Status = status;
@@ -23,7 +29,8 @@ namespace dotnet_tree_shadows.Models {
 
         public Invitation () {
             SenderId = "";
-            ResourceId = "";
+            RecipientId = "";
+            ResourceId = null;
             Created = DateTime.UtcNow;
             Status = InvitationStatus.Accepted;
             InvitationType = InvitationType.FriendRequest;
@@ -31,9 +38,20 @@ namespace dotnet_tree_shadows.Models {
 
         }
         
-        public Invitation (string senderId, string resourceId, InvitationType invitationType) {
+        public Invitation (string senderId, string recipientId, string resourceId, InvitationType invitationType) {
             SenderId = senderId;
+            RecipientId = recipientId;
             ResourceId = resourceId;
+            Created = DateTime.UtcNow;
+            Status = InvitationStatus.Pending;
+            StatusMessage = null;
+            InvitationType = invitationType;
+        }
+        
+        public Invitation (string senderId, string recipientId, InvitationType invitationType) {
+            SenderId = senderId;
+            RecipientId = recipientId;
+            ResourceId = null;
             Created = DateTime.UtcNow;
             Status = InvitationStatus.Pending;
             StatusMessage = null;
@@ -42,7 +60,8 @@ namespace dotnet_tree_shadows.Models {
 
         public Invitation (Invitation invitation) {
             SenderId = invitation.SenderId;
-            ResourceId = invitation.SenderId;
+            RecipientId = invitation.SenderId;
+            ResourceId = invitation.ResourceId;
             Created = invitation.Created;
             Status = invitation.Status;
             StatusMessage = invitation.StatusMessage;
@@ -63,15 +82,15 @@ namespace dotnet_tree_shadows.Models {
                                              StatusMessage = $"{reason} - {DateTime.Today}"
                                          };
 
-        public bool IsDuplicate (Invitation i) => i.SenderId == SenderId && i.ResourceId == ResourceId && i.InvitationType == InvitationType;
+        public bool IsDuplicate (Invitation i) => i.SenderId == SenderId && i.RecipientId == RecipientId && i.InvitationType == InvitationType;
 
         public bool IsInverse (Invitation i) =>
-            i.SenderId == ResourceId && i.ResourceId == SenderId && i.InvitationType == InvitationType;
+            i.SenderId == RecipientId && i.RecipientId == SenderId && i.InvitationType == InvitationType;
 
     }
 
     public enum InvitationType {
-        Session,
+        ToSession,
         FriendRequest
     }
     
