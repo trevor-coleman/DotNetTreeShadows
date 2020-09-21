@@ -24,7 +24,7 @@ namespace dotnet_tree_shadows.Services {
             return profile;
         }
 
-        public async Task<ReplaceOneResult> Update (string id, Profile profileIn) => await profiles.ReplaceOneAsync( profile => profile.Id == id, profileIn );
+        public async Task Update (string id, Profile profileIn) => await profiles.ReplaceOneAsync( profile => profile.Id == id, profileIn );
 
         public void Remove (string id) => profiles.DeleteOne( profile => profile.Id == id );
 
