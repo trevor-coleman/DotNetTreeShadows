@@ -8,9 +8,19 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b67e1f5d-a9c2-4af3-8e08-c69ba7789bcf" name="Default Changelist" comment="Rename User to Profile. Create ProfileService. Register now creates profile.">
+    <list default="true" id="b67e1f5d-a9c2-4af3-8e08-c69ba7789bcf" name="Default Changelist" comment="await profile creation before returning.">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.dotnet-tree-shadows/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.dotnet-tree-shadows/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/UserRoles.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/UserRoles.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/ProfilesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/ProfilesController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/SessionsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/SessionsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Models/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Models/Game.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Models/Invitation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Models/Invitation.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Models/Profile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Models/Profile.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Models/Session.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Models/Session.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Pages/Error.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Pages/Error.cshtml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Services/ProfileService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Services/ProfileService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Services/SessionService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Services/SessionService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/dotnet-tree-shadows.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/dotnet-tree-shadows.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +43,37 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1B82BBF8-F4D0-4BD0-9402-5566DBE93AB0/24/ControllerBase.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Controllers/SessionsController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1B82BBF8-F4D0-4BD0-9402-5566DBE93AB0/4A/NotFoundResult.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Controllers/AuthenticateController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/Player.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/Invitation.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Pages/Error.cshtml.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Controllers/SessionsController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/Session.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Services/SessionService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/Player.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/Profile.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8C515D11-6774-4292-AE1E-0213E7791F08/1D/UserManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/Player.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/AuthDatabaseSettings.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Controllers/ProfilesController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Authentication/ApplicationUser.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Controllers/AuthenticateController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Authentication/UserRoles.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/Profile.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Registration/MongoDbSettings.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Authentication/Response.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Authentication/LoginModel.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/Player.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Controllers/SessionsController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/Game.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1B82BBF8-F4D0-4BD0-9402-5566DBE93AB0/61/StatusCodeResult.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/GameDatabaseSettings.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Authentication/RegisterModel.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/Profile.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Services/ProfileService.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -55,34 +95,35 @@
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/.gitignore" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/AuthenticationDbContext.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/ApplicationDbContext.cs" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/RegisterModel.cs" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/Response.cs" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/LoginModel.cs" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Registration/MongoDbSettings.cs" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/AuthDatabaseSettings.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Utilities/ObjectIdConverter.cs" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/UserRoles.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/TokenValidation.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Properties/launchSettings.json" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/json.json" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/Player.cs" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/Session.cs" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/ApplicationUser.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/User.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/IGameData.cs" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/Game.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/UserController.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Services/UserService.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/UserAccount.cs" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/GameDatabaseSettings.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Services/ProfleService.cs" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Services/SessionService.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Startup.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/appsettings.json" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/AuthenticateController.cs" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Services/ProfileService.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/UserRoles.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/Invitation.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/Player.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/GameDatabaseSettings.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/Game.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/AuthDatabaseSettings.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/AuthenticateController.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/Response.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/RegisterModel.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/LoginModel.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Pages/Error.cshtml.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Registration/MongoDbSettings.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Authentication/ApplicationUser.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/Session.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/ProfilesController.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Services/ProfileService.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Services/SessionService.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/Profile.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/SessionsController.cs" />
       </list>
@@ -115,7 +156,7 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="CodeLensConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C#" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/dotnet-tree-shadows/ClientApp/node_modules/typescript/lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -253,7 +294,56 @@
       <option name="project" value="LOCAL" />
       <updated>1600630371659</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Add UserId property.">
+      <created>1600707157424</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1600707157424</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Disable nullable type warnings on data classes with #pragma.">
+      <created>1600707273281</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1600707273281</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Add &amp; initialize UserID field on player. Add initializers.">
+      <created>1600707344390</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1600707344390</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Add &amp; initialize UserID field on player. Add initializers.">
+      <created>1600707355851</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1600707355851</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Add &amp; initialize UserID field on player. Add initializers.">
+      <created>1600707377490</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1600707377490</updated>
+    </task>
+    <task id="LOCAL-00016" summary="initialize Name in constructor">
+      <created>1600707422895</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1600707422895</updated>
+    </task>
+    <task id="LOCAL-00017" summary="await profile creation before returning.">
+      <created>1600707502040</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1600707502040</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -286,7 +376,12 @@
     <MESSAGE value="Add Revolution/Round/FirstPlayer info to Game.&#10;Change TurnOrder to Queue&lt;string&gt; to hold playerIds." />
     <MESSAGE value="Create NoBrowser run config" />
     <MESSAGE value="Rename User to Profile. Create ProfileService. Register now creates profile." />
-    <option name="LAST_COMMIT_MESSAGE" value="Rename User to Profile. Create ProfileService. Register now creates profile." />
+    <MESSAGE value="Add UserId property." />
+    <MESSAGE value="Disable nullable type warnings on data classes with #pragma." />
+    <MESSAGE value="Add &amp; initialize UserID field on player. Add initializers." />
+    <MESSAGE value="initialize Name in constructor" />
+    <MESSAGE value="await profile creation before returning." />
+    <option name="LAST_COMMIT_MESSAGE" value="await profile creation before returning." />
   </component>
   <component name="WindowStateProjectService">
     <state x="741" y="337" key="#Web_Browsers" timestamp="1600617692028">
@@ -297,28 +392,32 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="482" y="145" width="1071" height="700" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600617766591" />
-    <state width="1878" height="305" key="GridCell.Tab.0.bottom" timestamp="1600641811308">
+    <state x="100" y="100" width="1720" height="880" key="DiffContextDialog" timestamp="1600699521067">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="305" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600641811308" />
+    <state x="100" y="100" width="1720" height="880" key="DiffContextDialog/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600699521067" />
+    <state width="1878" height="305" key="GridCell.Tab.0.bottom" timestamp="1600705488080">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1878" height="305" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600705488080" />
     <state width="1878" height="305" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1600636592513" />
     <state width="1878" height="305" key="GridCell.Tab.0.bottom/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1600579318315" />
-    <state width="1878" height="305" key="GridCell.Tab.0.center" timestamp="1600641811306">
+    <state width="1878" height="305" key="GridCell.Tab.0.center" timestamp="1600705488079">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="305" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600641811306" />
+    <state width="1878" height="305" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600705488079" />
     <state width="1878" height="305" key="GridCell.Tab.0.center/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1600636592509" />
     <state width="1878" height="305" key="GridCell.Tab.0.center/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1600579318313" />
-    <state width="1878" height="305" key="GridCell.Tab.0.left" timestamp="1600641811305">
+    <state width="1878" height="305" key="GridCell.Tab.0.left" timestamp="1600705488078">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="305" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600641811305" />
+    <state width="1878" height="305" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600705488078" />
     <state width="1878" height="305" key="GridCell.Tab.0.left/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1600636592508" />
     <state width="1878" height="305" key="GridCell.Tab.0.left/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1600579318312" />
-    <state width="1878" height="305" key="GridCell.Tab.0.right" timestamp="1600641811307">
+    <state width="1878" height="305" key="GridCell.Tab.0.right" timestamp="1600705488080">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="305" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600641811307" />
+    <state width="1878" height="305" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600705488080" />
     <state width="1878" height="305" key="GridCell.Tab.0.right/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1600636592511" />
     <state width="1878" height="305" key="GridCell.Tab.0.right/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1600579318314" />
     <state width="1878" height="403" key="GridCell.Tab.1.bottom" timestamp="1600609876936">
@@ -373,17 +472,17 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="772" y="231" key="RiderGenerateDialog/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600549943560" />
-    <state x="461" y="179" key="SettingsEditor" timestamp="1600561785345">
+    <state x="461" y="179" key="SettingsEditor" timestamp="1600703543050">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="461" y="179" key="SettingsEditor/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600561785345" />
+    <state x="461" y="179" key="SettingsEditor/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600703543050" />
     <state width="600" height="428" key="javadoc.popup" timestamp="1600613109492">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="600" height="428" key="javadoc.popup/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600613109492" />
-    <state x="625" y="241" width="670" height="676" key="search.everywhere.popup" timestamp="1600637367909">
+    <state x="625" y="241" width="670" height="676" key="search.everywhere.popup" timestamp="1600699767156">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="625" y="241" width="670" height="676" key="search.everywhere.popup/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600637367909" />
+    <state x="625" y="241" width="670" height="676" key="search.everywhere.popup/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600699767156" />
   </component>
 </project>
