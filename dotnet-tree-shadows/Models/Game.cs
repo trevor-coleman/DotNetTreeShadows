@@ -33,8 +33,8 @@ namespace dotnet_tree_shadows.Models {
             Round = 1;
         }
 
-        public Tile GetTileFromHexCoordinates (HexCoordinates hexCoordinates) =>
-            Board.TryGetValue( hexCoordinates, out Tile tile )
+        public Tile? GetTileFromHexCoordinates (HexCoordinates hexCoordinates) =>
+            Board.TryGetValue( hexCoordinates, out Tile? tile )
                 ? tile
                 : null;
         
