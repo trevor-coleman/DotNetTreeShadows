@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using dotnet_tree_shadows.Authentication;
 using dotnet_tree_shadows.Models;
@@ -10,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 
 namespace dotnet_tree_shadows.Controllers {
     [Route( "api/[controller]" ), ApiController,
@@ -49,11 +47,11 @@ namespace dotnet_tree_shadows.Controllers {
 
             string userId = user.Id.ToString();
 
-            if ( userId != invitation.SenderId && userId != invitation.ResourceId )
+            if ( userId != invitation.SenderId && userId != invitation.RecipientId )
                 return StatusCode( StatusCodes.Status403Forbidden );
 
             switch ( invitation.InvitationType ) {
-                case InvitationType.Session: break;
+                case InvitationType.ToSession: break;
                 case InvitationType.FriendRequest:
                     return await HandleUpdatedFriendRequest( userId, invitation );
                 default: throw new ArgumentOutOfRangeException();
@@ -68,7 +66,7 @@ namespace dotnet_tree_shadows.Controllers {
         private async Task<ActionResult> HandleUpdatedFriendRequest (string userId, Invitation invitation) {
             
             Profile sender = await profileService.GetByIdAsync( invitation.SenderId );
-            Profile receiver = await profileService.GetByIdAsync( invitation.ResourceId );
+            Profile receiver = await profileService.GetByIdAsync( invitation.RecipientId );
 
             return invitation.Status switch {
                 InvitationStatus.Pending => NoContent(),
@@ -141,7 +139,7 @@ namespace dotnet_tree_shadows.Controllers {
                                      }
                     );
 
-            string friendId = invitation.ResourceId;
+            string friendId = invitation.RecipientId;
             if ( userProfile.Friends.Contains( friendId ) ) {
                 return StatusCode(
                         StatusCodes.Status409Conflict,
@@ -170,10 +168,10 @@ namespace dotnet_tree_shadows.Controllers {
                     );
             }
 
-            friendProfile.ReceivedInvitations.Add( newInvitation );
-            userProfile.SentInvitations.Add( newInvitation );
-            profileService.Update( friendId, friendProfile );
-            profileService.Update( userId, userProfile );
+            friendProfile.ReceiveInvitation( newInvitation );
+            userProfile.SendInvitation( newInvitation );
+            await profileService.Update( friendId, friendProfile );
+            await profileService.Update( userId, userProfile );
 
             return Ok();
         }
