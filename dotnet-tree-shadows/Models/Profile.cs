@@ -22,6 +22,7 @@ namespace dotnet_tree_shadows.Models {
         
 
         public Profile () {
+            Name = "";
             Id = "";
             Email = "";
             Sessions = new List<string>();
@@ -31,6 +32,7 @@ namespace dotnet_tree_shadows.Models {
         }
         
         public Profile (ApplicationUser user) {
+            Name = user.UserName;
             Id = user.Id.ToString();
             Email = user.Email;
             Sessions = new List<string>();
