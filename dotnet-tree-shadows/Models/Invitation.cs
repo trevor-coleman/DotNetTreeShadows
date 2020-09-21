@@ -3,7 +3,8 @@ using System;
 namespace dotnet_tree_shadows.Models {
     public class Invitation {
         public string SenderId { get; set; }
-        public string ResourceId { get; set; }
+        public string RecipientId { get; set; }
+        public string? ResourceId { get; set; }
         public DateTime? Created { get; set; }
         public InvitationStatus? Status { get; set; }
         public string? StatusMessage { get; set; }
