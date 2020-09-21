@@ -1,3 +1,4 @@
+#pragma warning disable 8618
 namespace dotnet_tree_shadows.Models {
     public class AuthDatabaseSettings : IAuthDatabaseSettings {
         public string SessionsCollectionName { get; set; }
