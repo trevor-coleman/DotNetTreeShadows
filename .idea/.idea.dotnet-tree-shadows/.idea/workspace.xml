@@ -9,13 +9,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b67e1f5d-a9c2-4af3-8e08-c69ba7789bcf" name="Default Changelist" comment="Rename User to Profile. Create ProfileService. Register now creates profile.">
-      <change afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Models/Invitation.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.dotnet-tree-shadows/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.dotnet-tree-shadows/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.dotnet-tree-shadows/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.dotnet-tree-shadows/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/AuthenticateController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/AuthenticateController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/ProfilesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/ProfilesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Models/Profile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Models/Profile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Services/ProfileService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Services/ProfileService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/SessionsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/SessionsController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,38 +33,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Startup.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Authentication/UserRoles.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Controllers/SessionsController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Controllers/AuthenticateController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/Game.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Startup.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8C515D11-6774-4292-AE1E-0213E7791F08/1D/UserManager.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/Session.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Startup.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Controllers/SessionsController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Startup.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/Game.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/IGameData.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/Player.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Controllers/AuthenticateController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/Player.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Services/SessionService.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Controllers/SessionsController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/dotnet-tree-shadows/Models/GameDatabaseSettings.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -115,12 +79,12 @@
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Services/SessionService.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Startup.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/appsettings.json" />
-        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/SessionsController.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/AuthenticateController.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Services/ProfileService.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/Invitation.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/ProfilesController.cs" />
         <option value="$PROJECT_DIR$/dotnet-tree-shadows/Models/Profile.cs" />
+        <option value="$PROJECT_DIR$/dotnet-tree-shadows/Controllers/SessionsController.cs" />
       </list>
     </option>
   </component>
@@ -217,6 +181,7 @@
       <updated>1600545444449</updated>
       <workItem from="1600545451062" duration="32495000" />
       <workItem from="1600609238609" duration="14248000" />
+      <workItem from="1600697587504" duration="1230000" />
     </task>
     <task id="LOCAL-00001" summary="Create Models, and connect MongoDB">
       <created>1600566471316</created>
