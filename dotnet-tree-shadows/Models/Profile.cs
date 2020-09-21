@@ -61,8 +61,20 @@ namespace dotnet_tree_shadows.Models {
             SentInvitations.RemoveAll( invitation.IsInverse );
             ReceivedInvitations.RemoveAll( invitation.IsInverse );
         }
-        
-        
+
+        public void ReceiveInvitation (Invitation invitation) {
+            if ( ReceivedInvitations.Any( invitation.IsDuplicate ) ) return;
+            ReceivedInvitations.Add( invitation );
+        }
+
+        public void SendInvitation (Invitation invitation) {
+            if ( SentInvitations.Any( invitation.IsDuplicate ) ) return;
+            SentInvitations.Add( invitation );
+        }
+
+        public void AddSession (string id) {
+            if ( Sessions.All( s => s != id ) ) Sessions.Add( id );
+        }
     }
 
     public enum InvitationStatus {
