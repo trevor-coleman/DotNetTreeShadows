@@ -15,7 +15,7 @@ namespace dotnet_tree_shadows.Services {
             profiles = database.GetCollection<Profile>( settings.ProfilesCollectionName );
         }
 
-        public Task<Profile> GetById (string id) {
+        public Task<Profile> GetByIdAsync (string id) {
             return profiles.Find( profile => profile.Id == id ).FirstOrDefaultAsync();
         }
 
@@ -24,7 +24,7 @@ namespace dotnet_tree_shadows.Services {
             return profile;
         }
 
-        public void Update (string id, Profile profileIn) => profiles.ReplaceOne( profile => profile.Id == id, profileIn );
+        public async Task<ReplaceOneResult> Update (string id, Profile profileIn) => await profiles.ReplaceOneAsync( profile => profile.Id == id, profileIn );
 
         public void Remove (string id) => profiles.DeleteOne( profile => profile.Id == id );
 

@@ -34,10 +34,12 @@ namespace dotnet_tree_shadows.Controllers {
         
         public AuthenticateController (
                 UserManager<ApplicationUser> userManager,
+                ProfileService profileService,
                 RoleManager<MongoRole> roleManager,
-                IConfiguration configuration, ProfileService profileService
+                IConfiguration configuration
             ) {
             this.userManager =userManager;
+            this.profileService = profileService;
             this.roleManager = roleManager;
             this.configuration = configuration;
         }
@@ -56,13 +58,10 @@ namespace dotnet_tree_shadows.Controllers {
                                          new Claim(ClaimTypes.Name, user.UserName),
                                          new Claim(ClaimTypes.Email, user.Email),
                                          new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),  
-                                     };  
-  
-            foreach (string userRole in userRoles)  
-            {  
-                authClaims.Add(new Claim(ClaimTypes.Role, userRole));  
-            }  
-  
+                                     };
+
+            authClaims.AddRange( from userRole in userRoles select new Claim( ClaimTypes.Role, userRole ) );
+
             SymmetricSecurityKey authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["AuthenticationSettings:JWT:Secret"]));  
   
             JwtSecurityToken token = new JwtSecurityToken(  
