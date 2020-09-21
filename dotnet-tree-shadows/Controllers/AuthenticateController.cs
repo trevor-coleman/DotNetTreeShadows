@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using AspNetCore.Identity.Mongo.Model;
 using dotnet_tree_shadows.Authentication;
@@ -16,7 +14,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Bson;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 //https://www.c-sharpcorner.com/article/authentication-and-authorization-in-asp-net-core-web-api-with-json-web-tokens/
@@ -100,7 +97,7 @@ namespace dotnet_tree_shadows.Controllers {
                 await userManager.AddToRoleAsync(user, UserRoles.User);  
             }
             
-            profileService.Create( new Profile(user) );
+            await profileService.Create( new Profile(user) );
             
             return result.Succeeded
                        ? Ok( new Response { Status = "Success", Message = "Created user successfully." } )
