@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
+using dotnet_tree_shadows.Authentication;
 using dotnet_tree_shadows.Utilities;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
 
 namespace dotnet_tree_shadows.Models {
     public class Player {
+        public string UserId { get; set; }
+        public string Name { get; set; }
         public TreeType? TreeType { get; set; }
         public PlayerScore Score { get; set; }
-        public string Name { get; set; }
         private int light;
         public int Light {
             get => light;
@@ -19,7 +21,21 @@ namespace dotnet_tree_shadows.Models {
         public Dictionary<int, Resource> Pieces;
         
 
+        public Player (ApplicationUser user) {
+            UserId = user.Id.ToString();
+            Name = user.UserName;
+            TreeType = null;
+            Score = new PlayerScore();
+            Light = 0;
+            Pieces = new Dictionary<int, Resource>();
+            foreach ( PieceType pieceType in EnumUtil.GetValues<PieceType>()) {
+                Pieces[(int)pieceType] = Resource.StartingAmount( pieceType );
+            }
+        }
+        
         public Player () {
+            UserId = "";
+            Name = "";
             TreeType = null;
             Score = new PlayerScore();
             Light = 0;
@@ -47,6 +63,8 @@ namespace dotnet_tree_shadows.Models {
             }
 
             public PlayerScore (IEnumerable<Scoring.Token> tokens) {
+                Tokens = new List<Scoring.Token>();
+                TokenCountByType = new int[3];
                 foreach ( Scoring.Token token in tokens ) {
                     Score(token);
                 }
