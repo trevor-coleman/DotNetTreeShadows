@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using dotnet_tree_shadows.Authentication;
 using dotnet_tree_shadows.Models;
@@ -8,19 +9,22 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Session;
 
 namespace dotnet_tree_shadows.Controllers {
     [Route( "api/[controller]" ), ApiController,
      Authorize( Roles = UserRoles.User, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme )]
-    public class SessionsController : ControllerBase {
+    public class SessionsController : AControllerWithStatusMethods {
         private readonly SessionService sessionService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ProfileService profileService;
+        private readonly InvitationService invitationService;
 
         public SessionsController (
                 SessionService sessionService,
                 UserManager<ApplicationUser> userManager,
-                ProfileService profileService
+                ProfileService profileService,
+                InvitationService invitationService
             ) {
             this.sessionService = sessionService;
             this.userManager = userManager;
@@ -37,52 +41,49 @@ namespace dotnet_tree_shadows.Controllers {
         }
 
         [HttpPost]
-        [Route("{id:length(24)}/players")]
-        public async Task<ActionResult> InvitePlayer (string id, [FromBody] string recipientId) {
-            Session session = await sessionService.Get( id );
-            if ( session == null )
-                return StatusCode(
-                        StatusCodes.Status404NotFound,
-                        new Response { Status = "Session not found", Message = "No session exists with that id" }
-                    );
+        [Route("{sessionId:length(24)}/players")]
+        public async Task<ActionResult> InvitePlayer (string sessionId, [FromBody] string recipientId) {
+            Task<Session>? sessionTask =  sessionService.Get( sessionId );
+            Task<ApplicationUser>? userTask =  userManager.GetUserAsync( HttpContext.User );
+            
 
-            ApplicationUser currentUser = await userManager.GetUserAsync( HttpContext.User );
+            Session session = await sessionTask;
+            if ( session == null ) return Status404NotFound( "Session" );
 
-            if ( session.Host != currentUser.UserId ) return StatusCode( StatusCodes.Status403Forbidden );
+            ApplicationUser user = await userTask;
+            if ( session.Host != user.UserId ) return Status403Forbidden();
+            if ( user.UserId == recipientId ) return Status400Invalid( "recipientID" );
 
-            Task<Profile> senderTask = profileService.GetByIdAsync( currentUser.UserId );
+            Task<Profile> senderTask = profileService.GetByIdAsync( user.UserId );
             Task<Profile> recipientTask = profileService.GetByIdAsync( recipientId );
 
             await Task.WhenAll( senderTask, recipientTask );
 
             Profile sender = await senderTask;
             Profile recipient = await recipientTask;
+            
+            if ( recipient == null ) return Status404NotFound( "Recipient" );
+            if ( !recipient.HasFriend( sender.Id ) ) return Status403Forbidden();
+            if ( session.HasInvited( recipient.Id ) ) return Status409Duplicate( "Invitation" );
 
-            if ( !recipient.IsFriendsWith( sender.Id ) ) return StatusCode( StatusCodes.Status403Forbidden );
+            Invitation sessionInvitation = Invitation.SessionInvitation( sender.Id, recipientId, sessionId );
 
-            if ( recipient == null )
-                return StatusCode(
-                        StatusCodes.Status404NotFound,
-                        new Response { Status = "Recipient not found", Message = "No player exists with that id" }
-                    );
+            List<Invitation> recipientInvitations =
+                await invitationService.GetMany( recipient.ReceivedInvitations );
 
-            if ( session.HasInvited( recipient.Id ) )
-                return StatusCode(
-                        StatusCodes.Status409Conflict,
-                        new Response {
-                                         Status = "Already Invited",
-                                         Message = "That player has already been invited to the session."
-                                     }
-                    );
+            if ( recipientInvitations.Any( sessionInvitation.IsDuplicate ) ) return Status409Duplicate( "Invitation" );
 
-            Invitation invitation = session.Invite( recipient.Id, sender.Id );
-
-            sender.SendInvitation( invitation );
-            recipient.ReceiveInvitation( invitation );
-
-            Task updateSession = sessionService.Update( session.Id, session );
+            Invitation createdInvitation = await invitationService.CreateAsync( sessionInvitation );
+            
+            sender.AddSentInvitation( createdInvitation.Id );
             Task updateSender = profileService.Update( sender.Id, sender );
+            
+            recipient.AddReceivedInvitation( createdInvitation.Id );
             Task updateRecipient = profileService.Update( recipientId, recipient );
+            
+            session.AddInvitation( createdInvitation.Id );
+            Task updateSession = sessionService.Update( session.Id, session );
+            
 
             await Task.WhenAll( updateSession, updateSender, updateRecipient );
 

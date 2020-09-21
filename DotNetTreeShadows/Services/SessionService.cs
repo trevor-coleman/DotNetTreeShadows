@@ -14,7 +14,9 @@ namespace dotnet_tree_shadows.Services {
             sessions = database.GetCollection<Session>( settings.SessionsCollectionName );
         }
 
-        public List<Session> Get () { return sessions.Find( session => true ).ToList(); }
+        public async Task<List<Session>> Get () {
+            return (await sessions.FindAsync( session => true )).ToList();
+        }
 
         public async Task<List<SessionSummary>> GetSessionSummariesForHost (string hostId) {
             var findOptions = new FindOptions<Session, SessionSummary> {
@@ -33,9 +35,9 @@ namespace dotnet_tree_shadows.Services {
             return await (await sessions.FindAsync( filter, findOptions )).ToListAsync();
         }
 
-        public List<Session> GetByHostId (string id) => sessions.Find( session => session.Host == id ).ToList();
+        public async Task<List<Session>> GetByHostId (string id) => (await sessions.FindAsync( session => session.Host == id )).ToList();
 
-        public async Task<Session> Get (string id) => sessions.Find( session => session.Id == id ).FirstOrDefault();
+        public async Task<Session?> Get (string id) => (await sessions.FindAsync( session => session.Id == id )).FirstOrDefault();
 
         public async Task<Session> Create (Session session) {
             await sessions.InsertOneAsync( session );

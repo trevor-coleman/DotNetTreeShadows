@@ -22,7 +22,7 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 
 namespace dotnet_tree_shadows.Controllers {
     [Route( "api/[controller]" ), ApiController]
-    public class AuthenticateController:ControllerBase {
+    public class AuthenticateController:AControllerWithStatusMethods {
 
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<MongoRole> roleManager;

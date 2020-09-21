@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="$PROJECT_DIR$" t="IncludeFlat">
-      <e p="dotnet-tree-shadows" t="IncludeRecursive">
+      <e p="dotnet-tree-shadows.sln" t="IncludeFlat" />
+      <e p="DotNetTreeShadows" t="IncludeRecursive">
         <e p=".gitignore" t="Include" />
         <e p="appsettings.Development.json" t="Include" />
         <e p="appsettings.json" t="Include" />
@@ -215,11 +216,13 @@
           <e p="yarn.lock" t="Include" />
         </e>
         <e p="Controllers" t="Include">
+          <e p="AControllerWithStatusMethods.cs" t="Include" />
           <e p="AuthenticateController.cs" t="Include" />
+          <e p="InvitationsController.cs" t="Include" />
           <e p="ProfilesController.cs" t="Include" />
           <e p="SessionsController.cs" t="Include" />
         </e>
-        <e p="dotnet-tree-shadows.csproj" t="IncludeRecursive" />
+        <e p="DotNetTreeShadows.csproj" t="IncludeRecursive" />
         <e p="Models" t="Include">
           <e p="AuthDatabaseSettings.cs" t="Include" />
           <e p="Board.cs" t="Include" />
@@ -242,8 +245,8 @@
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
             <e p="netcoreapp3.1" t="Include">
-              <e p="dotnet-tree-shadows.AssemblyInfo.cs" t="Include" />
-              <e p="dotnet-tree-shadows.RazorAssemblyInfo.cs" t="Include" />
+              <e p="DotNetTreeShadows.AssemblyInfo.cs" t="Include" />
+              <e p="DotNetTreeShadows.RazorAssemblyInfo.cs" t="Include" />
             </e>
           </e>
         </e>
@@ -260,6 +263,7 @@
           <e p="MongoDbSettings.cs" t="Include" />
         </e>
         <e p="Services" t="Include">
+          <e p="InvitationService.cs" t="Include" />
           <e p="ProfileService.cs" t="Include" />
           <e p="SessionService.cs" t="Include" />
         </e>
@@ -268,7 +272,6 @@
           <e p="EnumUtil.cs" t="Include" />
         </e>
       </e>
-      <e p="dotnet-tree-shadows.sln" t="IncludeFlat" />
       <e p="packages" t="ExcludeRecursive" />
     </e>
     <e p="$APPLICATION_CONFIG_DIR$/scratches" t="IncludeRecursive" />

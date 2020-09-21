@@ -46,6 +46,7 @@ namespace dotnet_tree_shadows {
 
             services.AddSingleton<SessionService>();
             services.AddSingleton<ProfileService>();
+            services.AddSingleton<InvitationService>();
 
             services.AddSingleton<IGameDatabaseSettings>(
                     sp => sp.GetRequiredService<IOptions<GameDatabaseSettings>>().Value

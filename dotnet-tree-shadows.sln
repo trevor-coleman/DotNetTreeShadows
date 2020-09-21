@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-tree-shadows", "dotnet-tree-shadows\dotnet-tree-shadows.csproj", "{7AA0A796-2F90-480C-9C58-3C51DBD737CF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetTreeShadows", "DotNetTreeShadows\DotNetTreeShadows.csproj", "{7AA0A796-2F90-480C-9C58-3C51DBD737CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

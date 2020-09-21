@@ -18,7 +18,7 @@ namespace dotnet_tree_shadows.Models {
         public Game Game { get; set; }
         public string Name { get; set; }
 
-        public List<Invitation> Invitations;
+        public List<string> Invitations;
 
         public Session () {
             Id = "";
@@ -26,7 +26,7 @@ namespace dotnet_tree_shadows.Models {
             Game = new Game();
             Name = "";
             Host = "";
-            Invitations = new List<Invitation>();
+            Invitations = new List<string>();
         }
         
         public Session (string host, string hostName, string? name) {
@@ -36,21 +36,24 @@ namespace dotnet_tree_shadows.Models {
             Game = new Game();
             Name = name ?? $"New Session - {DateTime.Now.ToString()}";
             Host = host;
-            Invitations = new List<Invitation>();
+            Invitations = new List<string>();
         }
 
         public void AddPlayer (string playerId) {
             Players.Add( playerId, new Player() );
         }
-
-        public Invitation Invite (string playerId, string senderId) {
-            Invitation invitation = new Invitation( senderId, playerId, Id, InvitationType.ToSession );
-            Invitations.Add( invitation );
-            return invitation;
+        
+        public bool HasInvited (string id) {
+            return Invitations.Any( i => i == id );
         }
 
-        public bool HasInvited (string id) {
-            return Invitations.Any( i => i.RecipientId == id );
+        public void RemoveInvitation (string id) {
+            Invitations.RemoveAll( i => i == id );
+        }
+
+        public void AddInvitation (string id) {
+            if ( HasInvited( id ) ) return;
+            Invitations.Add( id );
         }
     }
 
