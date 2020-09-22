@@ -9,19 +9,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b67e1f5d-a9c2-4af3-8e08-c69ba7789bcf" name="Default Changelist" comment="normalize invitations and update controller.">
+    <list default="true" id="b67e1f5d-a9c2-4af3-8e08-c69ba7789bcf" name="Default Changelist" comment="Implement Buy, Plant, Grow, Collect actions on Models.">
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Controllers/GameController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GrowAction.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.dotnet-tree-shadows/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.dotnet-tree-shadows/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.dotnet-tree-shadows/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.dotnet-tree-shadows/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/Board.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/Board.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/Game.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/HexCoordinates.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/HexCoordinates.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/IGameData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/IGameData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/ITileData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/PieceType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/PieceType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/Player.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/Resource.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/Resource.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/Scoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/Scoring.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/Tile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/Tile.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,8 +58,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/AGame.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/ITileData.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Utilities/EnumUtil.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/ScoreToken.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/ScoreTokens.cs" />
@@ -117,6 +107,8 @@
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Tile.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Player.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Game.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Controllers/GameController.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GrowAction.cs" />
       </list>
     </option>
   </component>
@@ -419,7 +411,14 @@
       <option name="project" value="LOCAL" />
       <updated>1600728846444</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Implement Buy, Plant, Grow, Collect actions on Models.">
+      <created>1600807684497</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1600807684497</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -442,7 +441,6 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Add 'sessions/new' route. Add hostName to Session." />
     <MESSAGE value="put attributes on single line" />
     <MESSAGE value="Make 'sessions' route return SessionSummary." />
     <MESSAGE value="Enable Roles. Connect auth to mongodb." />
@@ -467,7 +465,8 @@
     <MESSAGE value="Implement session invitations. Use async service methods." />
     <MESSAGE value="update workspace file" />
     <MESSAGE value="normalize invitations and update controller." />
-    <option name="LAST_COMMIT_MESSAGE" value="normalize invitations and update controller." />
+    <MESSAGE value="Implement Buy, Plant, Grow, Collect actions on Models." />
+    <option name="LAST_COMMIT_MESSAGE" value="Implement Buy, Plant, Grow, Collect actions on Models." />
   </component>
   <component name="WindowStateProjectService">
     <state x="741" y="337" key="#Web_Browsers" timestamp="1600617692028">
@@ -482,28 +481,28 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="100" y="100" width="1720" height="880" key="DiffContextDialog/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600699521067" />
-    <state width="1878" height="305" key="GridCell.Tab.0.bottom" timestamp="1600787660746">
+    <state width="1878" height="305" key="GridCell.Tab.0.bottom" timestamp="1600807569652">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="305" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600787660746" />
+    <state width="1878" height="305" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600807569652" />
     <state width="1878" height="403" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1600728435242" />
     <state width="1878" height="305" key="GridCell.Tab.0.bottom/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1600579318315" />
-    <state width="1878" height="305" key="GridCell.Tab.0.center" timestamp="1600787660745">
+    <state width="1878" height="305" key="GridCell.Tab.0.center" timestamp="1600807569649">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="305" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600787660745" />
+    <state width="1878" height="305" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600807569649" />
     <state width="1878" height="403" key="GridCell.Tab.0.center/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1600728435240" />
     <state width="1878" height="305" key="GridCell.Tab.0.center/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1600579318313" />
-    <state width="1878" height="305" key="GridCell.Tab.0.left" timestamp="1600787660744">
+    <state width="1878" height="305" key="GridCell.Tab.0.left" timestamp="1600807569647">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="305" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600787660744" />
+    <state width="1878" height="305" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600807569647" />
     <state width="1878" height="403" key="GridCell.Tab.0.left/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1600728435238" />
     <state width="1878" height="305" key="GridCell.Tab.0.left/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1600579318312" />
-    <state width="1878" height="305" key="GridCell.Tab.0.right" timestamp="1600787660745">
+    <state width="1878" height="305" key="GridCell.Tab.0.right" timestamp="1600807569650">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="305" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600787660745" />
+    <state width="1878" height="305" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600807569650" />
     <state width="1878" height="403" key="GridCell.Tab.0.right/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1600728435241" />
     <state width="1878" height="305" key="GridCell.Tab.0.right/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1600579318314" />
     <state width="1878" height="403" key="GridCell.Tab.1.bottom" timestamp="1600728645807">

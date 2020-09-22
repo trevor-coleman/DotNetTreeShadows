@@ -218,6 +218,7 @@
         <e p="Controllers" t="Include">
           <e p="AControllerWithStatusMethods.cs" t="Include" />
           <e p="AuthenticateController.cs" t="Include" />
+          <e p="GameController.cs" t="Include" />
           <e p="InvitationsController.cs" t="Include" />
           <e p="ProfilesController.cs" t="Include" />
           <e p="SessionsController.cs" t="Include" />
@@ -227,6 +228,9 @@
           <e p="AuthDatabaseSettings.cs" t="Include" />
           <e p="Board.cs" t="Include" />
           <e p="Game.cs" t="Include" />
+          <e p="GameActions" t="Include">
+            <e p="GrowAction.cs" t="Include" />
+          </e>
           <e p="GameDatabaseSettings.cs" t="Include" />
           <e p="HexCoordinates.cs" t="Include" />
           <e p="IGameData.cs" t="Include" />
