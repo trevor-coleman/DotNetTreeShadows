@@ -19,6 +19,7 @@ namespace dotnet_tree_shadows.Models {
             private static readonly int[] OneLeafTiles = { 14, 14, 13, 13, 12, 12, 12, 12 };
             private static readonly int[] TwoLeafTiles = { 17, 16, 16, 14, 14, 13, 13, 13 };
             private static readonly int[] ThreeLeafTiles = { 19, 18, 18, 17, 17 };
+            private static readonly int[] FourLeafTiles = { 22, 21, 20 };
 
             private static Dictionary<int, Queue<int>> StartingPiles {
                 get =>
@@ -56,7 +57,18 @@ namespace dotnet_tree_shadows.Models {
                 get => new[] { piles[1].Count, piles[2].Count, piles[3].Count };
             }
 
-            public Token Take (int numberOfLeaves) => new Token(numberOfLeaves, piles[numberOfLeaves].Dequeue());
+            public Token? Take (int numberOfLeaves) {
+                var points = 0;
+
+                for (int i = numberOfLeaves; i >= 0; i--) {
+                    if(piles[numberOfLeaves].Count > 0) break;
+                    if ( i == 0 ) return null;
+                }
+                
+                points = piles[numberOfLeaves].Dequeue();
+                
+                return new Token( numberOfLeaves, points );
+            }
 
         }
         

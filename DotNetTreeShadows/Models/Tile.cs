@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace dotnet_tree_shadows.Models {
     public class Tile {
@@ -6,8 +7,20 @@ namespace dotnet_tree_shadows.Models {
         public PieceType? PieceType { get; set; }
         public TreeType? TreeType { get; set; }
         public int ShadowHeight { get; set; }
-        
-        
+
+        public int Light {
+            get {
+                if ( PieceType == null || TreeType == null) return 0;
+                return (int) PieceType > ShadowHeight
+                           ? (int) PieceType
+                           : 0;
+            }
+        }
+
+        public bool ProducesLight {
+            get => PieceType != null && (int) PieceType > ShadowHeight;
+        }
+
         public Tile () {
             HexCoordinates = new HexCoordinates(0,0,0);
         }
@@ -18,18 +31,19 @@ namespace dotnet_tree_shadows.Models {
             TreeType = null;
         }
 
-        public HexCoordinates[] Shadow (SunPosition sunPosition) {
-            if ( PieceType == null) return new HexCoordinates[0];
+        
 
-            int height = (int) PieceType;
+        public Board.Shadow GetShadow (SunPosition sunPosition) {
+            var shadow = new Board.Shadow();
+            if ( PieceType == null) return shadow;
+
+            var height = (int) PieceType;
             
-            HexCoordinates[] shadowedTiles = new HexCoordinates[height];
-
             for (int i = 0; i < (int) PieceType; i++) {
-                shadowedTiles[i] = HexCoordinates + (i * ShadowDirection(sunPosition));
+                shadow.Add( new Board.ShadowHex( HexCoordinates + (i * ShadowDirection( sunPosition )), height ) );
             }
 
-            return shadowedTiles;
+            return shadow;
         }
 
         public static HexCoordinates ShadowDirection (SunPosition sunPosition) {
@@ -50,5 +64,41 @@ namespace dotnet_tree_shadows.Models {
             PieceType == null
                 ? ShadowHeight > 0
                 : (int) PieceType > ShadowHeight;
+
+
+        public bool CanGrow (bool preventActionsInShadow, out string failureReasons) {
+            if ( PieceType == null ) {
+                failureReasons= "Tile is empty. ";
+                return false;
+            }
+
+            if ( preventActionsInShadow && ShadowHeight > 0 ) {
+                failureReasons = "Growth in shadow is disabled in game options.";
+                return false;
+            }
+
+            if ( PieceType == Models.PieceType.LargeTree ) {
+                failureReasons = "Can't grow large tree.";
+                return false;
+            }
+
+            failureReasons = null;
+            return true;
+
+        }
+        
+        public void GrowTree () {
+            PieceType = PieceType switch {
+                null => throw new InvalidOperationException( "Can't grow tile with out tree" ),
+                Models.PieceType.LargeTree => throw new InvalidOperationException( "Can't grow large tree." ),
+                _ => (PieceType) ((int) PieceType + 1)
+            };
+        }
+
+        public bool HasTree () => PieceType != null;
+
+        public int DistanceFromCenter () => HexCoordinates.DistanceTo( HexCoordinates.Zero );
+        public int Leaves () => 4 - DistanceFromCenter();
+
     }
 }

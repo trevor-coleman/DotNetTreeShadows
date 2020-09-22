@@ -10,11 +10,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b67e1f5d-a9c2-4af3-8e08-c69ba7789bcf" name="Default Changelist" comment="normalize invitations and update controller.">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.dotnet-tree-shadows/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.dotnet-tree-shadows/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.dotnet-tree-shadows/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.dotnet-tree-shadows/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Controllers/InvitationsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Controllers/InvitationsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Controllers/ProfilesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Controllers/ProfilesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Controllers/SessionsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Controllers/SessionsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/Invitation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/Invitation.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/Board.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/Board.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/Game.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/HexCoordinates.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/HexCoordinates.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/IGameData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/IGameData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/ITileData.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/PieceType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/PieceType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/Resource.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/Resource.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/Scoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/Scoring.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/Tile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/Tile.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,42 +44,33 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8C515D11-6774-4292-AE1E-0213E7791F08/1D/UserManager.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Controllers/AuthenticateController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Models/Invitation.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1B82BBF8-F4D0-4BD0-9402-5566DBE93AB0/24/ControllerBase.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Controllers/SessionsController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1B82BBF8-F4D0-4BD0-9402-5566DBE93AB0/4A/NotFoundResult.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5AED14D4-8F76-4E4F-80EB-584643057B28/163/Task.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Registration/MongoDbSettings.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Controllers/InvitationsController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Services/InvitationService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Controllers/AuthenticateController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1B82BBF8-F4D0-4BD0-9402-5566DBE93AB0/24/ControllerBase.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1B82BBF8-F4D0-4BD0-9402-5566DBE93AB0/4A/NotFoundResult.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Controllers/AControllerWithStatusMethods.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Services/InvitationService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Services/SessionService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Registration/MongoDbSettings.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Models/Invitation.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8C515D11-6774-4292-AE1E-0213E7791F08/1D/UserManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5AED14D4-8F76-4E4F-80EB-584643057B28/163/Task.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/dotnet-tree-shadows/DotNetTreeShadows/Controllers/SessionsController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/appsettings.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Startup.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/D46B848C-725B-4D1D-8813-6D6E95D9C3D3/53/cd35d2da/BsonClassMap.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5AED14D4-8F76-4E4F-80EB-584643057B28/22D/AsyncValueTaskMethodBuilder.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Startup.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1B82BBF8-F4D0-4BD0-9402-5566DBE93AB0/61/StatusCodeResult.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Services/SessionService.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/ClientApp/src/components/Home.tsx" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/ATile.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/AGame.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/ITileData.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Resource.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Utilities/EnumUtil.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/ScoreToken.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/ScoreTokens.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Scoring.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/HexCoordinates.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Tile.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Controllers/SessionsContro.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/.gitignore" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Authentication/AuthenticationDbContext.cs" />
@@ -82,14 +80,11 @@
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Properties/launchSettings.json" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/json.json" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/User.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/IGameData.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Controllers/UserController.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Services/UserService.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/UserAccount.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Services/ProfleService.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Authentication/UserRoles.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Player.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Game.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/AuthDatabaseSettings.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Authentication/Response.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Authentication/RegisterModel.cs" />
@@ -113,6 +108,15 @@
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Controllers/ProfilesController.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Invitation.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Controllers/SessionsController.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/PieceType.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Resource.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Board.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/IGameData.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Scoring.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/HexCoordinates.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Tile.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Player.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Game.cs" />
       </list>
     </option>
   </component>
@@ -143,7 +147,7 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C#" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.appearance" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/DotNetTreeShadows/ClientApp/node_modules/typescript/lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -478,28 +482,28 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="100" y="100" width="1720" height="880" key="DiffContextDialog/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600699521067" />
-    <state width="1878" height="305" key="GridCell.Tab.0.bottom" timestamp="1600730539528">
+    <state width="1878" height="305" key="GridCell.Tab.0.bottom" timestamp="1600787660746">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="305" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600730539528" />
+    <state width="1878" height="305" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600787660746" />
     <state width="1878" height="403" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1600728435242" />
     <state width="1878" height="305" key="GridCell.Tab.0.bottom/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1600579318315" />
-    <state width="1878" height="305" key="GridCell.Tab.0.center" timestamp="1600730539526">
+    <state width="1878" height="305" key="GridCell.Tab.0.center" timestamp="1600787660745">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="305" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600730539526" />
+    <state width="1878" height="305" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600787660745" />
     <state width="1878" height="403" key="GridCell.Tab.0.center/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1600728435240" />
     <state width="1878" height="305" key="GridCell.Tab.0.center/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1600579318313" />
-    <state width="1878" height="305" key="GridCell.Tab.0.left" timestamp="1600730539525">
+    <state width="1878" height="305" key="GridCell.Tab.0.left" timestamp="1600787660744">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="305" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600730539525" />
+    <state width="1878" height="305" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600787660744" />
     <state width="1878" height="403" key="GridCell.Tab.0.left/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1600728435238" />
     <state width="1878" height="305" key="GridCell.Tab.0.left/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1600579318312" />
-    <state width="1878" height="305" key="GridCell.Tab.0.right" timestamp="1600730539527">
+    <state width="1878" height="305" key="GridCell.Tab.0.right" timestamp="1600787660745">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="305" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600730539527" />
+    <state width="1878" height="305" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600787660745" />
     <state width="1878" height="403" key="GridCell.Tab.0.right/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1600728435241" />
     <state width="1878" height="305" key="GridCell.Tab.0.right/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1600579318314" />
     <state width="1878" height="403" key="GridCell.Tab.1.bottom" timestamp="1600728645807">
@@ -562,21 +566,22 @@
     </state>
     <state width="1878" height="403" key="GridCell.Tab.3.right/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600728645825" />
     <state width="1878" height="403" key="GridCell.Tab.3.right/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1600728435249" />
-    <state x="772" y="231" key="RiderGenerateDialog" timestamp="1600549943560">
+    <state x="772" y="231" key="RiderGenerateDialog" timestamp="1600786794019">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="772" y="231" key="RiderGenerateDialog/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600549943560" />
-    <state x="461" y="179" key="SettingsEditor" timestamp="1600703543050">
+    <state x="772" y="231" key="RiderGenerateDialog/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600786794019" />
+    <state x="461" y="179" key="SettingsEditor" timestamp="1600791014408">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="461" y="179" key="SettingsEditor/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600703543050" />
+    <state x="461" y="179" key="SettingsEditor/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600790197581" />
+    <state x="461" y="179" key="SettingsEditor/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1600791014408" />
     <state width="600" height="428" key="javadoc.popup" timestamp="1600613109492">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="600" height="428" key="javadoc.popup/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600613109492" />
-    <state x="625" y="241" width="670" height="676" key="search.everywhere.popup" timestamp="1600699767156">
+    <state x="625" y="241" width="670" height="676" key="search.everywhere.popup" timestamp="1600802976824">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="625" y="241" width="670" height="676" key="search.everywhere.popup/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600699767156" />
+    <state x="625" y="241" width="670" height="676" key="search.everywhere.popup/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600802976824" />
   </component>
 </project>

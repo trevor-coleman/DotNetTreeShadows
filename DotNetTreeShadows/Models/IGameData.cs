@@ -10,5 +10,8 @@ namespace dotnet_tree_shadows.Models {
         public int[] RemainingScoreTokens { get; set; }
         public int Year { get; set; }
         public int Revolution { get; set; }
+        List<HexCoordinates> TilesActiveThisTurn { get; set; }
+        bool LongGame { get; set; }
+        bool PreventActionsInShadow { get; set; }
     }
 }

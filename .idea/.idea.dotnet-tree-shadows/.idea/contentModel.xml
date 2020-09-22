@@ -231,7 +231,6 @@
           <e p="HexCoordinates.cs" t="Include" />
           <e p="IGameData.cs" t="Include" />
           <e p="Invitation.cs" t="Include" />
-          <e p="ITileData.cs" t="Include" />
           <e p="PieceType.cs" t="Include" />
           <e p="Player.cs" t="Include" />
           <e p="Profile.cs" t="Include" />
