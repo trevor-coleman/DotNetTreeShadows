@@ -64,9 +64,9 @@ namespace dotnet_tree_shadows.Models {
          * <remarks>Checks whether player can afford piece, and whether a piece exists to buy.</remarks>
          * <returns>true if purchase was successful, false if it wasn't.</returns>
          */
-        public bool TryBuy (PieceType pieceType) {
+        public bool TryBuy (PieceType pieceType, out string failureMessage) {
             Resource resource = Resources[pieceType.ToString()];
-            if ( !CanBuy( resource ) ) return false;
+            if ( !CanBuy( resource, out failureMessage ) ) return false;
             resource.BuyAt( out int price );
             Spend( price );
             return true;
@@ -81,7 +81,20 @@ namespace dotnet_tree_shadows.Models {
             Spend( price );
         }
         
-        public bool CanBuy (Resource resource) => resource.CurrentPrice() != -1 && Light >= resource.CurrentPrice();
+        public bool CanBuy (Resource resource, out string failureMessage) {
+            if ( resource.CurrentPrice() == -1 ) {
+                failureMessage = "None available.";
+                return false;
+            }
+
+            if ( Light < resource.CurrentPrice() ) {
+                failureMessage = "Can't afford purchase.";
+                return false;
+            };
+
+            failureMessage = "";
+            return true;
+        }
 
         public bool TryHandleGrowTree (PieceType pieceIn, out bool returnedSafely, out string failureReason) {
             returnedSafely = false;

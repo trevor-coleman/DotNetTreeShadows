@@ -19,19 +19,28 @@ namespace dotnet_tree_shadows.Models {
         public int OnPlayerBoard { get; set; }
         public int Discarded { get; set; }
         public int[] Prices { get; set; }
-        
+
+
+        public Resource () {
+            Available = 0;
+            OnPlayerBoard = 0;
+            Prices = new int[0];
+            Discarded = 0;
+            PieceType = PieceType.Seed;
+        }
         
         public Resource (PieceType pieceType, IReadOnlyList<int> startingCounts, int[] prices) {
             Available = startingCounts[0];
             OnPlayerBoard = startingCounts[1];
-            Prices = prices;
+            Prices = StartingPrices( pieceType );
             Discarded = 0;
+            PieceType = pieceType;
         }
         
         public bool BuyAt (out int price) {
             price = 0;
             if ( OnPlayerBoard == 0 ) return false;
-            price = Prices[OnPlayerBoard];
+            price = Prices[OnPlayerBoard-1];
             OnPlayerBoard--;
             Available++;
             return true;

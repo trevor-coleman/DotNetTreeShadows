@@ -90,7 +90,7 @@ namespace dotnet_tree_shadows.Controllers {
             return Ok();
         }
 
-        [HttpGet( "id:length(24)", Name = "GetSession" )]
+        [HttpGet( "{id:length(24)}", Name = "GetSession" )]
         public async Task<ActionResult<Session>> Get (string id) {
             Session session = await sessionService.Get( id );
             if ( session == null ) return NotFound();

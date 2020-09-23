@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="$PROJECT_DIR$" t="IncludeFlat">
-      <e p="dotnet-tree-shadows.sln" t="IncludeFlat" />
       <e p="DotNetTreeShadows" t="IncludeRecursive">
         <e p=".gitignore" t="Include" />
         <e p="appsettings.Development.json" t="Include" />
@@ -131,58 +130,6 @@
           <e p="node_modules/tslib" t="IncludeRecursive" />
           <e p="node_modules/tsutils" t="IncludeRecursive" />
           <e p="node_modules/type-fest" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.dom.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.dom.iterable.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.collection.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.core.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.generator.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.iterable.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.promise.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.proxy.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.reflect.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.symbol.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2016.array.include.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2016.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2016.full.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2017.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2017.full.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2017.intl.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2017.object.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2017.string.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2017.typedarrays.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2018.asyncgenerator.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2018.asynciterable.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2018.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2018.full.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2018.intl.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2018.promise.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2018.regexp.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2019.array.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2019.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2019.full.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2019.object.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2019.string.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2019.symbol.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2020.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2020.full.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2020.string.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2020.symbol.wellknown.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es5.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es6.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.esnext.array.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.esnext.asynciterable.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.esnext.bigint.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.esnext.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.esnext.full.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.esnext.intl.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.esnext.symbol.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.scripthost.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.webworker.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.webworker.importscripts.d.ts" t="IncludeRecursive" />
           <e p="package.json" t="Include" />
           <e p="public" t="Include">
             <e p="favicon.ico" t="Include" />
@@ -222,6 +169,27 @@
           <e p="InvitationsController.cs" t="Include" />
           <e p="ProfilesController.cs" t="Include" />
           <e p="SessionsController.cs" t="Include" />
+        </e>
+        <e p="dotnet-tree-shadows" t="Include">
+          <e p="obj" t="Include">
+            <e p="Debug" t="Include">
+              <e p="netcoreapp3.1" t="Include">
+                <e p="dotnet-tree-shadows.AssemblyInfo.cs" t="Include" />
+                <e p="dotnet-tree-shadows.AssemblyInfoInputs.cache" t="Include" />
+                <e p="dotnet-tree-shadows.assets.cache" t="Include" />
+                <e p="dotnet-tree-shadows.csprojAssemblyReference.cache" t="Include" />
+                <e p="dotnet-tree-shadows.RazorAssemblyInfo.cache" t="Include" />
+                <e p="dotnet-tree-shadows.RazorAssemblyInfo.cs" t="Include" />
+              </e>
+            </e>
+            <e p="dotnet-tree-shadows.csproj.nuget.dgspec.json" t="Include" />
+            <e p="dotnet-tree-shadows.csproj.nuget.g.props" t="Include" />
+            <e p="dotnet-tree-shadows.csproj.nuget.g.targets" t="Include" />
+            <e p="project.assets.json" t="Include" />
+            <e p="project.nuget.cache" t="Include" />
+            <e p="project.packagespec.json" t="Include" />
+            <e p="rider.project.restore.info" t="Include" />
+          </e>
         </e>
         <e p="DotNetTreeShadows.csproj" t="IncludeRecursive" />
         <e p="Models" t="Include">
@@ -276,10 +244,11 @@
           <e p="EnumUtil.cs" t="Include" />
         </e>
       </e>
+      <e p="DotNetTreeShadows.sln" t="IncludeFlat" />
       <e p="packages" t="ExcludeRecursive" />
     </e>
     <e p="$APPLICATION_CONFIG_DIR$/scratches" t="IncludeRecursive" />
     <e p="$USER_HOME$/Library/Caches/JetBrains/Rider2020.2/extResources" t="IncludeRecursive" />
-    <e p="$USER_HOME$/Library/Caches/JetBrains/Rider2020.2/resharper-host/local/Transient/Rider/v202/SolutionCaches/_dotnet-tree-shadows.-876779927.00" t="ExcludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/JetBrains/Rider2020.2/resharper-host/local/Transient/Rider/v202/SolutionCaches/_DotNetTreeShadows.-668931919.00" t="ExcludeRecursive" />
   </component>
 </project>
