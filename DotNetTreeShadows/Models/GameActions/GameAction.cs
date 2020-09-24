@@ -5,7 +5,7 @@ using Newtonsoft.Json.Converters;
 
 namespace dotnet_tree_shadows.Models.GameActions {
     public class GameAction {
-        [BsonRepresentation(BsonType.String)]
+        [BsonRepresentation(BsonType.ObjectId)]
         public string PlayerId { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
         [BsonRepresentation(BsonType.String)]

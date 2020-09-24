@@ -18,7 +18,6 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 
 //https://www.c-sharpcorner.com/article/authentication-and-authorization-in-asp-net-core-web-api-with-json-web-tokens/
 
-//TODO: UPDATE AUTHENTICATE CONTROLLER TO WORK WITH MONGODB IDENTITY SERVICE
 
 namespace dotnet_tree_shadows.Controllers {
     [Route( "api/[controller]" ), ApiController]

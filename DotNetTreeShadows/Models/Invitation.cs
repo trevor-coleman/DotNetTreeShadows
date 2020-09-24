@@ -23,28 +23,6 @@ namespace dotnet_tree_shadows.Models {
         [BsonRepresentation( BsonType.String )]
         public InvitationType InvitationType { get; set; }
 
-        public Invitation (string senderId, string recipientId, DateTime created, InvitationStatus status) {
-            SenderId = senderId;
-            RecipientId = recipientId;
-            ResourceId = null;
-            Created = created;
-            Status = status;
-        }
-
-        public Invitation (
-                string senderId,
-                string recipientId,
-                string resourceId,
-                DateTime created,
-                InvitationStatus status
-            ) {
-            SenderId = senderId;
-            RecipientId = recipientId;
-            ResourceId = resourceId;
-            Created = created;
-            Status = status;
-        }
-
         public Invitation () {
             SenderId = "";
             RecipientId = "";
@@ -81,7 +59,7 @@ namespace dotnet_tree_shadows.Models {
         public Invitation (Invitation invitation) {
             Id = invitation.Id;
             SenderId = invitation.SenderId;
-            RecipientId = invitation.SenderId;
+            RecipientId = invitation.RecipientId;
             ResourceId = invitation.ResourceId;
             Created = invitation.Created;
             Status = invitation.Status;

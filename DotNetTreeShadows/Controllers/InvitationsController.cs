@@ -1,4 +1,5 @@
 using System;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using dotnet_tree_shadows.Authentication;
 using dotnet_tree_shadows.Models;
@@ -8,6 +9,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace dotnet_tree_shadows.Controllers {
 
@@ -32,23 +37,49 @@ namespace dotnet_tree_shadows.Controllers {
             this.invitationService = invitationService;
         }
 
+        public class InvitationResponse: Invitation {
+            public InvitationResponse (Invitation invitation, string senderName, string recipientName) : base(invitation) {
+                SenderName = senderName;
+                RecipientName = recipientName;
+            }
+            public string SenderName { get; set; }
+            public string RecipientName { get; set; }
+            
+        }
+        
         [HttpGet, Route( "{id:length(24)}" )]
-        public async Task<ActionResult<Invitation>> Get (string id) {
+        public async Task<ActionResult<InvitationResponse>> Get (string id) {
             ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
             Invitation invitation = await invitationService.GetById( id );
 
             if ( invitation == null ) return Status404NotFound( "Invitation" );
             if ( !invitation.Involves( user.UserId ) ) return Status403Forbidden();
 
-            return invitation;
+            Profile sender = await profileService.GetByIdAsync( invitation.SenderId );
+            Profile recipient = await profileService.GetByIdAsync( invitation.RecipientId );
+            
+            InvitationResponse invitationResponse = new InvitationResponse( invitation, sender.Name, recipient.Name );
+            
+            return invitationResponse;
         }
 
+        public class InvitationUpdate {
+            [JsonConverter(typeof(StringEnumConverter))]
+            [BsonRepresentation(BsonType.String)]
+            public InvitationStatus InvitationStatus {
+                    get;
+                    set;
+                }
+        }
+        
         [HttpPost]
         [Route( "{id:length(24)}/status" )]
         public async Task<ActionResult> SetStatus (
                 [FromRoute] string id,
-                [FromBody] InvitationStatus invitationStatus
+                [FromBody] InvitationUpdate invitationUpdate
             ) {
+
+            InvitationStatus invitationStatus = invitationUpdate.InvitationStatus;
             if ( invitationStatus == null ) return Status400MissingRequiredField( "invitationStatus" );
 
             ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
@@ -77,9 +108,9 @@ namespace dotnet_tree_shadows.Controllers {
             Profile? recipient = await recipientTask;
             Session? session = await sessionTask;
 
-            return invitation.Status switch {
+            return status switch {
                 InvitationStatus.Pending => Status403Forbidden(),
-                InvitationStatus.Accepted => userId == recipient.Id
+                InvitationStatus.Accepted => userId == recipient.Id && !session.HasPlayer( recipient.Id )
                                                  ? await AcceptSessionInvite( invitation, sender, recipient, session )
                                                  : Status403Forbidden(),
                 InvitationStatus.Declined => userId == recipient.Id
@@ -162,11 +193,9 @@ namespace dotnet_tree_shadows.Controllers {
             recipient.RemoveInvitation( invitation.Id );
             sender.RemoveInvitation( invitation.Id );
             
-            Task updateRecipientTask = profileService.Update( recipient.Id, recipient );
-            Task updateSenderTask = profileService.Update( sender.Id, sender );
-            Task updateInvitationTask = invitationService.Update( invitation.Id, Invitation.Accepted(invitation) );
-
-            await Task.WhenAll( updateInvitationTask, updateRecipientTask, updateSenderTask );
+            await profileService.Update( recipient.Id, recipient );
+            await profileService.Update( sender.Id, sender );
+            await invitationService.Update( invitation.Id, Invitation.Accepted(invitation) );
 
             return Ok();
         }
@@ -211,18 +240,16 @@ namespace dotnet_tree_shadows.Controllers {
                 Profile recipient,
                 Session session
             ) {
-            session.AddPlayer( recipient.Id );
+            session.AddPlayer( recipient );
             recipient.AddSession( session.Id );
 
             session.RemoveInvitation( invitation.Id );
             recipient.RemoveInvitation( invitation.Id );
             sender.RemoveInvitation( invitation.Id );
 
-            Task updateSessionTask = sessionService.Update( session.Id, session );
-            Task updateRecipientTask = profileService.Update( recipient.Id, recipient );
-            Task updateSenderTask = profileService.Update( sender.Id, sender );
-
-            await Task.WhenAll( updateSessionTask, updateRecipientTask, updateSenderTask );
+            await sessionService.Update( session.Id, session );
+            await  profileService.Update( recipient.Id, recipient );
+            await  profileService.Update( sender.Id, sender );
 
             return Ok();
         }

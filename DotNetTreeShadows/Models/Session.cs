@@ -17,10 +17,15 @@ namespace dotnet_tree_shadows.Models {
         public string Host { get; set; }
         
         public Dictionary<string, Player> Players { get; set; }
+
+        public string[] PlayerNames {
+            get => Players.Select( playerEntry => playerEntry.Value.Name ).ToArray();
+        }
+
         public Game Game { get; set; }
         public string Name { get; set; }
 
-        public List<string> Invitations;
+        public List<string> Invitations { get; set; }
 
         public Session () {
             Id = "";
@@ -31,18 +36,17 @@ namespace dotnet_tree_shadows.Models {
             Invitations = new List<string>();
         }
         
-        public Session (string host, string hostName, string? name) {
+        public Session (Profile host) {
             Id = "";
-            Players = new Dictionary<string, Player> { { host, new Player() } };
-            Players[host].Name = hostName;
+            Players = new Dictionary<string, Player> { { host.Id, new Player(host) } };
             Game = new Game();
-            Name = name ?? $"New Session - {DateTime.Now.ToString()}";
-            Host = host;
+            Name = $"New Session - {DateTime.Now.ToString()}";
+            Host = host.Id;
             Invitations = new List<string>();
         }
 
-        public void AddPlayer (string playerId) {
-            Players.Add( playerId, new Player() );
+        public void AddPlayer (Profile player) {
+            Players.Add( player.Id, new Player(player) );
         }
         
         public bool HasInvited (string id) {

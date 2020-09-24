@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.4.0",
+    "axios": "^0.20.0",
+    "react-redux": "^7.2.1"
+  },
+  "devDependencies": {
+    "redux-devtools": "^3.7.0"
+  }
+}

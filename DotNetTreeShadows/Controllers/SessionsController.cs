@@ -29,6 +29,7 @@ namespace dotnet_tree_shadows.Controllers {
             this.sessionService = sessionService;
             this.userManager = userManager;
             this.profileService = profileService;
+            this.invitationService = invitationService;
         }
 
         [HttpGet]
@@ -39,10 +40,12 @@ namespace dotnet_tree_shadows.Controllers {
 
             return await sessionService.GetSessionSummariesForHost( userId );
         }
-
+        
+        
         [HttpPost]
         [Route("{sessionId:length(24)}/players")]
-        public async Task<ActionResult> InvitePlayer (string sessionId, [FromBody] string recipientId) {
+        public async Task<ActionResult> InvitePlayer ([FromRoute] string sessionId, [FromBody] ObjectIdModel idModel) {
+            string recipientId = idModel.Id;
             Task<Session>? sessionTask =  sessionService.Get( sessionId );
             Task<ApplicationUser>? userTask =  userManager.GetUserAsync( HttpContext.User );
             
@@ -66,7 +69,7 @@ namespace dotnet_tree_shadows.Controllers {
             if ( !recipient.HasFriend( sender.Id ) ) return Status403Forbidden();
             if ( session.HasInvited( recipient.Id ) ) return Status409Duplicate( "Invitation" );
 
-            Invitation sessionInvitation = Invitation.SessionInvitation( sender.Id, recipientId, sessionId );
+            Invitation sessionInvitation = Invitation.SessionInvitation( sender.Id, recipient.Id, sessionId );
 
             List<Invitation> recipientInvitations =
                 await invitationService.GetMany( recipient.ReceivedInvitations );
@@ -108,7 +111,7 @@ namespace dotnet_tree_shadows.Controllers {
         [HttpGet, Route( "new" )]
         public async Task<ActionResult<Session>> Create () {
             ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
-            if ( user.UserId == null ) return StatusCode( StatusCodes.Status403Forbidden );
+            if (user?.UserId == null ) return StatusCode( StatusCodes.Status403Forbidden );
             
             Profile? userProfile = await profileService.GetByIdAsync( user.UserId );
             if ( userProfile == null )
@@ -120,7 +123,7 @@ namespace dotnet_tree_shadows.Controllers {
                                      }
                     );
 
-            Session session = new Session( user.UserId, user.UserName, null );
+            Session session = new Session( userProfile);
             Session createdSession = await sessionService.Create( session );
             userProfile.AddSession( createdSession.Id );
             await profileService.Update( userProfile.Id, userProfile );

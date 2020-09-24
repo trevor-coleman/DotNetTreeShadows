@@ -33,21 +33,36 @@ namespace dotnet_tree_shadows.Controllers {
             this.sessionService = sessionService;
             this.invitationService = invitationService;
         }
+        
+        [HttpGet( "{id:length(24)}", Name = "GetProfile" )]
+        public async Task<ActionResult<FriendProfile>> Get (string id) {
+            ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
+            Profile profile = await profileService.GetByIdAsync( id );
 
-        [HttpGet( "id:length(24)", Name = "GetProfile" )]
-        public async Task<ActionResult<Profile>> Get (string id) => await profileService.GetByIdAsync( id );
+            if ( !profile.HasFriend( user.UserId ) && profile.Id != user.UserId ) return Status403Forbidden();
+            
+            FriendProfile friendProfile = new FriendProfile(profile);
+
+            return friendProfile;
+        }
 
         [HttpGet, Route( "me" )]
-        public async Task<ActionResult<Profile>> Get () {
+        public async Task<ActionResult<Profile>> GetMe () {
             ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
             if ( user == null ) return NotFound();
             return await profileService.GetByIdAsync( user.UserId );
         }
 
-        //TODO: Normalize Invites -- put in separate collection and reference with IDs 
+        public class FriendEmail {
+            [EmailAddress]
+            public string Email { get; set; }
+        }
 
         [HttpPost, Route( "me/friends" )]
-        public async Task<ActionResult> InviteFriend ([FromBody][EmailAddress] string recipientEmail) {
+        public async Task<ActionResult> InviteFriend (FriendEmail friendEmail) {
+
+            string recipientEmail = friendEmail.Email;
+            
             if ( recipientEmail == null ) return Status400MissingRequiredField( "email" );
             
             ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
@@ -85,4 +100,5 @@ namespace dotnet_tree_shadows.Controllers {
         }
 
     }
+
 }

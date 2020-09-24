@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 using dotnet_tree_shadows.Authentication;
 using MongoDB.Bson;
@@ -14,7 +16,6 @@ namespace dotnet_tree_shadows.Models {
         public string Name { get; set; }
         public List<string> Sessions { get; set; }
         public List<string> Friends { get; set; }
-        public string? CurrentSessionId { get; set; }
         [EmailAddress]
         public string Email { get; set; }
 
@@ -54,6 +55,7 @@ namespace dotnet_tree_shadows.Models {
 
         public void RemoveInvitation (string id) {
             SentInvitations.RemoveAll( s => s == id );      
+            ReceivedInvitations.RemoveAll( s => s == id );      
         }
 
         public void AddReceivedInvitation (string id) {

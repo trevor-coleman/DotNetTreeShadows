@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using dotnet_tree_shadows.Authentication;
 using dotnet_tree_shadows.Utilities;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.VisualBasic.CompilerServices;
@@ -23,18 +22,6 @@ namespace dotnet_tree_shadows.Models {
         [BsonDictionaryOptions( DictionaryRepresentation.ArrayOfArrays )]
         public readonly Dictionary<string, Resource> Resources;
 
-        public Player (ApplicationUser user) {
-            UserId = user.Id.ToString();
-            Name = user.UserName;
-            TreeType = null;
-            Score = new PlayerScore();
-            Light = 0;
-            Resources = new Dictionary<string, Resource>();
-            foreach ( PieceType pieceType in EnumUtil.GetValues<PieceType>() ) {
-                Resources[pieceType.ToString()] = Resource.StartingAmount( pieceType );
-            }
-        }
-
         public Player () {
             UserId = "";
             Name = "";
@@ -46,7 +33,18 @@ namespace dotnet_tree_shadows.Models {
                 Resources[pieceType.ToString()] = Resource.StartingAmount( pieceType );
             }
         }
-        
+
+        public Player (Profile profile) {
+            UserId = profile.Id;
+            Name = profile.Name;
+            TreeType = null;
+            Score = new PlayerScore();
+            Light = 0;
+            Resources = new Dictionary<string, Resource>();
+            foreach ( PieceType pieceType in EnumUtil.GetValues<PieceType>() ) {
+                Resources[pieceType.ToString()] = Resource.StartingAmount( pieceType );
+            }
+        }
 
         /// <summary>Spends light</summary>
         /// <param name="amount">amount to spend. Must be > 0.</param>
