@@ -134,7 +134,7 @@ namespace dotnet_tree_shadows {
 
             app.UseSpa(
                     spa => {
-                        spa.Options.SourcePath = "ClientApp";
+                        spa.Options.SourcePath = "client";
 
                         if ( env.IsDevelopment() ) {
                             spa.UseReactDevelopmentServer( npmScript: "start" );

@@ -14,210 +14,32 @@
           <e p="UserRoles.cs" t="Include" />
         </e>
         <e p="bin" t="ExcludeRecursive" />
-        <e p="ClientApp" t="Include">
+        <e p="client" t="Include">
           <e p=".gitignore" t="Include" />
-          <e p="node_modules/@babel/parser" t="IncludeRecursive" />
-          <e p="node_modules/@babel/types" t="IncludeRecursive" />
-          <e p="node_modules/@jest/console" t="IncludeRecursive" />
-          <e p="node_modules/@jest/core" t="IncludeRecursive" />
-          <e p="node_modules/@jest/environment" t="IncludeRecursive" />
-          <e p="node_modules/@jest/fake-timers" t="IncludeRecursive" />
-          <e p="node_modules/@jest/reporters" t="IncludeRecursive" />
-          <e p="node_modules/@jest/source-map" t="IncludeRecursive" />
-          <e p="node_modules/@jest/test-result" t="IncludeRecursive" />
-          <e p="node_modules/@jest/test-sequencer" t="IncludeRecursive" />
-          <e p="node_modules/@jest/transform" t="IncludeRecursive" />
-          <e p="node_modules/@jest/types" t="IncludeRecursive" />
-          <e p="node_modules/@types" t="IncludeRecursive">
-            <e p="babel__generator" t="IncludeRecursive" />
-            <e p="babel__template" t="IncludeRecursive" />
-            <e p="babel__traverse" t="IncludeRecursive" />
-            <e p="history" t="IncludeRecursive" />
-            <e p="hoist-non-react-statics" t="IncludeRecursive" />
-            <e p="istanbul-lib-coverage" t="IncludeRecursive" />
-            <e p="istanbul-lib-report" t="IncludeRecursive" />
-            <e p="jest" t="IncludeRecursive" />
-            <e p="jest-diff" t="IncludeRecursive" />
-            <e p="minimatch" t="IncludeRecursive" />
-            <e p="node" t="IncludeRecursive" />
-            <e p="prop-types" t="IncludeRecursive" />
-            <e p="react" t="IncludeRecursive" />
-            <e p="react-dom" t="IncludeRecursive" />
-            <e p="react-redux" t="IncludeRecursive" />
-            <e p="react-router" t="IncludeRecursive" />
-            <e p="react-router-dom" t="IncludeRecursive" />
-            <e p="reactstrap" t="IncludeRecursive" />
-            <e p="yargs-parser" t="IncludeRecursive" />
-          </e>
-          <e p="node_modules/@typescript-eslint/experimental-utils" t="IncludeRecursive" />
-          <e p="node_modules/@typescript-eslint/parser" t="IncludeRecursive" />
-          <e p="node_modules/@typescript-eslint/typescript-estree" t="IncludeRecursive" />
-          <e p="node_modules/acorn" t="IncludeRecursive" />
-          <e p="node_modules/ansi-escapes" t="IncludeRecursive" />
-          <e p="node_modules/bootstrap" t="IncludeRecursive" />
-          <e p="node_modules/callsites" t="IncludeRecursive" />
-          <e p="node_modules/camelcase" t="IncludeRecursive" />
-          <e p="node_modules/chalk" t="IncludeRecursive" />
-          <e p="node_modules/connected-react-router" t="IncludeRecursive" />
-          <e p="node_modules/cross-env" t="IncludeRecursive" />
-          <e p="node_modules/csstype" t="IncludeRecursive" />
-          <e p="node_modules/del" t="IncludeRecursive" />
-          <e p="node_modules/diff-sequences" t="IncludeRecursive" />
-          <e p="node_modules/expect" t="IncludeRecursive" />
-          <e p="node_modules/fast-json-stable-stringify" t="IncludeRecursive" />
-          <e p="node_modules/gzip-size" t="IncludeRecursive" />
-          <e p="node_modules/history" t="IncludeRecursive" />
-          <e p="node_modules/hoist-non-react-statics" t="IncludeRecursive" />
-          <e p="node_modules/immutable" t="IncludeRecursive" />
-          <e p="node_modules/import-fresh" t="IncludeRecursive" />
-          <e p="node_modules/is-generator-fn" t="IncludeRecursive" />
-          <e p="node_modules/is-path-cwd" t="IncludeRecursive" />
-          <e p="node_modules/is-path-in-cwd" t="IncludeRecursive" />
-          <e p="node_modules/is-path-inside" t="IncludeRecursive" />
-          <e p="node_modules/jest" t="IncludeRecursive" />
-          <e p="node_modules/jest-changed-files" t="IncludeRecursive" />
-          <e p="node_modules/jest-cli" t="IncludeRecursive" />
-          <e p="node_modules/jest-config" t="IncludeRecursive" />
-          <e p="node_modules/jest-diff" t="IncludeRecursive" />
-          <e p="node_modules/jest-docblock" t="IncludeRecursive" />
-          <e p="node_modules/jest-each" t="IncludeRecursive" />
-          <e p="node_modules/jest-environment-jsdom" t="IncludeRecursive" />
-          <e p="node_modules/jest-environment-jsdom-fourteen" t="IncludeRecursive" />
-          <e p="node_modules/jest-environment-node" t="IncludeRecursive" />
-          <e p="node_modules/jest-get-type" t="IncludeRecursive" />
-          <e p="node_modules/jest-haste-map" t="IncludeRecursive" />
-          <e p="node_modules/jest-jasmine2" t="IncludeRecursive" />
-          <e p="node_modules/jest-leak-detector" t="IncludeRecursive" />
-          <e p="node_modules/jest-matcher-utils" t="IncludeRecursive" />
-          <e p="node_modules/jest-message-util" t="IncludeRecursive" />
-          <e p="node_modules/jest-mock" t="IncludeRecursive" />
-          <e p="node_modules/jest-pnp-resolver" t="IncludeRecursive" />
-          <e p="node_modules/jest-regex-util" t="IncludeRecursive" />
-          <e p="node_modules/jest-resolve" t="IncludeRecursive" />
-          <e p="node_modules/jest-resolve-dependencies" t="IncludeRecursive" />
-          <e p="node_modules/jest-runner" t="IncludeRecursive" />
-          <e p="node_modules/jest-runtime" t="IncludeRecursive" />
-          <e p="node_modules/jest-serializer" t="IncludeRecursive" />
-          <e p="node_modules/jest-snapshot" t="IncludeRecursive" />
-          <e p="node_modules/jest-util" t="IncludeRecursive" />
-          <e p="node_modules/jest-validate" t="IncludeRecursive" />
-          <e p="node_modules/jest-watcher" t="IncludeRecursive" />
-          <e p="node_modules/jest-worker" t="IncludeRecursive" />
-          <e p="node_modules/jquery" t="IncludeRecursive" />
-          <e p="node_modules/leven" t="IncludeRecursive" />
-          <e p="node_modules/make-dir" t="IncludeRecursive" />
-          <e p="node_modules/merge" t="IncludeRecursive" />
-          <e p="node_modules/p-map" t="IncludeRecursive" />
-          <e p="node_modules/pirates" t="IncludeRecursive" />
-          <e p="node_modules/popper.js" t="IncludeRecursive" />
-          <e p="node_modules/pretty-format" t="IncludeRecursive" />
-          <e p="node_modules/promise" t="IncludeRecursive" />
-          <e p="node_modules/react" t="IncludeRecursive" />
-          <e p="node_modules/react-dom" t="IncludeRecursive" />
-          <e p="node_modules/react-redux" t="IncludeRecursive" />
-          <e p="node_modules/react-router" t="IncludeRecursive" />
-          <e p="node_modules/react-router-dom" t="IncludeRecursive" />
-          <e p="node_modules/react-scripts" t="IncludeRecursive" />
-          <e p="node_modules/reactstrap" t="IncludeRecursive" />
-          <e p="node_modules/redux" t="IncludeRecursive" />
-          <e p="node_modules/redux-thunk" t="IncludeRecursive" />
-          <e p="node_modules/rxjs" t="IncludeRecursive" />
-          <e p="node_modules/strip-ansi" t="IncludeRecursive" />
-          <e p="node_modules/svgo" t="IncludeRecursive" />
-          <e p="node_modules/symbol-observable" t="IncludeRecursive" />
-          <e p="node_modules/throat" t="IncludeRecursive" />
-          <e p="node_modules/ts-pnp" t="IncludeRecursive" />
-          <e p="node_modules/tslib" t="IncludeRecursive" />
-          <e p="node_modules/tsutils" t="IncludeRecursive" />
-          <e p="node_modules/type-fest" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.dom.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.dom.iterable.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.collection.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.core.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.generator.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.iterable.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.promise.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.proxy.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.reflect.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.symbol.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2016.array.include.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2016.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2016.full.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2017.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2017.full.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2017.intl.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2017.object.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2017.string.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2017.typedarrays.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2018.asyncgenerator.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2018.asynciterable.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2018.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2018.full.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2018.intl.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2018.promise.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2018.regexp.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2019.array.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2019.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2019.full.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2019.object.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2019.string.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2019.symbol.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2020.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2020.full.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2020.string.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es2020.symbol.wellknown.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es5.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.es6.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.esnext.array.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.esnext.asynciterable.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.esnext.bigint.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.esnext.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.esnext.full.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.esnext.intl.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.esnext.symbol.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.scripthost.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.webworker.d.ts" t="IncludeRecursive" />
-          <e p="node_modules/typescript/lib/lib.webworker.importscripts.d.ts" t="IncludeRecursive" />
           <e p="package.json" t="Include" />
           <e p="public" t="Include">
             <e p="favicon.ico" t="Include" />
             <e p="index.html" t="Include" />
+            <e p="logo192.png" t="Include" />
+            <e p="logo512.png" t="Include" />
             <e p="manifest.json" t="Include" />
+            <e p="robots.txt" t="Include" />
           </e>
           <e p="README.md" t="Include" />
           <e p="src" t="Include">
+            <e p="App.css" t="Include" />
             <e p="App.test.tsx" t="Include" />
             <e p="App.tsx" t="Include" />
-            <e p="components" t="Include">
-              <e p="Counter.tsx" t="Include" />
-              <e p="DebugCommands.tsx" t="Include" />
-              <e p="DebugControls" t="Include">
-                <e p="AccountButtons.tsx" t="Include" />
-                <e p="FriendInvitations.tsx" t="Include" />
-                <e p="SessionInvitation.tsx" t="Include" />
-                <e p="SessionPicker.tsx" t="Include" />
-                <e p="TurnActions.tsx" t="Include" />
-              </e>
-              <e p="FetchData.tsx" t="Include" />
-              <e p="Home.tsx" t="Include" />
-              <e p="Layout.tsx" t="Include" />
-              <e p="NavMenu.css" t="Include" />
-              <e p="NavMenu.tsx" t="Include" />
-            </e>
-            <e p="custom.css" t="Include" />
+            <e p="index.css" t="Include" />
             <e p="index.tsx" t="Include" />
-            <e p="Models.d.tsx" t="Include" />
+            <e p="logo.svg" t="Include" />
             <e p="react-app-env.d.ts" t="Include" />
-            <e p="registerServiceWorker.ts" t="Include" />
+            <e p="serviceWorker.ts" t="Include" />
+            <e p="setupTests.ts" t="Include" />
             <e p="store" t="Include">
-              <e p="configureStore.ts" t="Include" />
-              <e p="Counter.ts" t="Include" />
-              <e p="index.ts" t="Include" />
-              <e p="WeatherForecasts.ts" t="Include" />
+              <e p="chat" t="Include">
+                <e p="types.ts" t="Include" />
+              </e>
             </e>
           </e>
           <e p="tsconfig.json" t="Include" />
