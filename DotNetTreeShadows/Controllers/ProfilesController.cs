@@ -98,6 +98,21 @@ namespace dotnet_tree_shadows.Controllers {
 
             return Ok();
         }
+        
+        [HttpGet, Route( "me/friends" )]
+        public async Task<ActionResult<FriendProfile[]>> Get () {
+            
+            ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
+            if ( user == null ) return Status500MissingProfile();
+
+
+            Profile userProfile = await profileService.GetByIdAsync( user.UserId );
+            if ( userProfile == null ) return Status500MissingProfile();
+
+            List<Profile> friendProfiles = await profileService.GetMany( userProfile.Friends );
+
+            return friendProfiles.Select( friend => new FriendProfile(friend) ).ToArray();
+        }
 
     }
 

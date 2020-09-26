@@ -30,8 +30,8 @@ namespace dotnet_tree_shadows.Services {
 
         public void Remove (Profile profileIn) => profiles.DeleteOne( profile => profile.Id == profileIn.Id );
 
-        public List<Profile> GetMany (IEnumerable<string> ids) {
-            return profiles.Find( profile => ids.Contains( profile.Id ) ).ToList();
+        public async Task<List<Profile>> GetMany (IEnumerable<string> ids) {
+            return (await profiles.FindAsync( profile => ids.Contains( profile.Id ) )).ToList();
         }
         
     }

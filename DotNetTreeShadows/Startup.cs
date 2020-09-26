@@ -104,7 +104,7 @@ namespace dotnet_tree_shadows {
             services.AddControllersWithViews().AddNewtonsoftJson();
 
             // In production, the React files will be served from this directory
-            services.AddSpaStaticFiles( configuration => { configuration.RootPath = "ClientApp/build"; } );
+            services.AddSpaStaticFiles( configuration => { configuration.RootPath = "client/build"; } );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
