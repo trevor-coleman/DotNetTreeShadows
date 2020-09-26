@@ -5,6 +5,7 @@ import {ThunkAction} from 'redux-thunk';
 
 import axios, { AxiosResponse } from 'axios';
 import { Profile, KnownUserAction } from '../user/types';
+import { getFriendsAsync } from '../friends/thunks';
 
 export type AppThunk<ReturnType = void> = ThunkAction<
     ReturnType,
@@ -21,8 +22,9 @@ export const fetchUserProfileAsync = () : AppThunk => async (dispatch, getState)
         const profile = await asyncResp.data as Profile;
         console.log(profile);
         dispatch(fetchUserProfile.success(profile))
+        dispatch(getFriendsAsync())
     } catch (e) {
-        dispatch(fetchUserProfile.failure(e));
+        dispatch(fetchUserProfile.failure(e.statusMessage ?? e.message));
     }
 
 

@@ -1,5 +1,11 @@
+export const RESET_FRIEND_REQUEST = 'RESET_FRIEND_REQUEST';
+
 export interface FriendsState {
     friends: FriendProfile[];
+    sendingFriendRequest: boolean;
+    gettingFriends: boolean;
+    sendFriendRequestResultMessage: string | null;
+    sendFriendRequestSucceeded: boolean
 }
 
 export interface FriendProfile {
@@ -26,22 +32,26 @@ export interface GetFriendsFailure {
     type: typeof GET_FRIENDS_FAILURE
 }
 
-export const ADD_FRIEND_REQUEST ='ADD_FRIEND_REQUEST';
-export const ADD_FRIEND_SUCCESS ='ADD_FRIEND_SUCCESS';
-export const ADD_FRIEND_FAILURE ='ADD_FRIEND_FAILURE';
+export const SEND_FRIEND_REQUEST_REQUEST ='SEND_FRIEND_REQUEST_REQUEST';
+export const SEND_FRIEND_REQUEST_SUCCESS ='SEND_FRIEND_REQUEST_SUCCESS';
+export const SEND_FRIEND_REQUEST_FAILURE ='SEND_FRIEND_REQUEST_FAILURE';
 
-export interface AddFriendRequest {
-    type: typeof ADD_FRIEND_REQUEST
+export interface SendFriendRequestRequest {
+    type: typeof SEND_FRIEND_REQUEST_REQUEST
     payload: string
 }
 
-export interface AddFriendSuccess {
-    type: typeof ADD_FRIEND_SUCCESS
+export interface SendFriendRequestSuccess {
+    type: typeof SEND_FRIEND_REQUEST_SUCCESS
 }
 
-export interface AddFriendFailure {
-    type: typeof ADD_FRIEND_FAILURE
+export interface SendFriendRequestFailure {
+    type: typeof SEND_FRIEND_REQUEST_FAILURE
     payload:string;
 }
 
-export type KnownFriendAction = AddFriendSuccess | AddFriendRequest | AddFriendFailure | GetFriendsFailure | GetFriendsRequest | GetFriendsSuccess;
+export interface ResetFriendRequest {
+  type:typeof RESET_FRIEND_REQUEST;
+}
+
+export type KnownFriendAction = SendFriendRequestSuccess | SendFriendRequestRequest | SendFriendRequestFailure | GetFriendsFailure | GetFriendsRequest | GetFriendsSuccess | ResetFriendRequest;

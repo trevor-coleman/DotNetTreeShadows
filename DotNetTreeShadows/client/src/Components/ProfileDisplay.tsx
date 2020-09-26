@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const mapStateToProps = (state: RootState) => {
     return {
         profile: state.user.profile,
+
     };
 };
 
@@ -19,19 +20,19 @@ const mapDispatchToProps = {fetchProfile: () => fetchUserProfileAsync()};
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-interface IReduxTestProps {}
+interface IProfileDisplayProps {}
 
-type ReduxTestProps = IReduxTestProps & PropsFromRedux;
+type ProfileDisplayProps = IProfileDisplayProps & PropsFromRedux;
 
 //COMPONENT
-const ReduxTest: FunctionComponent<ReduxTestProps> = (props: ReduxTestProps) => {
+const ProfileDisplay: FunctionComponent<ProfileDisplayProps> = (props: ProfileDisplayProps) => {
     const classes = useStyles();
     const {profile} = props;
 
     console.log("props", props);
 
-    return <Container className={classes.ReduxTest}>
-        <Typography variant="h1">Redux Test!</Typography>
+    return <div className={classes.ProfileDisplay}>
+        <Typography variant="h5">Redux Test!</Typography>
             <Table className={classes.Table}>
                 <TableBody>
             {profile
@@ -55,14 +56,14 @@ const ReduxTest: FunctionComponent<ReduxTestProps> = (props: ReduxTestProps) => 
                 console.log("fetching", props);
                 props.fetchProfile();
             }}>Button</Button>
-    </Container>;
+    </div>;
 };
 
 const useStyles = makeStyles({
-    ReduxTest: {width: 600},
+    ProfileDisplay: {},
     Bold: {fontWeight: 700},
     Table: {width: 300},
 });
 
-export default connector(ReduxTest);
+export default connector(ProfileDisplay);
 ;

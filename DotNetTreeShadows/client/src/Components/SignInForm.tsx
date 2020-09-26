@@ -67,11 +67,9 @@ const SignInForm: FunctionComponent<SignInFormProps> = (props: SignInFormProps) 
 
 const useStyles = makeStyles({
     SignInForm: {
-        width: 360,
-        margin: 20
     },
     TextInput: {
-        width: 300,
+        width: "100%",
         margin: 5,
     },
 });

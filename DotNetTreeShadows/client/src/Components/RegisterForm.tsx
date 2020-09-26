@@ -94,11 +94,9 @@ const useStyles = makeStyles({
       marginBottom:10
     },
     RegisterForm: {
-        margin:20,
-        width: 360,
     },
     TextInput: {
-        width: 300,
+        width: "100%",
         margin: 5,
     },
 });

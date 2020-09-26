@@ -68,6 +68,7 @@ namespace dotnet_tree_shadows.Controllers {
             ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
             ApplicationUser recipientUser = await userManager.FindByEmailAsync( recipientEmail );
             if ( user == null ) return Status500MissingProfile();
+            if ( recipientUser == null ) return Status404NotFound( "recipient" );
 
 
             Profile sender = await profileService.GetByIdAsync( user.UserId );
