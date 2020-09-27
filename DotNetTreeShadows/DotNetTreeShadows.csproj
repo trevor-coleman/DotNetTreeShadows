@@ -24,6 +24,7 @@
         </PackageReference>
         <PackageReference Include="MongoDB.Driver" Version="2.11.2" />
         <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.2" />
+        <PackageReference Include="XKCDPasswordGen" Version="1.0.3" />
     </ItemGroup>
 
     <ItemGroup>

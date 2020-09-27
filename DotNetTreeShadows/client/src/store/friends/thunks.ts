@@ -23,7 +23,7 @@ export const getFriendsAsync = (): AppThunk => async (dispatch, getState) => {
 export const sendFriendRequestAsync = (email: string): AppThunk => async (dispatch, getState) => {
     dispatch(sendFriendRequest.request(email));
     try {
-        await axios.post('profiles/me/friends', {email},
+        await axios.post('invitations', {email, invitationType:'FriendRequest'},
             {
                 baseURL: "https://localhost:5001/api/",
                 headers: {Authorization: `Bearer ${getState().system.token}`},

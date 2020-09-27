@@ -6,13 +6,22 @@ import { Card, CardContent, Typography } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
+import { createSessionAsync, getSessionAsync } from '../store/sessions/thunks';
+import { getSessionsInfoAsync } from '../store/user/thunks';
 
 //REDUX MAPPING
 const mapStateToProps = (state: RootState) => {
-  return {sessions: state.user.profile?.sessions};
+  return {
+    sessions: state.user.profile?.sessions,
+    loggedIn: state.system.loggedIn,
+  };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  createSession: () => createSessionAsync(),
+  getSession: (id: string) => getSessionAsync(id),
+  getSessionsInfo: () => getSessionsInfoAsync(),
+};
 
 //REDUX PROP TYPING
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -26,19 +35,29 @@ type SessionCreatorProps = ISessionCreatorProps & PropsFromRedux;
 const SessionCreator: FunctionComponent<SessionCreatorProps> = (props: SessionCreatorProps) => {
   const classes = useStyles();
 
-  const {sessions} = props;
+  const {sessions, createSession, getSession, loggedIn} = props;
 
   const [session, setSession] = useState<string>("");
 
-  const changeSession = (sessionId:string) => {
+  const changeSession = (sessionId: string) => {
     setSession(sessionId);
-  }
+    getSession(sessionId);
+  };
 
   return <Card><CardContent><Typography variant={'h5'}>Session</Typography>
-    <Button>Add Session</Button>
-    <Select labelId="session-select" id="session-select" value={session} onChange={(e: React.ChangeEvent<{ name?: string; value: unknown }>)=>changeSession(e.target.value as string)}>
-      {sessions ? sessions.map(sessionId=><MenuItem key={sessionId} value={sessionId}>{sessionId}</MenuItem>):""}
-    </Select>
+    <div> <Button onClick={createSession}>Add Session</Button></div>
+    <div><Select
+      disabled={loggedIn}
+      labelId="session-select"
+      id="session-select"
+      value={session}
+      onChange={(e: React.ChangeEvent<{ name?: string; value: unknown }>) => changeSession(e.target.value as string)}>
+      {sessions
+       ? sessions.map(session => <MenuItem
+          key={session.id}
+          value={session.id}>{session.name}</MenuItem>)
+       : ""}
+    </Select></div>
   </CardContent></Card>;
 };
 

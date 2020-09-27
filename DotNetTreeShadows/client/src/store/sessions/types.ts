@@ -1,7 +1,11 @@
-export type KnownSessionAction = GetNewSessionAction;
+import { HexCoordinates } from '../../models/HexCoordinates';
+
+export type KnownSessionAction = CreateNewSessionAction | GetSessionAction;
 
 export type SessionState = {
-  session: Session
+  session: Session | null;
+  sessionLoading: boolean;
+  sessionLoadingFailureMessage: string | null;
 }
 
 export type Session = {
@@ -18,7 +22,29 @@ export type PlayerBoard = {
   pieces: Map<PieceType, PieceCount>
 };
 
+export interface IHexCoordinates {
+  q: number,
+  r: number,
+  s: number,
+  axialArray: number[],
+  toString: ()=>string,
+}
+
+interface Tile {
+  hexCoordinates: HexCoordinates,
+  pieceType: PieceType | null;
+  treeType: TreeType | null;
+  shadowHeight:0;
+}
+
+interface Board {
+  treeTiles: HexCoordinates[];
+  tiles: {[hex: string]: Tile}
+  sunPosition: SunPosition;
+}
+
 export interface Game {
+  board: Board;
   turnOrder: string[];
   firstPlayer: string;
   playerBoards: Map<string, PlayerBoard>
@@ -53,22 +79,43 @@ export type PieceCount = {
 }
 export type PieceType= "Seed"|"SmallTree"|"MediumTree"|"LargeTree"
 
-export const GET_NEW_SESSION_REQUEST ='GET_NEW_SESSION_REQUEST';
-export const GET_NEW_SESSION_SUCCESS ='GET_NEW_SESSION_SUCCESS';
-export const GET_NEW_SESSION_FAILURE ='GET_NEW_SESSION_FAILURE';
+export const CREATE_SESSION_REQUEST ='CREATE_SESSION_REQUEST';
+export const CREATE_SESSION_SUCCESS ='CREATE_SESSION_SUCCESS';
+export const CREATE_SESSION_FAILURE ='CREATE_SESSION_FAILURE';
 
-export interface GetNewSessionRequest {
-    type: typeof GET_NEW_SESSION_REQUEST
+export interface CreateSessionRequest {
+    type: typeof CREATE_SESSION_REQUEST
 }
 
-export interface GetNewSessionSuccess {
-    type: typeof GET_NEW_SESSION_SUCCESS
+export interface CreateSessionSuccess {
+    type: typeof CREATE_SESSION_SUCCESS
     payload: Session
 }
 
-export interface GetNewSessionFailure {
-    type: typeof GET_NEW_SESSION_FAILURE
+export interface CreateSessionFailure {
+    type: typeof CREATE_SESSION_FAILURE
     payload: string
 }
 
-type GetNewSessionAction = GetNewSessionRequest | GetNewSessionSuccess | GetNewSessionFailure;
+type CreateNewSessionAction = CreateSessionRequest | CreateSessionSuccess | CreateSessionFailure;
+
+export const GET_SESSION_REQUEST ='GET_SESSION_REQUEST';
+export const GET_SESSION_SUCCESS ='GET_SESSION_SUCCESS';
+export const GET_SESSION_FAILURE ='GET_SESSION_FAILURE';
+
+export interface GetSessionRequest {
+    type: typeof GET_SESSION_REQUEST
+    payload: string;
+}
+
+export interface GetSessionSuccess {
+    type: typeof GET_SESSION_SUCCESS
+    payload: Session;
+}
+
+export interface GetSessionFailure {
+    type: typeof GET_SESSION_FAILURE
+    payload: string
+}
+
+type GetSessionAction = GetSessionRequest | GetSessionSuccess | GetSessionFailure;

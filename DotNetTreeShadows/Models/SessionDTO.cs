@@ -2,12 +2,8 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace dotnet_tree_shadows.Models {
-    public class SessionDTO : NewSessionDTO {
-        [BsonRepresentation( BsonType.ObjectId )]
-        public string ID { get; set; }
-    }
-    
-    public class NewSessionDTO {
+        
+    public class SessionDTO {
         [BsonRepresentation( BsonType.ObjectId )]
         public string Host { get; set; }
 

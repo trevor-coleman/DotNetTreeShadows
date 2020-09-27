@@ -10,7 +10,7 @@ namespace dotnet_tree_shadows.Models {
         public int Round { get; set; } = 0;
         public SunPosition SunPosition { get; set; } = SunPosition.NorthEast;
         public int[] ScoreTokenStacks { get; set; } = { 8, 8, 5, 3 };
-        public BoardDTO BoardDTO { get; set; } = new BoardDTO();
+        public BoardDTO Board { get; set; } = new BoardDTO();
         public bool LongGame { get; set; } = false;
         public bool PreventActionsInShadow { get; set; } = false;
         public HexCoordinates[] TilesActiveThisTurn { get; set; } = { };

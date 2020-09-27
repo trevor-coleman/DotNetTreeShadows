@@ -30,16 +30,6 @@ namespace dotnet_tree_shadows.Controllers {
             this.profileService = profileService;
             this.invitationService = invitationService;
         }
-
-        [HttpGet]
-        public async Task<List<SessionService.SessionSummary>> Get () {
-            ApplicationUser currentUser = await userManager.GetUserAsync( HttpContext.User );
-
-            string userId = currentUser.Id.ToString();
-
-            return await sessionService.GetSessionSummariesForHost( userId );
-        }
-        
         
         [HttpPost]
         [Route("{sessionId:length(24)}/players")]
@@ -107,8 +97,8 @@ namespace dotnet_tree_shadows.Controllers {
             return session;
         }
 
-        [HttpGet, Route( "new" )]
-        public async Task<ActionResult<Session>> Create () {
+        [HttpPost]
+        public async Task<ActionResult<SessionDTO>> Create () {
             ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
             if (user?.UserId == null ) return StatusCode( StatusCodes.Status403Forbidden );
             
@@ -124,9 +114,9 @@ namespace dotnet_tree_shadows.Controllers {
 
             Session session = new Session( userProfile);
             Session createdSession = await sessionService.Create( session );
-            userProfile.AddSession( createdSession.Id );
-            await profileService.Update( userProfile.Id, userProfile );
-            return CreatedAtRoute( "GetSession", new { id = session.Id }, session );
+            userProfile.AddSession( createdSession );
+            await profileService.Update( user.UserId, userProfile );
+            return CreatedAtRoute( "GetSession", new { id = createdSession.Id }, createdSession.DTO() );
         }
 
         // [HttpPut("id:length(24")]

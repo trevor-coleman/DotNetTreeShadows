@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
+import Typography from '@material-ui/core/Typography';
 
 //REDUX MAPPING
 const mapStateToProps = (state: RootState) => {
@@ -36,6 +37,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = (props: SignInFormProps) 
 
     return <Card className={classes.SignInForm}>
         <CardContent>
+          <Typography variant="h5">Sign In</Typography>
         <form
             noValidate
             autoComplete="off">

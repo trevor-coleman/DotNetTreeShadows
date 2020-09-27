@@ -17,6 +17,7 @@ import {
   GET_RECEIVED_INVITATIONS_SUCCESS,
   ACCEPT_INVITATION_FAILURE, GetReceivedInvitationsSuccess,
 } from './types';
+import { CreateSessionSuccess } from '../sessions/types';
 
 const initialInvitationsState:InvitationsState = {
   receivedInvitations: [],

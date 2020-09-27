@@ -1,13 +1,19 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using dotnet_tree_shadows.Models.GameActions;
+using dotnet_tree_shadows.Services;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using XKCDPasswordGen;
 
 namespace dotnet_tree_shadows.Models {
     public class Session {
+        public SessionSummary Summary {
+            get => new SessionSummary( Id, Name );
+        }
 
         [BsonId]
         [BsonRepresentation( BsonType.ObjectId )]
@@ -25,7 +31,7 @@ namespace dotnet_tree_shadows.Models {
             Id = "";
             Players = new List<string>();
             Game = new Game();
-            Name = "";
+            Name = RandomName();
             Host = "";
             Invitations = new List<string>();
         }
@@ -34,9 +40,14 @@ namespace dotnet_tree_shadows.Models {
             Id = "";
             Players = new List<string>();
             Game = new Game();
-            Name = $"New Session - {DateTime.Now.ToString()}";
+            Name = RandomName();
             Host = host.Id;
             Invitations = new List<string>();
+        }
+
+        public static string RandomName () {
+            TextInfo myTI = new CultureInfo("en-US",false).TextInfo;
+            return myTI.ToTitleCase($"{XkcdPasswordGen.Generate(3, " ")}");
         }
 
         public void AddPlayer (Profile player) {
@@ -102,6 +113,31 @@ namespace dotnet_tree_shadows.Models {
 
             failureReason = "";
             return true;
+        }
+
+        public SessionDTO DTO () => new SessionDTO {
+                                                        Host = Host,
+                                                        Players = Players.ToArray(),
+                                                        Game = Game.DTO(),
+                                                        Name = Name,
+                                                        Invitations = Invitations.ToArray(),
+                                                    };
+        
+        public class SessionSummary {
+            [BsonRepresentation(BsonType.ObjectId)]
+            public string Id { get; set; }
+            public string Name { get; set; }
+
+            public SessionSummary () {
+                Id = "";
+                Name = "";
+            }
+            
+            public SessionSummary (string id, string name) {
+                Id = id;
+                Name = name;
+            }
+
         }
     }
 }

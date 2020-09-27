@@ -4,41 +4,31 @@ using System.Linq;
 using dotnet_tree_shadows.Authentication;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using static dotnet_tree_shadows.Models.Session;
 
 #nullable enable
 namespace dotnet_tree_shadows.Models {
     public class Profile {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id;
-        public string Name { get; set; }
-        public List<string> Sessions { get; set; }
-        public List<string> Friends { get; set; }
+        [BsonRepresentation( BsonType.ObjectId )]
+        public string Id { get; set; } = "";
+
+        public string Name { get; set; } = "";
+        public List<SessionSummary> Sessions { get; set; } = new List<SessionSummary>();
+        
+        public List<string> Friends { get; set; } = new List<string>();
         [EmailAddress]
         public string Email { get; set; }
 
-        public List<string> ReceivedInvitations;
-        public List<string> SentInvitations;
-        
+        public List<string> ReceivedInvitations { get; set; }= new List<string>();
+        public List<string> SentInvitations  { get; set; } = new List<string>();
 
-        public Profile () {
-            Name = "";
-            Id = "";
-            Email = "";
-            Sessions = new List<string>();
-            Friends = new List<string>();
-            ReceivedInvitations = new List<string>();
-            SentInvitations = new List<string>();
-        }
-        
+        public Profile () { }
+
         public Profile (ApplicationUser user) {
             Name = user.UserName;
             Id = user.Id.ToString();
             Email = user.Email;
-            Sessions = new List<string>();
-            Friends = new List<string>();
-            ReceivedInvitations = new List<string>();
-            SentInvitations = new List<string>();
         }
 
         public bool HasFriend (string id) => Friends.Contains( id );
@@ -66,11 +56,23 @@ namespace dotnet_tree_shadows.Models {
             SentInvitations.Add(id );
         }
 
-        public void AddSession (string id) {
-            if ( Sessions.All( s => s != id ) ) Sessions.Add( id );
+        public void AddSession (Session session) {
+            if ( Sessions.All( s => s.Id != session.Id ) ) Sessions.Add( session.Summary);
         }
 
         public bool HasSentInvitation (string id) => SentInvitations.Any( i => i == id );
         public bool HasReceivedInvitation (string id) => ReceivedInvitations.Any( i => i == id );
+
+        public ProfileDTO DTO () =>
+            new ProfileDTO {
+                               Name = Name,
+                               Sessions = Sessions.ToArray(),
+                               Friends = Friends.ToArray(),
+                               Email = Email,
+                               ReceivedInvitations = ReceivedInvitations.ToArray(),
+                               SentInvitations = SentInvitations.ToArray()
+                           };
     }
 }
+
+

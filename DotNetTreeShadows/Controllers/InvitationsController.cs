@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using dotnet_tree_shadows.Authentication;
 using dotnet_tree_shadows.Models;
@@ -36,18 +38,21 @@ namespace dotnet_tree_shadows.Controllers {
             this.invitationService = invitationService;
         }
 
-        public class InvitationResponse: Invitation {
-            public InvitationResponse (Invitation invitation, string senderName, string recipientName) : base(invitation) {
-                SenderName = senderName;
-                RecipientName = recipientName;
-            }
-            public string SenderName { get; set; }
-            public string RecipientName { get; set; }
-            
-        }
         
+        
+        [HttpPost]
+        public async Task<ActionResult> Invite (NewInvitationDTO invitationInfo) {
+            switch ( invitationInfo.InvitationType ) {
+                case InvitationType.SessionInvite:
+                    return await SendSessionInvite( invitationInfo );
+                case InvitationType.FriendRequest:
+                    return await SendFriendRequest( invitationInfo );
+                default: throw new ArgumentOutOfRangeException();
+            }
+        }
+
         [HttpGet, Route( "{id:length(24)}" )]
-        public async Task<ActionResult<InvitationResponse>> Get (string id) {
+        public async Task<ActionResult<InvitationResponseDTO>> Get (string id) {
             ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
             Invitation invitation = await invitationService.GetById( id );
 
@@ -56,47 +61,53 @@ namespace dotnet_tree_shadows.Controllers {
 
             Profile sender = await profileService.GetByIdAsync( invitation.SenderId );
             Profile recipient = await profileService.GetByIdAsync( invitation.RecipientId );
-            
-            InvitationResponse invitationResponse = new InvitationResponse( invitation, sender.Name, recipient.Name );
-            
-            return invitationResponse;
+
+            InvitationResponseDTO invitationResponseDto = new InvitationResponseDTO( invitation );
+
+            return invitationResponseDto;
         }
 
         public class InvitationUpdate {
-            [JsonConverter(typeof(StringEnumConverter))]
-            [BsonRepresentation(BsonType.String)]
-            public InvitationStatus InvitationStatus {
-                    get;
-                    set;
-                }
+            [JsonConverter( typeof( StringEnumConverter ) )]
+            [BsonRepresentation( BsonType.String )]
+            public InvitationStatus InvitationStatus { get; set; }
         }
-        
+
         [HttpPost]
         [Route( "{id:length(24)}/status" )]
         public async Task<ActionResult> SetStatus (
                 [FromRoute] string id,
                 [FromBody] InvitationUpdate invitationUpdate
             ) {
-
             InvitationStatus invitationStatus = invitationUpdate.InvitationStatus;
             if ( invitationStatus == null ) return Status400MissingRequiredField( "invitationStatus" );
 
             ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
             Invitation invitation = await invitationService.GetById( id );
 
-            
-
             if ( invitation == null ) return Status404NotFound( "Invitation" );
             if ( !invitation.Involves( user.UserId ) ) return Status403Forbidden();
 
             return invitation.InvitationType switch {
-                InvitationType.SessionInvite => await UpdateSessionInviteStatus( user.UserId, invitation, invitationStatus ),
-                InvitationType.FriendRequest => await UpdateFriendRequestStatus( user.UserId, invitation, invitationStatus ),
+                InvitationType.SessionInvite => await UpdateSessionInviteStatus(
+                                                        user.UserId,
+                                                        invitation,
+                                                        invitationStatus
+                                                    ),
+                InvitationType.FriendRequest => await UpdateFriendRequestStatus(
+                                                        user.UserId,
+                                                        invitation,
+                                                        invitationStatus
+                                                    ),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
 
-        private async Task<ActionResult> UpdateSessionInviteStatus (string userId, Invitation invitation, InvitationStatus status) {
+        private async Task<ActionResult> UpdateSessionInviteStatus (
+                string userId,
+                Invitation invitation,
+                InvitationStatus status
+            ) {
             Task<Profile>? senderTask = profileService.GetByIdAsync( invitation.SenderId );
             Task<Profile>? recipientTask = profileService.GetByIdAsync( invitation.RecipientId );
             Task<Session>? sessionTask = sessionService.Get( invitation.ResourceId );
@@ -116,19 +127,21 @@ namespace dotnet_tree_shadows.Controllers {
                                                  ? await DeclineSessionInvite( invitation, recipient )
                                                  : Status403Forbidden(),
                 InvitationStatus.Cancelled => userId == sender.Id
-                                                  ? await CancelSessionInvite( invitation, sender, session )
+                                                  ? await CancelSessionInvite( invitation, sender, recipient, session )
                                                   : Status403Forbidden(),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
 
-        
-
-        private async Task<ActionResult> UpdateFriendRequestStatus (string userId, Invitation invitation, InvitationStatus status) {
+        private async Task<ActionResult> UpdateFriendRequestStatus (
+                string userId,
+                Invitation invitation,
+                InvitationStatus status
+            ) {
             Task<Profile>? senderTask = profileService.GetByIdAsync( invitation.SenderId );
             Task<Profile>? recipientTask = profileService.GetByIdAsync( invitation.RecipientId );
 
-            await Task.WhenAll( senderTask, recipientTask);
+            await Task.WhenAll( senderTask, recipientTask );
 
             Profile? sender = await senderTask;
             Profile? recipient = await recipientTask;
@@ -136,46 +149,39 @@ namespace dotnet_tree_shadows.Controllers {
             return status switch {
                 InvitationStatus.Pending => Status403Forbidden(),
                 InvitationStatus.Accepted => (userId == recipient.Id) && invitation.Status == InvitationStatus.Pending
-                                                 ? await AcceptFriendRequest( invitation, sender, recipient)
+                                                 ? await AcceptFriendRequest( invitation, sender, recipient )
                                                  : Status403Forbidden(),
-                InvitationStatus.Declined => userId == recipient.Id 
+                InvitationStatus.Declined => userId == recipient.Id
                                                  ? await DeclineFriendRequest( invitation, recipient )
                                                  : Status403Forbidden(),
                 InvitationStatus.Cancelled => userId == sender.Id
-                                                  ? await CancelFriendRequest( invitation, sender )
+                                                  ? await CancelFriendRequest( invitation, sender, recipient )
                                                   : Status403Forbidden(),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
 
-
-        private async Task<ActionResult> DeclineFriendRequest (
-                Invitation invitation,
-                Profile recipient
-            ) {
-            
+        private async Task<ActionResult> DeclineFriendRequest (Invitation invitation, Profile recipient) {
             recipient.RemoveInvitation( invitation.Id );
 
-            Task updateInvitation = invitationService.Update( invitation.Id, Invitation.Declined(invitation) );
+            Task updateInvitation = invitationService.Update( invitation.Id, Invitation.Declined( invitation ) );
             Task updateRecipient = profileService.Update( recipient.Id, recipient );
 
             await Task.WhenAll( updateInvitation, updateRecipient );
 
             return Ok();
         }
-        
-        private async Task<ActionResult> CancelFriendRequest (
-                Invitation invitation,
-                Profile sender
-            ) {
-            
+
+        private async Task<ActionResult> CancelFriendRequest (Invitation invitation, Profile sender, Profile recipient) {
             sender.RemoveInvitation( invitation.Id );
+            recipient.RemoveInvitation( invitation.Id );
 
-            Task updateInvitation = invitationService.Update( invitation.Id, Invitation.Cancelled(invitation) );
+            Task updateInvitation = invitationService.Update( invitation.Id, Invitation.Cancelled( invitation ) );
             Task updateSender = profileService.Update( sender.Id, sender );
+            Task updateRecipient = profileService.Update( recipient.Id, recipient );
             
 
-            await Task.WhenAll( updateInvitation, updateSender );
+            await Task.WhenAll( updateInvitation, updateSender, updateRecipient );
 
             return Ok();
         }
@@ -185,50 +191,40 @@ namespace dotnet_tree_shadows.Controllers {
                 Profile sender,
                 Profile recipient
             ) {
-
             recipient.AddFriend( sender.Id );
             sender.AddFriend( recipient.Id );
-            
+
             recipient.RemoveInvitation( invitation.Id );
             sender.RemoveInvitation( invitation.Id );
-            
+
             await profileService.Update( recipient.Id, recipient );
             await profileService.Update( sender.Id, sender );
-            await invitationService.Update( invitation.Id, Invitation.Accepted(invitation) );
+            await invitationService.Update( invitation.Id, Invitation.Accepted( invitation ) );
 
             return Ok();
         }
-        
 
-        private async Task<ActionResult> DeclineSessionInvite (
-                Invitation invitation,
-                Profile recipient
-            ) {
-            
+        private async Task<ActionResult> DeclineSessionInvite (Invitation invitation, Profile recipient) {
             recipient.RemoveInvitation( invitation.Id );
 
-            Task updateInvitation = invitationService.Update( invitation.Id, Invitation.Declined(invitation) );
+            Task updateInvitation = invitationService.Update( invitation.Id, Invitation.Declined( invitation ) );
             Task updateRecipient = profileService.Update( recipient.Id, recipient );
 
             await Task.WhenAll( updateInvitation, updateRecipient );
 
             return Ok();
         }
-        
-        private async Task<ActionResult> CancelSessionInvite (
-                Invitation invitation,
-                Profile sender,
-                Session session
-            ) {
-            
-            sender.RemoveInvitation( invitation.Id );
-            session.RemoveInvitation( invitation.Id );
-            
-            Task updateInvitation = invitationService.Update( invitation.Id, Invitation.Cancelled(invitation) );
-            Task updateSender = profileService.Update( sender.Id, sender );
-            
 
-            await Task.WhenAll( updateInvitation, updateSender );
+        private async Task<ActionResult> CancelSessionInvite (Invitation invitation, Profile sender, Profile recipient, Session session) {
+            sender.RemoveInvitation( invitation.Id );
+            recipient.RemoveInvitation( invitation.Id );
+            session.RemoveInvitation( invitation.Id );
+
+            Task updateInvitation = invitationService.Update( invitation.Id, Invitation.Cancelled( invitation ) );
+            Task updateSender = profileService.Update( sender.Id, sender );
+            Task updateRecipient = profileService.Update( recipient.Id, recipient );
+
+            await Task.WhenAll( updateInvitation, updateSender, updateRecipient );
 
             return Ok();
         }
@@ -240,19 +236,108 @@ namespace dotnet_tree_shadows.Controllers {
                 Session session
             ) {
             session.AddPlayer( recipient );
-            recipient.AddSession( session.Id );
+            recipient.AddSession( session );
 
             session.RemoveInvitation( invitation.Id );
             recipient.RemoveInvitation( invitation.Id );
             sender.RemoveInvitation( invitation.Id );
 
             await sessionService.Update( session.Id, session );
-            await  profileService.Update( recipient.Id, recipient );
-            await  profileService.Update( sender.Id, sender );
+            await profileService.Update( recipient.Id, recipient );
+            await profileService.Update( sender.Id, sender );
 
             return Ok();
         }
 
+        
+
+        public async Task<ActionResult> SendSessionInvite (NewInvitationDTO invitationInfo) {
+            string recipientId = invitationInfo.RecipientId;
+            string sessionId = invitationInfo.SessionId;
+            if ( sessionId == null ) return Status400MissingRequiredField( "sessionId" );
+            Task<Session>? sessionTask =  sessionService.Get( invitationInfo.SessionId );
+            Task<ApplicationUser>? userTask =  userManager.GetUserAsync( HttpContext.User );
+            
+            Session session = await sessionTask;
+            if ( session == null ) return Status404NotFound( "Session" );
+
+            ApplicationUser user = await userTask;
+            if ( session.Host != user.UserId ) return Status403Forbidden();
+            if ( user.UserId == recipientId ) return Status400Invalid( "recipientID" );
+
+            Task<Profile> senderTask = profileService.GetByIdAsync( user.UserId );
+            Task<Profile> recipientTask = profileService.GetByIdAsync( recipientId );
+
+            await Task.WhenAll( senderTask, recipientTask );
+
+            Profile sender = await senderTask;
+            Profile recipient = await recipientTask;
+            
+            if ( recipient == null ) return Status404NotFound( "Recipient" );
+            if ( !recipient.HasFriend( sender.Id ) ) return Status403Forbidden();
+            if ( session.HasInvited( recipient.Id ) ) return Status409Duplicate( "Invitation - Session" );
+
+            Invitation sessionInvitation = Invitation.SessionInvitation( sender, recipient, session );
+
+            List<Invitation> recipientInvitations =
+                await invitationService.GetMany( recipient.ReceivedInvitations );
+
+            if ( recipientInvitations.Any( sessionInvitation.IsDuplicate ) ) return Status409Duplicate( "Invitation - Recipient" );
+
+            Invitation createdInvitation = await invitationService.CreateAsync( sessionInvitation );
+            
+            sender.AddSentInvitation( createdInvitation.Id );
+            Task updateSender = profileService.Update( sender.Id, sender );
+            
+            recipient.AddReceivedInvitation( createdInvitation.Id );
+            Task updateRecipient = profileService.Update( recipientId, recipient );
+            
+            session.AddInvitation( createdInvitation.Id );
+            Task updateSession = sessionService.Update( session.Id, session );
+            
+
+            await Task.WhenAll( updateSession, updateSender, updateRecipient );
+
+            return Ok();
+            
+        }
+
+        public async Task<ActionResult>  SendFriendRequest (NewInvitationDTO invitationInfo) {
+            string recipientEmail = invitationInfo.Email;
+            if ( recipientEmail == null ) return Status400MissingRequiredField( "email" );
+
+            ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
+            ApplicationUser recipientUser = await userManager.FindByEmailAsync( recipientEmail );
+            if ( user == null ) return Status500MissingProfile();
+            if ( recipientUser == null ) return Status404NotFound( "recipient" );
+
+            Profile sender = await profileService.GetByIdAsync( user.UserId );
+            if ( sender == null ) return Status500MissingProfile();
+
+            if ( sender.HasFriend( recipientUser.UserId ) ) {
+                return Status409Duplicate( "Friend" );
+            }
+
+            Profile recipient = await profileService.GetByIdAsync( recipientUser.UserId );
+            if ( recipient == null ) return Status404NotFound( "Recipient" );
+            if ( recipient.Id == sender.Id ) return Status400Invalid( "Recipient" );
+
+            Invitation friendRequest = Invitation.FriendRequest( sender, recipient );
+
+            List<Invitation>? existingInvitations = await invitationService.GetMany( recipient.ReceivedInvitations );
+
+            if ( existingInvitations.Any( friendRequest.IsDuplicate ) ) return Status409Duplicate( "Invitation" );
+
+            Invitation createdInvitation = await invitationService.CreateAsync( friendRequest );
+            recipient.AddReceivedInvitation( friendRequest.Id );
+            sender.AddSentInvitation( friendRequest.Id );
+            Task updateRecipientTask = profileService.Update( recipient.Id, recipient );
+            Task updateSenderTask = profileService.Update( sender.Id, sender );
+
+            await Task.WhenAll( updateRecipientTask, updateSenderTask );
+
+            return Ok();
+        }
 
     }
 }

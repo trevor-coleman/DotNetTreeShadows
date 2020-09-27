@@ -1,18 +1,15 @@
 import React from 'react';
 import './App.css';
 
-import ReduxTest from './Components/ProfileDisplay';
-import SignInForm from './Components/SignInForm';
-import RegisterForm from './Components/RegisterForm';
-import { Container, Grid } from '@material-ui/core';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import AddFriendForm from './Components/AddFriendForm';
-import DebugTest from './Components/DebugTest';
+import DebugTest from './components/DebugTest';
+import Layout from './components/Layout';
+
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import SignedOut from './routes/auth/SignedOut';
 
 function App() {
-  return <DebugTest />;
+  return (
+    <Layout><DebugTest/></Layout>);
 }
-
-
 
 export default App;

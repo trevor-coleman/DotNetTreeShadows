@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Grid } from '@material-ui/core';
+import { Container, Grid, Box } from '@material-ui/core';
 import SignInForm from './SignInForm';
 import RegisterForm from './RegisterForm';
 import AddFriendForm from './AddFriendForm';
@@ -7,13 +7,18 @@ import ReduxTest from './ProfileDisplay';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import InvitationList from './InvitationList';
 import SessionCreator from './SessionCreator';
+import DebugToolbar from './DebugToolbar';
 
 const DebugTest = () => {
 
   const styles = useStyles();
 
-  return <div>
-    <Container className={styles.App}>
+  return <Container>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+      <DebugToolbar/>
+        </Grid>
+      </Grid>
       <Grid
         container
         spacing={3}>
@@ -42,18 +47,12 @@ const DebugTest = () => {
         </Grid>
 
       </Grid>
-
-    </Container>
-  </div>;
+  </Container>;
 
 };
 
 const useStyles = makeStyles({
-  App: {
-    backgroundColor: '#444',
-    padding: 20,
-    flexGrow: 1,
-  },
+
 });
 
 export default DebugTest;

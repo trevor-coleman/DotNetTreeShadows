@@ -28,7 +28,7 @@ export function systemReducer(state=initialState, action:KnownSystemAction):Syst
             return {...state, authInProgress: false}
         case SIGN_IN_USER_SUCCESS:
             const payload = action.payload as SignInResponse;
-            return {...state, token: payload.token, tokenExpiration: payload.expiration, authInProgress:false};
+            return {...state, token: payload.token, tokenExpiration: payload.expiration, authInProgress:false, loggedIn: true};
         case SIGN_IN_USER_REQUEST:
             return {...state, authInProgress: true}
         case SIGN_IN_USER_FAILURE:

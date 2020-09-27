@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using static dotnet_tree_shadows.Models.Session;
 
 namespace dotnet_tree_shadows.Controllers {
     [Route( "api/[controller]" ), ApiController,
@@ -45,58 +46,18 @@ namespace dotnet_tree_shadows.Controllers {
         }
 
         [HttpGet, Route( "me" )]
-        public async Task<ActionResult<Profile>> GetMe () {
+        public async Task<ActionResult<ProfileDTO>> GetMe () {
             ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
             if ( user == null ) return NotFound();
-            return await profileService.GetByIdAsync( user.UserId );
+            Profile userProfile = await profileService.GetByIdAsync( user.UserId );
+            return userProfile.DTO();
         }
 
         public class FriendEmail {
             [EmailAddress]
             public string Email { get; set; }
         }
-
-        [HttpPost, Route( "me/friends" )]
-        public async Task<ActionResult> InviteFriend (FriendEmail friendEmail) {
-
-            string recipientEmail = friendEmail.Email;
-            
-            if ( recipientEmail == null ) return Status400MissingRequiredField( "email" );
-            
-            ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
-            ApplicationUser recipientUser = await userManager.FindByEmailAsync( recipientEmail );
-            if ( user == null ) return Status500MissingProfile();
-            if ( recipientUser == null ) return Status404NotFound( "recipient" );
-
-
-            Profile sender = await profileService.GetByIdAsync( user.UserId );
-            if ( sender == null ) return Status500MissingProfile();
-
-            if ( sender.HasFriend( recipientUser.UserId ) ) {
-                return Status409Duplicate( "Friend" );
-            }
-
-            Profile recipient = await profileService.GetByIdAsync( recipientUser.UserId );
-            if ( recipient == null ) return Status404NotFound( "Recipient" );
-            if ( recipient.Id == sender.Id ) return Status400Invalid( "Recipient" );
-
-            Invitation friendRequest = Invitation.FriendRequest( sender, recipient );
-
-            List<Invitation>? existingInvitations =
-                await invitationService.GetMany( recipient.ReceivedInvitations );
-
-            if ( existingInvitations.Any( friendRequest.IsDuplicate ) ) return Status409Duplicate( "Invitation" );
-
-            Invitation createdInvitation = await invitationService.CreateAsync( friendRequest );
-            recipient.AddReceivedInvitation( createdInvitation.Id );
-            sender.AddSentInvitation( createdInvitation.Id );
-            Task updateRecipientTask = profileService.Update( recipient.Id, recipient );
-            Task updateSenderTask = profileService.Update( sender.Id, sender );
-
-            await Task.WhenAll( updateRecipientTask, updateSenderTask );
-
-            return Ok();
-        }
+        
         
         [HttpGet, Route( "me/friends" )]
         public async Task<ActionResult<FriendProfile[]>> Get () {
@@ -129,7 +90,7 @@ namespace dotnet_tree_shadows.Controllers {
         }
         
         [HttpGet, Route( "me/invitations/received" )]
-        public async Task<ActionResult<Invitation[]>> GetReceivedInvitations () {
+        public async Task<ActionResult<InvitationResponseDTO[]>> GetReceivedInvitations () {
             
             ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
             if ( user == null ) return Status500MissingProfile();
@@ -140,7 +101,20 @@ namespace dotnet_tree_shadows.Controllers {
 
             List<Invitation> receivedInvitations = await invitationService.GetMany( userProfile.ReceivedInvitations);
 
-            return receivedInvitations.ToArray();
+            return receivedInvitations.Select(invitation=>new InvitationResponseDTO( invitation )).ToArray();
+        }
+        
+        [HttpGet, Route( "me/sessions" )]
+        public async Task<ActionResult<SessionSummary[]>> GetSessions () {
+            
+            ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
+            if ( user == null ) return Status500MissingProfile();
+
+
+            Profile userProfile = await profileService.GetByIdAsync( user.UserId );
+            if ( userProfile == null ) return Status500MissingProfile();
+
+            return userProfile.Sessions.ToArray();
         }
 
     }

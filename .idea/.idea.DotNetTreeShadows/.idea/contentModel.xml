@@ -45,6 +45,7 @@
             <e p="babel__template" t="IncludeRecursive" />
             <e p="babel__traverse" t="IncludeRecursive" />
             <e p="events" t="IncludeRecursive" />
+            <e p="history" t="IncludeRecursive" />
             <e p="hoist-non-react-statics" t="IncludeRecursive" />
             <e p="istanbul-lib-coverage" t="IncludeRecursive" />
             <e p="istanbul-lib-report" t="IncludeRecursive" />
@@ -55,6 +56,8 @@
             <e p="react" t="IncludeRecursive" />
             <e p="react-dom" t="IncludeRecursive" />
             <e p="react-redux" t="IncludeRecursive" />
+            <e p="react-router" t="IncludeRecursive" />
+            <e p="react-router-dom" t="IncludeRecursive" />
             <e p="testing-library__dom" t="IncludeRecursive" />
             <e p="webpack-env" t="IncludeRecursive" />
             <e p="yargs-parser" t="IncludeRecursive" />
@@ -131,6 +134,7 @@
           <e p="node_modules/react" t="IncludeRecursive" />
           <e p="node_modules/react-dom" t="IncludeRecursive" />
           <e p="node_modules/react-redux" t="IncludeRecursive" />
+          <e p="node_modules/react-router-dom" t="IncludeRecursive" />
           <e p="node_modules/react-scripts" t="IncludeRecursive" />
           <e p="node_modules/redux" t="IncludeRecursive" />
           <e p="node_modules/redux-devtools" t="IncludeRecursive" />
@@ -218,7 +222,9 @@
             <e p="components" t="Include">
               <e p="AddFriendForm.tsx" t="Include" />
               <e p="DebugTest.tsx" t="Include" />
+              <e p="DebugToolbar.tsx" t="Include" />
               <e p="InvitationList.tsx" t="Include" />
+              <e p="Layout.tsx" t="Include" />
               <e p="ProfileDisplay.tsx" t="Include" />
               <e p="RegisterForm.tsx" t="Include" />
               <e p="SessionCreator.tsx" t="Include" />
@@ -227,6 +233,9 @@
             <e p="index.css" t="Include" />
             <e p="index.tsx" t="Include" />
             <e p="logo.svg" t="Include" />
+            <e p="Models" t="Include">
+              <e p="HexCoordinates.ts" t="Include" />
+            </e>
             <e p="react-app-env.d.ts" t="Include" />
             <e p="serviceWorker.ts" t="Include" />
             <e p="setupTests.ts" t="Include" />
@@ -297,12 +306,14 @@
           <e p="HexCoordinates.cs" t="Include" />
           <e p="IGameData.cs" t="Include" />
           <e p="Invitation.cs" t="Include" />
+          <e p="NewInvitationDTO.cs" t="Include" />
           <e p="ObjectIdModel.cs" t="Include" />
           <e p="PieceCounter.cs" t="Include" />
           <e p="PieceType.cs" t="Include" />
           <e p="PlayerBoard.cs" t="Include" />
           <e p="PlayerBoardDTO.cs" t="Include" />
           <e p="Profile.cs" t="Include" />
+          <e p="ProfileDTO.cs" t="Include" />
           <e p="Scoring.cs" t="Include" />
           <e p="Session.cs" t="Include" />
           <e p="SessionDTO.cs" t="Include" />
