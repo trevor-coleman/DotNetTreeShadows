@@ -13,34 +13,32 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e985c02d-a6ef-47e8-9d11-5b54b3e50492" name="Default Changelist" comment="Fresh install of react">
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/Components/ReduxTest.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/Components/RegisterForm.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/Components/SignInForm.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/friends/actions.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/friends/thunks.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/friends/types.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/middleware/logger.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/middleware/thunks.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/rootReducer.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/system/actions.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/system/reducers.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/system/thunks.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/system/types.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/user/actions.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/user/reducers.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/user/types.ts" afterDir="false" />
+    <list default="true" id="e985c02d-a6ef-47e8-9d11-5b54b3e50492" name="Default Changelist" comment="Add Redux. Create account, user, friends, system stores. Add GET profiles/me/friends route.">
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/Components/DebugTest.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/Components/InvitationList.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/Components/SessionCreator.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/invitations/actions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/invitations/reducers.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/invitations/thunks.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/invitations/types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/sessions/actions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/sessions/reducers.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/sessions/thunks.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/sessions/types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/user/thunks.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DotNetTreeShadows/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DotNetTreeShadows/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DotNetTreeShadows/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DotNetTreeShadows/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Controllers/ProfilesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Controllers/ProfilesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/DotNetTreeShadows.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/DotNetTreeShadows.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Services/ProfileService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Services/ProfileService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Startup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Controllers/SessionsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Controllers/SessionsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/Invitation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/Invitation.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/Session.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/Session.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/client/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/client/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/client/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/client/src/Components/ProfileDisplay.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/Components/ProfileDisplay.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/friends/thunks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/friends/thunks.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/middleware/thunks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/middleware/thunks.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/rootReducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/rootReducer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/system/thunks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/system/thunks.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/client/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -93,9 +91,6 @@
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameAction.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/ClientApp/src/components/DebugCommands.tsx" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/ObjectIdModel.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Controllers/SessionsController.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Invitation.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Session.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/appsettings.json" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Controllers/InvitationsController.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Profile.cs" />
@@ -129,7 +124,10 @@
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Startup.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/DotNetTreeShadows.csproj" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Services/ProfileService.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Invitation.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Controllers/SessionsController.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Controllers/ProfilesController.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Session.cs" />
       </list>
     </option>
   </component>
@@ -229,7 +227,8 @@
       <workItem from="1600877331295" duration="10442000" />
       <workItem from="1600918918670" duration="29024000" />
       <workItem from="1601051891001" duration="10316000" />
-      <workItem from="1601068953858" duration="822000" />
+      <workItem from="1601068953858" duration="2018000" />
+      <workItem from="1601165236172" duration="3249000" />
     </task>
     <task id="LOCAL-00001" summary="debug commands work">
       <created>1600982415637</created>
@@ -245,7 +244,14 @@
       <option name="project" value="LOCAL" />
       <updated>1601060571645</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Add Redux. Create account, user, friends, system stores. Add GET profiles/me/friends route.">
+      <created>1601085472801</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1601085472801</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -269,7 +275,8 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="debug commands work" />
     <MESSAGE value="Fresh install of react" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fresh install of react" />
+    <MESSAGE value="Add Redux. Create account, user, friends, system stores. Add GET profiles/me/friends route." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add Redux. Create account, user, friends, system stores. Add GET profiles/me/friends route." />
   </component>
   <component name="WindowStateProjectService">
     <state x="544" y="203" key="#Inspection_severity" timestamp="1600977948888">
@@ -292,30 +299,30 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="748" y="302" key="FileChooserDialogImpl/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1601060002454" />
-    <state width="1878" height="224" key="GridCell.Tab.0.bottom" timestamp="1601068829491">
+    <state width="1878" height="224" key="GridCell.Tab.0.bottom" timestamp="1601170928776">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="224" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1601068829491" />
+    <state width="1878" height="224" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1601170928776" />
     <state width="1878" height="305" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1600970285761" />
-    <state width="1878" height="224" key="GridCell.Tab.0.bottom/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1600982489710" />
-    <state width="1878" height="224" key="GridCell.Tab.0.center" timestamp="1601068829489">
+    <state width="1878" height="224" key="GridCell.Tab.0.bottom/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1601091452852" />
+    <state width="1878" height="224" key="GridCell.Tab.0.center" timestamp="1601170928774">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="224" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1601068829489" />
+    <state width="1878" height="224" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1601170928774" />
     <state width="1878" height="305" key="GridCell.Tab.0.center/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1600970285758" />
-    <state width="1878" height="224" key="GridCell.Tab.0.center/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1600982489708" />
-    <state width="1878" height="224" key="GridCell.Tab.0.left" timestamp="1601068829488">
+    <state width="1878" height="224" key="GridCell.Tab.0.center/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1601091452850" />
+    <state width="1878" height="224" key="GridCell.Tab.0.left" timestamp="1601170928772">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="224" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1601068829488" />
+    <state width="1878" height="224" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1601170928772" />
     <state width="1878" height="305" key="GridCell.Tab.0.left/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1600970285755" />
-    <state width="1878" height="224" key="GridCell.Tab.0.left/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1600982489708" />
-    <state width="1878" height="224" key="GridCell.Tab.0.right" timestamp="1601068829490">
+    <state width="1878" height="224" key="GridCell.Tab.0.left/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1601091452849" />
+    <state width="1878" height="224" key="GridCell.Tab.0.right" timestamp="1601170928775">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1878" height="224" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1601068829490" />
+    <state width="1878" height="224" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1601170928775" />
     <state width="1878" height="305" key="GridCell.Tab.0.right/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1600970285759" />
-    <state width="1878" height="224" key="GridCell.Tab.0.right/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1600982489709" />
+    <state width="1878" height="224" key="GridCell.Tab.0.right/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1601091452851" />
     <state width="1878" height="403" key="GridCell.Tab.1.bottom" timestamp="1600982489693">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
@@ -430,23 +437,23 @@
           <line>78</line>
           <properties documentPath="$PROJECT_DIR$/DotNetTreeShadows/Controllers/SessionsController.cs" initialLine="78">
             <startOffsets>
-              <option value="3492" />
+              <option value="3484" />
             </startOffsets>
             <endOffsets>
-              <option value="3580" />
+              <option value="3572" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/DotNetTreeShadows/Controllers/ProfilesController.cs</url>
-          <line>61</line>
+          <line>60</line>
           <properties documentPath="$PROJECT_DIR$/DotNetTreeShadows/Controllers/ProfilesController.cs" initialLine="61">
             <startOffsets>
-              <option value="2521" />
+              <option value="2488" />
             </startOffsets>
             <endOffsets>
-              <option value="2522" />
+              <option value="2489" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="3" />

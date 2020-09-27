@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { AppThunk } from '../middleware/thunks';
 import { getFriends, sendFriendRequest } from './actions';
 import { FriendProfile } from './types';
+import { getSentInvitationsAsync } from '../invitations/thunks';
 
 export const getFriendsAsync = (): AppThunk => async (dispatch, getState) => {
     dispatch(getFriends.request());
@@ -28,6 +29,7 @@ export const sendFriendRequestAsync = (email: string): AppThunk => async (dispat
                 headers: {Authorization: `Bearer ${getState().system.token}`},
             });
         dispatch(sendFriendRequest.success());
+        dispatch(getSentInvitationsAsync());
     } catch (e) {
         dispatch(sendFriendRequest.failure(e?.response?.data?.message ?? e.statusMessage ));
     }

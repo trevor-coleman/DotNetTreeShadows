@@ -1,15 +1,18 @@
 import React, { FunctionComponent } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { fetchUserProfileAsync } from '../store/middleware/thunks';
 import { RootState } from '../store';
 import { Typography, TableRow, TableCell, Button, Container, TableBody } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import { makeStyles } from '@material-ui/core/styles';
+import { fetchUserProfileAsync } from '../store/user/thunks';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 
 //REDUX MAPPING
 const mapStateToProps = (state: RootState) => {
     return {
         profile: state.user.profile,
+        friends: state.friends.friends,
 
     };
 };
@@ -27,12 +30,11 @@ type ProfileDisplayProps = IProfileDisplayProps & PropsFromRedux;
 //COMPONENT
 const ProfileDisplay: FunctionComponent<ProfileDisplayProps> = (props: ProfileDisplayProps) => {
     const classes = useStyles();
-    const {profile} = props;
+    const {profile, friends} = props;
 
-    console.log("props", props);
-
-    return <div className={classes.ProfileDisplay}>
-        <Typography variant="h5">Redux Test!</Typography>
+    return <Card className={classes.ProfileDisplay}>
+      <CardContent>
+        <Typography variant="h5">{profile ? profile.name : "Signed Out"}</Typography>
             <Table className={classes.Table}>
                 <TableBody>
             {profile
@@ -44,7 +46,7 @@ const ProfileDisplay: FunctionComponent<ProfileDisplayProps> = (props: ProfileDi
                                 {key}
                      </TableCell>
                          <TableCell>
-                             {profile[key].toString()}
+                             {key ==='friends' ? friends.map(friend=>friend.name + " ") : profile[key].toString() }
                          </TableCell></TableRow>)}
 
 
@@ -56,7 +58,8 @@ const ProfileDisplay: FunctionComponent<ProfileDisplayProps> = (props: ProfileDi
                 console.log("fetching", props);
                 props.fetchProfile();
             }}>Button</Button>
-    </div>;
+      </CardContent>
+    </Card>;
 };
 
 const useStyles = makeStyles({

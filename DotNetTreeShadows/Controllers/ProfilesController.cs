@@ -8,7 +8,6 @@ using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -80,9 +79,9 @@ namespace dotnet_tree_shadows.Controllers {
 
             Profile recipient = await profileService.GetByIdAsync( recipientUser.UserId );
             if ( recipient == null ) return Status404NotFound( "Recipient" );
-            if ( recipient.Id == sender.Id ) return Status400Invalid( "Reciever" );
+            if ( recipient.Id == sender.Id ) return Status400Invalid( "Recipient" );
 
-            Invitation friendRequest = Invitation.FriendRequest( sender.Id, recipient.Id );
+            Invitation friendRequest = Invitation.FriendRequest( sender, recipient );
 
             List<Invitation>? existingInvitations =
                 await invitationService.GetMany( recipient.ReceivedInvitations );
@@ -113,6 +112,36 @@ namespace dotnet_tree_shadows.Controllers {
             List<Profile> friendProfiles = await profileService.GetMany( userProfile.Friends );
 
             return friendProfiles.Select( friend => new FriendProfile(friend) ).ToArray();
+        }
+        
+        [HttpGet, Route( "me/invitations/sent" )]
+        public async Task<ActionResult<Invitation[]>> GetSentInvitations () {
+            
+            ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
+            if ( user == null ) return Status500MissingProfile();
+
+
+            Profile userProfile = await profileService.GetByIdAsync( user.UserId );
+            if ( userProfile == null ) return Status500MissingProfile();
+
+            List<Invitation> sentInvitations = await invitationService.GetMany( userProfile.SentInvitations);
+
+            return sentInvitations.ToArray();
+        }
+        
+        [HttpGet, Route( "me/invitations/received" )]
+        public async Task<ActionResult<Invitation[]>> GetReceivedInvitations () {
+            
+            ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
+            if ( user == null ) return Status500MissingProfile();
+
+
+            Profile userProfile = await profileService.GetByIdAsync( user.UserId );
+            if ( userProfile == null ) return Status500MissingProfile();
+
+            List<Invitation> receivedInvitations = await invitationService.GetMany( userProfile.ReceivedInvitations);
+
+            return receivedInvitations.ToArray();
         }
 
     }

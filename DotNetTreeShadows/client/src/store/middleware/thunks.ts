@@ -15,20 +15,6 @@ export type AppThunk<ReturnType = void> = ThunkAction<
     >
 
 
-export const fetchUserProfileAsync = () : AppThunk => async (dispatch, getState) => {
-    dispatch(fetchUserProfile.request());
-    try {
-        const asyncResp: AxiosResponse = await axios.get('profiles/me', {baseURL: "https://localhost:5001/api/", headers: { Authorization: `Bearer ${getState().system.token}` } });
-        const profile = await asyncResp.data as Profile;
-        console.log(profile);
-        dispatch(fetchUserProfile.success(profile))
-        dispatch(getFriendsAsync())
-    } catch (e) {
-        dispatch(fetchUserProfile.failure(e.statusMessage ?? e.message));
-    }
-
-
-}
 
 
 

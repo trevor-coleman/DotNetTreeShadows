@@ -69,7 +69,7 @@ namespace dotnet_tree_shadows.Controllers {
             if ( !recipient.HasFriend( sender.Id ) ) return Status403Forbidden();
             if ( session.HasInvited( recipient.Id ) ) return Status409Duplicate( "Invitation" );
 
-            Invitation sessionInvitation = Invitation.SessionInvitation( sender.Id, recipient.Id, sessionId );
+            Invitation sessionInvitation = Invitation.SessionInvitation( sender, recipient, session );
 
             List<Invitation> recipientInvitations =
                 await invitationService.GetMany( recipient.ReceivedInvitations );

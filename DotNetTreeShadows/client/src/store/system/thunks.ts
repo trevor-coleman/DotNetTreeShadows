@@ -1,9 +1,10 @@
 import { fetchUserProfile } from '../user/actions';
 import axios, { AxiosResponse } from 'axios';
 import { Profile } from '../user/types';
-import { AppThunk, fetchUserProfileAsync } from '../middleware/thunks';
+import { AppThunk } from '../middleware/thunks';
 import { SignInCredentials, SignInResponse, NewUserInfo } from './types';
 import { signInUser, registerNewUser } from './actions';
+import { fetchUserProfileAsync } from '../user/thunks';
 
 export const signInUserAsync = (credentials:SignInCredentials) : AppThunk => async dispatch => {
     dispatch(signInUser.request(credentials));

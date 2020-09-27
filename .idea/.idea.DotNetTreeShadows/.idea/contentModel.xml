@@ -30,6 +30,7 @@
           <e p="node_modules/@jest/transform" t="IncludeRecursive" />
           <e p="node_modules/@jest/types" t="IncludeRecursive" />
           <e p="node_modules/@material-ui/core" t="IncludeRecursive" />
+          <e p="node_modules/@material-ui/icons" t="IncludeRecursive" />
           <e p="node_modules/@material-ui/styles" t="IncludeRecursive" />
           <e p="node_modules/@material-ui/system" t="IncludeRecursive" />
           <e p="node_modules/@material-ui/types" t="IncludeRecursive" />
@@ -162,8 +163,12 @@
             <e p="App.test.tsx" t="Include" />
             <e p="App.tsx" t="Include" />
             <e p="components" t="Include">
-              <e p="ReduxTest.tsx" t="Include" />
+              <e p="AddFriendForm.tsx" t="Include" />
+              <e p="DebugTest.tsx" t="Include" />
+              <e p="InvitationList.tsx" t="Include" />
+              <e p="ProfileDisplay.tsx" t="Include" />
               <e p="RegisterForm.tsx" t="Include" />
+              <e p="SessionCreator.tsx" t="Include" />
               <e p="SignInForm.tsx" t="Include" />
             </e>
             <e p="index.css" t="Include" />
@@ -175,15 +180,28 @@
             <e p="store" t="Include">
               <e p="friends" t="Include">
                 <e p="actions.ts" t="Include" />
+                <e p="reducers.ts" t="Include" />
                 <e p="thunks.ts" t="Include" />
                 <e p="types.ts" t="Include" />
               </e>
               <e p="index.ts" t="Include" />
+              <e p="invitations" t="Include">
+                <e p="actions.ts" t="Include" />
+                <e p="reducers.ts" t="Include" />
+                <e p="thunks.ts" t="Include" />
+                <e p="types.ts" t="Include" />
+              </e>
               <e p="middleware" t="Include">
                 <e p="logger.ts" t="Include" />
                 <e p="thunks.ts" t="Include" />
               </e>
               <e p="rootReducer.ts" t="Include" />
+              <e p="sessions" t="Include">
+                <e p="actions.ts" t="Include" />
+                <e p="reducers.ts" t="Include" />
+                <e p="thunks.ts" t="Include" />
+                <e p="types.ts" t="Include" />
+              </e>
               <e p="system" t="Include">
                 <e p="actions.ts" t="Include" />
                 <e p="reducers.ts" t="Include" />
@@ -193,6 +211,7 @@
               <e p="user" t="Include">
                 <e p="actions.ts" t="Include" />
                 <e p="reducers.ts" t="Include" />
+                <e p="thunks.ts" t="Include" />
                 <e p="types.ts" t="Include" />
               </e>
             </e>

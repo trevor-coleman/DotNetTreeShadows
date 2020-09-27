@@ -11,8 +11,11 @@ namespace dotnet_tree_shadows.Models {
         public string Id;
 
         public string SenderId { get; set; }
+        public string SenderName { get; set; }
         public string RecipientId { get; set; }
+        public string RecipientName { get; set; }
         public string? ResourceId { get; set; }
+        public string? ResourceName { get; set; }
         public DateTime? Created { get; set; }
 
         [JsonConverter( typeof( StringEnumConverter ) )]
@@ -24,6 +27,8 @@ namespace dotnet_tree_shadows.Models {
         public InvitationType InvitationType { get; set; }
 
         public Invitation () {
+            SenderName = "";
+            RecipientName = "";
             SenderId = "";
             RecipientId = "";
             ResourceId = null;
@@ -31,32 +36,35 @@ namespace dotnet_tree_shadows.Models {
             Status = InvitationStatus.Accepted;
             InvitationType = InvitationType.FriendRequest;
         }
+        
 
-        public Invitation (string senderId, string recipientId, string resourceId, InvitationType invitationType) {
-            SenderId = senderId;
-            RecipientId = recipientId;
-            ResourceId = resourceId;
-            Created = DateTime.UtcNow;
-            Status = InvitationStatus.Pending;
-            InvitationType = invitationType;
-        }
+        public static Invitation FriendRequest (Profile sender, Profile recipient) =>
+            new Invitation {
+                               SenderId = sender.Id, 
+                               RecipientId = recipient.Id, 
+                               SenderName = sender.Name, 
+                               RecipientName = recipient.Name, 
+                               InvitationType = InvitationType.FriendRequest,
+                               Created = DateTime.UtcNow,
+                               Status = InvitationStatus.Pending,
+                               ResourceId = null,
+                           };
 
-        public Invitation (string senderId, string recipientId, InvitationType invitationType) {
-            SenderId = senderId;
-            RecipientId = recipientId;
-            ResourceId = null;
-            Created = DateTime.UtcNow;
-            Status = InvitationStatus.Pending;
-            InvitationType = invitationType;
-        }
 
-        public static Invitation FriendRequest (string senderId, string recipientId) =>
-            new Invitation( senderId, recipientId, InvitationType.FriendRequest );
+        public static Invitation SessionInvitation (Profile sender, Profile recipient, Session session) => new Invitation {
+            SenderId = sender.Id, 
+            RecipientId = recipient.Id, 
+            SenderName = sender.Name, 
+            RecipientName = recipient.Name, 
+            InvitationType = InvitationType.FriendRequest,
+            Created = DateTime.UtcNow,
+            Status = InvitationStatus.Pending,
+            ResourceId = session.Id,
+        };
 
-        public static Invitation SessionInvitation (string senderId, string recipientId, string sessionId) =>
-            new Invitation( senderId, recipientId, sessionId, InvitationType.SessionInvite );
-
-        public Invitation (Invitation invitation) {
+        protected Invitation (Invitation invitation) {
+            SenderName = invitation.SenderName;
+            RecipientName = invitation.RecipientName;
             Id = invitation.Id;
             SenderId = invitation.SenderId;
             RecipientId = invitation.RecipientId;
