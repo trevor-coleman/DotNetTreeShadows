@@ -30,7 +30,13 @@ namespace dotnet_tree_shadows.Models {
             TreeType = null;
         }
 
-        
+        public TileDTO DTO () =>
+            new TileDTO {
+                            HexCoordinates = HexCoordinates,
+                            PieceType = PieceType,
+                            TreeType = TreeType,
+                            ShadowHeight = ShadowHeight
+                        }; 
 
         public Board.Shadow GetShadow (SunPosition sunPosition) {
             var shadow = new Board.Shadow();

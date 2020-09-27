@@ -7,30 +7,24 @@ export type SessionState = {
 export type Session = {
   id:string;
   host:string;
-  players: Map<string, Player>
+  players: Map<string, PlayerBoard>
   game: Game
   name: string;
   invitations: string[];
 }
 
-export type Player = {
-  userId: string;
-  name:string;
-  treeType: TreeType;
-  score: {
-    tokens: ScoringToken[],
-    points: number,
-    tokenCountByType: number[],
-  }
-  resources: Map<PieceType, Resource>
+export type PlayerBoard = {
+  scoringTokens: number[];
+  pieces: Map<PieceType, PieceCount>
 };
+
 export interface Game {
   turnOrder: string[];
   firstPlayer: string;
+  playerBoards: Map<string, PlayerBoard>
   currentTurn: number;
   Revolution: number;
   Round: number;
-  TotalRounds: number;
   SunPosition: SunPosition;
   Options : {
     longGame: boolean;
@@ -43,11 +37,14 @@ export interface Game {
 
 export type SunPosition = "NorthWest"|"NorthEast"|"East"|"SouthEast"|"SouthWest"|"West";
 export type TreeType = "Ash" |"Aspen" | "Poplar" | "Maple";
+
 export type ScoringToken = {
   leaves: number,
   points: number
 }
-export type Resource = {
+
+
+export type PieceCount = {
   pieceType: PieceType,
     available: number,
     onPlayerBoard: number,

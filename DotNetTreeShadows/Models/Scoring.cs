@@ -27,6 +27,7 @@ namespace dotnet_tree_shadows.Models {
                                                           { 1, new Queue<int>( OneLeafTiles ) },
                                                           { 2, new Queue<int>( TwoLeafTiles ) },
                                                           { 3, new Queue<int>( ThreeLeafTiles ) },
+                                                          { 4, new Queue<int>( FourLeafTiles ) },
                                                       };
             }
 

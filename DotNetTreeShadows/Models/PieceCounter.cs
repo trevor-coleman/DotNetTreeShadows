@@ -8,7 +8,7 @@ using Newtonsoft.Json.Converters;
 
 namespace dotnet_tree_shadows.Models {
     [SuppressMessage( "ReSharper", "ArrangeMethodOrOperatorBody" )]
-    public class Resource {
+    public class PieceCounter {
 
         [JsonConverter( typeof( StringEnumConverter ) )]
         [BsonRepresentation( BsonType.String )]
@@ -20,7 +20,7 @@ namespace dotnet_tree_shadows.Models {
         public int[] Prices { get; set; }
 
 
-        public Resource () {
+        public PieceCounter () {
             Available = 0;
             OnPlayerBoard = 0;
             Prices = new int[0];
@@ -28,7 +28,7 @@ namespace dotnet_tree_shadows.Models {
             PieceType = PieceType.Seed;
         }
         
-        public Resource (PieceType pieceType, IReadOnlyList<int> startingCounts, int[] prices) {
+        public PieceCounter (PieceType pieceType, IReadOnlyList<int> startingCounts, int[] prices) {
             Available = startingCounts[0];
             OnPlayerBoard = startingCounts[1];
             Prices = StartingPrices( pieceType );
@@ -95,8 +95,8 @@ namespace dotnet_tree_shadows.Models {
         }
 
         
-        public static Resource StartingAmount (PieceType pieceType) =>
-            new Resource( pieceType, StartingCounts(pieceType), StartingPrices(pieceType) );
+        public static PieceCounter StartingAmount (PieceType pieceType) =>
+            new PieceCounter( pieceType, StartingCounts(pieceType), StartingPrices(pieceType) );
         
     }
 

@@ -1,12 +1,14 @@
 
 using System.Collections.Generic;
-using System.Globalization;
-using dotnet_tree_shadows.Models.GameActions;
+using System.Linq;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace dotnet_tree_shadows.Models {
 
     public class Game {
+        public Dictionary<string, PlayerBoard> PlayerBoards { get; set; }
         public Queue<string> TurnOrder { get; set; }
+        public Dictionary<string, TreeType> PlayerTreeTypes;
         public string? FirstPlayer { get; set; }
         public int CurrentTurn { get; set; }
         public int Revolution { get; set; }
@@ -23,7 +25,7 @@ namespace dotnet_tree_shadows.Models {
             public bool PreventActionsInShadow;
 
             public static Options Default {
-                get => new Options() { LongGame = false, PreventActionsInShadow = false };
+                get => new Options { LongGame = false, PreventActionsInShadow = false };
             }
         }
 
@@ -37,21 +39,6 @@ namespace dotnet_tree_shadows.Models {
         public List<HexCoordinates> TilesActiveThisTurn { get; set; }
 
         public Board Board { get; }
-
-        public Game (IGameData gameData) {
-            TurnOrder = new Queue<string>(gameData.TurnOrder);
-            FirstPlayer = null;
-            CurrentTurn = gameData.CurrentTurn;
-            Board = gameData.Board;
-            SunPosition = gameData.SunPosition;
-            ScoreTokenStacks = new Scoring.Stacks(gameData.RemainingScoreTokens);
-            Round = gameData.Revolution;
-            Revolution = gameData.Revolution;
-            TilesActiveThisTurn = gameData.TilesActiveThisTurn;
-            LongGame = gameData.LongGame;
-            PreventActionsInShadow = gameData.PreventActionsInShadow;
-        }
-        
         
         public Game () {
             Board = Board.New();
@@ -74,21 +61,13 @@ namespace dotnet_tree_shadows.Models {
             LongGame = options.LongGame;
             PreventActionsInShadow = options.PreventActionsInShadow;
         }
-
-
-        public Tile? GetTileFromHexCoordinates (HexCoordinates hexCoordinates) =>
-            Board.TryGetValue( hexCoordinates, out Tile? tile )
-                ? tile
-                : null;
-
         
-        
-        public bool Plant (HexCoordinates origin, HexCoordinates target,  Player player, out string message) {
+        public bool Plant (HexCoordinates origin, HexCoordinates target,  PlayerBoard playerBoard, out string message) {
             if ( TilesActiveThisTurn.Contains( origin ) ) {
                 message = "Origin tile has already been activated this turn.";
             }
             
-            if(!Board.TryGetValue( target, out Tile targetTile )) {
+            if(!Board.Tiles.TryGetValue( target, out Tile targetTile )) {
                 message = "Tried to plant with hex that is not in the board.";
                 return false;
             };
@@ -98,7 +77,7 @@ namespace dotnet_tree_shadows.Models {
                 return false;
             }
             
-            if(!Board.TryGetValue( origin, out Tile originTile )) {
+            if(!Board.Tiles.TryGetValue( origin, out Tile originTile )) {
                 message = "Tried to plant from hex that is not in the board.";
                 return false;
             };
@@ -109,25 +88,25 @@ namespace dotnet_tree_shadows.Models {
             }
 
             if ( target.DistanceTo( origin ) > (int) originTile.PieceType ) {
-                message = $"Target too far from origin";
+                message = "Target too far from origin";
                 return false;
             }
 
-            if (!player.TryHandlePlantSeed(out string playerMessage) ) {
+            if (!playerBoard.TryHandlePlantSeed(out string playerMessage) ) {
                 message = $"Player can't plant: {playerMessage} ";
                 return false;
             }
                 
             targetTile.PieceType = PieceType.Seed;
-            targetTile.TreeType = player.TreeType;
+            targetTile.TreeType = playerBoard.TreeType;
             TilesActiveThisTurn.Add( origin );
             TilesActiveThisTurn.Add( target );
             message = "success";
             return true;
         }
 
-        public bool Grow (HexCoordinates target, Player player, out string message) {
-            if(!Board.TryGetValue( target, out Tile targetTile )) {
+        public bool Grow (HexCoordinates target, PlayerBoard playerBoard, out string message) {
+            if(!Board.Tiles.TryGetValue( target, out Tile targetTile )) {
                 message = "Tried to grow with hex that is not in the board.";
                 return false;
             };
@@ -140,12 +119,12 @@ namespace dotnet_tree_shadows.Models {
             var targetPiece = (PieceType) targetTile.PieceType;
             var targetType = (TreeType) targetTile.TreeType;
 
-            if ( targetType != player.TreeType ) {
+            if ( targetType != playerBoard.TreeType ) {
                 message = "Tried to grow another player's tree.";
                 return false;
             }
             
-            if ( !player.TryHandleGrowTree( targetPiece, out bool _, out string playerFailureReasons ) ) {
+            if ( !playerBoard.TryHandleGrowTree( targetPiece, out bool _, out string playerFailureReasons ) ) {
                 message = $"Player can't grow tree: {playerFailureReasons}";
                 return false;
             }
@@ -156,11 +135,11 @@ namespace dotnet_tree_shadows.Models {
             return true;
         }
 
-        public bool Collect (HexCoordinates target, Player player, out Scoring.Token? token, out string? message) {
+        public bool Collect (HexCoordinates target, PlayerBoard playerBoard, out Scoring.Token? token, out string? message) {
             
             token = null;
             
-            if(!Board.TryGetValue( target, out Tile targetTile )) {
+            if(!Board.Tiles.TryGetValue( target, out Tile targetTile )) {
                 message = "Tried to grow with hex that is not in the board.";
                 return false;
             };
@@ -175,12 +154,12 @@ namespace dotnet_tree_shadows.Models {
                 return false;
             }
 
-            if ( targetTile.TreeType != player.TreeType ) {
+            if ( targetTile.TreeType != playerBoard.TreeType ) {
                 message = "Tree does not belong to player";
                 return false;
             }
 
-            if ( !player.CanCollect() ) {
+            if ( !playerBoard.CanCollect() ) {
                 message = "Player can't afford to collect a tree.";
                 return false;
             }
@@ -188,11 +167,38 @@ namespace dotnet_tree_shadows.Models {
             token = ScoreTokenStacks.Take( targetTile.Leaves() );
             targetTile.TreeType = null;
             targetTile.PieceType = null;
-            player.HandleCollect( token );
+            playerBoard.HandleCollect( token );
 
-            message = $"success";
+            message = "success";
             return true;
         }
-    }
 
+        public void AddPlayerBoard (string playerId) {
+            PlayerBoards.Add( playerId, new PlayerBoard() );
+        }
+
+        public GameDTO DTO() {
+            
+            Dictionary<string, PlayerBoardDTO> playerBoardDTOs = new Dictionary<string, PlayerBoardDTO>();
+            foreach ( var (playerId, playerBoard) in PlayerBoards ) {
+                playerBoardDTOs.Add( playerId, playerBoard.DTO() );
+                
+            }
+
+            return new GameDTO {
+                                   TurnOrder = TurnOrder.ToArray(),
+                                   FirstPlayer = FirstPlayer,
+                                   PlayerBoards = playerBoardDTOs,
+                                   CurrentTurn = CurrentTurn,
+                                   Revolution = Revolution,
+                                   Round = Round,
+                                   SunPosition = SunPosition,
+                                   ScoreTokenStacks = ScoreTokenStacks.Remaining,
+                                   BoardDTO = Board.DTO(),
+                                   LongGame = LongGame,
+                                   PreventActionsInShadow = PreventActionsInShadow,
+                                   TilesActiveThisTurn = TilesActiveThisTurn.ToArray(),
+                               };
+        }
+    }
 }

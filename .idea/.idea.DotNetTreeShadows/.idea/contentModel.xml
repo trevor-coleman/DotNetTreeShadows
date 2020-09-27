@@ -147,7 +147,60 @@
           <e p="node_modules/tsutils" t="IncludeRecursive" />
           <e p="node_modules/type-fest" t="IncludeRecursive" />
           <e p="node_modules/typesafe-actions" t="IncludeRecursive" />
-          <e p="node_modules/typescript" t="IncludeRecursive" />
+          <e p="node_modules/typescript" t="IncludeRecursive">
+            <e p="lib/lib.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.dom.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.dom.iterable.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2015.collection.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2015.core.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2015.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2015.generator.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2015.iterable.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2015.promise.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2015.proxy.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2015.reflect.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2015.symbol.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2015.symbol.wellknown.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2016.array.include.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2016.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2016.full.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2017.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2017.full.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2017.intl.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2017.object.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2017.sharedmemory.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2017.string.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2017.typedarrays.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2018.asyncgenerator.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2018.asynciterable.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2018.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2018.full.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2018.intl.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2018.promise.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2018.regexp.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2019.array.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2019.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2019.full.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2019.object.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2019.string.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2019.symbol.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2020.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2020.full.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2020.string.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es2020.symbol.wellknown.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es5.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.es6.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.esnext.array.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.esnext.asynciterable.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.esnext.bigint.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.esnext.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.esnext.full.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.esnext.intl.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.esnext.symbol.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.scripthost.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.webworker.d.ts" t="IncludeRecursive" />
+            <e p="lib/lib.webworker.importscripts.d.ts" t="IncludeRecursive" />
+          </e>
           <e p="package.json" t="Include" />
           <e p="public" t="Include">
             <e p="favicon.ico" t="Include" />
@@ -219,6 +272,7 @@
           <e p="tsconfig.json" t="Include" />
           <e p="yarn.lock" t="Include" />
         </e>
+        <e p="client**" t="Include" />
         <e p="Controllers" t="Include">
           <e p="AControllerWithStatusMethods.cs" t="Include" />
           <e p="AuthenticateController.cs" t="Include" />
@@ -231,6 +285,7 @@
         <e p="Models" t="Include">
           <e p="AuthDatabaseSettings.cs" t="Include" />
           <e p="Board.cs" t="Include" />
+          <e p="BoardDTO.cs" t="Include" />
           <e p="FriendProfile.cs" t="Include" />
           <e p="Game.cs" t="Include" />
           <e p="GameActions" t="Include">
@@ -238,18 +293,22 @@
             <e p="GameActionType.cs" t="Include" />
           </e>
           <e p="GameDatabaseSettings.cs" t="Include" />
+          <e p="GameDTO.cs" t="Include" />
           <e p="HexCoordinates.cs" t="Include" />
           <e p="IGameData.cs" t="Include" />
           <e p="Invitation.cs" t="Include" />
           <e p="ObjectIdModel.cs" t="Include" />
+          <e p="PieceCounter.cs" t="Include" />
           <e p="PieceType.cs" t="Include" />
-          <e p="Player.cs" t="Include" />
+          <e p="PlayerBoard.cs" t="Include" />
+          <e p="PlayerBoardDTO.cs" t="Include" />
           <e p="Profile.cs" t="Include" />
-          <e p="Resource.cs" t="Include" />
           <e p="Scoring.cs" t="Include" />
           <e p="Session.cs" t="Include" />
+          <e p="SessionDTO.cs" t="Include" />
           <e p="SunPosition.cs" t="Include" />
           <e p="Tile.cs" t="Include" />
+          <e p="TileDTO.cs" t="Include" />
           <e p="TreeType.cs" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive">

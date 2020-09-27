@@ -5,9 +5,8 @@ using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
 
 namespace dotnet_tree_shadows.Models {
-    public class Player {
-        public string UserId { get; set; }
-        public string Name { get; set; }
+    public class PlayerBoard {
+        public string PlayerId { get; set; }
         public TreeType? TreeType { get; set; }
         public PlayerScore Score { get; set; }
         private int light;
@@ -18,31 +17,31 @@ namespace dotnet_tree_shadows.Models {
         }
 
         [BsonDictionaryOptions( DictionaryRepresentation.ArrayOfArrays )]
-        public readonly Dictionary<string, Resource> Resources;
+        public readonly Dictionary<string, PieceCounter> Pieces;
 
-        public Player () {
-            UserId = "";
-            Name = "";
+        public PlayerBoard () {
+            PlayerId = "";
             TreeType = null;
             Score = new PlayerScore();
             Light = 0;
-            Resources = new Dictionary<string, Resource>();
+            Pieces = new Dictionary<string, PieceCounter>();
             foreach ( PieceType pieceType in EnumUtil.GetValues<PieceType>() ) {
-                Resources[pieceType.ToString()] = Resource.StartingAmount( pieceType );
+                Pieces[pieceType.ToString()] = PieceCounter.StartingAmount( pieceType );
             }
         }
 
-        public Player (Profile profile) {
-            UserId = profile.Id;
-            Name = profile.Name;
+        public PlayerBoard (Profile profile) {
+            PlayerId = profile.Id;
             TreeType = null;
             Score = new PlayerScore();
             Light = 0;
-            Resources = new Dictionary<string, Resource>();
+            Pieces = new Dictionary<string, PieceCounter>();
             foreach ( PieceType pieceType in EnumUtil.GetValues<PieceType>() ) {
-                Resources[pieceType.ToString()] = Resource.StartingAmount( pieceType );
+                Pieces[pieceType.ToString()] = PieceCounter.StartingAmount( pieceType );
             }
         }
+
+        public PlayerBoardDTO DTO () => new PlayerBoardDTO { ScoringTokens = Score.TokenCountByType, Pieces = Pieces };
 
         /// <summary>Spends light</summary>
         /// <param name="amount">amount to spend. Must be > 0.</param>
@@ -61,9 +60,9 @@ namespace dotnet_tree_shadows.Models {
          * <returns>true if purchase was successful, false if it wasn't.</returns>
          */
         public bool TryBuy (PieceType pieceType, out string failureMessage) {
-            Resource resource = Resources[pieceType.ToString()];
-            if ( !CanBuy( resource, out failureMessage ) ) return false;
-            resource.BuyAt( out int price );
+            PieceCounter pieceCounter = Pieces[pieceType.ToString()];
+            if ( !CanBuy( pieceCounter, out failureMessage ) ) return false;
+            pieceCounter.BuyAt( out int price );
             Spend( price );
             return true;
         }
@@ -72,18 +71,18 @@ namespace dotnet_tree_shadows.Models {
         /// </summary>
         /// <param name="pieceType">Type of piece to buy.</param>
         public void Buy (PieceType pieceType) {
-            Resource resource = Resources[pieceType.ToString()];
-            resource.BuyAt( out int price );
+            PieceCounter pieceCounter = Pieces[pieceType.ToString()];
+            pieceCounter.BuyAt( out int price );
             Spend( price );
         }
         
-        public bool CanBuy (Resource resource, out string failureMessage) {
-            if ( resource.CurrentPrice() == -1 ) {
+        public bool CanBuy (PieceCounter pieceCounter, out string failureMessage) {
+            if ( pieceCounter.CurrentPrice() == -1 ) {
                 failureMessage = "None available.";
                 return false;
             }
 
-            if ( Light < resource.CurrentPrice() ) {
+            if ( Light < pieceCounter.CurrentPrice() ) {
                 failureMessage = "Can't afford purchase.";
                 return false;
             };
@@ -98,17 +97,17 @@ namespace dotnet_tree_shadows.Models {
                 failureReason = "Can't grow large tree.";
                 return false;
             };
-            Resource resourceIn = Resources[pieceIn.ToString()];
+            PieceCounter pieceCounterIn = Pieces[pieceIn.ToString()];
             PieceType pieceOut = LargerPiece( pieceIn );
-            Resource resourceOut = Resources[pieceOut.ToString()];
+            PieceCounter pieceCounterOut = Pieces[pieceOut.ToString()];
             
             if ( !CanGrowTree( pieceIn, out returnedSafely, out string message ) ) {
                 failureReason = $"Can't Grow Tree: {message}";
                 return false;
             };
             
-            resourceIn.ReturnOrDiscard( out returnedSafely );
-            resourceOut.Take();
+            pieceCounterIn.ReturnOrDiscard( out returnedSafely );
+            pieceCounterOut.Take();
             Spend( CostToGrow( pieceOut ) );
 
             failureReason = "success";
@@ -116,27 +115,27 @@ namespace dotnet_tree_shadows.Models {
         }
 
         public void HandleGrowTree (PieceType pieceIn, out bool returnedSafely) {
-            Resource resourceIn = Resources[pieceIn.ToString()];
+            PieceCounter pieceCounterIn = Pieces[pieceIn.ToString()];
             PieceType pieceOut = LargerPiece( pieceIn );
-            Resource resourceOut = Resources[pieceOut.ToString()];
+            PieceCounter pieceCounterOut = Pieces[pieceOut.ToString()];
             
-            resourceIn.ReturnOrDiscard( out returnedSafely );
-            resourceOut.Take();
+            pieceCounterIn.ReturnOrDiscard( out returnedSafely );
+            pieceCounterOut.Take();
             Spend( CostToGrow( pieceOut ) );
         }
         
         public bool CanGrowTree (PieceType pieceIn, out bool canReturnSafely, out string message) {
-            Resource resourceIn = Resources[pieceIn.ToString()];
-            canReturnSafely = resourceIn.CanReturnSafely();
+            PieceCounter pieceCounterIn = Pieces[pieceIn.ToString()];
+            canReturnSafely = pieceCounterIn.CanReturnSafely();
             if ( pieceIn == PieceType.LargeTree ) {
                 message = "can't grow large tree";
                 return false;
             }
             
             PieceType pieceOut = LargerPiece( pieceIn );
-            Resource resourceOut = Resources[pieceOut.ToString()];
+            PieceCounter pieceCounterOut = Pieces[pieceOut.ToString()];
 
-            if ( !resourceOut.CanBeTaken() ) {
+            if ( !pieceCounterOut.CanBeTaken() ) {
                 message = "no available tree to grow";
                 return false;
             }
@@ -161,12 +160,12 @@ namespace dotnet_tree_shadows.Models {
         }
         
         public bool CanPlant () {
-            Resource seeds = Resources[PieceType.Seed.ToString()];
+            PieceCounter seeds = Pieces[PieceType.Seed.ToString()];
             return seeds.CanBeTaken() && Light >= 1;
         }
 
         public bool TryHandlePlantSeed (out string failureReason) {
-            Resource seeds = Resources[PieceType.Seed.ToString()];
+            PieceCounter seeds = Pieces[PieceType.Seed.ToString()];
             if(!seeds.CanBeTaken()) {
                 failureReason = "No available seeds to plant";
                 return false;
@@ -185,7 +184,7 @@ namespace dotnet_tree_shadows.Models {
         public bool CanCollect () => Light >= 4;
 
         public void HandleCollect (Scoring.Token? token) {
-            Resource largeTrees = Resources[PieceType.LargeTree.ToString()];
+            PieceCounter largeTrees = Pieces[PieceType.LargeTree.ToString()];
             Score.Score( token );
 
             largeTrees.ReturnOrDiscard( out bool _ );
@@ -223,7 +222,7 @@ namespace dotnet_tree_shadows.Models {
                     Score( token );
                 }
             }
-        }
+        } 
 
     }
 

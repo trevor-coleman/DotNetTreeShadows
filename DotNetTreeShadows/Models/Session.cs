@@ -10,16 +10,11 @@ namespace dotnet_tree_shadows.Models {
     public class Session {
 
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonRepresentation( BsonType.ObjectId )]
         public string Id { get; set; }
-        
-        public string Host { get; set; }
-        
-        public Dictionary<string, Player> Players { get; set; }
 
-        public string[] PlayerNames {
-            get => Players.Select( playerEntry => playerEntry.Value.Name ).ToArray();
-        }
+        public string Host { get; set; }
+        public List<string> Players { get; set; }
 
         public Game Game { get; set; }
         public string Name { get; set; }
@@ -28,16 +23,16 @@ namespace dotnet_tree_shadows.Models {
 
         public Session () {
             Id = "";
-            Players = new Dictionary<string, Player>();
+            Players = new List<string>();
             Game = new Game();
             Name = "";
             Host = "";
             Invitations = new List<string>();
         }
-        
+
         public Session (Profile host) {
             Id = "";
-            Players = new Dictionary<string, Player> { { host.Id, new Player(host) } };
+            Players = new List<string>();
             Game = new Game();
             Name = $"New Session - {DateTime.Now.ToString()}";
             Host = host.Id;
@@ -45,31 +40,25 @@ namespace dotnet_tree_shadows.Models {
         }
 
         public void AddPlayer (Profile player) {
-            Players.Add( player.Id, new Player(player) );
-        }
-        
-        public bool HasInvited (string id) {
-            return Invitations.Any( i => i == id );
+            Players.Add( player.Id );
+            Game.AddPlayerBoard( player.Id );
         }
 
-        public void RemoveInvitation (string id) {
-            Invitations.RemoveAll( i => i == id );
-        }
+        public bool HasInvited (string id) { return Invitations.Any( i => i == id ); }
+
+        public void RemoveInvitation (string id) { Invitations.RemoveAll( i => i == id ); }
 
         public void AddInvitation (string id) {
             if ( HasInvited( id ) ) return;
             Invitations.Add( id );
         }
 
-        public bool HasPlayer (string id) => Players.ContainsKey( id );
-        
+        public bool HasPlayer (string id) => Players.Contains( id );
+
         public bool TryProcessAction (string userId, GameAction gameAction, out string failureReason) {
-            
             switch ( gameAction.ActionType ) {
-                case GameActionType.Buy:
-                    return TryBuy( userId, gameAction, out failureReason );
-                case GameActionType.Plant:
-                    return TryPlant( gameAction, out failureReason );
+                case GameActionType.Buy: return TryBuy( userId, gameAction, out failureReason );
+                case GameActionType.Plant: return TryPlant( gameAction, out failureReason );
                 case GameActionType.Grow: break;
                 case GameActionType.Collect: break;
                 case GameActionType.EndTurn: break;
@@ -95,7 +84,7 @@ namespace dotnet_tree_shadows.Models {
             return Game.Plant(
                     (HexCoordinates) gameAction.origin,
                     (HexCoordinates) gameAction.target,
-                    Players[gameAction.PlayerId],
+                    Game.PlayerBoards[gameAction.PlayerId],
                     out failureReason
                 );
         }
@@ -106,7 +95,7 @@ namespace dotnet_tree_shadows.Models {
                 return false;
             }
 
-            if ( !Players[userId].TryBuy( (PieceType) gameAction.PieceType, out string buyFailReason ) ) {
+            if ( !Game.PlayerBoards[userId].TryBuy( (PieceType) gameAction.PieceType, out string buyFailReason ) ) {
                 failureReason = $"Cannot buy piece: {buyFailReason} ";
                 return false;
             }
@@ -115,5 +104,4 @@ namespace dotnet_tree_shadows.Models {
             return true;
         }
     }
-
 }
