@@ -1,6 +1,5 @@
 #nullable enable
 using System;
-using System.Numerics;
 
 namespace dotnet_tree_shadows.Models {
     public readonly struct HexCoordinates {

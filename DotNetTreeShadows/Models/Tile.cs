@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace dotnet_tree_shadows.Models {
     public class Tile {
