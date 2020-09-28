@@ -4,12 +4,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using dotnet_tree_shadows.Models.GameActions;
-using dotnet_tree_shadows.Services;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using XKCDPasswordGen;
 
-namespace dotnet_tree_shadows.Models {
+namespace dotnet_tree_shadows.Models.SessionModels {
     public class Session {
         public SessionSummary Summary {
             get => new SessionSummary( Id, Name );
@@ -39,7 +38,7 @@ namespace dotnet_tree_shadows.Models {
         public Session (Profile host) {
             Id = "";
             Players = new List<string>();
-            Game = new Game();
+            Game = new Game(host.Id);
             Name = RandomName();
             Host = host.Id;
             Invitations = new List<string>();
@@ -123,21 +122,7 @@ namespace dotnet_tree_shadows.Models {
                                                         Invitations = Invitations.ToArray(),
                                                     };
         
-        public class SessionSummary {
-            [BsonRepresentation(BsonType.ObjectId)]
-            public string Id { get; set; }
-            public string Name { get; set; }
-
-            public SessionSummary () {
-                Id = "";
-                Name = "";
-            }
-            
-            public SessionSummary (string id, string name) {
-                Id = id;
-                Name = name;
-            }
-
-        }
+        
     }
+
 }

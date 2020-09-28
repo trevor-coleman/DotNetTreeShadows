@@ -1,6 +1,6 @@
 using System;
 
-namespace dotnet_tree_shadows.Models {
+namespace dotnet_tree_shadows.Models.SessionModels {
     public class Tile {
         public HexCoordinates HexCoordinates { get; set; }
         public PieceType? PieceType { get; set; }
@@ -82,7 +82,7 @@ namespace dotnet_tree_shadows.Models {
                 return false;
             }
 
-            if ( PieceType == Models.PieceType.LargeTree ) {
+            if ( PieceType == SessionModels.PieceType.LargeTree ) {
                 failureReasons = "Can't grow large tree.";
                 return false;
             }
@@ -95,7 +95,7 @@ namespace dotnet_tree_shadows.Models {
         public void GrowTree () {
             PieceType = PieceType switch {
                 null => throw new InvalidOperationException( "Can't grow tile with out tree" ),
-                Models.PieceType.LargeTree => throw new InvalidOperationException( "Can't grow large tree." ),
+                SessionModels.PieceType.LargeTree => throw new InvalidOperationException( "Can't grow large tree." ),
                 _ => (PieceType) ((int) PieceType + 1)
             };
         }

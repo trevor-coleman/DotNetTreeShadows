@@ -1,4 +1,4 @@
-namespace dotnet_tree_shadows.Models {
+namespace dotnet_tree_shadows.Models.SessionModels {
     public struct TileDTO {
         public HexCoordinates HexCoordinates { get; set; }
         public PieceType? PieceType { get; set; }

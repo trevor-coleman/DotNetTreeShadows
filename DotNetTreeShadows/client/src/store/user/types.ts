@@ -16,7 +16,6 @@ export interface SessionInfo {
 
 export interface Profile {
   name: string;
-  id: string;
   friends: string[];
   sessions: SessionInfo[];
   sentInvitations: string[];

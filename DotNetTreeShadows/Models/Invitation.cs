@@ -1,4 +1,5 @@
 using System;
+using dotnet_tree_shadows.Models.SessionModels;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
@@ -8,34 +9,25 @@ namespace dotnet_tree_shadows.Models {
     public class Invitation {
         [BsonId]
         [BsonRepresentation( BsonType.ObjectId )]
-        public string Id;
+        public string Id { get; set; } = "";
 
-        public string SenderId { get; set; }
-        public string SenderName { get; set; }
-        public string RecipientId { get; set; }
-        public string RecipientName { get; set; }
-        public string? ResourceId { get; set; }
-        public string? ResourceName { get; set; }
-        public DateTime? Created { get; set; }
-
-        [JsonConverter( typeof( StringEnumConverter ) )]
-        [BsonRepresentation( BsonType.String )]
-        public InvitationStatus? Status { get; set; }
+        public string SenderId { get; set; } = "";
+        public string SenderName { get; set; } = "";
+        public string RecipientId { get; set; } = "";
+        public string RecipientName { get; set; } = "";
+        public string? ResourceId { get; set; } = "";
+        public string? ResourceName { get; set; } = "";
+        public DateTime? Created { get; set; } = DateTime.UtcNow;
 
         [JsonConverter( typeof( StringEnumConverter ) )]
         [BsonRepresentation( BsonType.String )]
-        public InvitationType InvitationType { get; set; }
+        public InvitationStatus? Status { get; set; } = InvitationStatus.Pending;
 
-        public Invitation () {
-            SenderName = "";
-            RecipientName = "";
-            SenderId = "";
-            RecipientId = "";
-            ResourceId = null;
-            Created = DateTime.UtcNow;
-            Status = InvitationStatus.Accepted;
-            InvitationType = InvitationType.FriendRequest;
-        }
+        [JsonConverter( typeof( StringEnumConverter ) )]
+        [BsonRepresentation( BsonType.String )]
+        public InvitationType InvitationType { get; set; } = InvitationType.FriendRequest;
+
+        public Invitation () { }
         
 
         public static Invitation FriendRequest (Profile sender, Profile recipient) =>

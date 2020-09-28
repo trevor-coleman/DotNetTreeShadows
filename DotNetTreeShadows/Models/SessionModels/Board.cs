@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace dotnet_tree_shadows.Models {
+namespace dotnet_tree_shadows.Models.SessionModels {
     public class Board {
         public List<HexCoordinates> TreeTiles { get; set; } = new List<HexCoordinates>();
         public readonly Dictionary<HexCoordinates, Tile> Tiles = new Dictionary<HexCoordinates, Tile>();

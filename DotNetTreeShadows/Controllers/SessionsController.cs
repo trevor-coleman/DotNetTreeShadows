@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using dotnet_tree_shadows.Authentication;
 using dotnet_tree_shadows.Models;
+using dotnet_tree_shadows.Models.SessionModels;
 using dotnet_tree_shadows.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -83,7 +84,7 @@ namespace dotnet_tree_shadows.Controllers {
         }
 
         [HttpGet( "{id:length(24)}", Name = "GetSession" )]
-        public async Task<ActionResult<Session>> Get (string id) {
+        public async Task<ActionResult<SessionDTO>> Get (string id) {
             Session session = await sessionService.Get( id );
             if ( session == null ) return NotFound();
 
@@ -94,7 +95,7 @@ namespace dotnet_tree_shadows.Controllers {
                         new Response { Status = "Unauthorized", Message = "userId is null" }
                     );
 
-            return session;
+            return session.DTO();
         }
 
         [HttpPost]

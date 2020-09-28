@@ -70,6 +70,7 @@ namespace dotnet_tree_shadows.Controllers {
   
             return Ok(new  
                       {  
+                          id = user.UserId,
                           token = new JwtSecurityTokenHandler().WriteToken(token),  
                           expiration = token.ValidTo  
                       });

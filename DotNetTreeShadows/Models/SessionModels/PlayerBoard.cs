@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using dotnet_tree_shadows.Utilities;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
+// ReSharper disable FieldCanBeMadeReadOnly.Global
 
-namespace dotnet_tree_shadows.Models {
+namespace dotnet_tree_shadows.Models.SessionModels {
     public class PlayerBoard {
         public string PlayerId { get; set; }
         public TreeType? TreeType { get; set; }
@@ -17,7 +18,7 @@ namespace dotnet_tree_shadows.Models {
         }
 
         [BsonDictionaryOptions( DictionaryRepresentation.ArrayOfArrays )]
-        public readonly Dictionary<string, PieceCounter> Pieces;
+        public Dictionary<string, PieceCounter> Pieces = new Dictionary<string, PieceCounter>();
 
         public PlayerBoard () {
             PlayerId = "";
@@ -30,8 +31,9 @@ namespace dotnet_tree_shadows.Models {
             }
         }
 
-        public PlayerBoard (Profile profile) {
-            PlayerId = profile.Id;
+        
+        public PlayerBoard(string hostId){
+        PlayerId = hostId;
             TreeType = null;
             Score = new PlayerScore();
             Light = 0;
@@ -40,8 +42,10 @@ namespace dotnet_tree_shadows.Models {
                 Pieces[pieceType.ToString()] = PieceCounter.StartingAmount( pieceType );
             }
         }
+        
+        public PlayerBoard (Profile profile) :this (profile.Id) {}
 
-        public PlayerBoardDTO DTO () => new PlayerBoardDTO { ScoringTokens = Score.TokenCountByType, Pieces = Pieces };
+        public PlayerBoardDTO DTO () => new PlayerBoardDTO { PlayerId = PlayerId, ScoringTokens = Score.TokenCountByType, Pieces = Pieces };
 
         /// <summary>Spends light</summary>
         /// <param name="amount">amount to spend. Must be > 0.</param>

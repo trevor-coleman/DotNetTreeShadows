@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using dotnet_tree_shadows.Authentication;
+using dotnet_tree_shadows.Models.SessionModels;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using static dotnet_tree_shadows.Models.Session;
 
 #nullable enable
 namespace dotnet_tree_shadows.Models {

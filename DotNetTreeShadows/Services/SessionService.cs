@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using dotnet_tree_shadows.Models;
+using dotnet_tree_shadows.Models.SessionModels;
 using MongoDB.Driver;
 
 namespace dotnet_tree_shadows.Services {
@@ -18,11 +19,11 @@ namespace dotnet_tree_shadows.Services {
             return (await sessions.FindAsync( session => true )).ToList();
         }
 
-        public async Task<List<Session.SessionSummary>> GetSessionSummariesForHost (string hostId) {
-            FindOptions<Session, Session.SessionSummary> findOptions = new FindOptions<Session, Session.SessionSummary> {
+        public async Task<List<SessionSummary>> GetSessionSummariesForHost (string hostId) {
+            FindOptions<Session, SessionSummary> findOptions = new FindOptions<Session, SessionSummary> {
                                                                             Projection =
                                                                                 Builders<Session>.Projection.Expression(
-                                                                                        session => new Session.SessionSummary(
+                                                                                        session => new SessionSummary(
                                                                                                 session.Id,
                                                                                                 session.Name
                                                                                             )

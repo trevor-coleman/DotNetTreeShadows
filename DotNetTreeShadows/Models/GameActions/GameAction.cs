@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using dotnet_tree_shadows.Models.SessionModels;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json.Converters;

@@ -37,20 +37,22 @@ const SessionCreator: FunctionComponent<SessionCreatorProps> = (props: SessionCr
 
   const {sessions, createSession, getSession, loggedIn} = props;
 
-  const [session, setSession] = useState<string>("");
+  const [sessionId, setSessionId] = useState<string>("");
+  const [sessionName, setSessionName] = useState<string>("");
 
   const changeSession = (sessionId: string) => {
-    setSession(sessionId);
+    setSessionId(sessionId);
+
     getSession(sessionId);
   };
 
   return <Card><CardContent><Typography variant={'h5'}>Session</Typography>
     <div> <Button onClick={createSession}>Add Session</Button></div>
     <div><Select
-      disabled={loggedIn}
+      disabled={!loggedIn}
       labelId="session-select"
       id="session-select"
-      value={session}
+      value={sessionId}
       onChange={(e: React.ChangeEvent<{ name?: string; value: unknown }>) => changeSession(e.target.value as string)}>
       {sessions
        ? sessions.map(session => <MenuItem

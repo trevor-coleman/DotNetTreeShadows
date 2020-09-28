@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace dotnet_tree_shadows.Models {
+namespace dotnet_tree_shadows.Models.SessionModels {
     public class BoardDTO {
 
         public HexCoordinates[] TreeTiles { get; set; }

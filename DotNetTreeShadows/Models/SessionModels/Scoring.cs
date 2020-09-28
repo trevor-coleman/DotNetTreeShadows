@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace dotnet_tree_shadows.Models {
+namespace dotnet_tree_shadows.Models.SessionModels {
     public class Scoring {
 
         public struct Token {

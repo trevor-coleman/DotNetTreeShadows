@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace dotnet_tree_shadows.Models {
+namespace dotnet_tree_shadows.Models.SessionModels {
     [SuppressMessage( "ReSharper", "ArrangeMethodOrOperatorBody" )]
     public class PieceCounter {
 

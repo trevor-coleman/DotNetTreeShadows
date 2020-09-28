@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Security.Policy;
-using static dotnet_tree_shadows.Models.Session;
+using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models {
     public class ProfileDTO {

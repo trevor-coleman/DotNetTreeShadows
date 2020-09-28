@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using dotnet_tree_shadows.Authentication;
 using dotnet_tree_shadows.Models;
+using dotnet_tree_shadows.Models.SessionModels;
 using dotnet_tree_shadows.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;

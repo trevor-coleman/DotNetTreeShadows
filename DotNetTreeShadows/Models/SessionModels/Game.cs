@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace dotnet_tree_shadows.Models {
+namespace dotnet_tree_shadows.Models.SessionModels {
 
     public class Game {
         public Dictionary<string, PlayerBoard> PlayerBoards { get; set; } = new Dictionary<string, PlayerBoard>();
@@ -20,7 +19,13 @@ namespace dotnet_tree_shadows.Models {
 
         public Board Board { get; } = Board.New();
 
-        
+
+        public Game () { }
+
+        public Game (string hostId) {
+            AddPlayerBoard( hostId );
+            TurnOrder.Enqueue( hostId );
+        }
         
         public int TotalRounds {
             get =>
@@ -162,19 +167,20 @@ namespace dotnet_tree_shadows.Models {
             return true;
         }
 
-        public void AddPlayerBoard (string playerId) { PlayerBoards.Add( playerId, new PlayerBoard() ); }
+        public void AddPlayerBoard (string playerId) { PlayerBoards.Add(playerId, new PlayerBoard(playerId) ); }
 
         public GameDTO DTO () {
-            Dictionary<string, PlayerBoardDTO> playerBoardDTOs = new Dictionary<string, PlayerBoardDTO>();
+            List<PlayerBoardDTO> playerBoardDTOs = new List<PlayerBoardDTO>();
 
-            foreach ( var (playerId, playerBoard) in PlayerBoards ) {
-                playerBoardDTOs.Add( playerId, playerBoard.DTO() );
+            // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
+            foreach ( (_,PlayerBoard playerBoard) in PlayerBoards ) {
+                playerBoardDTOs.Add( playerBoard.DTO() );
             }
-
+            
             return new GameDTO {
                                    TurnOrder = TurnOrder.ToArray(),
                                    FirstPlayer = FirstPlayer,
-                                   PlayerBoards = playerBoardDTOs,
+                                   PlayerBoards = playerBoardDTOs.ToArray(),
                                    CurrentTurn = CurrentTurn,
                                    Revolution = Revolution,
                                    Round = Round,

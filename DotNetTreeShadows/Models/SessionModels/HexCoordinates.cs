@@ -1,7 +1,7 @@
 #nullable enable
 using System;
 
-namespace dotnet_tree_shadows.Models {
+namespace dotnet_tree_shadows.Models.SessionModels {
     public readonly struct HexCoordinates {
         public readonly int Q;
         public readonly int R;

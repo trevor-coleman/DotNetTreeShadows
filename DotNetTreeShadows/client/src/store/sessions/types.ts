@@ -18,8 +18,11 @@ export type Session = {
 }
 
 export type PlayerBoard = {
+  playerId: string;
+  treeType?: TreeType
+  //TODO: Change to hold actual scoring tokens
   scoringTokens: number[];
-  pieces: Map<PieceType, PieceCount>
+  pieces: { [pieceType: string]: PieceCount }
 };
 
 export interface IHexCoordinates {
@@ -47,7 +50,7 @@ export interface Game {
   board: Board;
   turnOrder: string[];
   firstPlayer: string;
-  playerBoards: Map<string, PlayerBoard>
+  playerBoards: PlayerBoard[];
   currentTurn: number;
   Revolution: number;
   Round: number;
@@ -62,7 +65,7 @@ export interface Game {
 };
 
 export type SunPosition = "NorthWest"|"NorthEast"|"East"|"SouthEast"|"SouthWest"|"West";
-export type TreeType = "Ash" |"Aspen" | "Poplar" | "Maple";
+export type TreeType = "Ash" |"Aspen" |"Birch"| "Poplar";
 
 export type ScoringToken = {
   leaves: number,

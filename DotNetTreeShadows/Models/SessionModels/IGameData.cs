@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace dotnet_tree_shadows.Models {
+namespace dotnet_tree_shadows.Models.SessionModels {
     public interface IGameData {
         public string[] TurnOrder { get; set; }
         public int CurrentTurn { get; set; }
