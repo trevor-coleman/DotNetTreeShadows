@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using dotnet_tree_shadows.Authentication;
-using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.GameActions;
 using dotnet_tree_shadows.Models.SessionModels;
 using dotnet_tree_shadows.Services;
@@ -8,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
 
 namespace dotnet_tree_shadows.Controllers {
     [ApiController, 
@@ -26,8 +26,9 @@ namespace dotnet_tree_shadows.Controllers {
         [HttpPost]
         [Route( "actions" )]
         public async Task<ActionResult<Session>> DoAction ([FromRoute] string sessionId, [FromBody] GameAction gameAction) {
-            
-            Task<Session>? sessionTask =  sessionService.Get( sessionId );
+
+            if ( sessionId == null ) return NotFound();
+            Task<Session> sessionTask =  sessionService.Get( sessionId );
             Task<ApplicationUser>? userTask =  userManager.GetUserAsync( HttpContext.User );
             
             ApplicationUser user = await userTask;

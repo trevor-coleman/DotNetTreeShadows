@@ -6,13 +6,15 @@ using Newtonsoft.Json.Converters;
 
 namespace dotnet_tree_shadows.Models.GameActions {
     public class GameAction {
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string PlayerId { get; set; }
-        [JsonConverter(typeof(StringEnumConverter))]
-        [BsonRepresentation(BsonType.String)]
-        public GameActionType ActionType { get; set; }
-        public PieceType? PieceType { get; set; }
-        public HexCoordinates? target { get; set; }
-        public HexCoordinates? origin { get; set; }
+        [BsonRepresentation( BsonType.ObjectId )]
+        public string PlayerId { get; set; } = "";
+
+        [JsonConverter( typeof( StringEnumConverter ) )]
+        [BsonRepresentation( BsonType.String )]
+        public GameActionType ActionType { get; set; } = GameActionType.EndTurn;
+
+        public PieceType? PieceType { get; set; } = SessionModels.PieceType.Seed;
+        public HexCoordinates? Target { get; set; } = HexCoordinates.Zero;
+        public HexCoordinates? Origin { get; set; } = HexCoordinates.Zero;
     }
 }

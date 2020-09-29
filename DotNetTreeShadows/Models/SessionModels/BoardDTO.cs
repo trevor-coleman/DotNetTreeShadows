@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 
 namespace dotnet_tree_shadows.Models.SessionModels {
-    public class BoardDTO {
+    public class BoardDto {
 
-        public HexCoordinates[] TreeTiles { get; set; }
-        public Dictionary<HexCoordinates, TileDTO> Tiles { get; set; }
-        public SunPosition SunPosition { get; set; }
+        public HexCoordinates[] TreeTiles { get; set; } = { };
+        public Dictionary<HexCoordinates, TileDto> Tiles { get; set; } = new Dictionary<HexCoordinates, TileDto>();
+        public SunPosition SunPosition { get; set; } = SunPosition.NorthEast;
     }
 
 }

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
 
 namespace dotnet_tree_shadows.Controllers {
     [Route( "api/[controller]" ), ApiController,
@@ -36,7 +37,7 @@ namespace dotnet_tree_shadows.Controllers {
         [Route("{sessionId:length(24)}/players")]
         public async Task<ActionResult> InvitePlayer ([FromRoute] string sessionId, [FromBody] ObjectIdModel idModel) {
             string recipientId = idModel.Id;
-            Task<Session>? sessionTask =  sessionService.Get( sessionId );
+            Task<Session?> sessionTask =  sessionService.Get( sessionId );
             Task<ApplicationUser>? userTask =  userManager.GetUserAsync( HttpContext.User );
             
 
@@ -84,8 +85,8 @@ namespace dotnet_tree_shadows.Controllers {
         }
 
         [HttpGet( "{id:length(24)}", Name = "GetSession" )]
-        public async Task<ActionResult<SessionDTO>> Get (string id) {
-            Session session = await sessionService.Get( id );
+        public async Task<ActionResult<SessionDto>> Get (string id) {
+            Session? session = await sessionService.Get( id );
             if ( session == null ) return NotFound();
 
             ApplicationUser currentUser = await userManager.GetUserAsync( HttpContext.User );
@@ -95,11 +96,11 @@ namespace dotnet_tree_shadows.Controllers {
                         new Response { Status = "Unauthorized", Message = "userId is null" }
                     );
 
-            return session.DTO();
+            return session.Dto();
         }
 
         [HttpPost]
-        public async Task<ActionResult<SessionDTO>> Create () {
+        public async Task<ActionResult<SessionDto>> Create () {
             ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
             if (user?.UserId == null ) return StatusCode( StatusCodes.Status403Forbidden );
             
@@ -117,7 +118,7 @@ namespace dotnet_tree_shadows.Controllers {
             Session createdSession = await sessionService.Create( session );
             userProfile.AddSession( createdSession );
             await profileService.Update( user.UserId, userProfile );
-            return CreatedAtRoute( "GetSession", new { id = createdSession.Id }, createdSession.DTO() );
+            return CreatedAtRoute( "GetSession", new { id = createdSession.Id }, createdSession.Dto() );
         }
 
         // [HttpPut("id:length(24")]
@@ -132,7 +133,7 @@ namespace dotnet_tree_shadows.Controllers {
 
         [HttpDelete]
         public async Task<IActionResult> Delete (string id) {
-            Session session = await sessionService.Get( id );
+            Session? session = await sessionService.Get( id );
 
             if ( session == null ) {
                 return NotFound();

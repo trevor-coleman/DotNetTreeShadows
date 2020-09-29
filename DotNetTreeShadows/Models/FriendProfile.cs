@@ -1,8 +1,7 @@
-using dotnet_tree_shadows.Models;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace dotnet_tree_shadows.Controllers {
+namespace dotnet_tree_shadows.Models {
     public class FriendProfile {
         public string Name;
         [BsonRepresentation(BsonType.ObjectId)]

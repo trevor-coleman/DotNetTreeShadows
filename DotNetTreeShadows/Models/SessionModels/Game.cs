@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 
 namespace dotnet_tree_shadows.Models.SessionModels {
 
@@ -7,7 +6,7 @@ namespace dotnet_tree_shadows.Models.SessionModels {
         public Dictionary<string, PlayerBoard> PlayerBoards { get; set; } = new Dictionary<string, PlayerBoard>();
         public Queue<string> TurnOrder { get; set; } = new Queue<string>();
         public Dictionary<string, TreeType> PlayerTreeTypes = new Dictionary<string, TreeType>();
-        public string? FirstPlayer { get; set; }
+        public string FirstPlayer { get; set; } = "";
         public int CurrentTurn { get; set; } = 0;
         public int Revolution { get; set; } = 0;
         public int Round { get; set; } = 0;
@@ -49,30 +48,31 @@ namespace dotnet_tree_shadows.Models.SessionModels {
                 message = "Origin tile has already been activated this turn.";
             }
 
-            if ( !Board.Tiles.TryGetValue( target, out Tile targetTile ) ) {
+            if ( !Board.Tiles.TryGetValue( target, out Tile? targetTile ) ) {
                 message = "Tried to plant with hex that is not in the board.";
                 return false;
             }
-
-            ;
 
             if ( PreventActionsInShadow && targetTile.ShadowHeight > 0 ) {
                 message = "Planting and growing in shadow are disabled.";
                 return false;
             }
 
-            if ( !Board.Tiles.TryGetValue( origin, out Tile originTile ) ) {
+            if ( !Board.Tiles.TryGetValue( origin, out Tile? originTile ) ) {
                 message = "Tried to plant from hex that is not in the board.";
                 return false;
             }
-
-            ;
 
             if ( targetTile.PieceType != null ) {
                 message = "Tile is occupied";
                 return false;
             }
 
+            if ( originTile.PieceType == null ) {
+                message = "Can't plant from empty tile.";
+                return false;
+            }
+            
             if ( target.DistanceTo( origin ) > (int) originTile.PieceType ) {
                 message = "Target too far from origin";
                 return false;
@@ -92,20 +92,25 @@ namespace dotnet_tree_shadows.Models.SessionModels {
         }
 
         public bool Grow (HexCoordinates target, PlayerBoard playerBoard, out string message) {
-            if ( !Board.Tiles.TryGetValue( target, out Tile targetTile ) ) {
+            if ( !Board.Tiles.TryGetValue( target, out Tile? targetTile ) ) {
                 message = "Tried to grow with hex that is not in the board.";
                 return false;
             }
 
-            ;
+            
 
-            if ( !targetTile.CanGrow( PreventActionsInShadow, out string tileFailureReasons ) ) {
+            if ( !targetTile.CanGrow( PreventActionsInShadow, out string? tileFailureReasons ) ) {
                 message = $"Tile can't grow tree: {tileFailureReasons}";
                 return false;
             }
 
-            var targetPiece = (PieceType) targetTile.PieceType;
-            var targetType = (TreeType) targetTile.TreeType;
+            if ( targetTile.PieceType == null || targetTile.TreeType == null) {
+                message = "Can't grow an empty tile.";
+                return false;
+            }
+            
+            PieceType targetPiece = (PieceType) targetTile.PieceType;
+            TreeType targetType = (TreeType) targetTile.TreeType;
 
             if ( targetType != playerBoard.TreeType ) {
                 message = "Tried to grow another player's tree.";
@@ -131,12 +136,12 @@ namespace dotnet_tree_shadows.Models.SessionModels {
             ) {
             token = null;
 
-            if ( !Board.Tiles.TryGetValue( target, out Tile targetTile ) ) {
+            if ( !Board.Tiles.TryGetValue( target, out Tile? targetTile ) ) {
                 message = "Tried to grow with hex that is not in the board.";
                 return false;
             }
 
-            ;
+            
 
             if ( !targetTile.HasTree() ) {
                 message = "Can't collect from empty tile.";
@@ -169,23 +174,23 @@ namespace dotnet_tree_shadows.Models.SessionModels {
 
         public void AddPlayerBoard (string playerId) { PlayerBoards.Add(playerId, new PlayerBoard(playerId) ); }
 
-        public GameDTO DTO () {
-            List<PlayerBoardDTO> playerBoardDTOs = new List<PlayerBoardDTO>();
+        public GameDto Dto () {
+            List<PlayerBoardDto> playerBoardDtos = new List<PlayerBoardDto>();
 
             // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
             foreach ( (_,PlayerBoard playerBoard) in PlayerBoards ) {
-                playerBoardDTOs.Add( playerBoard.DTO() );
+                playerBoardDtos.Add( playerBoard.Dto() );
             }
             
-            return new GameDTO {
+            return new GameDto {
                                    TurnOrder = TurnOrder.ToArray(),
                                    FirstPlayer = FirstPlayer,
-                                   PlayerBoards = playerBoardDTOs.ToArray(),
+                                   PlayerBoards = playerBoardDtos.ToArray(),
                                    CurrentTurn = CurrentTurn,
                                    Revolution = Revolution,
                                    Round = Round,
                                    ScoreTokenStacks = ScoreTokenStacks.Remaining,
-                                   Board = Board.DTO(),
+                                   Board = Board.Dto(),
                                    LongGame = LongGame,
                                    PreventActionsInShadow = PreventActionsInShadow,
                                    TilesActiveThisTurn = TilesActiveThisTurn.ToArray(),

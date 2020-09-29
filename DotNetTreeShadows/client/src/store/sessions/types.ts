@@ -1,4 +1,4 @@
-import { HexCoordinates } from '../../models/HexCoordinates';
+import { HexCoordinates } from '../../models/hex-grid/HexCoordinates';
 
 export type KnownSessionAction = CreateNewSessionAction | GetSessionAction;
 
@@ -33,14 +33,14 @@ export interface IHexCoordinates {
   toString: ()=>string,
 }
 
-interface Tile {
+export interface Tile {
   hexCoordinates: HexCoordinates,
   pieceType: PieceType | null;
   treeType: TreeType | null;
   shadowHeight:0;
 }
 
-interface Board {
+export interface Board {
   treeTiles: HexCoordinates[];
   tiles: {[hex: string]: Tile}
   sunPosition: SunPosition;

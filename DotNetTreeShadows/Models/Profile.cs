@@ -17,8 +17,9 @@ namespace dotnet_tree_shadows.Models {
         public List<SessionSummary> Sessions { get; set; } = new List<SessionSummary>();
         
         public List<string> Friends { get; set; } = new List<string>();
+
         [EmailAddress]
-        public string Email { get; set; }
+        public string Email { get; set; } = "";
 
         public List<string> ReceivedInvitations { get; set; }= new List<string>();
         public List<string> SentInvitations  { get; set; } = new List<string>();
@@ -63,8 +64,8 @@ namespace dotnet_tree_shadows.Models {
         public bool HasSentInvitation (string id) => SentInvitations.Any( i => i == id );
         public bool HasReceivedInvitation (string id) => ReceivedInvitations.Any( i => i == id );
 
-        public ProfileDTO DTO () =>
-            new ProfileDTO {
+        public ProfileDto Dto () =>
+            new ProfileDto {
                                Name = Name,
                                Sessions = Sessions.ToArray(),
                                Friends = Friends.ToArray(),

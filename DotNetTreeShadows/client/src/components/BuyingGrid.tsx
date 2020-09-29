@@ -8,7 +8,8 @@ import { PieceType } from '../store/sessions/types';
 import DebugToolbar from './DebugToolbar';
 import SessionCreator from './SessionCreator';
 import Typography from '@material-ui/core/Typography';
-import TreeToken from './TreeToken';
+import SVGTreeToken from './SVGTreeToken';
+
 
 //REDUX MAPPING
 const mapStateToProps = (state: RootState) => {
@@ -84,27 +85,28 @@ const BuyingGrid: FunctionComponent<BuyingGridProps> = (props: BuyingGridProps) 
 
   const onBoardPieces: { [key: string]: number } = {};
 
+  const ground:"Ground" = "Ground"
+
   return <>
     <DebugToolbar />
     <SessionCreator />
-    {playerBoard
-     ? <Paper className={classes.paper}>
+     <Paper className={classes.paper}>
        <Typography variant="h6">{session?.session?.name ?? "no session"}
        </Typography>
+       {playerBoard
+        ?
        <Grid container direction={'row'} spacing={2}>
          {pieceColumns.map((col, index) => <Grid item>
            <Grid container item direction={'column'} spacing={2}>
-             <Grid item>
-               <TreeToken treeType={playerBoard.treeType ?? "Ash"} pieceType={pieceTypes[index]} size={size} />
-             </Grid>
              {col.map(({size, status, price}: IPieceProps) => <Grid item><Piece size={size}
                                                                                 status={status}
                                                                                 price={price} /></Grid>)}
            </Grid>
          </Grid>)}
        </Grid>
+        : ""}
      </Paper>
-     : ""}
+
   </>;
 };
 

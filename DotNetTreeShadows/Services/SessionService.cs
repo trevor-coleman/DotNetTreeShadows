@@ -10,7 +10,7 @@ namespace dotnet_tree_shadows.Services {
         private readonly IMongoCollection<Session> sessions;
 
         public SessionService (IGameDatabaseSettings settings) {
-            MongoClient? client = new MongoClient( settings.ConnectionString );
+            MongoClient client = new MongoClient( settings.ConnectionString );
             IMongoDatabase? database = client.GetDatabase( settings.DatabaseName );
             sessions = database.GetCollection<Session>( settings.SessionsCollectionName );
         }

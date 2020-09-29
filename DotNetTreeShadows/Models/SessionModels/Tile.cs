@@ -30,8 +30,8 @@ namespace dotnet_tree_shadows.Models.SessionModels {
             TreeType = null;
         }
 
-        public TileDTO DTO () =>
-            new TileDTO {
+        public TileDto Dto () =>
+            new TileDto {
                             HexCoordinates = HexCoordinates,
                             PieceType = PieceType,
                             TreeType = TreeType,
@@ -71,7 +71,7 @@ namespace dotnet_tree_shadows.Models.SessionModels {
                 : (int) PieceType > ShadowHeight;
 
 
-        public bool CanGrow (bool preventActionsInShadow, out string failureReasons) {
+        public bool CanGrow (bool preventActionsInShadow, out string? failureReasons) {
             if ( PieceType == null ) {
                 failureReasons= "Tile is empty. ";
                 return false;

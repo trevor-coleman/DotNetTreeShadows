@@ -2,7 +2,6 @@ import React, { FunctionComponent, PropsWithChildren, Component } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../store';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -30,6 +29,7 @@ const Layout: FunctionComponent<LayoutProps> = (props: LayoutProps) => {
 
   return <div><AppBar position={'static'}>
       <Toolbar>
+
       <Typography variant={'h6'}>Tree Shadows</Typography>
       </Toolbar>
     </AppBar>

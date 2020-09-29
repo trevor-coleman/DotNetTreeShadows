@@ -45,13 +45,13 @@ namespace dotnet_tree_shadows.Models.SessionModels {
         
         public PlayerBoard (Profile profile) :this (profile.Id) {}
 
-        public PlayerBoardDTO DTO () => new PlayerBoardDTO { PlayerId = PlayerId, ScoringTokens = Score.TokenCountByType, Pieces = Pieces };
+        public PlayerBoardDto Dto () => new PlayerBoardDto { PlayerId = PlayerId, ScoringTokens = Score.TokenCountByType, Pieces = Pieces };
 
         /// <summary>Spends light</summary>
         /// <param name="amount">amount to spend. Must be > 0.</param>
         public void Spend (int amount) {
-            if ( amount < 0 ) throw new ArgumentOutOfRangeException( "Tried to spend a negative amount of Light. " );
-            if ( Light < amount ) throw new InvalidOperationException( "Tried to spend more light than is available" );
+            if ( amount < 0 ) throw new ArgumentOutOfRangeException();
+            if ( Light < amount ) throw new InvalidOperationException();
             Light -= amount;
         }
 
@@ -89,7 +89,7 @@ namespace dotnet_tree_shadows.Models.SessionModels {
             if ( Light < pieceCounter.CurrentPrice() ) {
                 failureMessage = "Can't afford purchase.";
                 return false;
-            };
+            }
 
             failureMessage = "";
             return true;
@@ -100,7 +100,8 @@ namespace dotnet_tree_shadows.Models.SessionModels {
             if ( pieceIn == PieceType.LargeTree ) {
                 failureReason = "Can't grow large tree.";
                 return false;
-            };
+            }
+
             PieceCounter pieceCounterIn = Pieces[pieceIn.ToString()];
             PieceType pieceOut = LargerPiece( pieceIn );
             PieceCounter pieceCounterOut = Pieces[pieceOut.ToString()];
@@ -108,8 +109,8 @@ namespace dotnet_tree_shadows.Models.SessionModels {
             if ( !CanGrowTree( pieceIn, out returnedSafely, out string message ) ) {
                 failureReason = $"Can't Grow Tree: {message}";
                 return false;
-            };
-            
+            }
+
             pieceCounterIn.ReturnOrDiscard( out returnedSafely );
             pieceCounterOut.Take();
             Spend( CostToGrow( pieceOut ) );
@@ -159,7 +160,7 @@ namespace dotnet_tree_shadows.Models.SessionModels {
                 PieceType.SmallTree =>1,
                 PieceType.MediumTree => 2,
                 PieceType.LargeTree => 3,
-                _ => throw new ArgumentOutOfRangeException("Invalid pieceType")
+                _ => throw new ArgumentOutOfRangeException()
             };
         }
         

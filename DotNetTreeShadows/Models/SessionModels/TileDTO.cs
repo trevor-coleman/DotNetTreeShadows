@@ -1,5 +1,5 @@
 namespace dotnet_tree_shadows.Models.SessionModels {
-    public struct TileDTO {
+    public struct TileDto {
         public HexCoordinates HexCoordinates { get; set; }
         public PieceType? PieceType { get; set; }
         public TreeType? TreeType { get; set; }

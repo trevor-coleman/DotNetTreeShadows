@@ -8,7 +8,7 @@ import {
   GET_SESSION_REQUEST,
   GET_SESSION_FAILURE, GET_SESSION_SUCCESS,
 } from './types';
-import { HexCoordinates } from '../../models/HexCoordinates';
+import { HexCoordinates } from '../../models/hex-grid/HexCoordinates';
 
 export const initialSessionState:SessionState = {session: null, sessionLoading:false, sessionLoadingFailureMessage:null}
 

@@ -221,22 +221,37 @@
             <e p="App.tsx" t="Include" />
             <e p="components" t="Include">
               <e p="AddFriendForm.tsx" t="Include" />
+              <e p="BuyingGrid.tsx" t="Include" />
               <e p="DebugTest.tsx" t="Include" />
               <e p="DebugToolbar.tsx" t="Include" />
+              <e p="GameBoard.tsx" t="Include" />
               <e p="InvitationList.tsx" t="Include" />
               <e p="Layout.tsx" t="Include" />
+              <e p="Piece.tsx" t="Include" />
               <e p="ProfileDisplay.tsx" t="Include" />
               <e p="RegisterForm.tsx" t="Include" />
               <e p="SessionCreator.tsx" t="Include" />
               <e p="SignInForm.tsx" t="Include" />
+              <e p="SVGTreeToken.tsx" t="Include" />
+              <e p="TreeTokenTest.tsx" t="Include" />
             </e>
             <e p="index.css" t="Include" />
             <e p="index.tsx" t="Include" />
             <e p="logo.svg" t="Include" />
             <e p="Models" t="Include">
-              <e p="HexCoordinates.ts" t="Include" />
+              <e p="hex-grid" t="Include">
+                <e p="HexCoordinates.ts" t="Include" />
+                <e p="Layout.ts" t="Include" />
+                <e p="Orientation.ts" t="Include" />
+                <e p="Point.ts" t="Include" />
+              </e>
             </e>
             <e p="react-app-env.d.ts" t="Include" />
+            <e p="routes" t="Include">
+              <e p="auth" t="Include">
+                <e p="SignedOut.tsx" t="Include" />
+              </e>
+            </e>
             <e p="serviceWorker.ts" t="Include" />
             <e p="setupTests.ts" t="Include" />
             <e p="store" t="Include">
@@ -277,6 +292,34 @@
                 <e p="types.ts" t="Include" />
               </e>
             </e>
+            <e p="svg" t="Include">
+              <e p="exports" t="Include">
+                <e p="Ash-LargeTree.svg" t="Include" />
+                <e p="Ash-MediumTree.svg" t="Include" />
+                <e p="ash-seed.svg" t="Include" />
+                <e p="Ash-SmallTree.svg" t="Include" />
+                <e p="Aspen-LargeTree.svg" t="Include" />
+                <e p="Aspen-MediumTree.svg" t="Include" />
+                <e p="aspen-seed.svg" t="Include" />
+                <e p="Aspen-SmallTree.svg" t="Include" />
+                <e p="Birch-LargeTree.svg" t="Include" />
+                <e p="Birch-MediumTree.svg" t="Include" />
+                <e p="birch-seed.svg" t="Include" />
+                <e p="Birch-SmallTree.svg" t="Include" />
+                <e p="Empty-FourLeaf.svg" t="Include" />
+                <e p="Empty-OneLeaf.svg" t="Include" />
+                <e p="Empty-ThreeLeaf.svg" t="Include" />
+                <e p="Empty-TwoLeaf.svg" t="Include" />
+                <e p="Poplar-LargeTree.svg" t="Include" />
+                <e p="Poplar-MediumTree.svg" t="Include" />
+                <e p="poplar-seed.svg" t="Include" />
+                <e p="Poplar-SmallTree.svg" t="Include" />
+              </e>
+              <e p="sun-svgrepo-com.svg" t="Include" />
+              <e p="SVGSeed.js" t="Include" />
+              <e p="TileImages.js" t="Include" />
+              <e p="TreeSVG.ts" t="Include" />
+            </e>
           </e>
           <e p="tsconfig.json" t="Include" />
           <e p="yarn.lock" t="Include" />
@@ -290,37 +333,41 @@
           <e p="ProfilesController.cs" t="Include" />
           <e p="SessionsController.cs" t="Include" />
         </e>
+        <e p="DotNetTreeShadows" t="Include" />
         <e p="DotNetTreeShadows.csproj" t="IncludeRecursive" />
         <e p="Models" t="Include">
           <e p="AuthDatabaseSettings.cs" t="Include" />
-          <e p="Board.cs" t="Include" />
-          <e p="BoardDTO.cs" t="Include" />
           <e p="FriendProfile.cs" t="Include" />
-          <e p="Game.cs" t="Include" />
           <e p="GameActions" t="Include">
             <e p="GameAction.cs" t="Include" />
             <e p="GameActionType.cs" t="Include" />
           </e>
           <e p="GameDatabaseSettings.cs" t="Include" />
-          <e p="GameDTO.cs" t="Include" />
-          <e p="HexCoordinates.cs" t="Include" />
-          <e p="IGameData.cs" t="Include" />
           <e p="Invitation.cs" t="Include" />
           <e p="NewInvitationDTO.cs" t="Include" />
           <e p="ObjectIdModel.cs" t="Include" />
-          <e p="PieceCounter.cs" t="Include" />
-          <e p="PieceType.cs" t="Include" />
-          <e p="PlayerBoard.cs" t="Include" />
-          <e p="PlayerBoardDTO.cs" t="Include" />
           <e p="Profile.cs" t="Include" />
           <e p="ProfileDTO.cs" t="Include" />
-          <e p="Scoring.cs" t="Include" />
-          <e p="Session.cs" t="Include" />
-          <e p="SessionDTO.cs" t="Include" />
-          <e p="SunPosition.cs" t="Include" />
-          <e p="Tile.cs" t="Include" />
-          <e p="TileDTO.cs" t="Include" />
-          <e p="TreeType.cs" t="Include" />
+          <e p="SessionModels" t="Include">
+            <e p="Board.cs" t="Include" />
+            <e p="BoardDTO.cs" t="Include" />
+            <e p="Game.cs" t="Include" />
+            <e p="GameDTO.cs" t="Include" />
+            <e p="HexCoordinates.cs" t="Include" />
+            <e p="IGameData.cs" t="Include" />
+            <e p="PieceCounter.cs" t="Include" />
+            <e p="PieceType.cs" t="Include" />
+            <e p="PlayerBoard.cs" t="Include" />
+            <e p="PlayerBoardDTO.cs" t="Include" />
+            <e p="Scoring.cs" t="Include" />
+            <e p="Session.cs" t="Include" />
+            <e p="SessionDTO.cs" t="Include" />
+            <e p="SessionSummary.cs" t="Include" />
+            <e p="SunPosition.cs" t="Include" />
+            <e p="Tile.cs" t="Include" />
+            <e p="TileDTO.cs" t="Include" />
+            <e p="TreeType.cs" t="Include" />
+          </e>
         </e>
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">

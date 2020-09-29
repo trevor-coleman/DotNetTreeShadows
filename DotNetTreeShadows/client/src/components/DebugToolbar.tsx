@@ -81,6 +81,13 @@ const DebugToolbar: FunctionComponent<DebugToolbarProps> = (props: DebugToolbarP
           variant="outlined"
           onClick={registerAll}>Mass Register</Button>
       </Grid>
+
+      <Grid item xs={2}>
+        <Button
+          variant="outlined"
+          onClick={()=>signInAs(accounts[0].email)}>Sign In</Button>
+      </Grid>
+
       <Grid item xs={2}>
         <FormControl className={classes.viewAs}>
           <InputLabel id="view-as-label">View As</InputLabel>

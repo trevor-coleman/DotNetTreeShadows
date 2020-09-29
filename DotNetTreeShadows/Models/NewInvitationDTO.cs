@@ -1,21 +1,18 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 
 namespace dotnet_tree_shadows.Models {
     
     
-    public class InvitationResponseDTO {
-        public InvitationResponseDTO (Invitation invitation) 
+    public class InvitationResponseDto {
+        public InvitationResponseDto (Invitation invitation) 
         {
             SenderName = invitation.SenderName;
-            SenderId = invitation.Id;
+            SenderId = invitation.SenderId;
             RecipientName = invitation.RecipientName;
-            RecipientId = invitation.ResourceId;
+            RecipientId = invitation.RecipientId;
             ResourceId = invitation.ResourceId;
             ResourceName = invitation.ResourceName;
             Created = invitation.Created;
@@ -38,7 +35,7 @@ namespace dotnet_tree_shadows.Models {
 
     }
     
-    public class NewInvitationDTO {
+    public class NewInvitationDto {
         
         public InvitationType InvitationType { get; set; }
         

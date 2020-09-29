@@ -45,8 +45,8 @@ namespace dotnet_tree_shadows.Models.SessionModels {
         }
 
         public static string RandomName () {
-            TextInfo myTI = new CultureInfo("en-US",false).TextInfo;
-            return myTI.ToTitleCase($"{XkcdPasswordGen.Generate(3, " ")}");
+            TextInfo textInfo = new CultureInfo("en-US",false).TextInfo;
+            return textInfo.ToTitleCase($"{XkcdPasswordGen.Generate(3)}");
         }
 
         public void AddPlayer (Profile player) {
@@ -81,19 +81,19 @@ namespace dotnet_tree_shadows.Models.SessionModels {
         }
 
         private bool TryPlant (GameAction gameAction, out string failureReason) {
-            if ( gameAction.origin == null ) {
+            if ( gameAction.Origin == null ) {
                 failureReason = "Failed to provide origin";
                 return false;
             }
 
-            if ( gameAction.target == null ) {
+            if ( gameAction.Target == null ) {
                 failureReason = "Failed to provide target";
                 return false;
             }
 
             return Game.Plant(
-                    (HexCoordinates) gameAction.origin,
-                    (HexCoordinates) gameAction.target,
+                    (HexCoordinates) gameAction.Origin,
+                    (HexCoordinates) gameAction.Target,
                     Game.PlayerBoards[gameAction.PlayerId],
                     out failureReason
                 );
@@ -114,10 +114,10 @@ namespace dotnet_tree_shadows.Models.SessionModels {
             return true;
         }
 
-        public SessionDTO DTO () => new SessionDTO {
+        public SessionDto Dto () => new SessionDto {
                                                         Host = Host,
                                                         Players = Players.ToArray(),
-                                                        Game = Game.DTO(),
+                                                        Game = Game.Dto(),
                                                         Name = Name,
                                                         Invitations = Invitations.ToArray(),
                                                     };

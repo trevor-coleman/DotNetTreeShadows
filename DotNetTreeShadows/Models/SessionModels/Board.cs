@@ -20,15 +20,15 @@ namespace dotnet_tree_shadows.Models.SessionModels {
             return board;
         }
 
-        public BoardDTO DTO () {
+        public BoardDto Dto () {
             
-            var tileDTOs = new Dictionary<HexCoordinates, TileDTO>();
+            Dictionary<HexCoordinates, TileDto> tileDtos = new Dictionary<HexCoordinates, TileDto>();
             foreach ( (HexCoordinates hex, var tile) in Tiles ) {
-                tileDTOs.Add( hex, tile.DTO() );
+                tileDtos.Add( hex, tile.Dto() );
             }
-            return new BoardDTO {
+            return new BoardDto {
                                     TreeTiles = TreeTiles.ToArray(),
-                                    Tiles = tileDTOs,
+                                    Tiles = tileDtos,
                                     SunPosition = SunPosition
                                 };
             
@@ -57,7 +57,7 @@ namespace dotnet_tree_shadows.Models.SessionModels {
         public void ReplaceShadow (Shadow shadow) {
             foreach ( ShadowHex shadowHex in shadow ) {
                 (HexCoordinates hex, int height) = shadowHex;
-                if ( Tiles.TryGetValue( hex, out Tile tile ) ) {
+                if ( Tiles.TryGetValue( hex, out Tile? tile ) ) {
                     tile.ShadowHeight = height;
                 } 
             }
@@ -66,7 +66,7 @@ namespace dotnet_tree_shadows.Models.SessionModels {
         public void ApplyShadow (Shadow shadow) {
             foreach ( ShadowHex shadowHex in shadow ) {
                 (HexCoordinates hex, int shadowHeight) = shadowHex;
-                if ( Tiles.TryGetValue( hex, out Tile tile ) ) {
+                if ( Tiles.TryGetValue( hex, out Tile? tile ) ) {
                     tile.ShadowHeight = Math.Max( shadowHeight, tile.ShadowHeight );
                 } 
             }
@@ -76,7 +76,8 @@ namespace dotnet_tree_shadows.Models.SessionModels {
             var shadowDictionary = new ShadowDictionary();
 
             foreach ( HexCoordinates treePos in TreeTiles ) {
-                Tiles.TryGetValue( treePos, out Tile tile );
+                Tiles.TryGetValue( treePos, out Tile? tile );
+                if(tile == null) continue;
                 Shadow tileShadow = tile.GetShadow( sunPos );
 
                 foreach ( ShadowHex shadowHex in tileShadow ) {
@@ -103,7 +104,7 @@ namespace dotnet_tree_shadows.Models.SessionModels {
 
             foreach ( KeyValuePair<HexCoordinates,Tile> boardTile in Tiles ) {
                 (_, Tile tile) = boardTile;
-                if ( !tile.ProducesLight ) continue;
+                if ( !tile.ProducesLight  || tile.TreeType == null) continue;
                 TreeType treeType = (TreeType) tile.TreeType;
                 light[treeType] += tile.Light;
             }
