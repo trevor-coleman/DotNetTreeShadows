@@ -126,6 +126,7 @@
           <e p="node_modules/jss-plugin-vendor-prefixer" t="IncludeRecursive" />
           <e p="node_modules/leven" t="IncludeRecursive" />
           <e p="node_modules/make-dir" t="IncludeRecursive" />
+          <e p="node_modules/normalizr" t="IncludeRecursive" />
           <e p="node_modules/p-map" t="IncludeRecursive" />
           <e p="node_modules/pirates" t="IncludeRecursive" />
           <e p="node_modules/popper.js" t="IncludeRecursive" />
@@ -221,12 +222,14 @@
             <e p="App.tsx" t="Include" />
             <e p="components" t="Include">
               <e p="AddFriendForm.tsx" t="Include" />
+              <e p="BoardTile.tsx" t="Include" />
               <e p="BuyingGrid.tsx" t="Include" />
               <e p="DebugTest.tsx" t="Include" />
               <e p="DebugToolbar.tsx" t="Include" />
               <e p="GameBoard.tsx" t="Include" />
               <e p="InvitationList.tsx" t="Include" />
               <e p="Layout.tsx" t="Include" />
+              <e p="NormalizerTest.tsx" t="Include" />
               <e p="Piece.tsx" t="Include" />
               <e p="ProfileDisplay.tsx" t="Include" />
               <e p="RegisterForm.tsx" t="Include" />
@@ -275,10 +278,15 @@
               <e p="rootReducer.ts" t="Include" />
               <e p="sessions" t="Include">
                 <e p="actions.ts" t="Include" />
+                <e p="board" t="Include">
+                  <e p="actions.ts" t="Include" />
+                  <e p="types.ts" t="Include" />
+                </e>
                 <e p="reducers.ts" t="Include" />
                 <e p="thunks.ts" t="Include" />
                 <e p="types.ts" t="Include" />
               </e>
+              <e p="storeSchema.ts" t="Include" />
               <e p="system" t="Include">
                 <e p="actions.ts" t="Include" />
                 <e p="reducers.ts" t="Include" />
@@ -339,8 +347,22 @@
           <e p="AuthDatabaseSettings.cs" t="Include" />
           <e p="FriendProfile.cs" t="Include" />
           <e p="GameActions" t="Include">
+            <e p="CostsLight.cs" t="Include" />
             <e p="GameAction.cs" t="Include" />
+            <e p="GameActionFactory.cs" t="Include" />
             <e p="GameActionType.cs" t="Include" />
+            <e p="GameActionValidators" t="Include">
+              <e p="GrowthInShadowAllowed.cs" t="Include" />
+              <e p="OnPlayersTurn.cs" t="Include" />
+              <e p="PieceTypeIsNull.cs" t="Include" />
+              <e p="PlayerCanAffordCost.cs" t="Include" />
+              <e p="PlayerHasAvailablePiece.cs" t="Include" />
+              <e p="TileHasNotBeenActiveThisTurn.cs" t="Include" />
+              <e p="ValidOrigin.cs" t="Include" />
+              <e p="WithinRangeOfOrigin.cs" t="Include" />
+            </e>
+            <e p="PieceTypeIsTree.cs" t="Include" />
+            <e p="PlantAction.cs" t="Include" />
           </e>
           <e p="GameDatabaseSettings.cs" t="Include" />
           <e p="Invitation.cs" t="Include" />
@@ -349,12 +371,16 @@
           <e p="Profile.cs" t="Include" />
           <e p="ProfileDTO.cs" t="Include" />
           <e p="SessionModels" t="Include">
+            <e p="BitwiseBoard.cs" t="Include" />
             <e p="Board.cs" t="Include" />
             <e p="BoardDTO.cs" t="Include" />
             <e p="Game.cs" t="Include" />
             <e p="GameDTO.cs" t="Include" />
+            <e p="GrowActionValidator.cs" t="Include" />
             <e p="HexCoordinates.cs" t="Include" />
+            <e p="HexPoint.cs" t="Include" />
             <e p="IGameData.cs" t="Include" />
+            <e p="OldTile.cs" t="Include" />
             <e p="PieceCounter.cs" t="Include" />
             <e p="PieceType.cs" t="Include" />
             <e p="PlayerBoard.cs" t="Include" />

@@ -51,7 +51,7 @@ namespace dotnet_tree_shadows.Models.SessionModels {
 
         public void AddPlayer (Profile player) {
             Players.Add( player.Id );
-            Game.AddPlayerBoard( player.Id );
+            Game.AddPlayer( player.Id );
         }
 
         public bool HasInvited (string id) { return Invitations.Any( i => i == id ); }
@@ -65,19 +65,16 @@ namespace dotnet_tree_shadows.Models.SessionModels {
 
         public bool HasPlayer (string id) => Players.Contains( id );
 
-        public bool TryProcessAction (string userId, GameAction gameAction, out string failureReason) {
-            switch ( gameAction.ActionType ) {
-                case GameActionType.Buy: return TryBuy( userId, gameAction, out failureReason );
-                case GameActionType.Plant: return TryPlant( gameAction, out failureReason );
-                case GameActionType.Grow: break;
-                case GameActionType.Collect: break;
-                case GameActionType.EndTurn: break;
-                case GameActionType.Undo: break;
-                default: throw new ArgumentOutOfRangeException();
+        public bool TryExecuteAction (string userId, GameAction gameAction, out string failureReason) {
+            if(gameAction.IsValid) {
+                gameAction.Execute();
+                failureReason = "";
+                return true;
             }
 
-            failureReason = "got to end";
+            failureReason = gameAction.FailureMessage;
             return false;
+
         }
 
         private bool TryPlant (GameAction gameAction, out string failureReason) {

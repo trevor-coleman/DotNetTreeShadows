@@ -1,11 +1,83 @@
 using System;
+using System.Runtime.CompilerServices;
+using dotnet_tree_shadows.Models.SessionModels;
+using MongoDB.Bson.Serialization.Serializers;
 
-namespace dotnet_tree_shadows.Models.SessionModels {
+namespace dotnet_tree_shadows.Models {
+
     public class Tile {
-        public HexCoordinates HexCoordinates { get; set; }
-        public PieceType? PieceType { get; set; }
-        public TreeType? TreeType { get; set; }
-        public int ShadowHeight { get; set; }
+        public uint TileCode { get; protected set; }
+        
+        public PieceType? PieceType {
+            get {
+                if ( TileType != TileTypes.Piece ) return null;
+                return (PieceType) (TileCode & 3);
+            }
+            set {
+                if ( value != null ) {
+                    TileType = TileTypes.Piece;
+                    TileCode &= ~(uint) 3;
+                    TileCode |= ((uint) value);
+                    return;
+                }
+
+                TileType = TileTypes.Empty;
+            }
+        }
+
+        public TreeType? TreeType {
+            get {
+                if ( TileType != TileTypes.Piece ) return null;
+                return (TreeType) ((TileCode >> 2) & 3);
+            }
+            set {
+                if ( value != null ) {
+                    TileType = TileTypes.Piece;
+                    TileCode &= ~((uint) 3 << 2);
+                    TileCode |= (uint) value << 2;
+                    return;
+                }
+
+                TileType = TileTypes.Empty;
+            }
+        }
+
+        private enum TileTypes {
+            Empty,
+            Piece,
+            Sky
+        }
+        
+        private TileTypes TileType {
+            get => (TileTypes) ((TileCode >> 4) & 3);
+            set {
+                TileCode &= ~((uint) 3 << 4);
+                TileCode |= (uint) value << 4;
+            }
+        }
+
+        public int ShadowHeight {
+            get => (int) (TileCode >> 4) & 3;
+            set {
+                TileCode &= ~((uint) 3 << 6);
+                TileCode |= (uint) value << 6;
+            }
+        }
+
+        public Tile () { }
+
+        public Tile (uint tileCode) { this.TileCode = tileCode; }
+        
+        public Tile (PieceType pieceType, TreeType treeType) {
+            TileCode = (uint) pieceType | ((uint) treeType << 2);
+        }
+
+        public override string ToString () => TileType switch {
+            TileTypes.Empty => $"[Tile - {TileType}, shadowHeight: {ShadowHeight}]",
+            TileTypes.Piece => $"[Tile - {TileType}, {TreeType}, {PieceType}, {ShadowHeight}]",
+            TileTypes.Sky => $"[Tile - {TileType}]",
+            _ => throw new ArgumentOutOfRangeException()
+        };
 
         public int Light {
             get {
@@ -15,95 +87,23 @@ namespace dotnet_tree_shadows.Models.SessionModels {
                            : 0;
             }
         }
-
+        
         public bool ProducesLight {
-            get => PieceType != null && (int) PieceType > ShadowHeight;
-        }
-
-        public Tile () {
-            HexCoordinates = new HexCoordinates(0,0,0);
+            get => PieceType != null && (uint) PieceType > ShadowHeight;
         }
         
-        public Tile(HexCoordinates h) {
-            HexCoordinates = h;
-            PieceType = null;
-            TreeType = null;
+        
+        public override int GetHashCode () =>
+            TileCode.GetHashCode();
+        
+        
+        public static Tile Sky {
+            get => new Tile( (uint) TileTypes.Sky << 6 );
         }
 
-        public TileDto Dto () =>
-            new TileDto {
-                            HexCoordinates = HexCoordinates,
-                            PieceType = PieceType,
-                            TreeType = TreeType,
-                            ShadowHeight = ShadowHeight
-                        }; 
-
-        public Board.Shadow GetShadow (SunPosition sunPosition) {
-            var shadow = new Board.Shadow();
-            if ( PieceType == null) return shadow;
-
-            var height = (int) PieceType;
-            
-            for (int i = 0; i < (int) PieceType; i++) {
-                shadow.Add( new Board.ShadowHex( HexCoordinates + (i * ShadowDirection( sunPosition )), height ) );
-            }
-
-            return shadow;
-        }
-
-        public static HexCoordinates ShadowDirection (SunPosition sunPosition) {
-            return sunPosition switch {
-                SunPosition.NorthWest => new HexCoordinates( 0, +1, -1 ),
-                SunPosition.NorthEast => new HexCoordinates( -1, +1, 0 ),
-                SunPosition.East => new HexCoordinates( -1, 0, +1 ),
-                SunPosition.SouthEast => new HexCoordinates( 0, -1, +1 ),
-                SunPosition.SouthWest => new HexCoordinates( +1, -1, 0 ),
-                SunPosition.West => new HexCoordinates( +1, 0, -1 ),
-                _ => throw new ArgumentOutOfRangeException( nameof(sunPosition), sunPosition, null )
-            };
+        public static Tile Empty {
+            get => new Tile( 0 );
         }
         
-        public override string ToString () => $"[Tile - {HexCoordinates.ToString()}]";
-
-        public bool IsShaded () =>
-            PieceType == null
-                ? ShadowHeight > 0
-                : (int) PieceType > ShadowHeight;
-
-
-        public bool CanGrow (bool preventActionsInShadow, out string? failureReasons) {
-            if ( PieceType == null ) {
-                failureReasons= "Tile is empty. ";
-                return false;
-            }
-
-            if ( preventActionsInShadow && ShadowHeight > 0 ) {
-                failureReasons = "Growth in shadow is disabled in game options.";
-                return false;
-            }
-
-            if ( PieceType == SessionModels.PieceType.LargeTree ) {
-                failureReasons = "Can't grow large tree.";
-                return false;
-            }
-
-            failureReasons = null;
-            return true;
-
-        }
-        
-        public void GrowTree () {
-            PieceType = PieceType switch {
-                null => throw new InvalidOperationException( "Can't grow tile with out tree" ),
-                SessionModels.PieceType.LargeTree => throw new InvalidOperationException( "Can't grow large tree." ),
-                _ => (PieceType) ((int) PieceType + 1)
-            };
-        }
-
-        public bool HasTree () => PieceType != null;
-
-        public int DistanceFromCenter () => HexCoordinates.DistanceTo( HexCoordinates.Zero );
-        public int Leaves () => 4 - DistanceFromCenter();
-
     }
 }

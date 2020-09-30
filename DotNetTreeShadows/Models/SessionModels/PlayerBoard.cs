@@ -54,6 +54,11 @@ namespace dotnet_tree_shadows.Models.SessionModels {
             if ( Light < amount ) throw new InvalidOperationException();
             Light -= amount;
         }
+        
+        public void Recover (int amount) {
+            if ( amount < 0 ) throw new ArgumentOutOfRangeException();
+            Light += amount;
+        }
 
         private static int PieceTypeIndex (PieceType pieceType) => (int) pieceType;
         private static PieceType LargerPiece (PieceType pieceType) => (PieceType) (PieceTypeIndex( pieceType ) + 1);
@@ -95,18 +100,26 @@ namespace dotnet_tree_shadows.Models.SessionModels {
             return true;
         }
 
-        public bool TryHandleGrowTree (PieceType pieceIn, out bool returnedSafely, out string failureReason) {
+        public bool TryHandleGrowTree (PieceType? pieceIn, out bool returnedSafely, out string failureReason) {
             returnedSafely = false;
-            if ( pieceIn == PieceType.LargeTree ) {
-                failureReason = "Can't grow large tree.";
+            
+            if ( pieceIn == null ) {
+                failureReason = "Can't grow empty tile";
                 return false;
             }
 
-            PieceCounter pieceCounterIn = Pieces[pieceIn.ToString()];
-            PieceType pieceOut = LargerPiece( pieceIn );
+            PieceType pieceType = (PieceType) pieceIn;
+            
+            if ( pieceType == PieceType.LargeTree ) {
+                failureReason = "Can't grow large tree.";
+                return false;
+            }
+            
+            PieceCounter pieceCounterIn = Pieces[pieceType.ToString()];
+            PieceType pieceOut = LargerPiece( pieceType );
             PieceCounter pieceCounterOut = Pieces[pieceOut.ToString()];
             
-            if ( !CanGrowTree( pieceIn, out returnedSafely, out string message ) ) {
+            if ( !CanGrowTree( pieceType, out returnedSafely, out string message ) ) {
                 failureReason = $"Can't Grow Tree: {message}";
                 return false;
             }

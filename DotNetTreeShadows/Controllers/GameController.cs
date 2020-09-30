@@ -36,7 +36,7 @@ namespace dotnet_tree_shadows.Controllers {
             if ( session == null ) return Status404NotFound( "Session" );
             if ( !session.HasPlayer( user.UserId ) ) return Status403Forbidden();
 
-            if ( !session.TryProcessAction( user.UserId, gameAction, out string message ) ) {
+            if ( !session.TryExecuteAction( user.UserId, gameAction, out string message ) ) {
                 return Status400Invalid( message );
             } else {
 

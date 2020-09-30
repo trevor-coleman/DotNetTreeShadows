@@ -34,5 +34,7 @@ export class HexCoordinates implements IHexCoordinates {
 
   public toString = (): string => `Hex[${this.q}, ${this.r}, ${this.s}]`;
 
+  public indexString = (): string => `Hex[${this.q}, ${this.r}, ${this.s}]`;
+
   public Equals = (other: HexCoordinates): boolean => this.q === other.q && this.r === other.r && this.s === other.s;
 }

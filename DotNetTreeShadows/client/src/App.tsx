@@ -9,6 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import SVGTreeToken from './components/SVGTreeToken';
 import TreeTokenTest from './components/TreeTokenTest';
 import GameBoard from './components/GameBoard';
+import NormalizrTest from "./components/NormalizerTest";
 
 function App() {
   return (
@@ -23,6 +24,9 @@ function App() {
           </Route>
           <Route path="/tree">
             <TreeTokenTest/>
+          </Route>
+          <Route path="/normalizr">
+            <NormalizrTest/>
           </Route>
           <Route path="/board"><GameBoard/></Route>
         </Box>

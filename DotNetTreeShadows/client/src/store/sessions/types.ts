@@ -1,6 +1,7 @@
 import { HexCoordinates } from '../../models/hex-grid/HexCoordinates';
+import { KnownBoardAction } from './board/types';
 
-export type KnownSessionAction = CreateNewSessionAction | GetSessionAction;
+export type KnownSessionAction = CreateNewSessionAction | GetSessionAction | KnownBoardAction;
 
 export type SessionState = {
   session: Session | null;
@@ -30,7 +31,6 @@ export interface IHexCoordinates {
   r: number,
   s: number,
   axialArray: number[],
-  toString: ()=>string,
 }
 
 export interface Tile {
@@ -52,10 +52,10 @@ export interface Game {
   firstPlayer: string;
   playerBoards: PlayerBoard[];
   currentTurn: number;
-  Revolution: number;
-  Round: number;
-  SunPosition: SunPosition;
-  Options : {
+  revolution: number;
+  round: number;
+  sunPosition: SunPosition;
+  options : {
     longGame: boolean;
     preventActionsInShadow: boolean;
   }
@@ -122,3 +122,6 @@ export interface GetSessionFailure {
 }
 
 type GetSessionAction = GetSessionRequest | GetSessionSuccess | GetSessionFailure;
+
+
+

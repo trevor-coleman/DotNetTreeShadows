@@ -7,5 +7,7 @@ namespace dotnet_tree_shadows.Models.GameActions {
         Collect,
         EndTurn,
         Undo,
+        PlaceFirstTree,
+        PlaceSecondTree,
     }
 }
