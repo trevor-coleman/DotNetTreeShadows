@@ -1,8 +1,10 @@
+using System.Collections.Generic;
+
 namespace dotnet_tree_shadows.Models.SessionModels {
     public class GameDto {
         public string[] TurnOrder { get; set; } = { };
         public string FirstPlayer { get; set; } = "";
-        public PlayerBoardDto[] PlayerBoards { get; set; } = { };
+        public Dictionary<string, uint> PlayerBoards { get; set; } = new Dictionary<string, uint>();
         public int CurrentTurn { get; set; } = 0;
         public int Revolution { get; set; } = 0;
         public int Round { get; set; } = 0;

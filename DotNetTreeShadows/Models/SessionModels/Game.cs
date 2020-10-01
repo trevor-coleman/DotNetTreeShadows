@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace dotnet_tree_shadows.Models.SessionModels {
 
     public class Game {
-        public Dictionary<string, PlayerBoard> PlayerBoards { get; set; } = new Dictionary<string, PlayerBoard>();
+        public Dictionary<string, BitwisePlayerBoard> PlayerBoards { get; set; } = new Dictionary<string, BitwisePlayerBoard>();
         public List<string> TurnOrder { get; set; } = new List<string>();
         public Dictionary<string, TreeType> PlayerTreeTypes = new Dictionary<string, TreeType>();
         public string FirstPlayer { get; set; } = "";
@@ -168,20 +169,21 @@ namespace dotnet_tree_shadows.Models.SessionModels {
 
         }
 
-        public void AddPlayerBoard (string playerId) { PlayerBoards.Add(playerId, new PlayerBoard(playerId) ); }
-
+        public void AddPlayerBoard (string playerId) { PlayerBoards.Add(playerId, new BitwisePlayerBoard() ); }
+        
+        
         public GameDto Dto () {
-            List<PlayerBoardDto> playerBoardDtos = new List<PlayerBoardDto>();
 
+            Dictionary<string, uint> playerBoardDtos = new Dictionary<string, uint>();
             // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
-            foreach ( (_,PlayerBoard playerBoard) in PlayerBoards ) {
-                playerBoardDtos.Add( playerBoard.Dto() );
+            foreach ( (string playerId,BitwisePlayerBoard playerBoard) in PlayerBoards ) {
+                playerBoardDtos.Add( playerId, playerBoard.BoardCode );
             }
             
             return new GameDto {
                                    TurnOrder = TurnOrder.ToArray(),
                                    FirstPlayer = FirstPlayer,
-                                   PlayerBoards = playerBoardDtos.ToArray(),
+                                   PlayerBoards = playerBoardDtos,
                                    CurrentTurn = CurrentTurn,
                                    Revolution = Revolution,
                                    Round = Round,

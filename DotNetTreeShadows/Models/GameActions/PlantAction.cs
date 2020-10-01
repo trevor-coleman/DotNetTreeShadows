@@ -40,7 +40,7 @@ namespace dotnet_tree_shadows.Models.GameActions {
         public override void Execute () {
             Tile tile = new Tile( Game.Board.Tiles[Origin] ) { PieceType = PieceType.Seed, TreeType = TreeType };
 
-            Game.PlayerBoards[PlayerId].Spend( 1 );
+            Game.PlayerBoards[PlayerId].SpendLight( 1 );
             Game.Board.Tiles[Target] = tile.TileCode;
             Game.TilesActiveThisTurn.Add( Origin );
             Game.TilesActiveThisTurn.Add( Target );
@@ -49,7 +49,7 @@ namespace dotnet_tree_shadows.Models.GameActions {
         public override void Undo () {
             Tile tile = new Tile( Game.Board.Tiles[Origin] ) { PieceType = null, TreeType = null };
 
-            Game.PlayerBoards[PlayerId].Recover( 1 );
+            Game.PlayerBoards[PlayerId].RecoverLight( 1 );
             Game.Board.Tiles[Target] = tile.TileCode;
             Game.TilesActiveThisTurn.Remove( Origin );
             Game.TilesActiveThisTurn.Remove( Target );

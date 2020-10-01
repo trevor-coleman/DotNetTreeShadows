@@ -14,7 +14,7 @@ namespace dotnet_tree_shadows.Models.GameActions {
 
         public bool IsValid {
             get =>
-                Game.PlayerBoards.TryGetValue( PlayerId, out PlayerBoard? playerBoard ) && playerBoard.Light >= Price;
+                Game.PlayerBoards.TryGetValue( PlayerId, out BitwisePlayerBoard? playerBoard ) && playerBoard.Light >= Price;
         }
 
         public string? FailureMessage {

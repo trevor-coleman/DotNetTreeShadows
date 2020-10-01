@@ -371,7 +371,7 @@
           <e p="Profile.cs" t="Include" />
           <e p="ProfileDTO.cs" t="Include" />
           <e p="SessionModels" t="Include">
-            <e p="BitwiseBoard.cs" t="Include" />
+            <e p="BitwisePlayerBoard.cs" t="Include" />
             <e p="Board.cs" t="Include" />
             <e p="BoardDTO.cs" t="Include" />
             <e p="Game.cs" t="Include" />

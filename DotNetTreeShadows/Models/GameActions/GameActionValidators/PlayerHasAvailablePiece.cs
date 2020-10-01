@@ -13,7 +13,7 @@ namespace dotnet_tree_shadows.Models.GameActions.GameActionValidators {
             throw new System.NotImplementedException();
         }
         public bool IsValid {
-            get => game.PlayerBoards[playerId].Pieces[pieceType.ToString()].Available > 0;
+            get => game.PlayerBoards[playerId].Pieces(pieceType).Available > 0;
         }
         public string? FailureMessage {
             get =>
