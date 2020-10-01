@@ -76,21 +76,7 @@ namespace dotnet_tree_shadows.Models.SessionModels {
             return false;
 
         }
-
-        private bool TryBuy (string userId, GameAction gameAction, out string failureReason) {
-            if ( gameAction.PieceType == null ) {
-                failureReason = "PieceType Not Included";
-                return false;
-            }
-
-            if ( !Game.PlayerBoards[userId].TryBuy( (PieceType) gameAction.PieceType, out string buyFailReason ) ) {
-                failureReason = $"Cannot buy piece: {buyFailReason} ";
-                return false;
-            }
-
-            failureReason = "";
-            return true;
-        }
+        
 
         public SessionDto Dto () => new SessionDto {
                                                         Host = Host,

@@ -56,7 +56,6 @@ namespace dotnet_tree_shadows.Models.GameActions {
             playerBoard.Pieces( grownType ).IncreaseAvailable();
             
             Game.Board.SetTileAt( target,tile );
-
         }
     }
 
