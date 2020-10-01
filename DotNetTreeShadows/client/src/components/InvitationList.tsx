@@ -154,4 +154,4 @@ const useStyles = makeStyles({
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
-export default connector(InvitationList);;
+export default connector(InvitationList);
