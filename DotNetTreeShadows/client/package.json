@@ -25,7 +25,8 @@
     "react-scripts": "3.4.3",
     "redux-thunk": "^2.3.0",
     "typesafe-actions": "^5.1.0",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.2",
+    "node-forge":"^0.10.0"
   },
   "devDependencies": {
     "@types/webpack-env": "^1.15.3",
