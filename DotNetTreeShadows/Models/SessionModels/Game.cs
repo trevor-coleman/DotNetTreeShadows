@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace dotnet_tree_shadows.Models.SessionModels {
 
@@ -9,10 +11,14 @@ namespace dotnet_tree_shadows.Models.SessionModels {
         public Dictionary<string, TreeType> PlayerTreeTypes = new Dictionary<string, TreeType>();
         public string FirstPlayer { get; set; } = "";
         public int CurrentTurn { get; set; } = 0;
+        public string CurrentPlayer {
+          get => TurnOrder[CurrentTurn];
+        }
         public int Revolution { get; set; } = 0;
         public int Round { get; set; } = 0;
         public bool LongGame { get; set; } = false;
         public bool PreventActionsInShadow { get; set; } = false;
+        public Dictionary<string, Scoring.PlayerScore> PlayerScores = new Dictionary<string, Scoring.PlayerScore>();
         public Scoring.Stacks ScoreTokenStacks { get; set; } = new Scoring.Stacks();
         protected GameOptions Options { get; set; }
         public List<HexCoordinates> TilesActiveThisTurn { get; set; } = new List<HexCoordinates>();
@@ -23,11 +29,26 @@ namespace dotnet_tree_shadows.Models.SessionModels {
         public Game () { }
 
         public Game (string hostId) {
-            AddPlayerBoard( hostId );
-            TurnOrder.Add( hostId );
+            AddPlayer( hostId );
+            FirstPlayer = hostId;
+        }
+
+        public void Start() {
+          Random random = new Random();
+          int n = TurnOrder.Count;
+          string[] array = TurnOrder.ToArray();
+          while (n > 1) 
+          {
+            int k = random.Next(n--);
+            string temp = array[n];
+            array[n] = array[k];
+            array[k] = temp;
+          }
+          TurnOrder = array.ToList();
+          FirstPlayer = TurnOrder[0];
         }
         
-        public int TotalRounds {
+        public int LengthOfGame {
             get =>
                 LongGame
                     ? 4
@@ -47,58 +68,7 @@ namespace dotnet_tree_shadows.Models.SessionModels {
                 get => new GameOptions { LongGame = false, PreventActionsInShadow = false };
             }
         }
-
-        
-
-        public bool Collect (
-                HexCoordinates target,
-                PlayerBoard playerBoard,
-                out Scoring.Token? token,
-                out string? message
-            ) {
-            token = null;
-            message = "";
-            bool canCollect = true;
-
-            if ( !Board.Tiles.TryGetValue( target, out uint targetTileCode ) ) {
-                message += "Tried to grow with hex that is not in the board. ";
-                canCollect= false;
-            }
-
-            Tile targetTile = new Tile( targetTileCode );
-            
-            if ( targetTile.PieceType != PieceType.LargeTree ) {
-                message += "Tile does not contain a large tree. ";
-                canCollect= false;
-            }
-
-            if ( targetTile.TreeType != playerBoard.TreeType ) {
-                message += "Tree does not belong to player";
-                canCollect= false;
-            }
-
-            if ( !playerBoard.CanCollect() ) {
-                message += "Player can't afford to collect a tree.";
-                canCollect= false;
-            }
-
-            message = canCollect
-                          ? "success"
-                          : message;
-
-
-            if ( !canCollect ) return false;
-            
-            token = ScoreTokenStacks.Take( 4 - HexCoordinates.Distance( target, HexCoordinates.Zero ) );
-            targetTile.TreeType = null;
-            targetTile.PieceType = null;
-            playerBoard.HandleCollect( token );
-
-            return true;
-
-
-
-        }
+      
 
         public void AddPlayerBoard (string playerId) { PlayerBoards.Add(playerId, new BitwisePlayerBoard() ); }
         
@@ -129,6 +99,10 @@ namespace dotnet_tree_shadows.Models.SessionModels {
         public void AddPlayer (string playerId) {
             TurnOrder.Add( playerId );
             AddPlayerBoard( playerId );
+            AddPlayerScore(playerId );
         }
+
+        private void AddPlayerScore (string playerId) => PlayerScores.TryAdd( playerId, new Scoring.PlayerScore() );
+        public void End () { throw new System.NotImplementedException(); }
     }
 }

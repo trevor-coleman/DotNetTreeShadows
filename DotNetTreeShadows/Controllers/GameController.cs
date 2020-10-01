@@ -25,7 +25,7 @@ namespace dotnet_tree_shadows.Controllers {
         
         [HttpPost]
         [Route( "actions" )]
-        public async Task<ActionResult<Session>> DoAction ([FromRoute] string sessionId, [FromBody] GameAction gameAction) {
+        public async Task<ActionResult<Session>> DoAction ([FromRoute] string sessionId, [FromBody] AGameAction aGameAction) {
 
             if ( sessionId == null ) return NotFound();
             Task<Session> sessionTask =  sessionService.Get( sessionId );
@@ -36,7 +36,7 @@ namespace dotnet_tree_shadows.Controllers {
             if ( session == null ) return Status404NotFound( "Session" );
             if ( !session.HasPlayer( user.UserId ) ) return Status403Forbidden();
 
-            if ( !session.TryExecuteAction( user.UserId, gameAction, out string message ) ) {
+            if ( !session.TryExecuteAction( aGameAction, out string message ) ) {
                 return Status400Invalid( message );
             } else {
 

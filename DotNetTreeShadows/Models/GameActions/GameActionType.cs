@@ -6,7 +6,6 @@ namespace dotnet_tree_shadows.Models.GameActions {
         Grow,
         Collect,
         EndTurn,
-        Undo,
         PlaceFirstTree,
         PlaceSecondTree,
     }

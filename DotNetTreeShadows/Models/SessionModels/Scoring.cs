@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace dotnet_tree_shadows.Models.SessionModels {
     public class Scoring {
 
-        public struct Token {
+        public readonly struct Token {
             public readonly int Leaves;
             public readonly int Points;
 
@@ -12,7 +13,38 @@ namespace dotnet_tree_shadows.Models.SessionModels {
                 Points = points;
                 Leaves = leaves;
             }
-        } 
+
+            public static Token NullToken {
+              get => new Token( 0, 0 );
+            }
+        }
+
+        public Dictionary<string, PlayerScore> playerScores;
+        
+        public class PlayerScore {
+          public PlayerScore () {
+            tokens = new List<Token>();
+          }
+          public IEnumerable<Token> tokens { get; private set; }
+          public int Score {
+            get => tokens.Aggregate( 0, (score, token) => score += token.Points );
+          }
+
+          public int[] tokensCollectedByType {
+            get =>
+              tokens.Aggregate(
+                  new int[] { 0, 0, 0, 0 },
+                  (scores, token) => {
+                    scores[token.Leaves - 1]++;
+                    return scores;
+                  }
+                );
+          }
+
+          public void CollectToken (Token token) {
+            tokens = tokens.Append( token );
+          }
+        }
         
         public class Stacks {
             
@@ -21,25 +53,25 @@ namespace dotnet_tree_shadows.Models.SessionModels {
             private static readonly int[] ThreeLeafTiles = { 19, 18, 18, 17, 17 };
             private static readonly int[] FourLeafTiles = { 22, 21, 20 };
 
-            private static Dictionary<int, Queue<int>> StartingPiles {
+            private static Dictionary<int, Stack<int>> StartingPiles {
                 get =>
-                    new Dictionary<int, Queue<int>>() {
-                                                          { 1, new Queue<int>( OneLeafTiles ) },
-                                                          { 2, new Queue<int>( TwoLeafTiles ) },
-                                                          { 3, new Queue<int>( ThreeLeafTiles ) },
-                                                          { 4, new Queue<int>( FourLeafTiles ) },
+                    new Dictionary<int, Stack<int>>() {
+                                                          { 1, new Stack<int>( OneLeafTiles ) },
+                                                          { 2, new Stack<int>( TwoLeafTiles ) },
+                                                          { 3, new Stack<int>( ThreeLeafTiles ) },
+                                                          { 4, new Stack<int>( FourLeafTiles ) },
                                                       };
             }
 
-            private readonly Dictionary<int, Queue<int>> piles;
+            private readonly Dictionary<int, Stack<int>> piles;
             public Stacks () { piles = StartingPiles; }
 
             public Stacks (IReadOnlyList<int> remainingTileCounts) {
-                piles = new Dictionary<int, Queue<int>>();
+                piles = new Dictionary<int, Stack<int>>();
                 for (int index = 0; index < remainingTileCounts.Count; index++) {
                     
                     int count = remainingTileCounts[index];
-                    Queue<int> pile = StartingPiles[index+1];
+                    Stack<int> pile = StartingPiles[index+1];
                     
                     int[] tokens = new int[count];
                     Array.Copy(
@@ -50,7 +82,7 @@ namespace dotnet_tree_shadows.Models.SessionModels {
                             count
                         );
                     
-                    piles.Add( count, new Queue<int>(tokens) );
+                    piles.Add( count, new Stack<int>(tokens) );
                 }
             }
             
@@ -58,17 +90,21 @@ namespace dotnet_tree_shadows.Models.SessionModels {
                 get => new[] { piles[1].Count, piles[2].Count, piles[3].Count };
             }
 
-            public Token? Take (int numberOfLeaves) {
-                var points = 0;
+          
+            public bool Take (int numberOfLeaves, out Token token) {
+                int points = 0;
+                token = Token.NullToken;
+              
 
                 for (int i = numberOfLeaves; i >= 0; i--) {
                     if(piles[numberOfLeaves].Count > 0) break;
-                    if ( i == 0 ) return null;
+                    if ( i == 0 ) return false;
                 }
                 
-                points = piles[numberOfLeaves].Dequeue();
+                points = piles[numberOfLeaves].Pop();
                 
-                return new Token( numberOfLeaves, points );
+                token = new Token( numberOfLeaves, points );
+                return true;
             }
 
         }

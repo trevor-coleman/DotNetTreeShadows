@@ -1,7 +1,7 @@
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.Validators {
-    public class TilePieceTypeIs : GameAction.AActionValidator {
+    public class TilePieceTypeIs : AGameAction.AActionValidator {
         private readonly HexCoordinates target;
         private readonly PieceType? pieceType;
         private readonly Game game;
@@ -10,6 +10,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
             this.pieceType = pieceType;
             this.game = game;
         }
+
         public override bool IsValid {
             get => game.Board.GetTileAt( target )?.PieceType == pieceType;
         }

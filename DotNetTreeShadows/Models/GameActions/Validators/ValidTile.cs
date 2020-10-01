@@ -2,7 +2,7 @@ using System;
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.Validators {
-    public class ValidTile : GameAction.AActionValidator {
+    public class ValidTile : AGameAction.AActionValidator {
 
         private readonly HexCoordinates target;
         private readonly Game game;

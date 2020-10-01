@@ -354,14 +354,17 @@
           <e p="AuthDatabaseSettings.cs" t="Include" />
           <e p="FriendProfile.cs" t="Include" />
           <e p="GameActions" t="Include">
-            <e p="BuyAction.cs" t="Include" />
-            <e p="CollectAction.cs" t="Include" />
-            <e p="GameAction.cs" t="Include" />
+            <e p="Actions" t="Include">
+              <e p="BuyAction.cs" t="Include" />
+              <e p="CollectAction.cs" t="Include" />
+              <e p="EndTurnAction.cs" t="Include" />
+              <e p="GrowAction.cs" t="Include" />
+              <e p="PlantAction.cs" t="Include" />
+            </e>
+            <e p="AGameAction.cs" t="Include" />
+            <e p="AGameActionWithOrigin.cs" t="Include" />
             <e p="GameActionFactory.cs" t="Include" />
             <e p="GameActionType.cs" t="Include" />
-            <e p="GameActionWithOrigin.cs" t="Include" />
-            <e p="GrowAction.cs" t="Include" />
-            <e p="PlantAction.cs" t="Include" />
             <e p="Validators" t="Include">
               <e p="GrowthInShadowAllowed.cs" t="Include" />
               <e p="OnPlayersTurn.cs" t="Include" />
@@ -444,6 +447,7 @@
       <e p="TestShadows" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
         <e p="BitwiseBoard_Test.cs" t="Include" />
+        <e p="EndTurnActionTest.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
             <e p="netcoreapp3.1" t="Include">

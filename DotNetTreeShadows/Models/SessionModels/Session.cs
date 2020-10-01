@@ -65,18 +65,7 @@ namespace dotnet_tree_shadows.Models.SessionModels {
 
         public bool HasPlayer (string id) => Players.Contains( id );
 
-        public bool TryExecuteAction (string userId, GameAction gameAction, out string failureReason) {
-            if(gameAction.IsValid) {
-                gameAction.Execute();
-                failureReason = "";
-                return true;
-            }
-
-            failureReason = gameAction.FailureMessage;
-            return false;
-
-        }
-        
+        public bool TryExecuteAction (AGameAction aGameAction, out string? failureReason) => aGameAction.Execute(out failureReason);
 
         public SessionDto Dto () => new SessionDto {
                                                         Host = Host,

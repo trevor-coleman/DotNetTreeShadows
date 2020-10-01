@@ -1,7 +1,7 @@
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.Validators {
-    public class PlayerCanAffordCost : GameAction.AActionValidator {
+    public class PlayerCanAffordCost : AGameAction.AActionValidator {
         private readonly string playerId;
         private readonly int cost;
         private readonly Game game;
@@ -11,6 +11,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
             this.cost = cost;
             this.game = game;
         }
+
         public override bool IsValid {
             get => game.PlayerBoards[playerId].Light >= cost;
         }

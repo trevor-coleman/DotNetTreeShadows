@@ -1,7 +1,7 @@
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.Validators {
-    public class PlayerHasAvailablePiece : GameAction.AActionValidator {
+    public class PlayerHasAvailablePiece : AGameAction.AActionValidator {
         private readonly string playerId;
         private readonly PieceType pieceType;
         private readonly Game game;
@@ -12,6 +12,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
             this.game = game;
             throw new System.NotImplementedException();
         }
+
         public override bool IsValid {
             get => game.PlayerBoards[playerId].Pieces(pieceType).Available > 0;
         }

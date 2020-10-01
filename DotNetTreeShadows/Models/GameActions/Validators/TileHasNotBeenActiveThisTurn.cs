@@ -1,7 +1,7 @@
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.Validators {
-    public class TileHasNotBeenActiveThisTurn : GameAction.AActionValidator {
+    public class TileHasNotBeenActiveThisTurn : AGameAction.AActionValidator {
         private readonly HexCoordinates origin;
         private readonly Game game;
 
@@ -10,6 +10,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
             this.game = game;
             throw new System.NotImplementedException();
         }
+
         public override bool IsValid {
             get => !game.TilesActiveThisTurn.Contains( origin );
         }

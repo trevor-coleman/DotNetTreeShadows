@@ -3,12 +3,11 @@ using dotnet_tree_shadows.Models.GameActions.Validators;
 using dotnet_tree_shadows.Models.SessionModels;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
-namespace dotnet_tree_shadows.Models.GameActions
-{
-  public class GrowAction : GameActionWithOrigin
-  {
-    public GrowAction (Game game, string playerId, HexCoordinates origin) : base( game, playerId, origin )
-    {
+namespace dotnet_tree_shadows.Models.GameActions {
+  public class GrowAction : AGameActionWithOrigin {
+    public override GameActionType Type { get; } = GameActionType.Grow;
+
+    public GrowAction (Game game, string playerId, HexCoordinates origin) : base( game, playerId, origin ) {
       AddValidators(
           new AActionValidator[] {
             new TilePieceTypeIsNot( origin, PieceType.LargeTree, game ),
@@ -21,10 +20,7 @@ namespace dotnet_tree_shadows.Models.GameActions
         );
     }
 
-    public override GameActionType Type { get; } = GameActionType.Grow;
-
-    public override void Execute ()
-    {
+    protected override void DoAction () {
       Tile tile = Game.Board.GetTileAt( Origin )!;
       PieceType growingType = (PieceType) tile.PieceType!;
       PieceType grownType = (PieceType) ((int) growingType + 1);
@@ -39,8 +35,7 @@ namespace dotnet_tree_shadows.Models.GameActions
       Game.Board.SetTileAt( Origin, tile );
     }
 
-    public override void Undo ()
-    {
+    protected override void UndoAction () {
       Tile tile = Game.Board.GetTileAt( Origin )!;
       PieceType grownType = (PieceType) tile.PieceType!;
       PieceType growingType = (PieceType) ((int) grownType - 1);

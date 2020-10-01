@@ -6,7 +6,7 @@ namespace dotnet_tree_shadows.Models.SessionModels {
         
         public List<HexCoordinates> TreeTiles { get; set; } = new List<HexCoordinates>();
         public readonly Dictionary<HexCoordinates, uint> Tiles = new Dictionary<HexCoordinates, uint>();
-        public SunPosition SunPosition = SunPosition.NorthEast;
+        public SunPosition SunPosition = SunPosition.NorthWest;
         
         public static Board New (int radius = 4) {
             Board board = new Board();
