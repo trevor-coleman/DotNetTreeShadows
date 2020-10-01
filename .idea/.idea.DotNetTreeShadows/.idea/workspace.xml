@@ -20,40 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e985c02d-a6ef-47e8-9d11-5b54b3e50492" name="Default Changelist" comment="Change to AddValidators. Create GameActionWithOrigin.">
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/AGameAction.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Actions/CollectAction.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Actions/EndTurnAction.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TestShadows/EndTurnActionTest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.DotNetTreeShadows/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DotNetTreeShadows/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DotNetTreeShadows/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DotNetTreeShadows/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Controllers/GameController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Controllers/GameController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/BuyAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Actions/BuyAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/CollectAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionFactory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionWithOrigin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/AGameActionWithOrigin.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GrowAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Actions/GrowAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/PlantAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Actions/PlantAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/GrowthInShadowAllowed.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/GrowthInShadowAllowed.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/OnPlayersTurn.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/OnPlayersTurn.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PieceCanBeReturnedSafely.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PieceCanBeReturnedSafely.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PieceTypeIsTree.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PieceTypeIsTree.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PlayerCanAffordCost.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PlayerCanAffordCost.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PlayerCanAffordLargerPiece.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PlayerCanAffordLargerPiece.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PlayerHasAvailablePiece.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PlayerHasAvailablePiece.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PlayerHasLargerPieceAvailable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PlayerHasLargerPieceAvailable.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PlayerHasPieceOnPlayerBoard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PlayerHasPieceOnPlayerBoard.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/TileBelongsToPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/TileBelongsToPlayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/TileHasNotBeenActiveThisTurn.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/TileHasNotBeenActiveThisTurn.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/TilePiceTypeIs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/TilePiceTypeIs.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/TilePieceTypeIsNot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/TilePieceTypeIsNot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/ValidTile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/ValidTile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/WithinRangeOfOrigin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/WithinRangeOfOrigin.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Board.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Board.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Game.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Scoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Scoring.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Session.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Session.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/OldTile.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/PlayerBoardDto.cs" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,32 +46,37 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///Users/trevorcoleman/dev/DotNetTreeShadows/DotNetTreeShadows/Models/GameActions/GrowAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1B82BBF8-F4D0-4BD0-9402-5566DBE93AB0/F3/ActionMethodExecutor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5AED14D4-8F76-4E4F-80EB-584643057B28/163/Task.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5AED14D4-8F76-4E4F-80EB-584643057B28/22A/AsyncMethodBuilder.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/36F7C51C-6531-4B2C-BC94-35275A046B5D/D/AnyAll.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5AED14D4-8F76-4E4F-80EB-584643057B28/2D/Object.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/trevorcoleman/dev/DotNetTreeShadows/DotNetTreeShadows/Models/SessionModels/Board.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/DotNetTreeShadows/DotNetTreeShadows/Models/GameActions/Actions/CollectAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Board.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Game.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Scoring.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/DotNetTreeShadows/DotNetTreeShadows/Models/SessionModels/Game.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5AED14D4-8F76-4E4F-80EB-584643057B28/3A4/List.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/DotNetTreeShadows/DotNetTreeShadows/Models/GameActions/Validators/PieceTypeIsTree.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Session.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/DotNetTreeShadows/DotNetTreeShadows/Models/SessionModels/Scoring.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/DotNetTreeShadows/DotNetTreeShadows/Models/GameActions/GrowAction.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/DotNetTreeShadows/DotNetTreeShadows/Models/GameActions/Validators/PieceCanBeReturnedSafely.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/TestShadows/BitwiseBoard_Test.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5AED14D4-8F76-4E4F-80EB-584643057B28/163/Task.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/36F7C51C-6531-4B2C-BC94-35275A046B5D/D/AnyAll.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5AED14D4-8F76-4E4F-80EB-584643057B28/2D/Object.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/DotNetTreeShadows/DotNetTreeShadows/Models/SessionModels/Board.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/D46B848C-725B-4D1D-8813-6D6E95D9C3D3/f5/78b1995f/BsonRepresentationAttribute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/trevorcoleman/dev/DotNetTreeShadows/DotNetTreeShadows/Models/GameActions/Validators/PieceCanBeReturnedSafely.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5AED14D4-8F76-4E4F-80EB-584643057B28/34/String.Comparison.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/DotNetTreeShadows/DotNetTreeShadows/Models/GameActions/Validators/OnPlayersTurn.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5AED14D4-8F76-4E4F-80EB-584643057B28/147/ExecutionContext.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/trevorcoleman/dev/DotNetTreeShadows/DotNetTreeShadows/Models/SessionModels/Game.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5AED14D4-8F76-4E4F-80EB-584643057B28/3A4/List.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/trevorcoleman/dev/DotNetTreeShadows/DotNetTreeShadows/Models/SessionModels/Board.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5AED14D4-8F76-4E4F-80EB-584643057B28/167/TaskContinuation.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/trevorcoleman/dev/DotNetTreeShadows/DotNetTreeShadows/Models/GameActions/GrowAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/trevorcoleman/dev/DotNetTreeShadows/DotNetTreeShadows/Models/GameActions/Validators/ValidTile.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Session.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/TileHasNotBeenActiveThisTurn.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/PieceTypeIsTree.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Tile.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/BitwiseBoard.cs" />
         <option value="$PROJECT_DIR$/TestShadows/UnitTest1.cs" />
@@ -152,6 +126,8 @@
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Game.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Actions/EndTurnAction.cs" />
         <option value="$PROJECT_DIR$/TestShadows/EndTurnActionTest.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/client/package.json" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/GameDTO.cs" />
       </list>
     </option>
   </component>

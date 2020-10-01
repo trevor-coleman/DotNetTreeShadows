@@ -398,17 +398,14 @@
             <e p="HexCoordinates.cs" t="Include" />
             <e p="HexPoint.cs" t="Include" />
             <e p="IGameData.cs" t="Include" />
-            <e p="OldTile.cs" t="Include" />
             <e p="PieceCounter.cs" t="Include" />
             <e p="PieceType.cs" t="Include" />
-            <e p="PlayerBoardDTO.cs" t="Include" />
             <e p="Scoring.cs" t="Include" />
             <e p="Session.cs" t="Include" />
             <e p="SessionDTO.cs" t="Include" />
             <e p="SessionSummary.cs" t="Include" />
             <e p="SunPosition.cs" t="Include" />
             <e p="Tile.cs" t="Include" />
-            <e p="TileDTO.cs" t="Include" />
             <e p="TreeType.cs" t="Include" />
           </e>
         </e>
