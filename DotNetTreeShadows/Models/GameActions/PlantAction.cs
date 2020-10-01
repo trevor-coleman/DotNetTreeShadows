@@ -1,5 +1,6 @@
+using System;
 using System.Collections.Generic;
-using dotnet_tree_shadows.Models.GameActions.GameActionValidators;
+using dotnet_tree_shadows.Models.GameActions.Validators;
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions {
@@ -17,7 +18,7 @@ namespace dotnet_tree_shadows.Models.GameActions {
             Target = target;
             Origin = origin;
 
-            IActionValidator[] validators = {
+            ActionValidators = new IActionValidator[] {
                                                 new OnPlayersTurn( playerId, game ),
                                                 new PlayerCanAffordCost( playerId, 1, game ),
                                                 new PlayerHasAvailablePiece( playerId, PieceType.Seed, game ),
@@ -25,7 +26,7 @@ namespace dotnet_tree_shadows.Models.GameActions {
                                                 new ValidTile( origin, "origin", game ),
                                                 new TileHasNotBeenActiveThisTurn( origin, game ),
                                                 new PieceTypeIsTree( origin, game ),
-                                                new PieceTypeIsNull( target, game ),
+                                                new TilePieceTypeIsNull( target, game ),
                                                 new WithinRangeOfOrigin(
                                                         origin,
                                                         target,

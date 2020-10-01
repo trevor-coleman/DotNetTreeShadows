@@ -77,25 +77,6 @@ namespace dotnet_tree_shadows.Models.SessionModels {
 
         }
 
-        private bool TryPlant (GameAction gameAction, out string failureReason) {
-            if ( gameAction.Origin == null ) {
-                failureReason = "Failed to provide origin";
-                return false;
-            }
-
-            if ( gameAction.Target == null ) {
-                failureReason = "Failed to provide target";
-                return false;
-            }
-
-            return Game.Plant(
-                    (HexCoordinates) gameAction.Origin,
-                    (HexCoordinates) gameAction.Target,
-                    Game.PlayerBoards[gameAction.PlayerId],
-                    out failureReason
-                );
-        }
-
         private bool TryBuy (string userId, GameAction gameAction, out string failureReason) {
             if ( gameAction.PieceType == null ) {
                 failureReason = "PieceType Not Included";

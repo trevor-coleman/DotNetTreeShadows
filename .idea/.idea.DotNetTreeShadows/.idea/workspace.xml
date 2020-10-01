@@ -14,52 +14,37 @@
       <path>
         <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="BRANCH:master" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:svg" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </select>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e985c02d-a6ef-47e8-9d11-5b54b3e50492" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/CostsLight.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionFactory.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/GrowthInShadowAllowed.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/OnPlayersTurn.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/PieceTypeIsNull.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/PlayerCanAffordCost.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/PlayerHasAvailablePiece.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/TileHasNotBeenActiveThisTurn.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/ValidOrigin.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/WithinRangeOfOrigin.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/PieceTypeIsTree.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/PlantAction.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/BitwiseBoard.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/GrowActionValidator.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/HexPoint.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/OldTile.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/components/BoardTile.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/components/NormalizerTest.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/sessions/board/actions.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/sessions/board/types.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/storeSchema.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/BuyAction.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GrowAction.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PieceCanBeReturnedSafely.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PlayerCanAffordLargerPiece.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PlayerHasLargerPieceAvailable.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PlayerHasPieceOnPlayerBoard.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/TileBelongsToPlayer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/TilePieceTypeIsNot.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/TilePieceTypeIsNotNull.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DotNetTreeShadows/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DotNetTreeShadows/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DotNetTreeShadows/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DotNetTreeShadows/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Controllers/GameController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Controllers/GameController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Board.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Board.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/BoardDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/BoardDTO.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Game.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/PlayerBoard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/PlayerBoard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows.sln" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/CostsLight.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/GrowthInShadowAllowed.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/GrowthInShadowAllowed.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/OnPlayersTurn.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/OnPlayersTurn.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/PieceTypeIsNull.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/TilePieceTypeIsNull.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/PlayerCanAffordCost.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PlayerCanAffordCost.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/PlayerHasAvailablePiece.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PlayerHasAvailablePiece.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/TileHasNotBeenActiveThisTurn.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/TileHasNotBeenActiveThisTurn.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/ValidOrigin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/ValidTile.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/WithinRangeOfOrigin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/WithinRangeOfOrigin.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/PieceTypeIsTree.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PieceTypeIsTree.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/PlantAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/PlantAction.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/BitwisePlayerBoard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/BitwisePlayerBoard.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Session.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Session.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Tile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Tile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/TileDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/TileDTO.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/client/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/client/src/components/GameBoard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/components/GameBoard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/client/src/models/hex-grid/HexCoordinates.ts" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/models/hex-grid/HexCoordinates.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/sessions/reducers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/sessions/reducers.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/sessions/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/src/store/sessions/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DotNetTreeShadows/client/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/DotNetTreeShadows/client/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +62,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="clean-client" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -89,7 +74,6 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/36F7C51C-6531-4B2C-BC94-35275A046B5D/D/AnyAll.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5AED14D4-8F76-4E4F-80EB-584643057B28/2D/Object.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Board.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/OldTile.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Game.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Scoring.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/D46B848C-725B-4D1D-8813-6D6E95D9C3D3/f5/78b1995f/BsonRepresentationAttribute.cs" root0="SKIP_HIGHLIGHTING" />
@@ -102,20 +86,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Session/Session.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Session/Board.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Session/BoardDTO.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Session/GameDTO.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Invitation.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/HexCoordinates.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Controllers/AuthenticateController.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/DockerFile" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/DotNetTreeShadows" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Controllers/InvitationsController.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Controllers/ProfilesController.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/FriendProfile.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/NewInvitationDTO.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/ObjectIdModel.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/Profile.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/ProfileDTO.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/GameDTO.cs" />
@@ -142,17 +112,31 @@
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/PieceTypeIsNull.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/ValidOrigin.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/PlayerCanAffordCost.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Session.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/OnPlayersTurn.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/PlayerHasAvailablePiece.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/TargetInSunOrGrowthInShadowPermitted.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/GrowthInShadowAllowed.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/TileHasNotBeenActiveThisTurn.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/PieceTypeIsTree.cs" />
-        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/PlantAction.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Game.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Tile.cs" />
         <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/BitwiseBoard.cs" />
+        <option value="$PROJECT_DIR$/TestShadows/UnitTest1.cs" />
+        <option value="$PROJECT_DIR$/TestShadows/BitwiseBoard_Test.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/Session.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/PlantAction.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/PlayerHasPieceOnPlayerBoard.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/BuyAction.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/SessionModels/BitwisePlayerBoard.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/GrowAction.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/PlayerHasLargerPieceAvailable.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/TileBelongsToPlayer.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/TilePieceTypeIsNotNull.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/TilePieceTypeIsNot.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GameActionValidators/PlayerCanAffordLargerPiece.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PlayerCanAffordLargerPiece.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/GrowAction.cs" />
+        <option value="$PROJECT_DIR$/DotNetTreeShadows/Models/GameActions/Validators/PieceCanBeReturnedSafely.cs" />
       </list>
     </option>
   </component>
@@ -330,7 +314,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="master" />
+                        <option value="svg" />
                       </list>
                     </value>
                   </entry>
@@ -478,10 +462,16 @@
     <state width="1874" height="402" key="GridCell.Tab.3.right/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1601310886168" />
     <state width="1874" height="402" key="GridCell.Tab.3.right/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1601333511907" />
     <state width="1878" height="403" key="GridCell.Tab.3.right/0.23.1920.1057/1920.23.1920.1057/-1440.23.1440.877@0.23.1920.1057" timestamp="1600982489699" />
-    <state x="621" y="224" key="RiderGenerateDialog" timestamp="1601496966218">
+    <state x="560" y="279" key="Rider.ProjectTemplateDialog.Size" timestamp="1601519610423">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="621" y="224" key="RiderGenerateDialog/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1601496966218" />
+    <state x="560" y="279" key="Rider.ProjectTemplateDialog.Size/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1601519195100" />
+    <state x="560" y="279" key="Rider.ProjectTemplateDialog.Size/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1601519610423" />
+    <state x="621" y="224" key="RiderGenerateDialog" timestamp="1601526199887">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="621" y="224" key="RiderGenerateDialog/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1601524394850" />
+    <state x="621" y="224" key="RiderGenerateDialog/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1601526199887" />
     <state x="722" y="256" key="RollbackChangesDialog" timestamp="1600982378101">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -494,10 +484,11 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="500" y="276" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1600968582537" />
-    <state x="1920" y="0" width="1737" height="1080" key="dock-window-1" timestamp="1601227013631">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="1920" y="23" width="1920" height="1057" maximized="true" key="dock-window-1" timestamp="1601525471437">
+      <screen x="1920" y="23" width="1920" height="1057" />
     </state>
-    <state x="1920" y="0" width="1737" height="1080" key="dock-window-1/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1601227013631" />
+    <state x="1920" y="23" width="1920" height="1057" key="dock-window-1/0.0.1920.1080/1920.0.1920.1080/-1440.0.1440.900@0.0.1920.1080" timestamp="1601524058119" />
+    <state x="1920" y="23" width="1920" height="1057" maximized="true" key="dock-window-1/0.0.1920.1080/1920.23.1920.1057/-1440.23.1440.877@0.0.1920.1080" timestamp="1601525471437" />
     <state x="606" y="295" width="707" height="490" key="find.popup" timestamp="1601221444671">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>

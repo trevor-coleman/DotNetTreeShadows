@@ -1,21 +1,21 @@
 using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Models.GameActions.GameActionValidators {
-    public class PieceTypeIsNull : GameAction.IActionValidator {
+namespace dotnet_tree_shadows.Models.GameActions.Validators {
+    public class TilePieceTypeIsNotNull : GameAction.IActionValidator {
         private readonly HexCoordinates target;
         private readonly Game game;
-        public PieceTypeIsNull (in HexCoordinates target, Game game) {
+        public TilePieceTypeIsNotNull (in HexCoordinates target, Game game) {
             this.target = target;
             this.game = game;
         }
         public bool IsValid {
-            get => game.Board.TileAt( target )?.PieceType == null;
+            get => game.Board.TileAt( target )?.PieceType != null;
         }
         public string? FailureMessage {
             get =>
                 IsValid
                     ? null
-                    : "PieceType at target is not null.";
+                    : "PieceType at target is null.";
         }
     }
 }

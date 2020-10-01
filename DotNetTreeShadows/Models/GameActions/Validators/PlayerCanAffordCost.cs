@@ -1,6 +1,6 @@
 using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Models.GameActions.GameActionValidators {
+namespace dotnet_tree_shadows.Models.GameActions.Validators {
     public class PlayerCanAffordCost : GameAction.IActionValidator {
         private readonly string playerId;
         private readonly int cost;
