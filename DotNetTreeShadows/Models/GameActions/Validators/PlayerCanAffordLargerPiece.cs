@@ -1,13 +1,13 @@
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.Validators {
-    public class PlayerCanAffordLargerPiece : GameAction.IActionValidator {
+    public class PlayerCanAffordLargerPiece : GameAction.AActionValidator {
         private readonly string playerId;
         private readonly HexCoordinates target;
         private readonly Game game;
         private readonly int largerPiecePrice;
 
-        public PlayerCanAffordLargerPiece (string playerId, in HexCoordinates target, Game game) {
+        public PlayerCanAffordLargerPiece ( in HexCoordinates target, string playerId, Game game) {
             this.playerId = playerId;
             this.target = target;
             this.game = game;
@@ -18,9 +18,9 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
             } 
         }
 
-        public bool IsValid {
+        public override bool IsValid {
             get => game.PlayerBoards[playerId].Light >= largerPiecePrice;
         }
-        public string? FailureMessage { get=> IsValid? null : "Can't afford to grow that piece."; }
+        public override string? FailureMessage { get=> IsValid? null : "Can't afford to grow that piece."; }
     }
 }

@@ -4,7 +4,7 @@ using dotnet_tree_shadows.Models.GameActions.Validators;
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions {
-    public class PlantAction : GameAction {
+    public class PlantAction : GameActionWithOrigin {
 
         public HexCoordinates Origin { get; }
         private HexCoordinates Target { get; }
@@ -12,31 +12,26 @@ namespace dotnet_tree_shadows.Models.GameActions {
 
         public PlantAction (Game game, string playerId, HexCoordinates origin, HexCoordinates target) : base(
                 game,
-                playerId
+                playerId,
+                origin
             ) {
             TreeType = game.PlayerBoards[playerId].TreeType;
             Target = target;
-            Origin = origin;
 
-            ActionValidators = new IActionValidator[] {
-                                                new OnPlayersTurn( playerId, game ),
-                                                new PlayerCanAffordCost( playerId, 1, game ),
-                                                new PlayerHasAvailablePiece( playerId, PieceType.Seed, game ),
-                                                new ValidTile( target, "target", game ),
-                                                new ValidTile( origin, "origin", game ),
-                                                new TileHasNotBeenActiveThisTurn( origin, game ),
-                                                new PieceTypeIsTree( origin, game ),
-                                                new TilePieceTypeIsNull( target, game ),
-                                                new WithinRangeOfOrigin(
-                                                        origin,
-                                                        target,
-                                                        (int) (Game.Board.GetTileAt( origin )?.PieceType ?? 0)
-                                                    ),
-                                                new GrowthInShadowAllowed( target, game ),
-                                            };
+            AddValidators(
+                new AActionValidator[] {
+                  new PlayerCanAffordCost( playerId, 1, game ),
+                  new PlayerHasAvailablePiece( playerId, PieceType.Seed, game ),
+                  new ValidTile( target, game ),
+                  new PieceTypeIsTree( origin, game ),
+                  new TilePieceTypeIs( target, null, game ),
+                  new WithinRangeOfOrigin( origin, target, (int) (Game.Board.GetTileAt( origin )?.PieceType ?? 0) ),
+                  new GrowthInShadowAllowed( target, game ),
+                }
+              );
         }
 
-        protected override IEnumerable<IActionValidator> ActionValidators { get; }
+        public override GameActionType Type { get; } = GameActionType.Plant;
 
         public override void Execute () {
             Tile tile = new Tile( Game.Board.Tiles[Origin] ) { PieceType = PieceType.Seed, TreeType = TreeType };

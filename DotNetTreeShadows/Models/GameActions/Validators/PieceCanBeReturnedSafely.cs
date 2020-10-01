@@ -1,22 +1,22 @@
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.Validators {
-    public class PieceCanBeReturnedSafely : GameAction.IActionValidator {
+    public class PieceCanBeReturnedSafely : GameAction.AActionValidator {
         private readonly string playerId;
         private readonly HexCoordinates target;
         private readonly Game game;
         private readonly PieceType? pieceType;
 
-        public PieceCanBeReturnedSafely (string playerId, in HexCoordinates target, Game game) {
+        public PieceCanBeReturnedSafely (in HexCoordinates target, string playerId, Game game) {
             this.playerId = playerId;
             this.target = target;
             this.game = game;
             pieceType = game.Board.GetTileAt( target ).PieceType;
         }
-        public bool IsValid {
+        public override bool IsValid {
             get => pieceType != null && game.PlayerBoards[playerId].Pieces( (PieceType) pieceType ).CanReturnSafely();
         }
-        public string? FailureMessage {
+        public override string? FailureMessage {
             get =>
                 IsValid
                     ? null

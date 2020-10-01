@@ -1,19 +1,19 @@
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.Validators {
-    public class TilePieceTypeIsNot : GameAction.IActionValidator {
+    public class TilePieceTypeIsNot : GameAction.AActionValidator {
         private readonly HexCoordinates target;
-        private readonly PieceType pieceType;
+        private readonly PieceType? pieceType;
         private readonly Game game;
-        public TilePieceTypeIsNot (in HexCoordinates target, PieceType pieceType, Game game) {
+        public TilePieceTypeIsNot (in HexCoordinates target, PieceType? pieceType, Game game) {
             this.target = target;
             this.pieceType = pieceType;
             this.game = game;
         }
-        public bool IsValid {
-            get => game.Board.GetTileAt( target )?.PieceType == pieceType;
+        public override bool IsValid {
+            get => game.Board.GetTileAt( target )?.PieceType != pieceType;
         }
-        public string? FailureMessage {
+        public override string? FailureMessage {
             get =>
                 IsValid
                     ? null

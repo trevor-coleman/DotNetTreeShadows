@@ -1,13 +1,13 @@
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.Validators {
-    public class PlayerHasLargerPieceAvailable : GameAction.IActionValidator {
+    public class PlayerHasLargerPieceAvailable : GameAction.AActionValidator {
         private readonly string playerId;
         private readonly HexCoordinates target;
         private readonly Game game;
         private readonly PieceType largerPiece;
 
-        public PlayerHasLargerPieceAvailable (string playerId, in HexCoordinates target, Game game) {
+        public PlayerHasLargerPieceAvailable (in HexCoordinates target, string playerId,Game game) {
             this.playerId = playerId;
             this.target = target;
             this.game = game;
@@ -18,11 +18,11 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
             } 
         }
 
-        public bool IsValid {
+        public override bool IsValid {
             get => game.PlayerBoards[playerId].Pieces( largerPiece ).Available != 0;
         }
 
-        public string? FailureMessage {
+        public override string? FailureMessage {
             get =>
                 IsValid
                     ? null

@@ -1,7 +1,7 @@
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.Validators {
-    public class OnPlayersTurn : GameAction.IActionValidator {
+    public class OnPlayersTurn : GameAction.AActionValidator {
         private readonly string playerId;
         private readonly Game game;
 
@@ -9,10 +9,10 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
             this.playerId = playerId;
             this.game = game;
         }
-        public bool IsValid {
+        public override bool IsValid {
             get => game.TurnOrder[game.CurrentTurn] == playerId;
         }
-        public string? FailureMessage {
+        public override string? FailureMessage {
             get =>
                 IsValid
                     ? null

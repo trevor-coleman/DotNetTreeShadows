@@ -1,7 +1,7 @@
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.Validators {
-    public class PieceTypeIsTree : GameAction.IActionValidator {
+    public class PieceTypeIsTree : GameAction.AActionValidator {
         private readonly HexCoordinates origin;
         private readonly Game game;
 
@@ -11,11 +11,11 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
             throw new System.NotImplementedException();
         }
 
-        public bool IsValid {
+        public override bool IsValid {
             get => (int) game.Board.GetTileAt( origin ).PieceType > (int) PieceType.Seed;
         }
 
-        public string? FailureMessage {
+        public override string? FailureMessage {
             get =>
                 IsValid
                     ? null

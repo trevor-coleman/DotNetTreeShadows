@@ -10,16 +10,18 @@ namespace dotnet_tree_shadows.Models.GameActions {
         public BuyAction (Game game, string playerId, PieceType pieceType) : base( game, playerId ) {
             PieceType = pieceType;
             int cost = game.PlayerBoards[playerId].Pieces( pieceType ).NextPrice;
-            
-                ActionValidators = new IActionValidator[] {
-                                                              new OnPlayersTurn( playerId,game ), 
-                                                              new PlayerHasPieceOnPlayerBoard( playerId, pieceType, game ),
-                                                              new PlayerCanAffordCost(PlayerId, cost, game ), 
-                                                          };
+
+            AddValidators(
+                    new AActionValidator[] {
+                              new OnPlayersTurn( playerId, game ),
+                              new PlayerHasPieceOnPlayerBoard( playerId, pieceType, game ),
+                              new PlayerCanAffordCost( PlayerId, cost, game ),
+                          }
+                );
         }
 
-        protected override IEnumerable<IActionValidator> ActionValidators { get; }
-
+        public override GameActionType Type { get; } = GameActionType.Buy;
+        
         public override void Execute () {
             BitwisePlayerBoard playerBoard = Game.PlayerBoards[PlayerId];
             BitwisePlayerBoard.PieceCount pieces = playerBoard.Pieces( PieceType );

@@ -5,7 +5,7 @@
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.Validators {
-    public class WithinRangeOfOrigin : GameAction.IActionValidator {
+    public class WithinRangeOfOrigin : GameAction.AActionValidator {
 
         protected readonly HexCoordinates origin;
         protected readonly HexCoordinates target;
@@ -17,11 +17,11 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
             AllowedDistance = allowedDistance;
         }
 
-        public bool IsValid {
+        public override bool IsValid {
             get => HexCoordinates.Distance( origin, target ) < AllowedDistance;
         }
 
-        public string? FailureMessage {
+        public override string? FailureMessage {
             get =>
                 IsValid
                     ? null

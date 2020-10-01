@@ -355,9 +355,11 @@
           <e p="FriendProfile.cs" t="Include" />
           <e p="GameActions" t="Include">
             <e p="BuyAction.cs" t="Include" />
+            <e p="CollectAction.cs" t="Include" />
             <e p="GameAction.cs" t="Include" />
             <e p="GameActionFactory.cs" t="Include" />
             <e p="GameActionType.cs" t="Include" />
+            <e p="GameActionWithOrigin.cs" t="Include" />
             <e p="GrowAction.cs" t="Include" />
             <e p="PlantAction.cs" t="Include" />
             <e p="Validators" t="Include">
@@ -372,9 +374,8 @@
               <e p="PlayerHasPieceOnPlayerBoard.cs" t="Include" />
               <e p="TileBelongsToPlayer.cs" t="Include" />
               <e p="TileHasNotBeenActiveThisTurn.cs" t="Include" />
+              <e p="TilePiceTypeIs.cs" t="Include" />
               <e p="TilePieceTypeIsNot.cs" t="Include" />
-              <e p="TilePieceTypeIsNotNull.cs" t="Include" />
-              <e p="TilePieceTypeIsNull.cs" t="Include" />
               <e p="ValidTile.cs" t="Include" />
               <e p="WithinRangeOfOrigin.cs" t="Include" />
             </e>
@@ -391,14 +392,12 @@
             <e p="BoardDTO.cs" t="Include" />
             <e p="Game.cs" t="Include" />
             <e p="GameDTO.cs" t="Include" />
-            <e p="GrowActionValidator.cs" t="Include" />
             <e p="HexCoordinates.cs" t="Include" />
             <e p="HexPoint.cs" t="Include" />
             <e p="IGameData.cs" t="Include" />
             <e p="OldTile.cs" t="Include" />
             <e p="PieceCounter.cs" t="Include" />
             <e p="PieceType.cs" t="Include" />
-            <e p="PlayerBoard.cs" t="Include" />
             <e p="PlayerBoardDTO.cs" t="Include" />
             <e p="Scoring.cs" t="Include" />
             <e p="Session.cs" t="Include" />

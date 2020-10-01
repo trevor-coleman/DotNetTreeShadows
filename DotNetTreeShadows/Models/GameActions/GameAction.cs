@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
+using dotnet_tree_shadows.Models.GameActions.Validators;
 using dotnet_tree_shadows.Models.SessionModels;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -19,13 +20,20 @@ namespace dotnet_tree_shadows.Models.GameActions {
 
         [JsonConverter( typeof( StringEnumConverter ) )]
         [BsonRepresentation( BsonType.String )]
-        public GameActionType ActionType { get; set; } = GameActionType.EndTurn;
+        public abstract GameActionType Type { get; }
 
         protected readonly Game Game;
 
-        protected GameAction (Game game, string playerId) { Game = game; }
-        protected abstract IEnumerable<IActionValidator> ActionValidators { get; }
-        
+        protected GameAction (Game game, string playerId) { Game = game;
+          PlayerId = playerId;
+          AddValidators( new AActionValidator[]{new OnPlayersTurn( playerId, game )}  );
+        }
+        public virtual IEnumerable<AActionValidator> ActionValidators { get; private set; } = new List<AActionValidator>();
+
+        protected void AddValidators (IEnumerable<AActionValidator> validators) {
+            ActionValidators = ActionValidators.Concat( validators );
+        }
+
         public abstract void Execute ();
         public bool IsValid {
             get => ActionValidators.All( validator => IsValid );
@@ -36,9 +44,9 @@ namespace dotnet_tree_shadows.Models.GameActions {
         }
         public abstract void Undo ();
         
-        public interface IActionValidator {
-            bool IsValid { get; }
-            string? FailureMessage { get; }
+        public abstract class AActionValidator {
+            public abstract bool IsValid { get; }
+            public abstract string? FailureMessage { get; }
         }
         
     }
