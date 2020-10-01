@@ -1,7 +1,7 @@
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.Validators {
-    public class PieceCanBeReturnedSafely : AGameAction.AActionValidator {
+    public class PieceCanBeReturnedSafely : ATurnAction.AActionValidator {
         private readonly string playerId;
         private readonly HexCoordinates target;
         private readonly Game game;

@@ -354,19 +354,27 @@
           <e p="AuthDatabaseSettings.cs" t="Include" />
           <e p="FriendProfile.cs" t="Include" />
           <e p="GameActions" t="Include">
-            <e p="Actions" t="Include">
+            <e p="AAction.cs" t="Include" />
+            <e p="AHostAction.cs" t="Include" />
+            <e p="ATurnAction.cs" t="Include" />
+            <e p="ATurnActionWithOrigin.cs" t="Include" />
+            <e p="GameActionFactory.cs" t="Include" />
+            <e p="GameActionType.cs" t="Include" />
+            <e p="HostActions" t="Include">
+              <e p="StartGameAction.cs" t="Include" />
+            </e>
+            <e p="TurnActions" t="Include">
               <e p="BuyAction.cs" t="Include" />
               <e p="CollectAction.cs" t="Include" />
               <e p="EndTurnAction.cs" t="Include" />
               <e p="GrowAction.cs" t="Include" />
+              <e p="PlaceFirstTreeAction.cs" t="Include" />
               <e p="PlantAction.cs" t="Include" />
             </e>
-            <e p="AGameAction.cs" t="Include" />
-            <e p="AGameActionWithOrigin.cs" t="Include" />
-            <e p="GameActionFactory.cs" t="Include" />
-            <e p="GameActionType.cs" t="Include" />
             <e p="Validators" t="Include">
+              <e p="GameIsInPermittedState.cs" t="Include" />
               <e p="GrowthInShadowAllowed.cs" t="Include" />
+              <e p="MinimumTwoPlayers.cs" t="Include" />
               <e p="OnPlayersTurn.cs" t="Include" />
               <e p="PieceCanBeReturnedSafely.cs" t="Include" />
               <e p="PieceTypeIsTree.cs" t="Include" />
@@ -375,6 +383,7 @@
               <e p="PlayerHasAvailablePiece.cs" t="Include" />
               <e p="PlayerHasLargerPieceAvailable.cs" t="Include" />
               <e p="PlayerHasPieceOnPlayerBoard.cs" t="Include" />
+              <e p="PlayerIsHost.cs" t="Include" />
               <e p="TileBelongsToPlayer.cs" t="Include" />
               <e p="TileHasNotBeenActiveThisTurn.cs" t="Include" />
               <e p="TilePiceTypeIs.cs" t="Include" />
@@ -443,7 +452,7 @@
       <e p="packages" t="ExcludeRecursive" />
       <e p="TestShadows" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
-        <e p="BitwiseBoard_Test.cs" t="Include" />
+        <e p="BitwiseBoardTest.cs" t="Include" />
         <e p="EndTurnActionTest.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
@@ -452,6 +461,7 @@
             </e>
           </e>
         </e>
+        <e p="StartGameActionTest.cs" t="Include" />
         <e p="TestShadows.csproj" t="IncludeRecursive" />
       </e>
     </e>

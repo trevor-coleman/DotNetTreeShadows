@@ -1,7 +1,7 @@
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.Validators {
-    public class GrowthInShadowAllowed : AGameAction.AActionValidator {
+    public class GrowthInShadowAllowed : ATurnAction.AActionValidator {
         private readonly HexCoordinates target;
         private readonly Game game;
         public GrowthInShadowAllowed (in HexCoordinates target, Game game) {
@@ -10,7 +10,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
         }
 
         public override bool IsValid {
-            get => game.PreventActionsInShadow == false || game.Board.GetTileAt( target ).ShadowHeight == 0;
+            get => game.Options.PreventActionsInShadow == false || game.Board.GetTileAt( target ).ShadowHeight == 0;
         }
         public override string? FailureMessage { get; }
     }

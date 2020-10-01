@@ -1,7 +1,7 @@
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.Validators {
-    public class PlayerHasPieceOnPlayerBoard : AGameAction.AActionValidator {
+    public class PlayerHasPieceOnPlayerBoard : ATurnAction.AActionValidator {
         private readonly Game game;
         private readonly string playerId;
         private readonly PieceType pieceType;

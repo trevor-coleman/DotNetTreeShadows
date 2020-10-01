@@ -14,5 +14,6 @@ namespace dotnet_tree_shadows.Models.SessionModels {
         public bool LongGame { get; set; } = false;
         public bool PreventActionsInShadow { get; set; } = false;
         public HexCoordinates[] TilesActiveThisTurn { get; set; } = { };
+        public bool RandomizeTurnOrder { get; set; }
     }
 }

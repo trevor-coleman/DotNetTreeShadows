@@ -1,7 +1,7 @@
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.Validators {
-    public class PieceTypeIsTree : AGameAction.AActionValidator {
+    public class PieceTypeIsTree : ATurnAction.AActionValidator {
         private readonly HexCoordinates origin;
         private readonly Game game;
 
