@@ -11,7 +11,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
             this.playerId = playerId;
             this.target = target;
             this.game = game;
-            pieceType = game.Board.TileAt( target ).PieceType;
+            pieceType = game.Board.GetTileAt( target ).PieceType;
         }
         public bool IsValid {
             get => pieceType != null && game.PlayerBoards[playerId].Pieces( (PieceType) pieceType ).CanReturnSafely();
@@ -20,7 +20,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
             get =>
                 IsValid
                     ? null
-                    : "Piece cannot be returned safely. Send GrowAndLosePiece to override.";
+                    : "Piece cannot be returned safely. Send GrowAndLosePieceAction to override.";
         }
     }
 }

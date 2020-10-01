@@ -12,7 +12,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
         }
 
         public bool IsValid {
-            get => (int) game.Board.TileAt( origin ).PieceType > (int) PieceType.Seed;
+            get => (int) game.Board.GetTileAt( origin ).PieceType > (int) PieceType.Seed;
         }
 
         public string? FailureMessage {

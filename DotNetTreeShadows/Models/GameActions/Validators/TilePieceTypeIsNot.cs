@@ -11,7 +11,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
             this.game = game;
         }
         public bool IsValid {
-            get => game.Board.TileAt( target )?.PieceType == pieceType;
+            get => game.Board.GetTileAt( target )?.PieceType == pieceType;
         }
         public string? FailureMessage {
             get =>

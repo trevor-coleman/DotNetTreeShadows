@@ -12,7 +12,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
             this.target = target;
             this.game = game;
 
-            Tile? tile = game.Board.TileAt( target );
+            Tile? tile = game.Board.GetTileAt( target );
             if ( tile != null ) {
                 largerPiece = (PieceType) ((int) tile!.PieceType! + 1);
             } 

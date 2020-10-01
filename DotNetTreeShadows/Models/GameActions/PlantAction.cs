@@ -30,7 +30,7 @@ namespace dotnet_tree_shadows.Models.GameActions {
                                                 new WithinRangeOfOrigin(
                                                         origin,
                                                         target,
-                                                        (int) (Game.Board.TileAt( origin )?.PieceType ?? 0)
+                                                        (int) (Game.Board.GetTileAt( origin )?.PieceType ?? 0)
                                                     ),
                                                 new GrowthInShadowAllowed( target, game ),
                                             };

@@ -59,7 +59,7 @@ namespace dotnet_tree_shadows.Models.SessionModels {
             }
         }
 
-        public Tile? TileAt (HexCoordinates hex) => Tiles.TryGetValue( hex, out uint tile ) ? new Tile(tile) : null;
+        public Tile? GetTileAt (HexCoordinates hex) => Tiles.TryGetValue( hex, out uint tile ) ? new Tile(tile) : null;
 
         public class ShadowDictionary : Dictionary<HexCoordinates, int> {}
 
@@ -104,7 +104,7 @@ namespace dotnet_tree_shadows.Models.SessionModels {
 
             foreach ( HexCoordinates treePos in TreeTiles ) {
                 if (!Tiles.TryGetValue( treePos, out uint tile )) throw new Exception("treePos is not a valid Tile");
-                PieceType? pieceType = TileAt( treePos )?.PieceType;
+                PieceType? pieceType = GetTileAt( treePos )?.PieceType;
                 if(pieceType == null) continue;
                 Shadow tileShadow = Shadow.GetShadow(treePos, sunPos, (PieceType) pieceType);
 
@@ -141,8 +141,7 @@ namespace dotnet_tree_shadows.Models.SessionModels {
             return lightCounts;
         }
 
-        
-
+        public void SetTileAt (in HexCoordinates target, Tile tile) { Tiles[target] = tile.TileCode; }
     }
 
 }
