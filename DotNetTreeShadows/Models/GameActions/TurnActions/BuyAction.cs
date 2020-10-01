@@ -2,9 +2,12 @@ using System.Collections.Generic;
 using dotnet_tree_shadows.Models.GameActions.Validators;
 using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Models.GameActions {
-  public class BuyAction : AGameAction {
-    public override GameActionType Type { get; } = GameActionType.Buy;
+namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
+  public class BuyAction : ATurnAction {
+    public override GameActionType Type {
+      get => GameActionType.Buy;
+    }
+    protected override IEnumerable<Game.GameStatus> PermittedDuring { get; } = new []{ Game.GameStatus.InProgress };
 
     public PieceType PieceType { get; }
     private int price;

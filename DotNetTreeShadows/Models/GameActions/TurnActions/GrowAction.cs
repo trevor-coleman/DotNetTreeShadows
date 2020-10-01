@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using dotnet_tree_shadows.Models.GameActions.Validators;
 using dotnet_tree_shadows.Models.SessionModels;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
-namespace dotnet_tree_shadows.Models.GameActions {
-  public class GrowAction : AGameActionWithOrigin {
-    public override GameActionType Type { get; } = GameActionType.Grow;
+namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
+  public class GrowAction : ATurnActionWithOrigin {
+    public override GameActionType Type {
+      get => GameActionType.Grow;
+    }
+
+    protected override IEnumerable<Game.GameStatus> PermittedDuring { get; } = new []{ Game.GameStatus.InProgress };
 
     public GrowAction (Game game, string playerId, HexCoordinates origin) : base( game, playerId, origin ) {
       AddValidators(

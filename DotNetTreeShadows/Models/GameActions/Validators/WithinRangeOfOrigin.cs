@@ -5,7 +5,7 @@
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.Validators {
-    public class WithinRangeOfOrigin : AGameAction.AActionValidator {
+    public class WithinRangeOfOrigin : ATurnAction.AActionValidator {
 
         protected readonly HexCoordinates origin;
         protected readonly HexCoordinates target;

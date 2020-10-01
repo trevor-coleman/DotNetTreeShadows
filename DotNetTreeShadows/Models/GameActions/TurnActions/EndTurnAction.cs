@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Models.GameActions {
-  public class EndTurnAction : AGameAction {
-    public override GameActionType Type { get; } = GameActionType.EndTurn;
+namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
+  public class EndTurnAction : ATurnAction {
+    public override GameActionType Type {
+      get => GameActionType.EndTurn;
+    }
 
+    protected override IEnumerable<Game.GameStatus> PermittedDuring { get; } = new []{Game.GameStatus.InProgress };
     public EndTurnAction (Game game, string playerId) : base( game, playerId ) { }
 
     protected override void DoAction () {

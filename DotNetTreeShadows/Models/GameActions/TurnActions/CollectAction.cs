@@ -1,11 +1,14 @@
-using System;
 using System.Collections.Generic;
 using dotnet_tree_shadows.Models.GameActions.Validators;
 using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Models.GameActions {
-  public class CollectAction : AGameActionWithOrigin {
-    public override GameActionType Type { get; } = GameActionType.Collect;
+namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
+  public class CollectAction : ATurnActionWithOrigin {
+    public override GameActionType Type {
+      get => GameActionType.Collect;
+    }
+
+    protected override IEnumerable<Game.GameStatus> PermittedDuring { get; } = new []{ Game.GameStatus.InProgress };
 
     public CollectAction (Game game, string playerId, HexCoordinates origin) : base( game, playerId, origin ) {
       AddValidators(

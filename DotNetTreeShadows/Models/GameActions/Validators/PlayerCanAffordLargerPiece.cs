@@ -1,7 +1,7 @@
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.Validators {
-    public class PlayerCanAffordLargerPiece : AGameAction.AActionValidator {
+    public class PlayerCanAffordLargerPiece : ATurnAction.AActionValidator {
         private readonly string playerId;
         private readonly HexCoordinates target;
         private readonly Game game;

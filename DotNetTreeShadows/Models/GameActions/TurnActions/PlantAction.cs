@@ -1,11 +1,14 @@
-using System;
 using System.Collections.Generic;
 using dotnet_tree_shadows.Models.GameActions.Validators;
 using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Models.GameActions {
-    public class PlantAction : AGameActionWithOrigin {
-      public override GameActionType Type { get; } = GameActionType.Plant;
+namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
+    public class PlantAction : ATurnActionWithOrigin {
+      public override GameActionType Type {
+        get => GameActionType.Plant;
+      }
+
+      protected override IEnumerable<Game.GameStatus> PermittedDuring { get; } = new []{ Game.GameStatus.InProgress };
       
         private HexCoordinates Target { get; }
         public TreeType? TreeType { get; }
