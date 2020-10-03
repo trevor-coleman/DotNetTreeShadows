@@ -11,7 +11,7 @@ import { Orientation } from '../models/hex-grid/Orientation';
 import { Point } from '../models/hex-grid/Point';
 import BoardTile from './BoardTile';
 import { Tile, TreeType, PieceType } from '../store/sessions/types';
-import { addPieceToHex, clearPieceFromHex } from '../store/sessions/board/actions';
+import { addPieceToHex, clearPieceFromHex } from '../store/board/actions';
 import { HexCoordinates } from '../models/hex-grid/HexCoordinates';
 
 //REDUX MAPPING

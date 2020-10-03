@@ -8,22 +8,22 @@ using MongoDB.Driver;
 namespace dotnet_tree_shadows.Services {
     public class SessionService {
 
-        private readonly IMongoCollection<SessionDtoWithId> sessions;
+        private readonly IMongoCollection<SessionInfo> sessions;
 
         public SessionService (IGameDatabaseSettings settings) {
             MongoClient client = new MongoClient( settings.ConnectionString );
             IMongoDatabase? database = client.GetDatabase( settings.DatabaseName );
-            sessions = database.GetCollection<SessionDtoWithId>( settings.SessionsCollectionName );
+            sessions = database.GetCollection<SessionInfo>( settings.SessionsCollectionName );
         }
 
-        public async Task<List<Session>> Get () {
-            return (await sessions.FindAsync( session => true )).ToList().Select( s=> new Session(s)).ToList();
+        public async Task<List<SessionInfo>> Get () {
+            return (await sessions.FindAsync( session => true )).ToList();
         }
 
         public async Task<List<SessionSummary>> GetSessionSummariesForHost (string hostId) {
-            FindOptions<SessionDtoWithId, SessionSummary> findOptions = new FindOptions<SessionDtoWithId, SessionSummary> {
+            FindOptions<SessionInfo, SessionSummary> findOptions = new FindOptions<SessionInfo, SessionSummary> {
                                                                             Projection =
-                                                                                Builders<SessionDtoWithId>.Projection.Expression(
+                                                                                Builders<SessionInfo>.Projection.Expression(
                                                                                         session => new SessionSummary(
                                                                                                 session.Id,
                                                                                                 session.Name
@@ -32,27 +32,27 @@ namespace dotnet_tree_shadows.Services {
                                                                         };
 
             var filter =
-                new ExpressionFilterDefinition<SessionDtoWithId>( session => session.Host == hostId );
+                new ExpressionFilterDefinition<SessionInfo>( sessionInfo => sessionInfo.Host == hostId );
 
             return (await sessions.FindAsync( filter, findOptions )).ToList();
         }
 
-        public async Task<List<Session>> GetByHostId (string id) =>
-          (await sessions.FindAsync( session => session.Host == id )).ToList().Select( s => new Session( s ) ).ToList();
+        public async Task<List<SessionInfo>> GetByHostId (string id) =>
+          (await sessions.FindAsync( sessionInfo => sessionInfo.Host == id )).ToList();
 
-        public async Task<Session?> Get (string id) => new Session((await sessions.FindAsync( session => session.Id == id )).FirstOrDefault());
+        public async Task<SessionInfo?> Get (string id) => (await sessions.FindAsync( session => session.Id == id )).FirstOrDefault();
 
-        public async Task<SessionDtoWithId> Create (SessionDtoWithId sessionDtoWithId) {
+        public async Task<SessionInfo> Create (SessionInfo sessionDtoWithId) {
           await sessions.InsertOneAsync( sessionDtoWithId );
             return sessionDtoWithId;
         }
 
-        public async Task Update (string id, Session sessionIn) =>
-            await sessions.ReplaceOneAsync( session => session.Id == id, sessionIn.DtoWithId() );
+        public async Task Update (string id, SessionInfo sessionIn) =>
+            await sessions.ReplaceOneAsync( session => session.Id == id, sessionIn);
 
-        public void Remove (string id) => sessions.DeleteOne( session => session.Id == id );
+        public void Remove (string id) => sessions.DeleteOne( sessionInfo => sessionInfo.Id == id );
 
-        public void Remove (Session sessionIn) => sessions.DeleteOne( session => session.Id == sessionIn.Id );
+        public void Remove (SessionInfo sessionIn) => sessions.DeleteOne( sessionInfo => sessionInfo.Id == sessionIn.Id );
         
     }
 }

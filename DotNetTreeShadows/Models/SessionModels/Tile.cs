@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization.Serializers;
 namespace dotnet_tree_shadows.Models {
 
     public class Tile {
-        public uint TileCode { get; protected set; }
+        public int TileCode { get; protected set; }
         
         public PieceType? PieceType {
             get {
@@ -16,8 +16,8 @@ namespace dotnet_tree_shadows.Models {
             set {
                 if ( value != null ) {
                     TileType = TileTypes.Piece;
-                    TileCode &= ~(uint) 3;
-                    TileCode |= ((uint) value);
+                    TileCode &= ~(int) 3;
+                    TileCode |= ((int) value);
                     return;
                 }
 
@@ -33,8 +33,8 @@ namespace dotnet_tree_shadows.Models {
             set {
                 if ( value != null ) {
                     TileType = TileTypes.Piece;
-                    TileCode &= ~((uint) 3 << 2);
-                    TileCode |= (uint) value << 2;
+                    TileCode &= ~((int) 3 << 2);
+                    TileCode |= (int) value << 2;
                     return;
                 }
 
@@ -51,25 +51,25 @@ namespace dotnet_tree_shadows.Models {
         private TileTypes TileType {
             get => (TileTypes) ((TileCode >> 4) & 3);
             set {
-                TileCode &= ~((uint) 3 << 4);
-                TileCode |= (uint) value << 4;
+                TileCode &= ~((int) 3 << 4);
+                TileCode |= (int) value << 4;
             }
         }
 
         public int ShadowHeight {
             get => (int) (TileCode >> 4) & 3;
             set {
-                TileCode &= ~((uint) 3 << 6);
-                TileCode |= (uint) value << 6;
+                TileCode &= ~((int) 3 << 6);
+                TileCode |= (int) value << 6;
             }
         }
 
         public Tile () { }
 
-        public Tile (uint tileCode) { this.TileCode = tileCode; }
+        public Tile (int tileCode) { this.TileCode = tileCode; }
         
         public Tile (PieceType pieceType, TreeType treeType) {
-            TileCode = (uint) pieceType | ((uint) treeType << 2);
+            TileCode = (int) pieceType | ((int) treeType << 2);
         }
 
         public override string ToString () => TileType switch {
@@ -89,7 +89,7 @@ namespace dotnet_tree_shadows.Models {
         }
         
         public bool ProducesLight {
-            get => PieceType != null && (uint) PieceType > ShadowHeight;
+            get => PieceType != null && (int) PieceType > ShadowHeight;
         }
         
         
@@ -98,7 +98,7 @@ namespace dotnet_tree_shadows.Models {
         
         
         public static Tile Sky {
-            get => new Tile( (uint) TileTypes.Sky << 6 );
+            get => new Tile( (int) TileTypes.Sky << 6 );
         }
 
         public static Tile Empty {

@@ -9,7 +9,7 @@ import {
   GET_SESSION_SUCCESS,
 } from './types';
 import { normalize, schema } from 'normalizr';
-import { ADD_PIECE_TO_HEX, CLEAR_PIECE_FROM_HEX } from './board/types';
+import { ADD_PIECE_TO_HEX, CLEAR_PIECE_FROM_HEX } from '../board/types';
 import { HexCoordinates } from '../../models/hex-grid/HexCoordinates';
 
 export const initialSessionState: SessionState = {
@@ -70,20 +70,6 @@ export function sessionReducer(state: SessionState = initialSessionState, action
         sessionLoadingFailureMessage: null,
       };
     case GET_SESSION_SUCCESS:
-      const playerBoard = new schema.Entity('playerBoards',{}, {idAttribute: (value, parent, key) => value.playerId })
-
-
-
-      console.group("==========BEFORE")
-
-      console.log(action.payload);
-      console.groupEnd();
-
-        console.group("============NORMALIZED")
-
-      console.log(normalize(action.payload.game.playerBoards, new schema.Values(playerBoard)));
-      console.groupEnd();
-
       return {
         ...state,
         session: action.payload,

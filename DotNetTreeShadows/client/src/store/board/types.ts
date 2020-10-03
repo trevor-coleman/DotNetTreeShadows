@@ -1,5 +1,5 @@
-import { HexCoordinates } from '../../../models/hex-grid/HexCoordinates';
-import { PieceType, TreeType } from '../types';
+import { HexCoordinates } from '../../models/hex-grid/HexCoordinates';
+import { PieceType, TreeType } from '../sessions/types';
 
 export type KnownBoardAction = AddPieceToHexAction | ClearPieceFromHexAction;
 

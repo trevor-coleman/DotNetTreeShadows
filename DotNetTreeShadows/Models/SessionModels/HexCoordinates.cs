@@ -42,7 +42,19 @@ namespace dotnet_tree_shadows.Models.SessionModels {
             throw new ArgumentException( "HexCoordinate constructor requires array of length 2 or 3" );
         }
 
-        public override string ToString () => $"Hex[{Q}, {R}, {S}]";
+        public override string ToString () {
+          int hexCode = 0;
+
+          sbyte q = (sbyte) Q;
+          sbyte r = (sbyte) R;
+          sbyte s = (sbyte) S;
+
+          hexCode |= (q & 0xff) << 16 ;
+          hexCode |= (r & 0xff) << 8;
+          hexCode |= s & 0xff << 0;
+
+          return hexCode.ToString();
+        }
         public int[] ToArray () => new[] { Q, R, S };
 
         public int[] AxialArray {
