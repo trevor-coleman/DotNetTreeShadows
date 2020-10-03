@@ -16,6 +16,8 @@ namespace dotnet_tree_shadows.Models.GameActions {
     [JsonConverter( typeof( StringEnumConverter ) )]
     [BsonRepresentation( BsonType.String )]
     public abstract GameActionType Type { get; }
+    
+    
 
     protected abstract IEnumerable<Game.GameStatus> PermittedDuring { get; }
 

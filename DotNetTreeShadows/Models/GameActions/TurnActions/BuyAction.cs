@@ -18,7 +18,6 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
 
       AddValidators(
           new AActionValidator[] {
-            new OnPlayersTurn( playerId, game ),
             new PlayerHasPieceOnPlayerBoard( playerId, pieceType, game ),
             new PlayerCanAffordCost( PlayerId, cost, game ),
           }

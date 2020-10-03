@@ -114,11 +114,12 @@ namespace dotnet_tree_shadows.Controllers {
                                      }
                     );
 
-            Session session = new Session( userProfile);
-            Session createdSession = await sessionService.Create( session );
-            userProfile.AddSession( createdSession );
+            SessionDtoWithId dto = new Session( userProfile).DtoWithId();
+            
+            await sessionService.Create( dto );
+            userProfile.AddSession( new Session(dto));
             await profileService.Update( user.UserId, userProfile );
-            return CreatedAtRoute( "GetSession", new { id = createdSession.Id }, createdSession.Dto() );
+            return CreatedAtRoute( "GetSession", new { id = dto.Id }, dto );
         }
 
         // [HttpPut("id:length(24")]

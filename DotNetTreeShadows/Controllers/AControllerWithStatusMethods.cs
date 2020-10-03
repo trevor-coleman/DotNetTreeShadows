@@ -30,6 +30,12 @@ namespace dotnet_tree_shadows.Controllers {
                     new Response { Status = "Missing Profile", Message = "Cannot find Profile for authenticated user." }
                 );
         
+        protected ObjectResult Status500UnknownError () =>
+          StatusCode(
+              StatusCodes.Status500InternalServerError,
+              new Response { Status = "Unknown Error", Message = "Unknown internal error." }
+            );
+        
         protected ObjectResult Status400MissingRequiredField (string missingFieldName) =>
             StatusCode(
                     StatusCodes.Status400BadRequest,

@@ -10,7 +10,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
         }
 
         public override bool IsValid {
-            get => game.Options.PreventActionsInShadow == false || game.Board.GetTileAt( target ).ShadowHeight == 0;
+            get => game.PreventActionsInShadow == false || game.Board.GetTileAt( target ).ShadowHeight == 0;
         }
         public override string? FailureMessage { get; }
     }

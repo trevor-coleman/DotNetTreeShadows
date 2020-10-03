@@ -73,6 +73,7 @@ export function sessionReducer(state: SessionState = initialSessionState, action
       const playerBoard = new schema.Entity('playerBoards',{}, {idAttribute: (value, parent, key) => value.playerId })
 
 
+
       console.group("==========BEFORE")
 
       console.log(action.payload);
@@ -80,7 +81,7 @@ export function sessionReducer(state: SessionState = initialSessionState, action
 
         console.group("============NORMALIZED")
 
-      console.log(normalize(action.payload.game.playerBoards, new schema.Values(playerBoard));
+      console.log(normalize(action.payload.game.playerBoards, new schema.Values(playerBoard)));
       console.groupEnd();
 
       return {

@@ -5,9 +5,10 @@ import {makeStyles} from '@material-ui/core/styles';
 import {signInUserAsync} from "../store/system/thunks";
 import {SignInCredentials} from "../store/system/types";
 import {getSessionsInfoAsync} from "../store/user/thunks";
-import {getSessionAsync} from "../store/sessions/thunks";
-import { Paper } from '@material-ui/core';
+import {createSessionAsync, getSessionAsync} from "../store/sessions/thunks";
+import {Paper, Button} from '@material-ui/core';
 import {getSession} from "../store/sessions/actions";
+import DebugToolbar from "./DebugToolbar";
 
 //REDUX MAPPING
 const mapStateToProps = (state: RootState) => {
@@ -24,6 +25,7 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = {
     signIn: (credentials: SignInCredentials) => signInUserAsync(credentials),
     getSession: getSessionAsync,
+    createSession: createSessionAsync,
 };
 
 //REDUX PROP TYPING
@@ -41,23 +43,23 @@ type NormalizerTestProps =
 const NormalizerTest: FunctionComponent<NormalizerTestProps> = (props: NormalizerTestProps) => {
     const classes = useStyles();
 
-    const {loggedIn, signIn, sessions, getSession, session, authInProgress, gettingSession} = props;
+    const {loggedIn, signIn, sessions, getSession, createSession, session, authInProgress, gettingSession} = props;
 
-    if(!loggedIn && !authInProgress) {
-        signIn( {
+
+
+    return <div>
+        <DebugToolbar/><Paper
+        className={classes.root}>{loggedIn ? "LoggedIn" : ""}-{sessions && sessions[0] ? sessions[0].name : "no sessions"}</Paper>
+        <Paper><Button onClick={() => signIn({
             email: 'trevor@trevor.com',
             password: 'Password'
-        })
-    }
-
-    if(loggedIn && !session.session && sessions && !gettingSession) {
-        getSession(sessions[0].id)
-    }
-
-
-    return <div><Paper>{loggedIn ? "LoggedIn" : ""}-{sessions ? sessions[0].name : "no sessions"}</Paper></div>;
+        })}>Sign in</Button>{' '}<Button onClick={createSession}>Create</Button> {' '}<Button disabled={!sessions} onClick={() => sessions ? getSession(sessions[0].id) : console.log("no session")}>GetSession</Button></Paper></div>;
 };
 
-const useStyles = makeStyles({});
+const useStyles = makeStyles({
+    root: {
+        padding: 20,
+    }
+});
 
 export default connector(NormalizerTest);

@@ -7,6 +7,7 @@ using AspNetCore.Identity.Mongo.Model;
 using dotnet_tree_shadows.Authentication;
 using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Services;
+using dotnet_tree_shadows.Services.Serializers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Bson.Serialization;
 
 namespace dotnet_tree_shadows {
     public class Startup {
@@ -43,6 +45,9 @@ namespace dotnet_tree_shadows {
                         mongoIdentityOptions.UsersCollection = Configuration["AuthDatabaseSettings:UsersCollection"];
                     }
                 );
+            
+            BsonSerializer.RegisterSerializationProvider(new HexCoordinatesSerializationProvider());
+            BsonSerializer.RegisterSerializationProvider(new TilesDictionarySerializationProvider());
 
             services.AddSingleton<SessionService>();
             services.AddSingleton<ProfileService>();

@@ -4,11 +4,11 @@ using dotnet_tree_shadows.Models.GameActions.Validators;
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
-  class PlaceFirstTreeAction : ATurnAction {
+  class PlaceStartingTreeAction : ATurnAction {
 
     private readonly HexCoordinates target;
 
-    public PlaceFirstTreeAction (Game game, string playerId, HexCoordinates target) : base( game, playerId ) {
+    public PlaceStartingTreeAction (Game game, string playerId, HexCoordinates target) : base( game, playerId ) {
       this.target = target; 
       AddValidators( new AActionValidator[] {
         new ValidTile(target, game),
@@ -17,7 +17,7 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
     }
 
     public override GameActionType Type {
-      get => GameActionType.PlaceFirstTree;
+      get => GameActionType.PlaceStartingTree;
     }
 
     protected override IEnumerable<Game.GameStatus> PermittedDuring {

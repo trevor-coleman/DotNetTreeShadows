@@ -52,9 +52,7 @@ namespace TestShadows {
     [Test] public void ShouldNotShuffleTurnOrderWhenStartingGameIfRandomStartOrderIsFalse () {
       int count = 0;
       for (int i = 0; i < 10; i++) {
-        game = new Game( "player0" ) {
-          Options = new Game.GameOptions { LongGame = false, PreventActionsInShadow = true, RandomizeTurnOrder = false }
-        };
+        game = new Game( "player0", new Game.GameOptions { LongGame = false, PreventActionsInShadow = true, RandomizeTurnOrder = false } );
 
         game.AddPlayer( "player1");
         game.AddPlayer( "player2");

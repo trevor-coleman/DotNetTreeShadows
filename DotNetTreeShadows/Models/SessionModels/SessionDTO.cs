@@ -1,9 +1,10 @@
+using System.Globalization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace dotnet_tree_shadows.Models.SessionModels {
-        
-    public class SessionDto {
+
+  public class SessionDto {
         [BsonRepresentation( BsonType.ObjectId )]
         public string Host { get; set; } = "";
 
@@ -11,5 +12,14 @@ namespace dotnet_tree_shadows.Models.SessionModels {
         public GameDto Game { get; set; } = new GameDto();
         public string Name { get; set; } = "";
         public string[] Invitations { get; set; } = { };
+
     }
+
+  public class SessionDtoWithId : SessionDto {
+
+    [BsonId]
+    [BsonRepresentation( BsonType.ObjectId )]
+    public string Id { get; set; } = "";
+
+  }
 }

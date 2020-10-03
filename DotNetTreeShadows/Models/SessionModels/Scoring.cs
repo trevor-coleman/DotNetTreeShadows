@@ -56,14 +56,14 @@ namespace dotnet_tree_shadows.Models.SessionModels {
             private static Dictionary<int, Stack<int>> StartingPiles {
                 get =>
                     new Dictionary<int, Stack<int>>() {
-                                                          { 1, new Stack<int>( OneLeafTiles ) },
-                                                          { 2, new Stack<int>( TwoLeafTiles ) },
-                                                          { 3, new Stack<int>( ThreeLeafTiles ) },
-                                                          { 4, new Stack<int>( FourLeafTiles ) },
+                                                          { 0, new Stack<int>( OneLeafTiles ) },
+                                                          { 1, new Stack<int>( TwoLeafTiles ) },
+                                                          { 2, new Stack<int>( ThreeLeafTiles ) },
+                                                          { 3, new Stack<int>( FourLeafTiles ) },
                                                       };
             }
 
-            private readonly Dictionary<int, Stack<int>> piles;
+            private Dictionary<int, Stack<int>> piles;
             public Stacks () { piles = StartingPiles; }
 
             public Stacks (IReadOnlyList<int> remainingTileCounts) {
@@ -71,7 +71,7 @@ namespace dotnet_tree_shadows.Models.SessionModels {
                 for (int index = 0; index < remainingTileCounts.Count; index++) {
                     
                     int count = remainingTileCounts[index];
-                    Stack<int> pile = StartingPiles[index+1];
+                    Stack<int> pile = StartingPiles[index];
                     
                     int[] tokens = new int[count];
                     Array.Copy(
@@ -82,12 +82,12 @@ namespace dotnet_tree_shadows.Models.SessionModels {
                             count
                         );
                     
-                    piles.Add( count, new Stack<int>(tokens) );
+                    piles.Add( index, new Stack<int>(tokens) );
                 }
             }
             
             public int[] Remaining {
-                get => new[] { piles[1].Count, piles[2].Count, piles[3].Count };
+                get => new[] { piles[0].Count, piles[1].Count, piles[2].Count, piles[3].Count };
             }
 
           

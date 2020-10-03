@@ -12,36 +12,54 @@ namespace dotnet_tree_shadows.Models.SessionModels {
     public string FirstPlayer { get; set; } = "";
     public int CurrentTurn { get; set; } = 0;
     public string CurrentPlayer {
-      get =>
-        Status == GameStatus.InProgress
-          ? TurnOrder[CurrentTurn]
-          : "";
+      get => TurnOrder[CurrentTurn];
     }
 
     public int Revolution { get; set; } = 0;
     public int Round { get; set; } = 0;
     public Dictionary<string, Scoring.PlayerScore> PlayerScores = new Dictionary<string, Scoring.PlayerScore>();
     public Scoring.Stacks ScoreTokenStacks { get; set; } = new Scoring.Stacks();
-    public GameOptions Options { get; set; }
     public List<HexCoordinates> TilesActiveThisTurn { get; set; } = new List<HexCoordinates>();
 
     public Board Board { get; } = Board.New();
 
     public Game () { }
 
-    public Game (string hostId, GameOptions? options = null) {
+    public Game (string hostId, GameOptions? gameOptions = null) {
       AddPlayer( hostId );
       Host = hostId;
       FirstPlayer = hostId;
-      Options = options ?? GameOptions.Default;
+      ScoreTokenStacks = new Scoring.Stacks();
+      GameOptions options = gameOptions ?? GameOptions.Default;
+      LongGame = options.LongGame;
+      RandomizeTurnOrder = options.RandomizeTurnOrder;
+      PreventActionsInShadow = options.PreventActionsInShadow;
+    }
+
+    public Game (GameDto dto) {
+      TurnOrder = dto.TurnOrder.ToList();
+      FirstPlayer = dto.FirstPlayer;
+      PlayerBoards = new Dictionary<string, BitwisePlayerBoard>();
+      foreach ( (string player, uint boardCode) in dto.PlayerBoards ) {
+        PlayerBoards.Add( player, new BitwisePlayerBoard(boardCode) );
+      }
+      CurrentTurn = dto.CurrentTurn;
+      Revolution = dto.Revolution;
+      Round = dto.Round;
+      ScoreTokenStacks = new Scoring.Stacks(dto.ScoreTokenStacks);
+      Board = new Board(dto.Board);
+      TilesActiveThisTurn = TilesActiveThisTurn;
+      LongGame = LongGame;
+      PreventActionsInShadow = PreventActionsInShadow;
+      RandomizeTurnOrder = RandomizeTurnOrder;
     }
 
     public void Start () {
-      if(Options.RandomizeTurnOrder) RandomizeTurnOrder();
+      if(RandomizeTurnOrder) RandomizeTurns();
       Status = GameStatus.InProgress;
     }
 
-    private void RandomizeTurnOrder () {
+    private void RandomizeTurns () {
       Random random = new Random();
       int n = TurnOrder.Count;
       string[] array = TurnOrder.ToArray();
@@ -58,11 +76,12 @@ namespace dotnet_tree_shadows.Models.SessionModels {
 
     public int LengthOfGame {
       get =>
-        Options.LongGame
+        LongGame
           ? 4
           : 3;
     }
 
+    [Serializable]
     public struct GameOptions {
       public bool LongGame { get; set; }
       public bool PreventActionsInShadow { get; set; }
@@ -97,12 +116,18 @@ namespace dotnet_tree_shadows.Models.SessionModels {
         Round = Round,
         ScoreTokenStacks = ScoreTokenStacks.Remaining,
         Board = Board.Dto(),
-        LongGame = Options.LongGame,
-        PreventActionsInShadow = Options.PreventActionsInShadow,
-        RandomizeTurnOrder = Options.RandomizeTurnOrder,
+        LongGame = LongGame,
+        PreventActionsInShadow = PreventActionsInShadow,
+        RandomizeTurnOrder = RandomizeTurnOrder,
         TilesActiveThisTurn = TilesActiveThisTurn.ToArray(),
       };
     }
+
+    public bool RandomizeTurnOrder { get; set; }
+
+    public bool PreventActionsInShadow { get; set; }
+
+    public bool LongGame { get; set; }
 
     public void AddPlayer (string playerId) {
       TurnOrder.Add( playerId );
