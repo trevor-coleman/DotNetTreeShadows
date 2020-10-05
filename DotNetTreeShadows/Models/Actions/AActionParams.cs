@@ -30,4 +30,20 @@ namespace dotnet_tree_shadows.Models.GameActions {
     }
 
   }
+
+  class ActionParams : AActionParams {
+
+    public ActionParams (
+        ActionRequest request,
+        string playerId,
+        Game? game,
+        SessionModel.Session? session,
+        Board? board
+      ) : base( request, playerId ) {
+      Game = game;
+      Board = board;
+      Session = session;
+    }
+
+  }
 }

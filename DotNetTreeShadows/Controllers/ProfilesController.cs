@@ -42,10 +42,10 @@ namespace dotnet_tree_shadows.Controllers {
         }
 
         [HttpGet, Route( "me" )]
-        public async Task<ActionResult<ProfileDto>> GetMe () {
+        public async Task<ActionResult<UserProfile>> GetMe () {
             UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
             if ( userModel == null ) return NotFound();
-            return userProfile.Dto();
+            return userModel.UserProfile();
         }
 
         public class FriendEmail {
@@ -76,27 +76,22 @@ namespace dotnet_tree_shadows.Controllers {
         }
 
         [HttpGet, Route( "me/invitations/received" )]
-        public async Task<ActionResult<InvitationResponseDto[]>> GetReceivedInvitations () {
+        public async Task<ActionResult<AInvitation[]>> GetReceivedInvitations () {
             UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
             if ( userModel == null ) return Status500MissingProfile();
+            
+            List<AInvitation> receivedInvitations = await invitationService.GetMany( userModel.ReceivedInvitations );
 
-            Profile userProfile = await profileService.GetByIdAsync( userModel.UserId );
-            if ( userProfile == null ) return Status500MissingProfile();
-
-            List<Invitation> receivedInvitations = await invitationService.GetMany( userProfile.ReceivedInvitations );
-
-            return receivedInvitations.Select( invitation => new InvitationResponseDto( invitation ) ).ToArray();
+            return receivedInvitations.ToArray();
         }
 
         [HttpGet, Route( "me/sessions" )]
         public async Task<ActionResult<SessionSummary[]>> GetSessions () {
             UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
             if ( userModel == null ) return Status500MissingProfile();
+          
 
-            Profile userProfile = await profileService.GetByIdAsync( userModel.UserId );
-            if ( userProfile == null ) return Status500MissingProfile();
-
-            return userProfile.Sessions.ToArray();
+            return userModel.Sessions.ToArray();
         }
 
     }

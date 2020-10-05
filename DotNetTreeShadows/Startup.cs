@@ -6,6 +6,7 @@ using AspNetCore.Identity.Mongo;
 using AspNetCore.Identity.Mongo.Model;
 using dotnet_tree_shadows.Authentication;
 using dotnet_tree_shadows.Models;
+using dotnet_tree_shadows.Models.GameActions;
 using dotnet_tree_shadows.Services;
 using dotnet_tree_shadows.Services.Serializers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

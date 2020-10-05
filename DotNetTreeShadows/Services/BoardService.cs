@@ -29,6 +29,9 @@ namespace dotnet_tree_shadows.Services {
       return board;
     }
 
+    public async Task Update (Board board) =>
+      await boards.ReplaceOneAsync( board.Id, board );
+
     public async Task Update (string id, Board board) =>
       await boards.ReplaceOneAsync( session => session.Id == id, board);
 

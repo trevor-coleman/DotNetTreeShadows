@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AspNetCore.Identity.Mongo.Model;
+using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.SessionModel;
 using dotnet_tree_shadows.Models.SessionModels;
 
@@ -44,6 +45,15 @@ namespace dotnet_tree_shadows.Authentication {
       
       public bool HasSentInvitation (string id) => SentInvitations.Any( i => i == id );
       public bool HasReceivedInvitation (string id) => ReceivedInvitations.Any( i => i == id );
-      
+
+      public UserProfile UserProfile () =>
+        new UserProfile() {
+          Id = UserId,
+          Sessions = Sessions,
+          Friends = Friends,
+          ReceivedInvitations = ReceivedInvitations,
+          SentInvitations = SentInvitations
+        };
+
     }
 }

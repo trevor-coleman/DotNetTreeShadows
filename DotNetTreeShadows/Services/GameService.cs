@@ -29,11 +29,14 @@ namespace dotnet_tree_shadows.Services {
       return game;
     }
 
+    public async Task Update (Game actionGame) { await games.InsertOneAsync( actionGame ); }
+
     public async Task Update (string id, Game game) =>
       await games.ReplaceOneAsync( session => session.Id == id, game);
 
     public void Remove (string id) => games.DeleteOne( gameInfo => gameInfo.Id == id );
 
     public void Remove (Game gameIn) => games.DeleteOne( gameInfo => gameInfo.Id == gameIn.Id );
+
   }
 }

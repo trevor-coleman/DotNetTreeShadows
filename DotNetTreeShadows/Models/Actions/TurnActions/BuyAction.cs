@@ -13,7 +13,7 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
 
     public BuyAction (Params actionParams) : base( actionParams ) {
 
-      (ActionRequest request, string playerId, Game? game, SessionModel.Session? session, Board? board) = actionParams;
+      (ActionRequest request, string playerId, Game? game, _, _) = actionParams;
       Game = game!;
       PieceType pieceType = (PieceType) request.PieceType!;
       int cost = PlayerBoard.Get( Game, playerId ).Pieces( pieceType ).NextPrice;
