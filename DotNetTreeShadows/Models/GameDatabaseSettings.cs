@@ -7,6 +7,7 @@ namespace dotnet_tree_shadows.Models {
         public string InvitationsCollectionName { get; set; }
         public string ProfilesCollectionName { get; set; }
         public string GamesCollectionName { get; set; }
+        public string BoardsCollectionName { get; set; }
 
     }
 
@@ -17,6 +18,7 @@ namespace dotnet_tree_shadows.Models {
         public string InvitationsCollectionName { get; set; }
         public string ProfilesCollectionName { get; set; }
         public string GamesCollectionName { get; set; }
+        public string BoardsCollectionName { get; set; }
 
     }
 }

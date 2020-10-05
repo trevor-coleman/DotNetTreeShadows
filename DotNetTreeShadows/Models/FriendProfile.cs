@@ -1,3 +1,4 @@
+using dotnet_tree_shadows.Authentication;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -7,9 +8,9 @@ namespace dotnet_tree_shadows.Models {
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id;
 
-        public FriendProfile (Profile profile) {
-            Name = profile.Name;
-            Id = profile.Id;
+        public FriendProfile (UserModel profile) {
+            Name = profile.UserName;
+            Id = profile.UserId;
         }
     }
 }

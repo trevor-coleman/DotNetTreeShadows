@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using dotnet_tree_shadows.Authentication;
 using dotnet_tree_shadows.Models;
+using dotnet_tree_shadows.Models.InvitationModel;
 using dotnet_tree_shadows.Models.SessionModels;
 using dotnet_tree_shadows.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -16,38 +17,34 @@ namespace dotnet_tree_shadows.Controllers {
     [Route( "api/[controller]" ), ApiController,
      Authorize( Roles = UserRoles.User, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme )]
     public class ProfilesController : AControllerWithStatusMethods {
-
-        private readonly ProfileService profileService;
-        private readonly UserManager<ApplicationUser> userManager;
+      private readonly UserManager<UserModel> userManager;
         private readonly InvitationService invitationService;
 
         public ProfilesController (
-                ProfileService profileService,
-                UserManager<ApplicationUser> userManager,
+                
+                UserManager<UserModel> userManager,
                 InvitationService invitationService
             ) {
-            this.profileService = profileService;
             this.userManager = userManager;
             this.invitationService = invitationService;
         }
 
         [HttpGet( "{id:length(24)}", Name = "GetProfile" )]
         public async Task<ActionResult<FriendProfile>> Get (string id) {
-            ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
-            Profile profile = await profileService.GetByIdAsync( id );
+            UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
 
-            if ( !profile.HasFriend( user.UserId ) && profile.Id != user.UserId ) return Status403Forbidden();
+            if ( !userModel.HasFriend( id )) return Status403Forbidden();
 
-            FriendProfile friendProfile = new FriendProfile( profile );
+            UserModel friend = await userManager.FindByIdAsync( id );
+            FriendProfile friendProfile = new FriendProfile(friend);
 
             return friendProfile;
         }
 
         [HttpGet, Route( "me" )]
         public async Task<ActionResult<ProfileDto>> GetMe () {
-            ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
-            if ( user == null ) return NotFound();
-            Profile userProfile = await profileService.GetByIdAsync( user.UserId );
+            UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
+            if ( userModel == null ) return NotFound();
             return userProfile.Dto();
         }
 
@@ -58,36 +55,32 @@ namespace dotnet_tree_shadows.Controllers {
 
         [HttpGet, Route( "me/friends" )]
         public async Task<ActionResult<FriendProfile[]>> Get () {
-            ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
-            if ( user == null ) return Status500MissingProfile();
+            UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
+            if ( userModel == null ) return Status500MissingProfile();
 
-            Profile userProfile = await profileService.GetByIdAsync( user.UserId );
-            if ( userProfile == null ) return Status500MissingProfile();
-
-            List<Profile> friendProfiles = await profileService.GetMany( userProfile.Friends );
-
-            return friendProfiles.Select( friend => new FriendProfile( friend ) ).ToArray();
+            Task<UserModel>[] userModeTasks = userModel.Friends.Select( id => userManager.FindByIdAsync( id ) ).ToArray();
+            List<FriendProfile> friendProfiles = new List<FriendProfile>();
+            foreach ( Task<UserModel> task in userModeTasks ) {
+              friendProfiles.Add( new FriendProfile(await task));
+            }
+          
+            return friendProfiles.ToArray();
         }
 
         [HttpGet, Route( "me/invitations/sent" )]
-        public async Task<ActionResult<Invitation[]>> GetSentInvitations () {
-            ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
-            if ( user == null ) return Status500MissingProfile();
-
-            Profile userProfile = await profileService.GetByIdAsync( user.UserId );
-            if ( userProfile == null ) return Status500MissingProfile();
-
-            List<Invitation> sentInvitations = await invitationService.GetMany( userProfile.SentInvitations );
-
+        public async Task<ActionResult<AInvitation[]>> GetSentInvitations () {
+            UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
+            if ( userModel == null ) return Status500MissingProfile();
+            List<AInvitation> sentInvitations = await invitationService.GetMany( userModel.SentInvitations );
             return sentInvitations.ToArray();
         }
 
         [HttpGet, Route( "me/invitations/received" )]
         public async Task<ActionResult<InvitationResponseDto[]>> GetReceivedInvitations () {
-            ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
-            if ( user == null ) return Status500MissingProfile();
+            UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
+            if ( userModel == null ) return Status500MissingProfile();
 
-            Profile userProfile = await profileService.GetByIdAsync( user.UserId );
+            Profile userProfile = await profileService.GetByIdAsync( userModel.UserId );
             if ( userProfile == null ) return Status500MissingProfile();
 
             List<Invitation> receivedInvitations = await invitationService.GetMany( userProfile.ReceivedInvitations );
@@ -97,10 +90,10 @@ namespace dotnet_tree_shadows.Controllers {
 
         [HttpGet, Route( "me/sessions" )]
         public async Task<ActionResult<SessionSummary[]>> GetSessions () {
-            ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
-            if ( user == null ) return Status500MissingProfile();
+            UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
+            if ( userModel == null ) return Status500MissingProfile();
 
-            Profile userProfile = await profileService.GetByIdAsync( user.UserId );
+            Profile userProfile = await profileService.GetByIdAsync( userModel.UserId );
             if ( userProfile == null ) return Status500MissingProfile();
 
             return userProfile.Sessions.ToArray();

@@ -30,7 +30,7 @@ namespace dotnet_tree_shadows {
             //MongoDb
             services.Configure<GameDatabaseSettings>( Configuration.GetSection( nameof(GameDatabaseSettings) ) );
 
-            services.AddIdentityMongoDbProvider<ApplicationUser, MongoRole>(
+            services.AddIdentityMongoDbProvider<UserModel, MongoRole>(
                     identityOptions => {
                         identityOptions.Password.RequiredLength = 6;
                         identityOptions.Password.RequireLowercase = false;
@@ -51,8 +51,9 @@ namespace dotnet_tree_shadows {
             BsonSerializer.RegisterSerializationProvider(new GameOptionsDictionarySerializationProvider());
 
             services.AddSingleton<SessionService>();
-            services.AddSingleton<ProfileService>();
             services.AddSingleton<InvitationService>();
+            services.AddSingleton<GameService>();
+            services.AddSingleton<BoardService>();
 
             services.AddSingleton<IGameDatabaseSettings>(
                     sp => sp.GetRequiredService<IOptions<GameDatabaseSettings>>().Value

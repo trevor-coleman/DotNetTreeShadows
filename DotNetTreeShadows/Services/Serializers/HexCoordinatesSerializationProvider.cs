@@ -8,16 +8,16 @@ namespace dotnet_tree_shadows.Services.Serializers {
   public class HexCoordinatesSerializationProvider : IBsonSerializationProvider {
 
     public IBsonSerializer? GetSerializer (Type type) =>
-      type == typeof( HexCoordinates )
+      type == typeof( Hex )
         ? new HexCoordinatesSerializer()
         : null;
 
-    public class HexCoordinatesSerializer:SerializerBase<HexCoordinates> {
+    public class HexCoordinatesSerializer:SerializerBase<Hex> {
       
       public override void Serialize (
           BsonSerializationContext context,
           BsonSerializationArgs args,
-          HexCoordinates value
+          Hex value
         ) {
         int hexCode = 0;
 
@@ -33,7 +33,7 @@ namespace dotnet_tree_shadows.Services.Serializers {
         context.Writer.WriteString( hexCode.ToString() );
       }
 
-      public override HexCoordinates Deserialize (BsonDeserializationContext context, BsonDeserializationArgs args) {
+      public override Hex Deserialize (BsonDeserializationContext context, BsonDeserializationArgs args) {
         BsonType type = context.Reader.GetCurrentBsonType();
         // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
         int hexCode = type switch {
@@ -50,7 +50,7 @@ namespace dotnet_tree_shadows.Services.Serializers {
         sbyte r = (sbyte) (hexCode >> 8 & 0xff);
         sbyte s = (sbyte) (hexCode  & 0xff);
         
-        return new HexCoordinates(q, r, s);
+        return new Hex(q, r, s);
       }
 
     }

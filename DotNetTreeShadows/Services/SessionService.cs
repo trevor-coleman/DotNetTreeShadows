@@ -2,28 +2,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using dotnet_tree_shadows.Models;
+using dotnet_tree_shadows.Models.SessionModel;
 using dotnet_tree_shadows.Models.SessionModels;
 using MongoDB.Driver;
 
 namespace dotnet_tree_shadows.Services {
     public class SessionService {
 
-        private readonly IMongoCollection<SessionInfo> sessions;
+        private readonly IMongoCollection<Session> sessions;
 
         public SessionService (IGameDatabaseSettings settings) {
             MongoClient client = new MongoClient( settings.ConnectionString );
             IMongoDatabase? database = client.GetDatabase( settings.DatabaseName );
-            sessions = database.GetCollection<SessionInfo>( settings.SessionsCollectionName );
+            sessions = database.GetCollection<Session>( settings.SessionsCollectionName );
         }
 
-        public async Task<List<SessionInfo>> Get () {
+        public async Task<List<Session>> Get () {
             return (await sessions.FindAsync( session => true )).ToList();
         }
 
         public async Task<List<SessionSummary>> GetSessionSummariesForHost (string hostId) {
-            FindOptions<SessionInfo, SessionSummary> findOptions = new FindOptions<SessionInfo, SessionSummary> {
+            FindOptions<Session, SessionSummary> findOptions = new FindOptions<Session, SessionSummary> {
                                                                             Projection =
-                                                                                Builders<SessionInfo>.Projection.Expression(
+                                                                                Builders<Session>.Projection.Expression(
                                                                                         session => new SessionSummary(
                                                                                                 session.Id,
                                                                                                 session.Name
@@ -32,27 +33,30 @@ namespace dotnet_tree_shadows.Services {
                                                                         };
 
             var filter =
-                new ExpressionFilterDefinition<SessionInfo>( sessionInfo => sessionInfo.Host == hostId );
+                new ExpressionFilterDefinition<Session>( sessionInfo => sessionInfo.Host == hostId );
 
             return (await sessions.FindAsync( filter, findOptions )).ToList();
         }
 
-        public async Task<List<SessionInfo>> GetByHostId (string id) =>
+        public async Task<List<Session>> GetByHostId (string id) =>
           (await sessions.FindAsync( sessionInfo => sessionInfo.Host == id )).ToList();
 
-        public async Task<SessionInfo?> Get (string id) => (await sessions.FindAsync( session => session.Id == id )).FirstOrDefault();
+        public async Task<Session?> Get (string id) => (await sessions.FindAsync( session => session.Id == id )).FirstOrDefault();
 
-        public async Task<SessionInfo> Create (SessionInfo sessionDtoWithId) {
+        public async Task<Session> Create (Session sessionDtoWithId) {
           await sessions.InsertOneAsync( sessionDtoWithId );
             return sessionDtoWithId;
         }
 
-        public async Task Update (string id, SessionInfo sessionIn) =>
+        public async Task Update (Session sessionIn) =>
+            await sessions.ReplaceOneAsync( session => session.Id == sessionIn.Id, sessionIn);
+
+        public async Task Update (string id, Session sessionIn) =>
             await sessions.ReplaceOneAsync( session => session.Id == id, sessionIn);
 
         public void Remove (string id) => sessions.DeleteOne( sessionInfo => sessionInfo.Id == id );
 
-        public void Remove (SessionInfo sessionIn) => sessions.DeleteOne( sessionInfo => sessionInfo.Id == sessionIn.Id );
+        public void Remove (Session sessionIn) => sessions.DeleteOne( sessionInfo => sessionInfo.Id == sessionIn.Id );
         
     }
 }

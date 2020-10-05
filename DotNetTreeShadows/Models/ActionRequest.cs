@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using dotnet_tree_shadows.Models.BoardModel;
 using dotnet_tree_shadows.Models.GameActions;
 using dotnet_tree_shadows.Models.GameActions.TurnActions;
 using dotnet_tree_shadows.Models.SessionModels;
@@ -15,8 +16,8 @@ namespace dotnet_tree_shadows.Controllers {
     [BsonRepresentation(BsonType.String)]
     public GameActionType Type { get; set; }
     public PieceType? PieceType { get; set; }
-    public HexCoordinates? Target { get; set; }
-    public HexCoordinates? Origin { get; set; }
+    public Hex? Target { get; set; }
+    public Hex? Origin { get; set; }
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string? ActionId { get; set; }

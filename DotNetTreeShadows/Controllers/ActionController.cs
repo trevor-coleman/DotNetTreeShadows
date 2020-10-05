@@ -3,6 +3,7 @@ using dotnet_tree_shadows.Authentication;
 using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.GameActions;
 using dotnet_tree_shadows.Models.GameActions.HostActions;
+using dotnet_tree_shadows.Models.SessionModel;
 using dotnet_tree_shadows.Models.SessionModels;
 using dotnet_tree_shadows.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -18,9 +19,9 @@ namespace dotnet_tree_shadows.Controllers {
   public class ActionController : AControllerWithStatusMethods {
 
     private readonly SessionService sessionService;
-    private readonly UserManager<ApplicationUser> userManager;
+    private readonly UserManager<UserModel> userManager;
 
-    public ActionController (SessionService sessionService, UserManager<ApplicationUser> userManager) {
+    public ActionController (SessionService sessionService, UserManager<UserModel> userManager) {
       this.sessionService = sessionService;
       this.userManager = userManager;
     }
@@ -31,8 +32,8 @@ namespace dotnet_tree_shadows.Controllers {
         [FromBody] ActionRequest actionRequest
       ) {
 
-      ApplicationUser user = await userManager.GetUserAsync( HttpContext.User );
-      if ( user?.UserId == null ) return Status403Forbidden();
+      UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
+      if ( userModel?.UserId == null ) return Status403Forbidden();
       
       
       if ( sessionId == null ) return NotFound();
@@ -42,12 +43,12 @@ namespace dotnet_tree_shadows.Controllers {
       Session? session = await sessionTask;
       if ( session == null ) return Status404NotFound( "Session" );
 
-      if ( !session.HasPlayer( user.UserId ) ) return Status403Forbidden();
+      if ( !session.HasPlayer( userModel.UserId ) ) return Status403Forbidden();
       
       string? failureMessage = null;
       
       //TODO: Return missing parameter as string for message.
-      if ( ActionFactory.Create( session, user.UserId, actionRequest, out AAction? action ) ) {
+      if ( ActionFactory.Create( userModel.UserId, actionRequest, out AAction? action ) ) {
         if ( action != null && action.Execute( out failureMessage ) ) {
           await sessionService.Update( sessionId, session );
           return Ok();

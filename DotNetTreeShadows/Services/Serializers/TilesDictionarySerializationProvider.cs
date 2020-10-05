@@ -10,11 +10,11 @@ namespace dotnet_tree_shadows.Services.Serializers {
   public class TilesDictionarySerializationProvider : IBsonSerializationProvider {
 
     public IBsonSerializer GetSerializer (Type type) =>
-      type == typeof( Dictionary<HexCoordinates, int> )
+      type == typeof( Dictionary<Hex, int> )
         ? new TileDictionarySerializer()
         : null;
 
-    public class TileDictionarySerializer : DictionarySerializerBase<Dictionary<HexCoordinates, int>> {
+    public class TileDictionarySerializer : DictionarySerializerBase<Dictionary<Hex, int>> {
 
       public TileDictionarySerializer () : base(
           DictionaryRepresentation.Document,
@@ -22,7 +22,7 @@ namespace dotnet_tree_shadows.Services.Serializers {
           new Int32Serializer()
         ) { }
 
-      protected override Dictionary<HexCoordinates, int> CreateInstance () => new Dictionary<HexCoordinates, int>();
+      protected override Dictionary<Hex, int> CreateInstance () => new Dictionary<Hex, int>();
 
     }
 

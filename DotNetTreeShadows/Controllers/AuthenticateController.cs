@@ -23,19 +23,16 @@ namespace dotnet_tree_shadows.Controllers {
     [Route( "api/[controller]" ), ApiController]
     public class AuthenticateController:AControllerWithStatusMethods {
 
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly UserManager<UserModel> userManager;
         private readonly RoleManager<MongoRole> roleManager;
-        private readonly ProfileService profileService;
         private IConfiguration configuration;
         
         public AuthenticateController (
-                UserManager<ApplicationUser> userManager,
-                ProfileService profileService,
+                UserManager<UserModel> userManager,
                 RoleManager<MongoRole> roleManager,
                 IConfiguration configuration
             ) {
             this.userManager =userManager;
-            this.profileService = profileService;
             this.roleManager = roleManager;
             this.configuration = configuration;
         }
@@ -44,15 +41,15 @@ namespace dotnet_tree_shadows.Controllers {
         [Route("login")]  
         public async Task<IActionResult> Login([FromBody] LoginModel model)  
         {  
-            ApplicationUser user = await userManager.FindByEmailAsync(model.Email);
-            if ( user == null || !await userManager.CheckPasswordAsync( user, model.Password ) ) return Unauthorized();
-            IList<string> userRoles = await userManager.GetRolesAsync(user);  
+            UserModel userModel = await userManager.FindByEmailAsync(model.Email);
+            if ( userModel == null || !await userManager.CheckPasswordAsync( userModel, model.Password ) ) return Unauthorized();
+            IList<string> userRoles = await userManager.GetRolesAsync(userModel);  
   
             List<Claim> authClaims = new List<Claim>  
                                      {
-                                         new Claim( ClaimTypes.NameIdentifier, user.Id.ToString()  ),
-                                         new Claim(ClaimTypes.Name, user.UserName),
-                                         new Claim(ClaimTypes.Email, user.Email),
+                                         new Claim( ClaimTypes.NameIdentifier, userModel.Id.ToString()  ),
+                                         new Claim(ClaimTypes.Name, userModel.UserName),
+                                         new Claim(ClaimTypes.Email, userModel.Email),
                                          new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),  
                                      };
 
@@ -70,7 +67,7 @@ namespace dotnet_tree_shadows.Controllers {
   
             return Ok(new  
                       {  
-                          id = user.UserId,
+                          id = userModel.UserId,
                           token = new JwtSecurityTokenHandler().WriteToken(token),  
                           expiration = token.ValidTo  
                       });
@@ -79,25 +76,23 @@ namespace dotnet_tree_shadows.Controllers {
         [HttpPost]
         [Route( "register" )]
         public async Task<IActionResult> Register ([FromBody] RegisterModel model) {
-            ApplicationUser userExists = await userManager.FindByEmailAsync( model.Email );
-            if(userExists != null) return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User already exists!" });
+            UserModel userModelExists = await userManager.FindByEmailAsync( model.Email );
+            if(userModelExists != null) return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User already exists!" });
             
-            ApplicationUser user = new ApplicationUser() {
+            UserModel userModel = new UserModel() {
                                                              Email = model.Email,
                                                              SecurityStamp = Guid.NewGuid().ToString(),
                                                              UserName = model.Username
                                                          };
             
-            IdentityResult result = await userManager.CreateAsync( user, model.Password );
+            IdentityResult result = await userManager.CreateAsync( userModel, model.Password );
             if (!await roleManager.RoleExistsAsync(UserRoles.User))  
                 await roleManager.CreateAsync(new MongoRole(UserRoles.User));  
   
             if (await roleManager.RoleExistsAsync(UserRoles.User))  
             {  
-                await userManager.AddToRoleAsync(user, UserRoles.User);  
+                await userManager.AddToRoleAsync(userModel, UserRoles.User);  
             }
-            
-            await profileService.Create( new Profile(user) );
             
             return result.Succeeded
                        ? Ok( new Response { Status = "Success", Message = "Created user successfully." } )
@@ -106,16 +101,16 @@ namespace dotnet_tree_shadows.Controllers {
 
         [HttpPost, Route( "register-admin" )]
         public async Task<IActionResult> RegisterAdmin ([FromBody] RegisterModel model) {
-            ApplicationUser userExists = await userManager.FindByEmailAsync( model.Email );
-            if(userExists != null) return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User already exists!" });
+            UserModel userModelExists = await userManager.FindByEmailAsync( model.Email );
+            if(userModelExists != null) return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User already exists!" });
 
-            ApplicationUser user = new ApplicationUser() {
+            UserModel userModel = new UserModel() {
                                                              Email = model.Email,
                                                              SecurityStamp = Guid.NewGuid().ToString(),
                                                              UserName = model.Username
                                                          };
 
-            IdentityResult result = await userManager.CreateAsync( user, model.Password );
+            IdentityResult result = await userManager.CreateAsync( userModel, model.Password );
             if(!result.Succeeded) return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed. Please try again." });
 
             if ( !await roleManager.RoleExistsAsync( UserRoles.Admin ) )
@@ -126,7 +121,7 @@ namespace dotnet_tree_shadows.Controllers {
             }
             
             if ( await roleManager.RoleExistsAsync( UserRoles.Admin ) ) {
-                await userManager.AddToRoleAsync( user, UserRoles.Admin );
+                await userManager.AddToRoleAsync( userModel, UserRoles.Admin );
             }
 
             return Ok( new Response { Status = "Success", Message = "User created successfully" } );

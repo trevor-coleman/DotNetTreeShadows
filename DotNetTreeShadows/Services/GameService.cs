@@ -2,37 +2,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using dotnet_tree_shadows.Models;
+using dotnet_tree_shadows.Models.GameModel;
 using dotnet_tree_shadows.Models.SessionModels;
 using MongoDB.Driver;
 
 namespace dotnet_tree_shadows.Services {
   public class GameService {
 
-    private readonly IMongoCollection<GameInfo> games;
+    private readonly IMongoCollection<Game> games;
 
     public GameService (IGameDatabaseSettings settings) {
       MongoClient client = new MongoClient( settings.ConnectionString );
       IMongoDatabase? database = client.GetDatabase( settings.DatabaseName );
-      games = database.GetCollection<GameInfo>( settings.GamesCollectionName );
+      games = database.GetCollection<Game>( settings.GamesCollectionName );
     }
 
-    public async Task<List<GameInfo>> Get () {
+    public async Task<List<Game>> Get () {
       return (await games.FindAsync( session => true )).ToList();
     }
     
-    public async Task<GameInfo> Get (string id) =>
+    public async Task<Game> Get (string id) =>
       (await games.FindAsync( session => session.Id == id )).FirstOrDefault();
 
-    public async Task<GameInfo> Create (GameInfo gameInfo) {
-      await games.InsertOneAsync( gameInfo );
-      return gameInfo;
+    public async Task<Game> Create (Game game) {
+      await games.InsertOneAsync( game );
+      return game;
     }
 
-    public async Task Update (string id, GameInfo gameInfo) =>
-      await games.ReplaceOneAsync( session => session.Id == id, gameInfo);
+    public async Task Update (string id, Game game) =>
+      await games.ReplaceOneAsync( session => session.Id == id, game);
 
     public void Remove (string id) => games.DeleteOne( gameInfo => gameInfo.Id == id );
 
-    public void Remove (GameInfo gameInfoIn) => games.DeleteOne( gameInfo => gameInfo.Id == gameInfoIn.Id );
+    public void Remove (Game gameIn) => games.DeleteOne( gameInfo => gameInfo.Id == gameIn.Id );
   }
 }

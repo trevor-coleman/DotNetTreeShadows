@@ -17,7 +17,7 @@ namespace TestShadows {
       game.AddPlayer( "player1" );
       game.AddPlayer( "player2" );
       game.AddPlayer( "player3" );
-      game.Status = Game.GameStatus.InProgress;
+      game.Status = GameStatus.InProgress;
     }
 
     [Test] public void ShouldFailIfNotPlayersTurn () {
@@ -94,12 +94,12 @@ namespace TestShadows {
       game.Board.SunPosition = SunPosition.West;
       EndTurnAction endTurnAction = new EndTurnAction( game, game.CurrentPlayer );
       bool result = endTurnAction.Execute( out string? failureMessage );
-      Assert.AreEqual( Game.GameStatus.Ended, game.Status );
+      Assert.AreEqual( GameStatus.Ended, game.Status );
     }
 
     [Test] 
     void ShouldFailIfGameStatusIsPreparing () {
-      game.Status = Game.GameStatus.Preparing;
+      game.Status = GameStatus.Preparing;
       EndTurnAction endTurnAction = new EndTurnAction( game, game.CurrentPlayer );
       bool result = endTurnAction.Execute( out string? failureMessage );
       Assert.IsFalse( result, "EndTurnAction Succeeded when status was Preparing;" );
@@ -107,7 +107,7 @@ namespace TestShadows {
     
     [Test] 
     void ShouldFailIfGameHasEnded () {
-      game.Status = Game.GameStatus.Ended;
+      game.Status = GameStatus.Ended;
       EndTurnAction endTurnAction = new EndTurnAction( game, game.CurrentPlayer );
       bool result = endTurnAction.Execute( out string? failureMessage );
       Assert.IsFalse( result, "EndTurnAction Succeeded when status was Ended;" );

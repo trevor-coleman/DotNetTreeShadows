@@ -1,3 +1,4 @@
+using dotnet_tree_shadows.Models.BoardModel;
 using dotnet_tree_shadows.Models.SessionModels;
 using NUnit.Framework;
 
@@ -5,10 +6,10 @@ namespace TestShadows {
     
     [TestFixture]
     public class Tests {
-        private BitwisePlayerBoard board;
+        private PlayerBoard board;
 
         [SetUp]
-        public void Setup () { board = new BitwisePlayerBoard(); }
+        public void Setup () { board = new PlayerBoard(); }
 
         [Test]
         public void NewBoardShouldHaveCorrectNumberOfSmallTrees () {
