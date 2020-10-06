@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -5,6 +6,7 @@ using dotnet_tree_shadows.Authentication;
 using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.BoardModel;
 using dotnet_tree_shadows.Models.GameModel;
+using dotnet_tree_shadows.Models.Session;
 using dotnet_tree_shadows.Models.SessionModel;
 using dotnet_tree_shadows.Models.SessionModels;
 using dotnet_tree_shadows.Services;
@@ -61,20 +63,16 @@ namespace dotnet_tree_shadows.Controllers {
         public async Task<ActionResult<Session>> Create () {
             UserModel user = await userManager.GetUserAsync( HttpContext.User );
             if (user?.UserId == null ) return StatusCode( StatusCodes.Status403Forbidden );
-
-            string newId = ObjectId.GenerateNewId().ToString();
             
             Session session = new Session() {
-              Id= newId,
               Host = user.UserId
             };
+            
             await sessionService.Create( session );
 
-            Game game = new Game() {
-              Id = newId
-            };
+            Game game = new Game { Id = session.Id };
 
-            Board board = BoardFactory.New(newId);
+            Board board = BoardFactory.New(session.Id);
 
             GameOperations.AddPlayer( game, user.UserId );
             

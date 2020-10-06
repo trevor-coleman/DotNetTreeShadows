@@ -15,16 +15,15 @@ namespace dotnet_tree_shadows.Models.SessionModel {
     public string Name { get; set; } = "Session";
     public string Host { get; set; } = "";
     public string[] Invitations { get; set; } = new string[0];
-    public Dictionary<string, PlayerSummary> Players { get; set; }
+    public Dictionary<string, PlayerSummary> Players { get; set; } = new Dictionary<string, PlayerSummary>();
     public GameOptionsDictionary gameOptions { get; set; } = new GameOptionsDictionary();
 
+    [BsonIgnore]
     public SessionSummary Summary {
       get => new SessionSummary( Id, Name );
     }
-    
+
     public bool HasPlayer (string id) => Players.ContainsKey( id );
 
   }
-
-  public class PlayerScores : Dictionary<string, List<Scoring.Token>> {}
 }

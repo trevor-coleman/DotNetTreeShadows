@@ -1,46 +1,69 @@
 using System;
 using System.Linq;
 using System.Security.Cryptography;
+using dotnet_tree_shadows.Controllers;
 using dotnet_tree_shadows.Models.GameActions;
 using dotnet_tree_shadows.Models.GameActions.HostActions;
 using dotnet_tree_shadows.Models.GameActions.TurnActions;
+using dotnet_tree_shadows.Models.GameModel;
+using dotnet_tree_shadows.Models.Session;
+using dotnet_tree_shadows.Models.SessionModel;
 using dotnet_tree_shadows.Models.SessionModels;
+using dotnet_tree_shadows.Services;
 using NUnit.Framework;
 
 namespace TestShadows {
   [TestFixture]
   public class StartGameActionTest {
     private Game game;
+    private Session session;
+    private ActionRequest actionRequest = new ActionRequest() { Type = GameActionType.StartGame };
+    private StartGameAction.Params actionParams {
+      get => new StartGameAction.Params( actionRequest, playerId, session, game );
+    }
+
+    private StartGameAction action {
+      get => new StartGameAction( actionParams );
+    }
+
+    private string sessionId;
+    private string playerId;
+    
     
     [SetUp]
     public void Setup () {
-      game = new Game("player0");
-      game.AddPlayer( "player1");
-      game.AddPlayer( "player2");
-      game.AddPlayer( "player3");
+
+      sessionId = "sessionId";
+      session = SessionOperations.Create( "player0", "Player0Name" );
+      session.Id = sessionId;
+      
+      playerId = "player0";
+
+      game = new Game { Id = sessionId };
+      GameOperations.AddPlayer( game, "player0" );
+      GameOperations.AddPlayer( game, "player1" );
+      GameOperations.AddPlayer( game, "player2" );
+      GameOperations.AddPlayer( game, "player3" );
+      game.FirstPlayer = "player0";
+      game.Status = GameStatus.InProgress;
+
+      
     }
 
     [Test]
     public void ShouldFailIfFewerThanTwoPlayers () {
-      game = new Game("player0");
-      StartGameAction startGameAction = new StartGameAction(game, "player0");
-      bool result = startGameAction.Execute( out string? failureMessage );
+      game = new Game();
+      GameOperations.AddPlayer( game, "player0" );
+      bool result = action.Execute( out string? failureMessage );
       Assert.IsFalse( result, "GameStartAction.Execute() returned true. " );
       Assert.IsNotNull( failureMessage, "GameStartAction.Execute() returned a null failureMessage " );
     }
 
-    [Test] public void ShouldShuffleTurnOrderWhenStartingGameIfRandomStartOrderIsTrue () {
+    [Test] public void ShouldShuffleTurnOrderWithDefaultOptions () {
       int count = 0;
       for (int i = 0; i < 100; i++) {
-        game = new Game(
-            "player0",
-            new Game.GameOptions { LongGame = false, PreventActionsInShadow = true, RandomizeTurnOrder = true }
-          );
-        game.AddPlayer( "player1");
-        game.AddPlayer( "player2");
-        game.AddPlayer( "player3");
         string[] turnOrder = game.TurnOrder.ToArray();
-        game.Start();
+        action.Execute( out _ );
         bool sameOrder = !turnOrder.Where( (t, j) => game.TurnOrder[j] != t ).Any();
         if ( sameOrder ) count++;
       }
@@ -49,16 +72,12 @@ namespace TestShadows {
 
     }
     
-    [Test] public void ShouldNotShuffleTurnOrderWhenStartingGameIfRandomStartOrderIsFalse () {
+    [Test] public void ShouldNotShuffleTurnOrderIfAssignTurnOrderOptionIsSet () {
       int count = 0;
       for (int i = 0; i < 10; i++) {
-        game = new Game( "player0", new Game.GameOptions { LongGame = false, PreventActionsInShadow = true, RandomizeTurnOrder = false } );
-
-        game.AddPlayer( "player1");
-        game.AddPlayer( "player2");
-        game.AddPlayer( "player3");
+        game.GameOptions.Add( GameOption.AssignTurnOrder );
         string[] turnOrder = game.TurnOrder.ToArray();
-        game.Start();
+        action.Execute( out _ );
         bool sameOrder = !turnOrder.Where( (t, j) => game.TurnOrder[j] != t ).Any();
         if ( sameOrder ) count++;
       }

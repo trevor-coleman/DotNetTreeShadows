@@ -7,10 +7,10 @@ import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
-import { signInUserAsync, registerNewUserAsync } from '../store/system/thunks';
-import { NewUserInfo } from '../store/system/types';
+import { signInUserAsync, registerNewUserAsync } from '../store/z_old-system/thunks';
 import { InputLabel } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
+import {NewUserInfo} from "../types/auth/newUserInfo";
 
 //REDUX MAPPING
 const mapStateToProps = (state: RootState) => {

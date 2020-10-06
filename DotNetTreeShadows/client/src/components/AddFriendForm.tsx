@@ -6,22 +6,16 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
-import { sendFriendRequestAsync } from '../store/friends/thunks';
 import Typography from '@material-ui/core/Typography';
-import { resetFriendRequest } from '../store/friends/actions';
 
 //REDUX MAPPING
 const mapStateToProps = (state: RootState) => {
   return {
-    resultMessage: state.friends.sendFriendRequestResultMessage,
-    addingFriend: state.friends.sendingFriendRequest,
-    succeeded: state.friends.sendFriendRequestSucceeded,
+
   };
 };
 
 const mapDispatchToProps = {
-  sendFriendRequest: (email: string) => sendFriendRequestAsync(email),
-  resetFriendRequest: resetFriendRequest()
 };
 
 //REDUX PROP TYPING

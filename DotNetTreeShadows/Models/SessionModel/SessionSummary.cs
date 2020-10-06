@@ -11,7 +11,7 @@ namespace dotnet_tree_shadows.Models.SessionModels {
             Id = "";
             Name = "";
         }
-            
+        
         public SessionSummary (string id, string name) {
             Id = id;
             Name = name;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 namespace dotnet_tree_shadows.Models.SessionModels {
     public class Scoring {
@@ -17,6 +18,9 @@ namespace dotnet_tree_shadows.Models.SessionModels {
             public static Token NullToken {
               get => new Token( 0, 0 );
             }
+
+            public static bool operator == (Token a, Token b) => a.Leaves == b.Leaves && a.Points == b.Points;
+            public static bool operator != (Token a, Token b) => !(a == b);
         }
 
         public Dictionary<string, PlayerScore> playerScores;

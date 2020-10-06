@@ -8,12 +8,12 @@ namespace dotnet_tree_shadows.Services.Serializers {
 
     public IBsonSerializer? GetSerializer (Type type) =>
       type == typeof( GameOptionsDictionary )
-        ? new TileDictionarySerializer()
+        ? new GameOptionsDictionarySerializer()
         : null;
 
-    public class TileDictionarySerializer : DictionarySerializerBase<GameOptionsDictionary> {
+    public class GameOptionsDictionarySerializer : DictionarySerializerBase<GameOptionsDictionary> {
 
-      public TileDictionarySerializer () : base(
+      public GameOptionsDictionarySerializer () : base(
           DictionaryRepresentation.Document,
           new StringSerializer(),
           new BooleanSerializer()

@@ -2,14 +2,14 @@ import React, { FunctionComponent, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../store';
 import { makeStyles } from '@material-ui/core/styles';
-import { SignInCredentials } from '../store/system/types';
-import { signInUserAsync } from '../store/system/thunks';
+import { signInUserAsync } from '../store/z_old-system/thunks';
 import { Container } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
+import {SignInCredentials} from "../types/auth/signInCredentials";
 
 //REDUX MAPPING
 const mapStateToProps = (state: RootState) => {

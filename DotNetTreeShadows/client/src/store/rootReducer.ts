@@ -1,16 +1,14 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import { systemReducer } from './system/reducers';
-import { userReducer } from './user/reducers';
-import { friendsReducer } from './friends/reducers';
-import { invitationsReducer } from './invitations/reducers';
-import { sessionReducer } from './sessions/reducers';
+import authReducer from './auth/reducer'
+import invitationsReducer from './invitations/reducer'
+import profileReducer from './profile/reducer'
+import boardReducer from './board/reducer'
 
 const rootReducer = combineReducers({
-    system:systemReducer,
-    user: userReducer,
-    friends: friendsReducer,
+    auth: authReducer,
     invitations: invitationsReducer,
-    session: sessionReducer,
+    profile: profileReducer,
+    board: boardReducer,
 })
 
 export default rootReducer;

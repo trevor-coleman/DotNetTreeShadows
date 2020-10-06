@@ -1,38 +1,29 @@
-import { createAsyncAction } from 'typesafe-actions';
-import {
-  GET_SENT_INVITATIONS_REQUEST,
-  GET_SENT_INVITATIONS_SUCCESS,
-  GET_SENT_INVITATIONS_FAILURE,
-  Invitation,
-  GET_RECEIVED_INVITATIONS_REQUEST,
-  GET_RECEIVED_INVITATIONS_FAILURE,
-  GET_RECEIVED_INVITATIONS_SUCCESS,
-  ACCEPT_INVITATION_SUCCESS,
-  ACCEPT_INVITATION_REQUEST,
-  ACCEPT_INVITATION_FAILURE,
-  CANCEL_INVITATION_SUCCESS,
-  CANCEL_INVITATION_REQUEST,
-  CANCEL_INVITATION_FAILURE,
-  DECLINE_INVITATION_SUCCESS,
-  DECLINE_INVITATION_FAILURE, DECLINE_INVITATION_REQUEST,
-} from './types';
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import api from "../../api/api";
+import {Invitation} from "../../types/invitation/invitation";
 
-export const getSentInvitations = createAsyncAction(GET_SENT_INVITATIONS_REQUEST,
-  GET_SENT_INVITATIONS_SUCCESS,
-  GET_SENT_INVITATIONS_FAILURE)<undefined, Invitation[], string>();
+export const fetchInvitations = createAsyncThunk(
+    'invitations/fetchInvitations',
+    async ():Promise<{ friendRequests:Invitation[], sessionInvites: Invitation[] }> =>{
+        const response = await api.invitations.getAll();
+        const friendRequests = [];
+        const sessionInvites = [];
+        for (let i=0;i<response.data.length;i++) {
+            const invitation =response.data[i];
+            switch(invitation.invitationType) {
+                case "FriendRequest":
+                    friendRequests.push(invitation);
+                    break;
+                case "SessionInvite":
+                    sessionInvites.push(invitation);
+            }
+        };
+        return {friendRequests, sessionInvites}
+    })
 
-export const getReceivedInvitations = createAsyncAction(GET_RECEIVED_INVITATIONS_REQUEST,
-  GET_RECEIVED_INVITATIONS_SUCCESS,
-  GET_RECEIVED_INVITATIONS_FAILURE)<undefined, Invitation[], string>();
-
-export const acceptInvitation = createAsyncAction(ACCEPT_INVITATION_REQUEST,
-  ACCEPT_INVITATION_SUCCESS,
-  ACCEPT_INVITATION_FAILURE)<Invitation, undefined, string>();
-
-export const cancelInvitation = createAsyncAction(CANCEL_INVITATION_REQUEST,
-  CANCEL_INVITATION_SUCCESS,
-  CANCEL_INVITATION_FAILURE)<Invitation, undefined, string>();
-
-export const declineInvitation = createAsyncAction(DECLINE_INVITATION_REQUEST,
-  DECLINE_INVITATION_SUCCESS,
-  DECLINE_INVITATION_FAILURE)<Invitation, undefined, string>();
+export const sendFriendRequest = createAsyncThunk(
+    'inviations/sendFriendRequest',
+    async (email:string) =>{
+        const response = await api.invitations.sendFriendRequest(email);
+    }
+)

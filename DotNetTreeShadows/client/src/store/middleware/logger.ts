@@ -1,5 +1,5 @@
 import {Action} from 'redux';
-import {setUserProfile} from '../user/actions'
+import {setUserProfile} from '../z_old-user/actions'
 import {RootState} from '../index';
 import { ThunkAction, ThunkMiddleware } from 'redux-thunk';
 

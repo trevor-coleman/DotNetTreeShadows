@@ -5,9 +5,8 @@ import { List, IconButton, ListItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   updateInvitationStatusAsync, cancelInvitationAsync, acceptInvitationAsync, declineInvitationAsync,
-} from '../store/invitations/thunks';
+} from '../store/z_old-invitations/thunks';
 import Card from '@material-ui/core/Card';
-import { Invitation } from '../store/invitations/types';
 import { Cancel, CheckCircleOutline, NotInterested, PersonAdd, GroupAdd } from '@material-ui/icons';
 import Typography from '@material-ui/core/Typography';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -15,6 +14,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import {Invitation} from "../types/invitation/invitation";
 
 //REDUX MAPPING
 const mapStateToProps = (state: RootState) => {

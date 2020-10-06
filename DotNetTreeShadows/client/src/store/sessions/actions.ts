@@ -1,17 +1,19 @@
-import {
-  CREATE_SESSION_REQUEST,
-  CREATE_SESSION_FAILURE,
-  CREATE_SESSION_SUCCESS,
-  Session,
-  GET_SESSION_REQUEST,
-  GET_SESSION_FAILURE, GET_SESSION_SUCCESS,
-} from './types';
-import { createAsyncAction } from 'typesafe-actions';
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import api from "../../api/api";
+import Session from "../../types/session/session";
 
-export const createSession = createAsyncAction(CREATE_SESSION_REQUEST,
-  CREATE_SESSION_SUCCESS,
-  CREATE_SESSION_FAILURE)<undefined, Session, string>();
+export const createSession = createAsyncThunk(
+    'session/createSession',
+    async ()=>{
+      const response = await api.createSession();
+      return response.data;
+    })
 
-export const getSession = createAsyncAction(GET_SESSION_REQUEST,
-  GET_SESSION_SUCCESS,
-  GET_SESSION_FAILURE)<string, Session, string>();
+// export const fetchSession = createAsyncThunk(
+//     'session/fetchSession',
+//     async (sessionId:string)=>{
+//       const response = await api.getSession(sessionId);
+//       return response.data;
+//     })
+
+

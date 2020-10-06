@@ -4,7 +4,7 @@ import { RootState } from '../store';
 import { Typography, TableRow, TableCell, Button, Container, TableBody } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import { makeStyles } from '@material-ui/core/styles';
-import { fetchUserProfileAsync } from '../store/user/thunks';
+import { fetchUserProfileAsync } from '../store/z_old-user/thunks';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 

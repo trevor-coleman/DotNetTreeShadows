@@ -7,13 +7,12 @@ using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
 
 namespace dotnet_tree_shadows.Models.BoardModel {
-  public class Board : IEnumerable<KeyValuePair<Hex, int>> {
+  public class Board {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; }
-
-    [BsonDictionaryOptions(DictionaryRepresentation.Document)]
-    public Dictionary<Hex, int> tiles;
+    
+    public Dictionary<Hex, int> tiles = new Dictionary<Hex, int>();
     
     public int this[Hex index]
     {
@@ -25,13 +24,6 @@ namespace dotnet_tree_shadows.Models.BoardModel {
       tiles.TryAdd( h, i );
     }
     
-    public IEnumerator<KeyValuePair<Hex, int>> GetEnumerator () {
-      foreach ( KeyValuePair<Hex,int> keyValuePair in tiles ) {
-        yield return keyValuePair;
-      } 
-    }
-    IEnumerator IEnumerable.GetEnumerator () => GetEnumerator();
-
     public bool TryGetValue (in Hex target, out int tileCode) => tiles.TryGetValue( target, out tileCode );
 
   }

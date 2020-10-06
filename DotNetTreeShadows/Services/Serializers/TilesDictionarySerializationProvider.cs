@@ -11,12 +11,12 @@ namespace dotnet_tree_shadows.Services.Serializers {
 
     public IBsonSerializer GetSerializer (Type type) =>
       type == typeof( Dictionary<Hex, int> )
-        ? new TileDictionarySerializer()
+        ? new TilesDictionarySerializer()
         : null;
 
-    public class TileDictionarySerializer : DictionarySerializerBase<Dictionary<Hex, int>> {
+    public class TilesDictionarySerializer : DictionarySerializerBase<Dictionary<Hex, int>> {
 
-      public TileDictionarySerializer () : base(
+      public TilesDictionarySerializer () : base(
           DictionaryRepresentation.Document,
           new HexCoordinatesSerializationProvider.HexCoordinatesSerializer(),
           new Int32Serializer()

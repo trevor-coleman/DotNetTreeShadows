@@ -6,7 +6,13 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace dotnet_tree_shadows.Models.DataModels {
   public class PlayerSummary {
 
-    public static PlayerSummary Create (UserModel userModel) =>
+    public PlayerSummary () { }
+    public PlayerSummary (UserModel user) {
+      Id = user.UserId;
+      Name = user.UserName;
+    }
+
+    public static PlayerSummary CreateFromUser (UserModel userModel) =>
       new PlayerSummary {
         Id = userModel.UserId,
         Name = userModel.UserName

@@ -1,89 +1,117 @@
 import React from 'react';
-import { TreeType, PieceType, Tile } from '../store/sessions/types';
+import Tile from '../types/board/tile'
 import TreeSVG from '../svg/TreeSVG';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Sun from '../svg/sun-svgrepo-com.svg';
-import { Point } from '../models/hex-grid/Point';
+import {Point} from '../types/hex-grid/Point';
+import {RootState} from "../store";
+import {Hex} from "../types/hex-grid/Hex";
+import {connect, ConnectedProps} from "react-redux";
+import {TreeType} from "../types/board/treeType";
+import {PieceType} from "../types/board/pieceType";
 
-interface BoardTileProps {
-  onClick?: (tile:Tile)=>void,
-  onMouseEnter?: (tile:Tile)=>void,
-  onMouseLeave?:(tile:Tile)=>void,
-  size: number
-  tile: Tile
-  center: Point,
+const mapStateToProps = (state: RootState) => {
+    return {tiles: state.board.displayTiles};
+};
+
+const connector = connect(mapStateToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+
+interface IBoardTileProps {
+    onClick?: (hexCode: number) => void,
+    onMouseEnter?: (hexCode: number) => void,
+    onMouseLeave?: (hexCode: number) => void,
+    size: number
+    hexCode: number
+    center: Point,
 }
+
+type BoardTileProps = IBoardTileProps & PropsFromRedux;
 
 const BoardTile = (props: BoardTileProps) => {
 
-  const {tile, onClick, onMouseEnter, onMouseLeave, size, center} = props;
+    const {hexCode, tiles, onClick, onMouseEnter, onMouseLeave, size, center} = props;
 
-  const {pieceType, treeType} = tile;
-  const shaded = tile.shadowHeight > 0;
-  const sky = Math.abs(tile.hexCoordinates.q) ==4 || Math.abs(tile.hexCoordinates.r) ==4 || Math.abs(tile.hexCoordinates.s) == 4;
-  const sun = false;
+    const tileCode = tiles[hexCode];
+    const hex = new Hex(hexCode);
+    const pieceType: null | PieceType = Tile.GetPieceType(tileCode);
+    const treeType: null | TreeType = Tile.GetTreeType(tileCode);
+    const shadowHeight: number = Tile.GetShadowHeight(tileCode);
+    const shaded = shadowHeight > 0;
 
-  const classes = useStyles(props);
+    const sky = Math.abs(hex.q) == 4 || Math.abs(hex.r) == 4 || Math.abs(hex.s) == 4;
+    const sun = false;
 
-  const treeColors : {[treeType:string] : string} = {
-    Aspen: "#703510",
-    Poplar: "#19572b",
-    Ash: "#1c415a",
-    Birch: "#6d4c0a"
-  }
+    const classes = useStyles(props);
 
-  const handleClick= () => {
-    if(onClick) onClick(tile);
-  }
+    const treeColor = (treeType: TreeType):string => {
+        switch (treeType) {
+            case TreeType.Aspen:
+                return "#703510";
+            case TreeType.Ash:
+                return "#1c415a"
+            case TreeType.Birch:
+                return "#6d4c0a";
+            case TreeType.Poplar:
+                return "#19572b";
+        }
+        throw new Error("Unknown TreeType");
+    }
 
-  let backgroundColor: string;
-  if (sky) {
-    backgroundColor = "#72CEE0";
-  }
-  else if(pieceType && treeType) {
-    backgroundColor = treeColors[treeType]
-  }
-  else {
-    backgroundColor = "#acbeac";
-  }
+    const handleClick = () => {
+        if (onClick) onClick(hexCode);
+    }
 
-  const treeIcon: string | null = sky
-                                  ? null
-                                  : treeType && pieceType
-                                    ? TreeSVG(treeType, pieceType)
-                                    : null;
+    let backgroundColor: string;
+    if (sky) {
+        backgroundColor = "#72CEE0";
+    } else if (pieceType && treeType) {
+        backgroundColor = treeColor(treeType)
+    } else {
+        backgroundColor = "#acbeac";
+    }
+
+    const treeIcon: string | null = sky
+        ? null
+        : treeType && pieceType
+            ? TreeSVG(treeType, pieceType)
+            : null;
 
 
-  const sunIcon: string | null = sky && sun
-                                 ? Sun
-                                 : null;
+    const sunIcon: string | null = sky && sun
+        ? Sun
+        : null;
 
-  function handleMouseEnter(): void {
-    if(onMouseEnter) onMouseEnter(tile);
-  }
-  function handleMouseLeave(): void {
-    if(onMouseLeave) onMouseLeave(tile);
-  }
+    function handleMouseEnter(): void {
+        if (onMouseEnter) onMouseEnter(hexCode);
+    }
 
-  return (<g>
-        <circle onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={handleClick} cx={center.x} cy={center.y} r={size/1.2} fill={backgroundColor} strokeWidth={2} stroke={"#010"} />
+    function handleMouseLeave(): void {
+        if (onMouseLeave) onMouseLeave(hexCode);
+    }
+
+    return (<g>
+        <circle onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={handleClick} cx={center.x}
+                cy={center.y} r={size / 1.2} fill={backgroundColor} strokeWidth={2} stroke={"#010"}/>
         {sunIcon
-         ? <image href={sunIcon} x={center.x - size/2} y={center.y-size/2} width={size} height={size} />
-         : ''}
+            ? <image href={sunIcon} x={center.x - size / 2} y={center.y - size / 2} width={size} height={size}/>
+            : ''}
         {treeIcon
-         ? <image href={treeIcon} x={center.x-size/2} y={center.y-size/2} width={size} height={size} />
-         : ''}
+            ? <image href={treeIcon} x={center.x - size / 2} y={center.y - size / 2} width={size} height={size}/>
+            : ''}
         {shaded
-         ? <circle cx={500} cy={500} r={450} fill={"rgba(0,0,0,0.3)"} strokeWidth={"0.2"} stroke={"#000"} />
-         : ''}
-      </g>)
+            ? <circle cx={500} cy={500} r={450} fill={"rgba(0,0,0,0.3)"} strokeWidth={"0.2"} stroke={"#000"}/>
+            : ''}
+    </g>)
 };
 
 const useStyles = makeStyles({
-  root: {
-    width: (props: BoardTileProps) => props.size,
-    height: (props: BoardTileProps) => props.size,
-  },
+    root: {
+        width: (props: BoardTileProps) => props.size,
+        height: (props: BoardTileProps) => props.size,
+    },
 });
 
-export default BoardTile;
+
+export default connector(BoardTile);

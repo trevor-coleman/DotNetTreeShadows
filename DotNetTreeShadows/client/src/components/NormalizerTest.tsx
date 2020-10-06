@@ -2,13 +2,13 @@ import React, {FunctionComponent} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from '../store';
 import {makeStyles} from '@material-ui/core/styles';
-import {signInUserAsync} from "../store/system/thunks";
-import {SignInCredentials} from "../store/system/types";
-import {getSessionsInfoAsync} from "../store/user/thunks";
+import {signInUserAsync} from "../store/z_old-system/thunks";
+import {getSessionsInfoAsync} from "../store/z_old-user/thunks";
 import {createSessionAsync, getSessionAsync} from "../store/sessions/thunks";
 import {Paper, Button} from '@material-ui/core';
 import {getSession} from "../store/sessions/actions";
 import DebugToolbar from "./DebugToolbar";
+import {SignInCredentials} from "../types/auth/signInCredentials";
 
 //REDUX MAPPING
 const mapStateToProps = (state: RootState) => {

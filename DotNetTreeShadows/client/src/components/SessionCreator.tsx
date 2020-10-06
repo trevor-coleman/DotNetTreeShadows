@@ -7,7 +7,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import { createSessionAsync, getSessionAsync } from '../store/sessions/thunks';
-import { getSessionsInfoAsync } from '../store/user/thunks';
+import { getSessionsInfoAsync } from '../store/z_old-user/thunks';
 
 //REDUX MAPPING
 const mapStateToProps = (state: RootState) => {

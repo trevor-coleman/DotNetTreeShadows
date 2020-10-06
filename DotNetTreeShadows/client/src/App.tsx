@@ -10,25 +10,14 @@ import SVGTreeToken from './components/SVGTreeToken';
 import TreeTokenTest from './components/TreeTokenTest';
 import GameBoard from './components/GameBoard';
 import NormalizrTest from "./components/NormalizerTest";
+import NewApiTest from "./components/NewApiTest";
 
 function App() {
   return (
     <Router>
       <Layout>
         <Box m={5}>
-          <Route path="/debug">
-            <BuyingGrid />
-          </Route>
-          <Route path="/buy">
-            <BuyingGrid />
-          </Route>
-          <Route path="/tree">
-            <TreeTokenTest/>
-          </Route>
-          <Route path="/normalizr">
-            <NormalizrTest/>
-          </Route>
-          <Route path="/board"><GameBoard/></Route>
+          <NewApiTest/>
         </Box>
       </Layout>
     </Router>);

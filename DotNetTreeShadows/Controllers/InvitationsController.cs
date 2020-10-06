@@ -42,20 +42,11 @@ namespace dotnet_tree_shadows.Controllers {
       this.sessionService = sessionService;
       this.invitationService = invitationService;
     }
-
-    [HttpPost]
-    public async Task<ActionResult> Invite (InvitationRequest invitationInfo) {
-      return invitationInfo.InvitationType switch {
-        InvitationType.SessionInvite => await SendSessionInvite( invitationInfo ),
-        InvitationType.FriendRequest => await SendFriendRequest( invitationInfo ),
-        _ => throw new ArgumentOutOfRangeException()
-      };
-    }
-
+    
     [HttpGet, Route( "{id:length(24)}" )]
-    public async Task<ActionResult<AInvitation>> Get (string id) {
+    public async Task<ActionResult<Invitation>> Get (string id) {
       UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
-      AInvitation invitation = await invitationService.GetById( id );
+      Invitation invitation = await invitationService.GetById( id );
 
       if ( invitation == null ) return Status404NotFound( "Invitation" );
       if ( !invitation.Involves( userModel.UserId ) ) return Status403Forbidden();
@@ -77,7 +68,7 @@ namespace dotnet_tree_shadows.Controllers {
       InvitationStatus invitationStatus = invitationUpdate.InvitationStatus;
       
       UserModel user = await userManager.GetUserAsync( HttpContext.User );
-      AInvitation invitation = await invitationService.GetById( id );
+      Invitation invitation = await invitationService.GetById( id );
 
       if ( invitation == null ) return Status404NotFound( "Invitation" );
       if ( !invitation.Involves( user.UserId ) ) return Status403Forbidden();
@@ -133,7 +124,7 @@ namespace dotnet_tree_shadows.Controllers {
         _ => throw new ArgumentOutOfRangeException()
       };
     }
-
+    
     private async Task<ActionResult> UpdateFriendRequestStatus (
         UserModel user,
         FriendRequest invitation,
@@ -240,7 +231,7 @@ namespace dotnet_tree_shadows.Controllers {
         UserModel recipient,
         Session session
       ) {
-      session.Players.Add( recipient.UserId, PlayerSummary.Create( recipient ));
+      session.Players.Add( recipient.UserId, PlayerSummary.CreateFromUser( recipient ));
       recipient.AddSession( session );
 
       session.Invitations = session.Invitations.Where( i => i != invitation.Id ).ToArray();
@@ -255,9 +246,11 @@ namespace dotnet_tree_shadows.Controllers {
       return Ok();
     }
 
-    public async Task<ActionResult> SendSessionInvite (InvitationRequest invitationInfo) {
+    [HttpPost]
+    [Route("session-invite")]
+    public async Task<ActionResult> SendSessionInvite (SessionInviteRequest invitationInfo) {
       string recipientId = invitationInfo.RecipientId;
-      string sessionId = invitationInfo.ResourceId;
+      string sessionId = invitationInfo.SessionId;
       if ( sessionId == null ) return Status400MissingRequiredField( "sessionId" );
       Task<Session?> sessionTask = sessionService.Get( sessionId );
       Task<UserModel> userTask = userManager.GetUserAsync( HttpContext.User );
@@ -277,7 +270,7 @@ namespace dotnet_tree_shadows.Controllers {
       if ( (await invitationService.GetMany( session.Invitations )).Any( i => i.RecipientId == recipient.UserId ) )
         return Status409Duplicate( "invitation" );
 
-      SessionInvite sessionInvitation = new SessionInvite() {
+      SessionInvite sessionInvitation = new SessionInvite(){
         SenderId = sender.UserId,
         SenderName = sender.UserName,
         RecipientId = recipient.UserId,
@@ -287,7 +280,7 @@ namespace dotnet_tree_shadows.Controllers {
       };
 
       
-      SessionInvite createdInvitation = await invitationService.CreateAsync( sessionInvitation );
+      Invitation createdInvitation = await invitationService.CreateAsync( sessionInvitation );
 
       sender.AddSentInvitation( createdInvitation.Id );
       Task updateSender = userManager.UpdateAsync( sender );
@@ -303,7 +296,9 @@ namespace dotnet_tree_shadows.Controllers {
       return Ok();
     }
 
-    public async Task<ActionResult> SendFriendRequest (InvitationRequest invitationInfo) {
+    [HttpPost]
+    [Route("friend-request")]
+    public async Task<ActionResult> SendFriendRequest (FriendRequestRequest invitationInfo) {
       string? recipientEmail = invitationInfo.Email;
       if ( recipientEmail == null ) return Status400MissingRequiredField( "email" );
 
@@ -329,7 +324,7 @@ namespace dotnet_tree_shadows.Controllers {
         Status = InvitationStatus.Pending,
       };
 
-      List<AInvitation> existingInvitations = await invitationService.GetMany( recipient.ReceivedInvitations );
+      List<Invitation> existingInvitations = await invitationService.GetMany( recipient.ReceivedInvitations );
 
       if ( existingInvitations.Any( friendRequest.IsDuplicate ) ) return Status409Duplicate( "Invitation" );
 

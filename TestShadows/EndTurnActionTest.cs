@@ -1,6 +1,8 @@
 using System;
+using dotnet_tree_shadows.Controllers;
 using dotnet_tree_shadows.Models.GameActions;
 using dotnet_tree_shadows.Models.GameActions.TurnActions;
+using dotnet_tree_shadows.Models.GameModel;
 using dotnet_tree_shadows.Models.SessionModels;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
@@ -9,26 +11,39 @@ using NUnit.Framework;
 namespace TestShadows {
   [TestFixture]
   public class EndTurnActionTest {
+
     private Game game;
+    private EndTurnAction action;
+    private ActionRequest actionRequest;
+    private EndTurnAction.Params actionParams;
 
     [SetUp]
     public void Setup () {
-      game = new Game( "player0" );
-      game.AddPlayer( "player1" );
-      game.AddPlayer( "player2" );
-      game.AddPlayer( "player3" );
+      game = new Game();
+      GameOperations.AddPlayer( game, "player0" );
+      GameOperations.AddPlayer( game, "player1" );
+      GameOperations.AddPlayer( game, "player2" );
+      GameOperations.AddPlayer( game, "player3" );
+      game.FirstPlayer = "player0";
       game.Status = GameStatus.InProgress;
+
+      actionRequest = new ActionRequest { Type = GameActionType.EndTurn };
+
+      EndTurnAction.Params endTurnActionParams = new EndTurnAction.Params( actionRequest, "player0", game );
+
+      EndTurnAction endTurnAction = new EndTurnAction( actionParams );
     }
 
     [Test] public void ShouldFailIfNotPlayersTurn () {
-      EndTurnAction endTurnAction = new EndTurnAction( game, "player1" );
-      bool result = endTurnAction.Execute( out string? failureMessage );
+      bool result = action.Execute( out string? failureMessage );
       Assert.IsFalse( result );
       Assert.IsNotNull( failureMessage );
     }
 
     [Test] public void ShouldFailIfPlayerIsNotInGame () {
-      EndTurnAction endTurnAction = new EndTurnAction( game, "randomInterloper" );
+      EndTurnAction endTurnAction =
+        new EndTurnAction( new EndTurnAction.Params( actionRequest, "randomInterloper", game ) );
+
       bool result = endTurnAction.Execute( out string? failureMessage );
       Assert.IsFalse( result );
       Assert.IsNotNull( failureMessage );
@@ -36,34 +51,20 @@ namespace TestShadows {
 
     [Test]
     public void ShouldAdvanceOnlyCurrentTurnOnNormalEndTurn () {
-      EndTurnAction endTurnAction = new EndTurnAction( game, "player0" );
-      bool result = endTurnAction.Execute( out string? failureMessage );
+      bool result = action.Execute( out string? failureMessage );
       Assert.AreEqual( 1, game.CurrentTurn, 1 );
-      Assert.AreEqual( 0, game.Round, 0 );
       Assert.AreEqual( 0, game.Revolution, 0 );
-      Assert.AreEqual( SunPosition.NorthWest, game.Board.SunPosition );
+      Assert.AreEqual( SunPosition.NorthWest, game.SunPosition );
     }
-
-    [Test]
-    public void ShouldAdvanceRoundWhenNextPlayerIsFirstPlayer () {
-      game.CurrentTurn = 0;
-      game.FirstPlayer = game.TurnOrder[1];
-
-      EndTurnAction endTurnAction = new EndTurnAction( game, game.CurrentPlayer );
-      bool result = endTurnAction.Execute( out string? failureMessage );
-
-      Assert.AreEqual( 1, game.Round );
-    }
-
+    
     [Test]
     public void ShouldAdvanceSunWhenNextPlayerIsFirstPlayer () {
       game.CurrentTurn = 0;
       game.FirstPlayer = game.TurnOrder[1];
+      
+      bool result = action.Execute( out string? failureMessage );
 
-      EndTurnAction endTurnAction = new EndTurnAction( game, game.CurrentPlayer );
-      bool result = endTurnAction.Execute( out string? failureMessage );
-
-      Assert.AreEqual( SunPosition.NorthEast, game.Board.SunPosition );
+      Assert.AreEqual( SunPosition.NorthEast, game.SunPosition );
     }
 
     [Test]
@@ -71,19 +72,17 @@ namespace TestShadows {
       game.CurrentTurn = 0;
       game.FirstPlayer = game.TurnOrder[1];
       string nextPlayer = game.TurnOrder[2];
-
-      EndTurnAction endTurnAction = new EndTurnAction( game, game.CurrentPlayer );
-      bool result = endTurnAction.Execute( out string? failureMessage );
+      
+      bool result = action.Execute( out string? failureMessage );
 
       Assert.AreEqual( nextPlayer, game.FirstPlayer );
     }
 
     [Test]
     public void ShouldAdvanceRevolutionWhenSunReachesNorthWest () {
-      game.Board.SunPosition = SunPosition.West;
+      game.SunPosition = SunPosition.West;
       game.FirstPlayer = game.TurnOrder[game.CurrentTurn + 1];
-      EndTurnAction endTurnAction = new EndTurnAction( game, game.CurrentPlayer );
-      bool result = endTurnAction.Execute( out string? failureMessage );
+      bool result = action.Execute( out string? failureMessage );
       Assert.AreEqual( 1, game.Revolution );
     }
 
@@ -91,27 +90,24 @@ namespace TestShadows {
     public void ShouldEndGameAtEndOfLastRevolution () {
       game.Revolution = game.LengthOfGame - 1;
       game.FirstPlayer = game.TurnOrder[1];
-      game.Board.SunPosition = SunPosition.West;
-      EndTurnAction endTurnAction = new EndTurnAction( game, game.CurrentPlayer );
-      bool result = endTurnAction.Execute( out string? failureMessage );
+      game.SunPosition = SunPosition.West;
+      bool result = action.Execute( out string? failureMessage );
       Assert.AreEqual( GameStatus.Ended, game.Status );
     }
 
-    [Test] 
+    [Test]
     void ShouldFailIfGameStatusIsPreparing () {
       game.Status = GameStatus.Preparing;
-      EndTurnAction endTurnAction = new EndTurnAction( game, game.CurrentPlayer );
-      bool result = endTurnAction.Execute( out string? failureMessage );
+      bool result = action.Execute( out string? failureMessage );
       Assert.IsFalse( result, "EndTurnAction Succeeded when status was Preparing;" );
     }
-    
-    [Test] 
+
+    [Test]
     void ShouldFailIfGameHasEnded () {
       game.Status = GameStatus.Ended;
-      EndTurnAction endTurnAction = new EndTurnAction( game, game.CurrentPlayer );
-      bool result = endTurnAction.Execute( out string? failureMessage );
+      bool result = action.Execute( out string? failureMessage );
       Assert.IsFalse( result, "EndTurnAction Succeeded when status was Ended;" );
     }
-    
+
   }
 }

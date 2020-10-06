@@ -68,19 +68,19 @@ namespace dotnet_tree_shadows.Controllers {
         }
 
         [HttpGet, Route( "me/invitations/sent" )]
-        public async Task<ActionResult<AInvitation[]>> GetSentInvitations () {
+        public async Task<ActionResult<Invitation[]>> GetSentInvitations () {
             UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
             if ( userModel == null ) return Status500MissingProfile();
-            List<AInvitation> sentInvitations = await invitationService.GetMany( userModel.SentInvitations );
+            List<Invitation> sentInvitations = await invitationService.GetMany( userModel.SentInvitations );
             return sentInvitations.ToArray();
         }
 
         [HttpGet, Route( "me/invitations/received" )]
-        public async Task<ActionResult<AInvitation[]>> GetReceivedInvitations () {
+        public async Task<ActionResult<Invitation[]>> GetReceivedInvitations () {
             UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
             if ( userModel == null ) return Status500MissingProfile();
             
-            List<AInvitation> receivedInvitations = await invitationService.GetMany( userModel.ReceivedInvitations );
+            List<Invitation> receivedInvitations = await invitationService.GetMany( userModel.ReceivedInvitations );
 
             return receivedInvitations.ToArray();
         }
