@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import api from "../../api/api";
-import {Invitation} from "../../types/invitation/invitation";
+import {Invitation} from "./invitation";
 
 export const fetchInvitations = createAsyncThunk(
     'invitations/fetchInvitations',
@@ -25,5 +25,6 @@ export const sendFriendRequest = createAsyncThunk(
     'inviations/sendFriendRequest',
     async (email:string) =>{
         const response = await api.invitations.sendFriendRequest(email);
+        return response;
     }
 )

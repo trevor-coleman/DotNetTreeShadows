@@ -1,6 +1,6 @@
 import {AApiSection} from "./aApiSection";
 import {AxiosInstance, AxiosResponse} from "axios";
-import {Invitation} from "../types/invitation/invitation";
+import {Invitation} from "../store/invitations/invitation";
 
 export default class InvitationApiSection extends AApiSection {
     public constructor(instance: AxiosInstance) {

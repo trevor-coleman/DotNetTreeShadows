@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {SunPosition} from "../../types/game/sunPosition";
-import Game from "../../types/game/game";
+import {SunPosition} from "./sunPosition";
+import Game from "./game";
 
 
 export interface GameState extends Game {}

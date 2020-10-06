@@ -3,17 +3,15 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../store';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import DebugToolbar from './DebugToolbar';
-import SessionCreator from './SessionCreator';
-import { Layout } from '../types/hex-grid/Layout';
-import { Orientation } from '../types/hex-grid/Orientation';
-import { Point } from '../types/hex-grid/Point';
+import { Layout } from '../store/board/hex-grid/Layout';
+import { Orientation } from '../store/board/hex-grid/Orientation';
+import { Point } from '../store/board/hex-grid/Point';
 import BoardTile from './BoardTile';
 import {addPieceToHex, removePieceFromHex, fetchBoard } from '../store/board/reducer'
 
-import { Hex } from '../types/hex-grid/Hex';
-import {TreeType} from "../types/board/treeType";
-import {PieceType} from "../types/board/pieceType";
+import { Hex } from '../store/board/hex-grid/Hex';
+import {TreeType} from "../store/board/treeType";
+import {PieceType} from "../store/board/pieceType";
 
 //REDUX MAPPING
 const mapStateToProps = (state: RootState) => {
@@ -50,7 +48,7 @@ const GameBoard: FunctionComponent<GameBoardProps> = (props: GameBoardProps) => 
 
   //TODO: Replace Return below with SVGTreeTile taking tile and position/size data as props.
 
-  return  <div><DebugToolbar/><SessionCreator/><Paper style={{border: '1px solid red', width:800}}>
+  return  <div><Paper style={{border: '1px solid red', width:800}}>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 2000 2400`}>
     {tiles? tileArray.map(tileEntry=> {
       return <BoardTile hexCode={tileEntry.hexCode} onMouseEnter={(hexCode:number)=>addPiece(hexCode, PieceType.MediumTree, TreeType.Poplar)} onMouseLeave={(hexCode: number)=>clearPiece(hexCode)} size={size} center={tileEntry.pixelCoords}/>;

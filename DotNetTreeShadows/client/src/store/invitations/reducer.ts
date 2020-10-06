@@ -1,7 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {fetchInvitations, sendFriendRequest} from "./actions";
-import {Invitation} from "../../types/invitation/invitation";
-import {RequestState} from "../../types/RequestState";
+import {Invitation} from "./invitation";
+import {RequestState} from "../../api/requestState";
 
 
 export type InvitationsState = {

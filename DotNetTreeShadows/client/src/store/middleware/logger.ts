@@ -1,7 +1,5 @@
-import {Action} from 'redux';
-import {setUserProfile} from '../z_old-user/actions'
-import {RootState} from '../index';
-import { ThunkAction, ThunkMiddleware } from 'redux-thunk';
+
+import { ThunkMiddleware } from 'redux-thunk';
 
 
 const logger:ThunkMiddleware = store => next => action => {

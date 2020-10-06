@@ -1,8 +1,11 @@
 import React from 'react';
-import { TreeType, PieceType, Tile } from '../store/sessions/types';
+import {TreeType} from "../store/board/treeType";
+import {PieceType} from "../store/board/pieceType";
+
 import TreeSVG from '../svg/TreeSVG';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Sun from '../svg/sun-svgrepo-com.svg';
+import Tile from "../store/board/tile";
 
 interface GroundTokenInfo {
   tokenType: "Ground"
@@ -20,18 +23,19 @@ export type TokenInfo = GroundTokenInfo | SkyTokenInfo;
 
 
 interface SVGTreeTokenProps {
-  onClick?: ()=>void,
+  onClick?: (hexCode: number)=>void,
   size: number
-  tile: Tile
+  tileCode: number
+  hexCode: number
 }
 
 const SVGTreeToken = (props: SVGTreeTokenProps) => {
 
-  const {tile, onClick} = props;
+  const {tileCode, hexCode, onClick} = props;
 
-  const {pieceType, treeType} = tile;
-  const shaded = tile.shadowHeight > 0;
-  const sky = tile.hexCoordinates.q ==4 || tile.hexCoordinates.r ==4 ||tile.hexCoordinates.s == 4;
+  const {pieceType, treeType, shadowHeight, isSky} = Tile.Details(tileCode);
+
+  const shaded = shadowHeight > 0;
   const sun = false;
 
   const classes = useStyles(props);
@@ -45,7 +49,7 @@ const SVGTreeToken = (props: SVGTreeTokenProps) => {
   }
 
   let backgroundColor: string;
-  if (sky) {
+  if (isSky) {
     backgroundColor = "#72CEE0";
   }
     else if(pieceType && treeType) {
@@ -55,7 +59,7 @@ const SVGTreeToken = (props: SVGTreeTokenProps) => {
     backgroundColor = "#acbeac";
   }
 
-  const treeIcon: string | null = sky
+  const treeIcon: string | null = isSky
                                   ? null
                                   : treeType && pieceType
                                     ? TreeSVG(treeType, pieceType)
@@ -63,11 +67,15 @@ const SVGTreeToken = (props: SVGTreeTokenProps) => {
 
   console.log(treeIcon);
 
-  const sunIcon: string | null = sky && sun
+  const sunIcon: string | null = isSky && sun
                                  ? Sun
                                  : null;
 
-  return <div className={classes.root} onClick={onClick}>
+  function handleClick() {
+    if(onClick) onClick(hexCode);
+  }
+
+  return <div className={classes.root} onClick={handleClick}>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 1000 1000`}>
       <g>
         <circle cx={500} cy={500} r={450} fill={backgroundColor} strokeWidth={0} stroke={"#333"} />

@@ -1,14 +1,14 @@
 import React from 'react';
-import Tile from '../types/board/tile'
+import Tile from '../store/board/tile'
 import TreeSVG from '../svg/TreeSVG';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Sun from '../svg/sun-svgrepo-com.svg';
-import {Point} from '../types/hex-grid/Point';
+import {Point} from '../store/board/hex-grid/Point';
 import {RootState} from "../store";
-import {Hex} from "../types/hex-grid/Hex";
+import {Hex} from "../store/board/hex-grid/Hex";
 import {connect, ConnectedProps} from "react-redux";
-import {TreeType} from "../types/board/treeType";
-import {PieceType} from "../types/board/pieceType";
+import {TreeType} from "../store/board/treeType";
+import {PieceType} from "../store/board/pieceType";
 
 const mapStateToProps = (state: RootState) => {
     return {tiles: state.board.displayTiles};

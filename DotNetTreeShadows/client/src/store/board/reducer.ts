@@ -1,8 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Tile} from "../../types/board/tile";
+import {Tile} from "./tile";
 import {fetchBoard} from "./actions";
-import {TreeType} from "../../types/board/treeType";
-import {PieceType} from "../../types/board/pieceType";
+import {TreeType} from "./treeType";
+import {PieceType} from "./pieceType";
 
 const stateWithTileAtH = (state: BoardState, tile: number, h: number): BoardState => ({
     ...state,

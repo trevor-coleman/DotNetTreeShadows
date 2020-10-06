@@ -31,8 +31,7 @@ namespace dotnet_tree_shadows.Models.GameModel {
     public SunPosition SunPosition { get; set; } = SunPosition.NorthWest;
     
     public Dictionary<string, int> PlayerBoards = new Dictionary<string, int>();
-
-    [BsonDictionaryOptions( DictionaryRepresentation.Document )]
+    
     public Dictionary<int, Stack<int>> ScoringTokens { get; set; } = new Dictionary<int, Stack<int>> {
       { 1, new Stack<int>( OneLeafTiles ) },
       { 2, new Stack<int>( TwoLeafTiles ) },

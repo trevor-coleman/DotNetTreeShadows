@@ -1,6 +1,6 @@
 import {AApiSection} from "./aApiSection";
 import {AxiosInstance, AxiosResponse} from "axios";
-import Session from "../types/session/session";
+import {Session} from '../store/session/session'
 
 export default class SessionApiSection extends AApiSection {
 

@@ -49,6 +49,8 @@ namespace dotnet_tree_shadows.Authentication {
       public UserProfile UserProfile () =>
         new UserProfile() {
           Id = UserId,
+          Name=UserName,
+          Email=Email,
           Sessions = Sessions,
           Friends = Friends,
           ReceivedInvitations = ReceivedInvitations,

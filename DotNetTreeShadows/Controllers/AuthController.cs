@@ -40,8 +40,8 @@ namespace dotnet_tree_shadows.Controllers {
         [HttpPost]  
         [Route("login")]  
         public async Task<IActionResult> Login([FromBody] LoginModel model)  
-        {  
-            UserModel userModel = await userManager.FindByEmailAsync(model.Email);
+        {
+          UserModel userModel = await userManager.FindByEmailAsync(model.Email);
             if ( userModel == null || !await userManager.CheckPasswordAsync( userModel, model.Password ) ) return Unauthorized();
             IList<string> userRoles = await userManager.GetRolesAsync(userModel);  
   
@@ -67,7 +67,7 @@ namespace dotnet_tree_shadows.Controllers {
             
             Response.Headers.Add("x-auth-token", new JwtSecurityTokenHandler().WriteToken(token));
   
-            return Ok();
+            return Ok(userModel.UserId);
         }  
 
         [HttpPost]

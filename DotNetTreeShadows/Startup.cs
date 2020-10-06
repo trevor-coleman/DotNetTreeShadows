@@ -50,6 +50,7 @@ namespace dotnet_tree_shadows {
             BsonSerializer.RegisterSerializationProvider(new HexCoordinatesSerializationProvider());
             BsonSerializer.RegisterSerializationProvider(new TilesDictionarySerializationProvider());
             BsonSerializer.RegisterSerializationProvider(new GameOptionsDictionarySerializationProvider());
+            BsonSerializer.RegisterSerializationProvider(new IntStackDictionarySerializationProvider());
 
             services.AddSingleton<SessionService>();
             services.AddSingleton<InvitationService>();

@@ -1,11 +1,12 @@
 import axios, {AxiosInstance, AxiosResponse} from "axios";
 import BoardApiSection from "./boardApiSection";
 import SessionApiSection from "./sessionApiSection";
-import Session from "../types/session/session";
-import {SignInCredentials} from "../types/auth/signInCredentials";
+import {Session} from "../store/session/session";
+import {SignInCredentials} from "../store/auth/signInCredentials";
 import GameApiSection from "./gameApiSection";
 import InvitationApiSection from "./invitationApiSection";
 import ProfileApiSection from "./profileApiSection";
+import {NewUserInfo} from "../store/auth/newUserInfo";
 
 export class Api {
 
@@ -18,14 +19,15 @@ export class Api {
     private instance: AxiosInstance;
     private readonly baseURL: string;
 
-    private unAuthorizedApi = axios.create({
+    private unAuthorizedApi = () => axios.create({
         baseURL:this.baseURL,
     });
 
     constructor(baseURL: string, token: string | null = null) {
+
         this.baseURL = baseURL;
         this.authorized = false;
-        this.instance = this.unAuthorizedApi;
+        this.instance = this.unAuthorizedApi();
         this.board = new BoardApiSection(this.instance);
         this.session = new SessionApiSection(this.instance);
         this.game = new GameApiSection(this.instance);
@@ -34,18 +36,32 @@ export class Api {
     }
 
 
+    private createSections() {
+        this.board = new BoardApiSection(this.instance);
+        this.session = new SessionApiSection(this.instance);
+        this.game = new GameApiSection(this.instance);
+        this.invitations = new InvitationApiSection(this.instance);
+        this.profile = new ProfileApiSection(this.instance);
+    }
+
     async signIn(credentials: SignInCredentials) {
-        const response: AxiosResponse = await this.instance.post(`auth/login`, credentials);
-        this.authorized = true;
-        const token: string = response.headers["x-auth-token"];
-        this.instance = this.createInstance(token);
-        this.authorized = true;
+        try {
+            console.log(this.baseURL);
+            const response: AxiosResponse = await this.instance.post("auth/login", credentials);
+            this.authorized = true;
+            const token: string = response.headers["x-auth-token"];
+            this.instance = this.createInstance(token);
+            this.createSections();
+            this.authorized = true;
+        } catch (e) {
+            console.log(e)
+        }
 
     }
 
     signOut() {
         this.authorized = false;
-        this.instance = this.unAuthorizedApi;
+        this.instance = this.unAuthorizedApi();
     }
 
     async createSession(): Promise<AxiosResponse<Session>> {
@@ -61,7 +77,15 @@ export class Api {
         });
 
     }
+
+    async registerNewUser(newUserInfo: NewUserInfo) {
+        return await this.instance.post("auth/register", newUserInfo);
+    }
+
+    async getSession(sessionId: string) {
+        return await this.instance.get(`sessions/${sessionId}`)
+    }
 }
 
-const api = new Api('http:/localhost:5000/api/');
+const api = new Api("/api/");
 export default api;

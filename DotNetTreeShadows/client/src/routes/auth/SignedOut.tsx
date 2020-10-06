@@ -5,10 +5,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Tabs } from '@material-ui/core';
 import Tab from '@material-ui/core/Tab';
 import AppBar from '@material-ui/core/AppBar';
-import SignInForm from '../../components/SignInForm';
-import RegisterForm from '../../components/RegisterForm';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
+import SignInForm from "../../components/SignInForm";
 
 //REDUX MAPPING
 const mapStateToProps = (state: RootState) => {
@@ -68,10 +67,12 @@ const SignedOut: FunctionComponent<SignedOutProps> = (props: SignedOutProps) => 
     <Tab label="Register" {...a11yProps(1)} />
   </Tabs></AppBar>
     <Container className={classes.App}>
-<TabPanel value={value} index={0} component={<SignInForm/>}/>
+      <TabPanel value={value} index={0} component={<SignInForm/>}/>
 <TabPanel value={value} index={1} component={<RegisterForm/>}/>
   </Container></>;
 };
+
+const RegisterForm = ()=> <div>RegisterForm</div>;
 
 const useStyles = makeStyles({App: {
     backgroundColor: '#444',

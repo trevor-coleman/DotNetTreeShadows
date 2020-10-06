@@ -1,5 +1,5 @@
-import React, { FunctionComponent } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import React, {FunctionComponent, useState} from 'react';
+import {connect, ConnectedProps, useDispatch, useSelector} from 'react-redux';
 import { RootState } from '../store';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -7,15 +7,14 @@ import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
-import { signInUserAsync, registerNewUserAsync } from '../store/z_old-system/thunks';
 import { InputLabel } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
-import {NewUserInfo} from "../types/auth/newUserInfo";
+import {NewUserInfo} from "../store/auth/newUserInfo";
 
-//REDUX MAPPING
-const mapStateToProps = (state: RootState) => {
-  return {};
-};
+import {signIn, registerNewUser} from '../store/auth/reducer'
+import {SignInCredentials} from "../store/auth/signInCredentials";
+import {signInAndFetchProfile} from "../store/auth/actions";
+
 
 const accounts: NewUserInfo[] = [
   {
@@ -37,31 +36,31 @@ const accounts: NewUserInfo[] = [
   },
 ];
 
-const mapDispatchToProps = {
-  signIn: (email: string, password: string) => signInUserAsync({
-    email,
-    password,
-  }),
-  register: (info: NewUserInfo) => registerNewUserAsync(info),
-};
-
 //REDUX PROP TYPING
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
+
 
 interface IDebugToolbarProps {}
 
-type DebugToolbarProps = IDebugToolbarProps & PropsFromRedux;
-
-//COMPONENT
-const DebugToolbar: FunctionComponent<DebugToolbarProps> = (props: DebugToolbarProps) => {
+const DebugToolbar: FunctionComponent<IDebugToolbarProps> = (props: IDebugToolbarProps) => {
   const classes = useStyles();
 
-  const {signIn, register} = props;
+  const dispatch=useDispatch();
+  const {email:profileEmail} = useSelector((state:RootState)=>state.profile)
+
+  const register = (newUserInfo:NewUserInfo):void=> {
+    dispatch(registerNewUser(newUserInfo));
+  }
+
+  const signInAccount = (credentials:SignInCredentials):void => {
+    dispatch(signInAndFetchProfile(credentials));
+  }
 
   function signInAs(email: string): void {
     accounts.forEach(account => {
-      if (account.email === email) signIn(account.email, account.password);
+      if (account.email === email) signInAccount({
+        email: account.email,
+        password: account.password
+      });
     });
   }
 
@@ -92,9 +91,9 @@ const DebugToolbar: FunctionComponent<DebugToolbarProps> = (props: DebugToolbarP
         <FormControl className={classes.viewAs}>
           <InputLabel id="view-as-label">View As</InputLabel>
           <Select
-
           id="view-as"
           labelId="view-as-label"
+          value={profileEmail}
           onChange={(e: React.ChangeEvent<{ name?: string; value: unknown }>) => signInAs(e.target.value as string)}>
 
         {accounts.map(account => <MenuItem
@@ -115,4 +114,4 @@ const useStyles = makeStyles({
   }
 });
 
-export default connector(DebugToolbar);
+export default DebugToolbar;

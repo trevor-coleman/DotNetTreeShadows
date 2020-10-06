@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {signIn} from "./actions";
+import {signIn, registerNewUser, registerAndSignIn} from "./actions";
 import api from "../../api/api";
 
 export interface AuthState {
@@ -14,7 +14,7 @@ const initialState: AuthState = {
     signedInRejectedMessage: null
 }
 
-const systemSlice = createSlice({
+const authSlice = createSlice({
     extraReducers: builder => {
         builder.addCase(signIn.pending, state => ({
             ...state,
@@ -22,12 +22,36 @@ const systemSlice = createSlice({
             signedIn: false,
             signedInRejectedMessage: null
         }))
-            .addCase(signIn.fulfilled, state => ({
+            .addCase(signIn.fulfilled, state => {
+                return {
+                    ...state,
+                    authInProgress: false,
+                    signedIn: true
+                }}
+            )
+
+            .addCase(signIn.rejected, (state, action) => ({
                 ...state,
                 authInProgress: false,
-                signedIn: true
-            }))
-            .addCase(signIn.rejected, (state, action) => ({
+                signedIn: true,
+                signedInRejectedMessage: action.error.toString() || "signIn failed"
+            }));
+
+        builder.addCase(registerNewUser.pending, state => ({
+            ...state,
+            authInProgress: true,
+            signedIn: false,
+            signedInRejectedMessage: null
+        }))
+            .addCase(registerNewUser.fulfilled, state => {
+                return {
+                    ...state,
+                    authInProgress: false,
+                    signedIn: true
+                }}
+            )
+
+            .addCase(registerNewUser.rejected, (state, action) => ({
                 ...state,
                 authInProgress: false,
                 signedIn: true,
@@ -44,6 +68,6 @@ const systemSlice = createSlice({
 })
 
 
-export const {signOut} = systemSlice.actions;
-export {signIn};
-export default systemSlice.reducer;
+export const {signOut} = authSlice.actions;
+export {signIn, registerNewUser, registerAndSignIn};
+export default authSlice.reducer;

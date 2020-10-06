@@ -1,15 +1,25 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {fetchProfile} from "./actions";
-import {RequestState} from "../../types/RequestState";
-import {Profile} from "../../types/profile/profile";
+import {RequestState} from "../../api/requestState";
+import {Profile} from "./profile";
+import {Action} from "typesafe-actions";
+
+export interface SessionSummary {
+    id: string,
+    name:string,
+}
 
 export interface ProfileState extends Profile {
     loadingProfileState: RequestState;
     loadingProfileFailedMessage: string|null,
+    sessionSummaries: SessionSummary[]
 }
 
 const initialProfileState : ProfileState = {
-    Id: "",
+    sessionSummaries: [],
+    id: "",
+    name:"",
+    email:"",
     friends: [],
     loadingProfileFailedMessage: null,
     loadingProfileState: RequestState.Idle,
@@ -41,12 +51,14 @@ const profileSlice = createSlice({
 
 
     },
-    reducers: {},
+    reducers: {
+        clearProfile:(state, action : Action)=>({...initialProfileState})
+    },
     name: "profile",
     initialState: initialProfileState
 })
 
 
-export const {} = profileSlice.actions;
+export const {clearProfile} = profileSlice.actions;
 export {fetchProfile};
 export default profileSlice.reducer;

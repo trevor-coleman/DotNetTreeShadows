@@ -1,6 +1,6 @@
 import {AApiSection} from "./aApiSection";
 import {AxiosInstance, AxiosResponse} from "axios";
-import Game from "../types/game/game";
+import Game from "../store/game/game";
 
 export default class GameApiSection extends AApiSection {
     public constructor(instance: AxiosInstance) {

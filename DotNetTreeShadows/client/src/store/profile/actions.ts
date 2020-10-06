@@ -1,7 +1,8 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import api from "../../api/api";
-import {Profile} from "../../types/profile/profile";
-import {FriendProfile} from "../../types/profile/friendProfile";
+import {Profile} from "./profile";
+import {FriendProfile} from "./friendProfile";
+import {SessionSummary} from "./reducer";
 
 
 export const fetchProfile = createAsyncThunk(
@@ -19,5 +20,4 @@ export const fetchFriendProfiles = createAsyncThunk(
 
     }
 )
-
 

@@ -1,55 +1,37 @@
 import React, { FunctionComponent, useState } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import {connect, ConnectedProps, useDispatch, useSelector} from 'react-redux';
 import { RootState } from '../store';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardContent, Typography } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
-import { createSessionAsync, getSessionAsync } from '../store/sessions/thunks';
-import { getSessionsInfoAsync } from '../store/z_old-user/thunks';
+import {createSession} from "../store/session/actions";
 
-//REDUX MAPPING
-const mapStateToProps = (state: RootState) => {
-  return {
-    sessions: state.user.profile?.sessions,
-    loggedIn: state.system.loggedIn,
-  };
-};
 
-const mapDispatchToProps = {
-  createSession: () => createSessionAsync(),
-  getSession: (id: string) => getSessionAsync(id),
-  getSessionsInfo: () => getSessionsInfoAsync(),
-};
+interface SessionCreatorProps {}
 
-//REDUX PROP TYPING
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
 
-interface ISessionCreatorProps {}
-
-type SessionCreatorProps = ISessionCreatorProps & PropsFromRedux;
 
 //COMPONENT
 const SessionCreator: FunctionComponent<SessionCreatorProps> = (props: SessionCreatorProps) => {
   const classes = useStyles();
-
-  const {sessions, createSession, getSession, loggedIn} = props;
-
+  const dispatch=useDispatch();
   const [sessionId, setSessionId] = useState<string>("");
   const [sessionName, setSessionName] = useState<string>("");
+  const {signedIn} = useSelector((state:RootState)=>state.auth)
+  const {sessions} = useSelector((state:RootState)=>state.profile)
 
-  const changeSession = (sessionId: string) => {
+  const changeSession= (sessionId:string)=> {
     setSessionId(sessionId);
 
-    getSession(sessionId);
-  };
+  }
+
 
   return <Card><CardContent><Typography variant={'h5'}>Session</Typography>
-    <div> <Button onClick={createSession}>Add Session</Button></div>
+    <div> <Button onClick={()=>dispatch(createSession())}>Add Session</Button></div>
     <div><Select
-      disabled={!loggedIn}
+      disabled={!signedIn}
       labelId="session-select"
       id="session-select"
       value={sessionId}
@@ -65,4 +47,4 @@ const SessionCreator: FunctionComponent<SessionCreatorProps> = (props: SessionCr
 
 const useStyles = makeStyles({});
 
-export default connector(SessionCreator);
+export default SessionCreator;
