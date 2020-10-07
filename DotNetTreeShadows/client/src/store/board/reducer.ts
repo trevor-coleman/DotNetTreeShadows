@@ -41,13 +41,12 @@ const boardSlice = createSlice({
                 loadingTiles: false,
                 tiles: {...action.payload.tiles}
             }));
-
-
     },
     reducers: {
         addPieceToHex: (state, action: PayloadAction<{ hexCode: number, pieceType: PieceType, treeType: TreeType }>) => {
             const {hexCode, pieceType, treeType} = action.payload;
             let tile: number = state.tiles[hexCode];
+            console.log("addPiece", hexCode, tile)
             tile = Tile.SetPieceType(tile, pieceType);
             tile = Tile.SetTreeType(tile, treeType);
             return stateWithTileAtH(state, tile, hexCode);

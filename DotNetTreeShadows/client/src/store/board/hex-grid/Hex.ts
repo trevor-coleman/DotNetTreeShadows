@@ -7,27 +7,35 @@ export class Hex {
     }
 
     get q(): number {
-        return (this.hexCode >> 16) & 0xff;
+        const q= (this.hexCode >> 17) & 0xff;
+        return (q) < 128 ? (q) : (q) - 256
     }
 
     get r(): number {
-        return (this.hexCode >> 8) & 0xff;
+        const r= (this.hexCode >> 9) & 0xff ;
+        return (r) < 128 ? (r) : (r) - 256
     }
 
     get s(): number {
-        return this.hexCode & 0xff
+        const s= this.hexCode & 0xff;
+        return (s) < 128 ? (s) : (s) - 256
     }
+
 
     public get axialArray(): number[] {
         return [this.q, this.r];
     }
 
     public static Create = (q:number, r:number, s:number):Hex => {
+        console.group("Create")
         let hexCode:number = 0;
-        hexCode |= (q && 0xff) << 16;
-        hexCode |= (r && 0xff) << 8;
-        hexCode |= (s && 0xff);
-
+        console.log(q, q.toString(2), ((q & 255) << 16).toString(2) )
+        hexCode |= (q & 0xff) << 17;
+        console.log(r, r.toString(2), ((r & 0xff) << 8).toString(2) )
+        hexCode |= (r & 0xff) << 9;
+        console.log(s, s.toString(2), ((s & 0xff)).toString(2) )
+        hexCode |= (s & 0xff);
+        console.groupEnd();
         return new Hex(hexCode);
     }
 
@@ -55,4 +63,16 @@ export class Hex {
     }
 
     public Equals = (other: Hex): boolean => this.q === other.q && this.r === other.r && this.s === other.s;
+
+    public static test = ()=> {
+        for (let i = -4; i <= 4; i++) {
+            for (let j = -4; j <= 4; j++) {
+                let k = 0 - i - j;
+                const h = Hex.Create( i, j, k );
+                console.log("--->",  h.hexCode.toString(2));
+                console.log(`(${i}, ${j}, ${k}) => [${h.q}, ${h.r}, ${h.s}]`)
+
+            }
+        }
+    }
 }

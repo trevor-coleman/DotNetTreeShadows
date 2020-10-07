@@ -3,80 +3,101 @@ import Tile from '../store/board/tile'
 import TreeSVG from '../svg/TreeSVG';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Sun from '../svg/sun-svgrepo-com.svg';
-import {Point} from '../store/board/hex-grid/Point';
 import {RootState} from "../store";
 import {Hex} from "../store/board/hex-grid/Hex";
-import {connect, ConnectedProps} from "react-redux";
+import {useSelector} from "react-redux";
 import {TreeType} from "../store/board/treeType";
 import {PieceType} from "../store/board/pieceType";
-
-const mapStateToProps = (state: RootState) => {
-    return {tiles: state.board.displayTiles};
-};
-
-const connector = connect(mapStateToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
+import {HexLayout} from "../store/board/hex-grid/HexLayout";
+import {SunPosition} from "../store/game/sunPosition";
+import treeColor from "./treeColor";
 
 interface IBoardTileProps {
     onClick?: (hexCode: number) => void,
     onMouseEnter?: (hexCode: number) => void,
     onMouseLeave?: (hexCode: number) => void,
-    size: number
-    hexCode: number
-    center: Point,
+    hexCode?: number,
+    layout?: HexLayout,
+    pieceType?: PieceType,
+    treeType?: TreeType
+    outline?: boolean
 }
 
-type BoardTileProps = IBoardTileProps & PropsFromRedux;
+const BoardTile = (props: IBoardTileProps) => {
 
-const BoardTile = (props: BoardTileProps) => {
+    const {outline, onClick, onMouseEnter, onMouseLeave, layout, hexCode, pieceType: propPiece, treeType: propTree} = props;
 
-    const {hexCode, tiles, onClick, onMouseEnter, onMouseLeave, size, center} = props;
 
-    const tileCode = tiles[hexCode];
-    const hex = new Hex(hexCode);
-    const pieceType: null | PieceType = Tile.GetPieceType(tileCode);
-    const treeType: null | TreeType = Tile.GetTreeType(tileCode);
+    const safeHexCode = (hexCode ? hexCode : 0) as number;
+    const tileCode = useSelector((state:RootState)=>state.board.tiles[safeHexCode]);
+    const sunPosition = useSelector((state:RootState)=>state.game.sunPosition) as SunPosition
+    const center = layout ? layout.hexToPixel(new Hex(safeHexCode)) : {x:60,y:60};
+
+    const hex = new Hex(safeHexCode);
+    const pieceType: null | PieceType = propPiece == null ? Tile.GetPieceType(tileCode) as PieceType : propPiece;
+    console.log(pieceType)
+    const treeType: null | TreeType = propTree == null ? Tile.GetTreeType(tileCode) as TreeType : propTree;
     const shadowHeight: number = Tile.GetShadowHeight(tileCode);
     const shaded = shadowHeight > 0;
 
+
+
     const sky = Math.abs(hex.q) == 4 || Math.abs(hex.r) == 4 || Math.abs(hex.s) == 4;
-    const sun = false;
+    let sun:boolean = false;
+    switch (sunPosition) {
+        case SunPosition.NorthWest:
+            sun = (hex.r == -4 || hex.s == 4)
+            break;
+        case SunPosition.NorthEast:
+            sun = hex. q == 4 || hex.r == -4
+            break;
+        case SunPosition.East:
+            sun = hex. q == 4 || hex.s == -4
+            break;
+        case SunPosition.SouthEast:
+            sun = hex.r == 4 || hex.s == -4
+            break;
+        case SunPosition.SouthWest:
+            sun = hex. q == -4 || hex.r == 4
+            break;
+        case SunPosition.West:
+            sun = hex.q == -4 || hex.s == 4
+            break;
+
+
+    }
 
     const classes = useStyles(props);
 
-    const treeColor = (treeType: TreeType):string => {
-        switch (treeType) {
-            case TreeType.Aspen:
-                return "#703510";
-            case TreeType.Ash:
-                return "#1c415a"
-            case TreeType.Birch:
-                return "#6d4c0a";
-            case TreeType.Poplar:
-                return "#19572b";
-        }
-        throw new Error("Unknown TreeType");
-    }
+
+
 
     const handleClick = () => {
-        if (onClick) onClick(hexCode);
+        if (onClick && !sky) onClick(safeHexCode);
     }
 
     let backgroundColor: string;
+    let strokeColor: string = "#010"
     if (sky) {
         backgroundColor = "#72CEE0";
-    } else if (pieceType && treeType) {
-        backgroundColor = treeColor(treeType)
+    } else if (pieceType != null && treeType!= null) {
+        if (outline) {
+            backgroundColor= "#fff"
+            strokeColor = treeColor(treeType);}
+        else
+            {
+                backgroundColor = treeColor(treeType)
+            }
     } else {
         backgroundColor = "#acbeac";
     }
 
     const treeIcon: string | null = sky
         ? null
-        : treeType && pieceType
+        : treeType!=null && pieceType!=null
             ? TreeSVG(treeType, pieceType)
             : null;
+
 
 
     const sunIcon: string | null = sky && sun
@@ -84,16 +105,18 @@ const BoardTile = (props: BoardTileProps) => {
         : null;
 
     function handleMouseEnter(): void {
-        if (onMouseEnter) onMouseEnter(hexCode);
+        if (onMouseEnter) onMouseEnter(safeHexCode);
     }
 
     function handleMouseLeave(): void {
-        if (onMouseLeave) onMouseLeave(hexCode);
+        if (onMouseLeave) onMouseLeave(safeHexCode);
     }
+
+    const size = layout?.size.x || 60;
 
     return (<g>
         <circle onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={handleClick} cx={center.x}
-                cy={center.y} r={size / 1.2} fill={backgroundColor} strokeWidth={2} stroke={"#010"}/>
+                cy={center.y} r={size / 1.2} fill={backgroundColor} strokeWidth={2} stroke={strokeColor}/>
         {sunIcon
             ? <image href={sunIcon} x={center.x - size / 2} y={center.y - size / 2} width={size} height={size}/>
             : ''}
@@ -101,17 +124,17 @@ const BoardTile = (props: BoardTileProps) => {
             ? <image href={treeIcon} x={center.x - size / 2} y={center.y - size / 2} width={size} height={size}/>
             : ''}
         {shaded
-            ? <circle cx={500} cy={500} r={450} fill={"rgba(0,0,0,0.3)"} strokeWidth={"0.2"} stroke={"#000"}/>
+            ? <circle cx={center.x} cy={center.y} r={size/1.2} fill={"rgba(0,0,0,0.3)"} strokeWidth={"0.2"} stroke={"#000"}/>
             : ''}
     </g>)
 };
 
 const useStyles = makeStyles({
     root: {
-        width: (props: BoardTileProps) => props.size,
-        height: (props: BoardTileProps) => props.size,
+        width: (props: IBoardTileProps) =>  props.layout?.size.x || 140,
+        height: (props: IBoardTileProps) => props.layout?.size.y || 140,
     },
 });
 
 
-export default connector(BoardTile);
+export default BoardTile;

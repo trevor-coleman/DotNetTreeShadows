@@ -8,10 +8,13 @@ namespace dotnet_tree_shadows.Models.SessionModels {
   public class PlayerBoard {
 
     private PieceCount[] PieceCounts { get; } = {
-      new PieceCount( PieceType.Seed, new BitValue( 2, 8, 0b1111 ), new BitValue( 4, 12, 0b111 ), 4 ),
-      new PieceCount( PieceType.SmallTree, new BitValue( 4, 15, 0b1111 ), new BitValue( 4, 19, 0b111 ), 4 ),
-      new PieceCount( PieceType.MediumTree, new BitValue( 1, 22, 0b111 ), new BitValue( 3, 25, 0b111 ), 3 ),
-      new PieceCount( PieceType.LargeTree, new BitValue( 0, 28, 3 ), new BitValue( 0, 30, 3 ), 2 )
+      //pieceType, available, onboard, max
+      //value,offset, mask
+      
+      new PieceCount( PieceType.Seed, new BitValue( 2, 8, 15 ), new BitValue( 4, 12, 7 ), 4 ),
+      new PieceCount( PieceType.SmallTree, new BitValue( 4, 15, 15 ), new BitValue( 4, 19, 7 ), 4 ),
+      new PieceCount( PieceType.MediumTree, new BitValue( 1, 22, 7 ), new BitValue( 3, 25, 7 ), 3 ),
+      new PieceCount( PieceType.LargeTree, new BitValue( 0, 28, 3 ), new BitValue( 2, 30, 3 ), 2 )
     };
     
     

@@ -63,10 +63,8 @@ namespace dotnet_tree_shadows.Controllers {
         public async Task<ActionResult<Session>> Create () {
             UserModel user = await userManager.GetUserAsync( HttpContext.User );
             if (user?.UserId == null ) return StatusCode( StatusCodes.Status403Forbidden );
-            
-            Session session = new Session() {
-              Host = user.UserId
-            };
+
+            Session session = SessionFactory.Create( user.UserId );
             
             await sessionService.Create( session );
 

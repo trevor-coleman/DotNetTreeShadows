@@ -1,61 +1,70 @@
-import React, { FunctionComponent } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { RootState } from '../store';
-import { makeStyles } from '@material-ui/core/styles';
+import React, {FunctionComponent} from 'react';
+import {connect, ConnectedProps, useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../store';
+import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import { Layout } from '../store/board/hex-grid/Layout';
-import { Orientation } from '../store/board/hex-grid/Orientation';
-import { Point } from '../store/board/hex-grid/Point';
+import {HexLayout} from '../store/board/hex-grid/HexLayout';
+import {Orientation} from '../store/board/hex-grid/Orientation';
 import BoardTile from './BoardTile';
-import {addPieceToHex, removePieceFromHex, fetchBoard } from '../store/board/reducer'
 
-import { Hex } from '../store/board/hex-grid/Hex';
-import {TreeType} from "../store/board/treeType";
+import {Hex} from '../store/board/hex-grid/Hex';
 import {PieceType} from "../store/board/pieceType";
+import {TreeType} from "../store/board/treeType";
+import {addPieceToHex} from '../store/board/reducer';
 
-//REDUX MAPPING
-const mapStateToProps = (state: RootState) => {
-  return {tiles: state.board.displayTiles};
-};
 
-const mapDispatchToProps = {addPiece: (hexCode: number, pieceType: PieceType, treeType: TreeType)=> addPieceToHex({hexCode, pieceType, treeType}), clearPiece: (hexCode:number)=> removePieceFromHex({hexCode})};
-
-//REDUX PROP TYPING
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-interface IGameBoardProps {}
-
-type GameBoardProps = IGameBoardProps & PropsFromRedux;
+interface IGameBoardProps {
+    width?: number | string
+}
 
 //COMPONENT
-const GameBoard: FunctionComponent<GameBoardProps> = (props: GameBoardProps) => {
-  const classes = useStyles();
+const GameBoard: FunctionComponent<IGameBoardProps> = (props: IGameBoardProps) => {
+    const classes = useStyles(props);
+    const dispatch = useDispatch();
 
-  const size = 120;
+    const {tiles} = useSelector((state: RootState) => state.board);
 
-  const {tiles, addPiece, clearPiece} = props;
-  const layout = new Layout(Orientation.Pointy, {x:size,y:size}, {x:1000, y:1000})
+    const size = 2000;
+    const aspect = 0.87;
+    const viewPortSize = {x: size, y: size*aspect}
+    const middle = size/2;
+    const origin = {x:middle, y:middle*aspect};
+    const zoom = 17;
+    const tileSize = {x:size/zoom, y:size/zoom}
+    const buffer = 20;
 
-  const tileArray : {hexCode: number, pixelCoords: Point, tile: any}[] = [];
-  for (let hexName in tiles) {
-      const hexCode:number = parseInt(hexName)
-     const tile =  tiles[hexCode];
-     const hex = new Hex(hexCode);
-     const pixelCoords: Point = layout.hexToPixel(hex);
-     tileArray.push({hexCode, pixelCoords, tile});
-  }
+    const points = [];
+    for(let i=0; i<360; i+=60) {
+        const radians = Math.PI / 180 * i
+        points.push({
+            x: origin.x + (size-buffer)/2 * Math.cos(radians),
+            y: origin.y + (size-buffer)/2 * Math.sin(radians)
+        })
+    }
 
-  //TODO: Replace Return below with SVGTreeTile taking tile and position/size data as props.
+    let pointString = "";
+    for(let i =0; i<points.length; i++) {
+        pointString += `${points[i].x}, ${points[i].y} `;
+    }
 
-  return  <div><Paper style={{border: '1px solid red', width:800}}>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 2000 2400`}>
-    {tiles? tileArray.map(tileEntry=> {
-      return <BoardTile hexCode={tileEntry.hexCode} onMouseEnter={(hexCode:number)=>addPiece(hexCode, PieceType.MediumTree, TreeType.Poplar)} onMouseLeave={(hexCode: number)=>clearPiece(hexCode)} size={size} center={tileEntry.pixelCoords}/>;
-    }) : ""}</svg>
-  </Paper></div>;
+    const layout = new HexLayout(Orientation.Pointy, tileSize, origin )
+
+    return <div><Paper className={classes.root}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${viewPortSize.x} ${viewPortSize.y}`}>
+            <polyline id="hexagon" points={pointString} fill={"#c7ec94"}/>
+            {tiles ? Object.keys(tiles).map(hexCode => {
+                const h = new Hex(parseInt(hexCode));
+                return <BoardTile key={hexCode} onClick={(thisHexCode:number) => dispatch(addPieceToHex({
+                    hexCode: thisHexCode,
+                    treeType: TreeType
+                        .Ash,
+                    pieceType: PieceType
+                        .MediumTree}))}
+                 hexCode={parseInt(hexCode)} layout={layout}/>;
+            }) : ""}</svg>
+    </Paper></div>;
 };
 
-const useStyles = makeStyles({});
+const useStyles = makeStyles({root: {padding:'2em', marginTop:'2em'}});
 
-export default connector(GameBoard);
+export default GameBoard;

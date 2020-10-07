@@ -14,7 +14,7 @@ namespace dotnet_tree_shadows.Models.BoardModel {
         int r2 = Math.Min( radius, -q + radius );
         for (int r = r1; r <= r2; r++) {
           Hex h = new Hex( q, r );
-          board.Add( h, Math.Abs(h.Q) ==4 || Math.Abs(h.R) == 4 || Math.Abs(h.S) == 4 ? Tile.Sky : Tile.Empty);
+          board.Add( h, (Math.Abs(h.Q) ==4 || Math.Abs(h.R) == 4 || Math.Abs(h.S) == 4) ? Tile.Sky : Tile.Empty);
         }
       }
       return board;

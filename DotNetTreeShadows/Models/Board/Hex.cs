@@ -49,8 +49,8 @@ namespace dotnet_tree_shadows.Models.SessionModels {
           sbyte r = (sbyte) R;
           sbyte s = (sbyte) S;
 
-          hexCode |= (q & 0xff) << 16 ;
-          hexCode |= (r & 0xff) << 8;
+          hexCode |= (q & 0xff) << 17 ;
+          hexCode |= (r & 0xff) << 9;
           hexCode |= s & 0xff;
 
           return hexCode.ToString();

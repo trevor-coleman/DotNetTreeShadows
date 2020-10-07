@@ -2,21 +2,26 @@ import { Orientation } from './Orientation';
 import { Point } from './Point';
 import { Hex } from './Hex';
 
-export class Layout {
+export class HexLayout {
   public orientation: Orientation = Orientation.Flat;
   public size: Point = {
+    x: 120,
+    y: 120,
+  };
+  public origin: Point = {
     x: 1000,
     y: 1000,
   };
-  public origin: Point = {
-    x: 0,
-    y: 0,
-  };
 
-  constructor(orientation: Orientation, size: Point, origin: Point) {
+
+  constructor(orientation: Orientation, tileSize?: Point, origin?: Point) {
     this.orientation = orientation;
-    this.size = size;
-    this.origin = origin;
+    this.size = tileSize || this.size;
+    this.origin = origin || this.origin;
+  }
+
+  public hexCodeToPixel = (hexCode:number):Point => {
+    return this.hexToPixel(new Hex(hexCode));
   }
 
   public hexToPixel = (h: Hex): Point => {

@@ -53,8 +53,5 @@ const TreeSVGs : {[key:string]: {
 
 
 export default function TreeSVG (treeType: TreeType, pieceType: PieceType):string {
-  console.log(treeType, pieceType);
-  console.log(TreeSVGs[treeType])
-  console.log(TreeSVGs[treeType][pieceType])
-  return TreeSVGs[treeType][pieceType];
+  return TreeSVGs[TreeType[treeType]][PieceType[pieceType]];
 }

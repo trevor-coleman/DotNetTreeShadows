@@ -11,9 +11,9 @@ import { InputLabel } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import {NewUserInfo} from "../store/auth/newUserInfo";
 
-import {signIn, registerNewUser} from '../store/auth/reducer'
+import {signOut, registerNewUser, signInAndFetchProfile} from '../store/auth/reducer'
 import {SignInCredentials} from "../store/auth/signInCredentials";
-import {signInAndFetchProfile} from "../store/auth/actions";
+import SessionCreator from "./SessionCreator";
 
 
 const accounts: NewUserInfo[] = [
@@ -45,6 +45,7 @@ const DebugToolbar: FunctionComponent<IDebugToolbarProps> = (props: IDebugToolba
   const classes = useStyles();
 
   const dispatch=useDispatch();
+
   const {email:profileEmail} = useSelector((state:RootState)=>state.profile)
 
   const register = (newUserInfo:NewUserInfo):void=> {
@@ -56,6 +57,7 @@ const DebugToolbar: FunctionComponent<IDebugToolbarProps> = (props: IDebugToolba
   }
 
   function signInAs(email: string): void {
+    dispatch(signOut())
     accounts.forEach(account => {
       if (account.email === email) signInAccount({
         email: account.email,
@@ -100,6 +102,9 @@ const DebugToolbar: FunctionComponent<IDebugToolbarProps> = (props: IDebugToolba
           key={account.email}
           value={account.email}>{account.username}</MenuItem>)}
         </Select></FormControl>
+      </Grid>
+        <Grid item xs={4}>
+        <SessionCreator/>
       </Grid>
     </Grid>
   </Paper>;

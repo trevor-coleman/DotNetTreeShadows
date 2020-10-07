@@ -45,8 +45,7 @@ namespace dotnet_tree_shadows.Models.GameModel {
 
     [BsonRepresentation( BsonType.String )]
     public GameStatus Status { get; set; }
-
-    [BsonDictionaryOptions( DictionaryRepresentation.Document )]
+    
     public Dictionary<string, Scoring.Token[]> Scores = new Dictionary<string, Scoring.Token[]>();
 
     public int LengthOfGame {
