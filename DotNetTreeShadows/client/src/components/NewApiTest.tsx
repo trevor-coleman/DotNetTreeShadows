@@ -17,7 +17,7 @@ const NewApiTest: FunctionComponent<INewApiTestProps> = (props: INewApiTestProps
     const {signedIn} = useSelector((state: RootState) => state.auth)
     const {id, name, email} = useSelector((state: RootState) => state.profile)
 
-    return <div>
+    return <div><DebugToolbar/>
         <GameBoard/></div>
 };
 

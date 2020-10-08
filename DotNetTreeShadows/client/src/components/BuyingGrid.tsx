@@ -31,9 +31,7 @@ const BuyingGrid: FunctionComponent<BuyingGridProps> = (props: BuyingGridProps) 
 
     const ground: "Ground" = "Ground"
 
-    console.log(boardCode.toString(2))
     let newBoardCode = PlayerBoard.getPieces(boardCode, PieceType.MediumTree).decreaseOnPlayerBoard();
-    console.log(newBoardCode.toString(2))
     newBoardCode = PlayerBoard.getPieces(newBoardCode, PieceType.MediumTree).decreaseOnPlayerBoard();
     newBoardCode = PlayerBoard.getPieces(newBoardCode, PieceType.SmallTree).decreaseOnPlayerBoard();
     newBoardCode = PlayerBoard.getPieces(newBoardCode, PieceType.MediumTree).increaseOnPlayerBoard();

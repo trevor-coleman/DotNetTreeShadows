@@ -16,12 +16,14 @@ namespace dotnet_tree_shadows.Controllers {
     [BsonRepresentation(BsonType.String)]
     public GameActionType Type { get; set; }
     public PieceType? PieceType { get; set; }
-    public Hex? Target { get; set; }
-    public Hex? Origin { get; set; }
+    public int? Target { get; set; }
+    public int? Origin { get; set; }
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string? ActionId { get; set; }
     public string? TargetPlayerId { get; set; }
+    public Hex TargetHex { get => new Hex(Target); }
+    public Hex OriginHex { get => new Hex(Origin); }
 
     public bool HasRequiredProps (params string[] requiredPropNames) {
       return (from propName in requiredPropNames select GetType().GetProperty( propName )).All( propertyInfo => propertyInfo.GetValue( this, null ) != null );

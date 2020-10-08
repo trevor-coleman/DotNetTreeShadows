@@ -23,7 +23,7 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
           (_, _, Game? game, _,_) = actionParams;
           Game = game!;
           TreeType = PlayerBoard.Get( game, PlayerId).TreeType;
-            Target = (Hex) actionParams.Request.Target!;
+            Target = (Hex) actionParams.Request.TargetHex!;
             
             AddValidators(
                 new AActionValidator[] {

@@ -5,16 +5,8 @@ import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import StarIcon from '@material-ui/icons/Star';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import BuyingGrid from "../components/BuyingGrid";
+import Sidebar from '../components/Sidebar'
 
 const drawerWidth = 280;
 
@@ -54,8 +46,8 @@ const useStyles = makeStyles((theme: Theme) =>
                 duration: theme.transitions.duration.leavingScreen,
             }),
             marginLeft: 0,
-            ...theme.mixins.toolbar,
-            border:"1px dashed red"
+          marginTop: 64,
+            border:"1px dashed red",
         },
         contentShift: {
             transition: theme.transitions.create('margin', {
@@ -122,10 +114,7 @@ export default function PersistentDrawerRight(props: PersistentDrawerProps) {
                 }}
             >
                 <div className={classes.drawerHeader}/>
-            <BuyingGrid width={250}/>
-            <Divider/>
-
-
+            <Sidebar/>
             </Drawer>
         </div>
     );

@@ -13,13 +13,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace dotnet_tree_shadows.Controllers {
   [ApiController, Route( "/api/sessions/{sessionId:length(24)}/[controller]" ),
    Authorize( Roles = UserRoles.User, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme )]
-  public class ActionController : AControllerWithStatusMethods {
+  public class ActionsController : AControllerWithStatusMethods {
 
     private readonly SessionService sessionService;
     private readonly UserManager<UserModel> userManager;
     private ActionFactory actionFactory;
 
-    public ActionController (SessionService sessionService, UserManager<UserModel> userManager, GameService gameService, BoardService boardService) {
+    public ActionsController (SessionService sessionService, UserManager<UserModel> userManager, GameService gameService, BoardService boardService) {
       this.sessionService = sessionService;
       this.userManager = userManager;
       actionFactory = new ActionFactory( gameService, boardService,sessionService );

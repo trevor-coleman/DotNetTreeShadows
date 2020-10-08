@@ -12,7 +12,7 @@ namespace dotnet_tree_shadows.Models.GameActions {
 
       protected ATurnActionWithOrigin (AActionParams actionParams)  : base( actionParams) {
         Board = actionParams.Board!;
-        Origin = (Hex) actionParams.Request.Origin!;
+        Origin = (Hex) actionParams.Request.OriginHex;
         AddValidators( new AActionValidator[] {
           new ValidTile( Origin ),
           new TileHasNotBeenActiveThisTurn( Origin, Game ), 
