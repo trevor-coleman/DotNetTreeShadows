@@ -1,6 +1,6 @@
 import React, { FunctionComponent, Component } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { RootState } from '../../store';
+import { RootState } from '../../store/store';
 import { makeStyles } from '@material-ui/core/styles';
 import { Tabs } from '@material-ui/core';
 import Tab from '@material-ui/core/Tab';

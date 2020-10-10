@@ -17,7 +17,7 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
 
     public CollectAction (Params actionParams) : base( actionParams ) {
       (ActionRequest request, string playerId, Game? game, _, Board? board) = actionParams;
-      Hex origin = request.OriginHex;
+      Hex origin = new Hex( request.Origin );
       AddValidators(
           new AActionValidator[] {
             new TilePieceTypeIs( origin, PieceType.LargeTree, Game, board ),

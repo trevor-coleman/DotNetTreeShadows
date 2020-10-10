@@ -1,6 +1,6 @@
-import {TreeType} from "../board/treeType";
-import {PieceType} from "../board/pieceType";
-import treeColor from "../../components/treeColor";
+import {TreeType} from "../../board/types/treeType";
+import {PieceType} from "../../board/types/pieceType";
+import treeColor from "../../../components/game/treeColor";
 
 interface PieceCount {
     available: number;
@@ -67,16 +67,13 @@ export default class PlayerBoard {
 
     public static MakeGrid = (boardCode: number) => {
         const pieceTypes: PieceType[] = [PieceType.Seed, PieceType.SmallTree, PieceType.MediumTree, PieceType.LargeTree];
-        const pieceColumns: PieceDetails[][] = [];
+        const grid: PieceDetails[][] = [];
         pieceTypes.forEach(pt => {
             const column: PieceDetails[] = [];
             const spaces = PlayerBoard.spaces(pt);
             const onPlayerBoard = PlayerBoard.getPieces(boardCode, pt).onPlayerBoard;
-            console.log(PlayerBoard.getPieces(boardCode, pt))
             for (let i = 0; i < spaces; i++) {
-                const status = i == onPlayerBoard - 1
-                    ? "Ready"
-                    : i < onPlayerBoard - 1
+                const status = i <= onPlayerBoard - 1
                         ? "Filled"
                         : "Empty";
                 column.push({
@@ -86,12 +83,10 @@ export default class PlayerBoard {
                 });
             }
 
-            pieceColumns.push(column);
+            grid.push(column);
 
         });
-
-        console.log(pieceColumns);
-        return pieceColumns;
+        return grid;
     }
 
     private static DecodePieceCounts = (boardCode: number, available: number[], onPlayerBoard: number[]) => ({
@@ -124,6 +119,18 @@ export default class PlayerBoard {
         }
     })
 
+    public static available(boardCode: number):number[] {
+        return [PlayerBoard.seeds(boardCode).available,
+            PlayerBoard.smallTrees(boardCode).available,
+             PlayerBoard.mediumTrees(boardCode).available,
+             PlayerBoard.largeTrees(boardCode).available,
+        ]
+    }
+
+    static currentPrice(boardCode: number, pieceType: PieceType) {
+        const onPlayerBoard = PlayerBoard.getPieces(boardCode, pieceType).onPlayerBoard;
+        return onPlayerBoard == 0 ? 0 : PlayerBoard.prices(pieceType)[onPlayerBoard-1];
+    }
 }
 
 export type PieceDetails = { status: "Ready" | "Filled" | "Empty", price: string, key:string }

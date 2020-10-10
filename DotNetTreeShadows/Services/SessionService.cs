@@ -54,7 +54,7 @@ namespace dotnet_tree_shadows.Services {
         public async Task Update (string id, Session sessionIn) =>
             await sessions.ReplaceOneAsync( session => session.Id == id, sessionIn);
 
-        public void Remove (string id) => sessions.DeleteOne( sessionInfo => sessionInfo.Id == id );
+        public async Task Remove (string id) => await sessions.DeleteOneAsync( sessionInfo => sessionInfo.Id == id );
 
         public void Remove (Session sessionIn) => sessions.DeleteOne( sessionInfo => sessionInfo.Id == sessionIn.Id );
         

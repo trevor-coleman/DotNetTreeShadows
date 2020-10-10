@@ -1,10 +1,12 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {fetchInvitations, sendFriendRequest} from "./actions";
-import {Invitation} from "./invitation";
+import {fetchInvitations, sendFriendRequest, addFriend} from "./actions";
+import {Invitation} from "./types/invitation";
 import {RequestState} from "../../api/requestState";
 
+console.log("INVITATIONS REDUCER");
 
 export type InvitationsState = {
+    invitations: Invitation[],
     friendRequests: Invitation[],
     sessionInvites: Invitation[],
     sendingFriendRequestState: RequestState,
@@ -18,6 +20,7 @@ let initialInvitationState: InvitationsState = {
     sendingFriendRequestFailureMessage: null,
     fetchingInvitations: false,
     fetchingInvitationsFailureMessage: null,
+    invitations:[],
     friendRequests: [],
     sessionInvites: []
 };
@@ -31,7 +34,7 @@ const invitationsSlice = createSlice({
         })).addCase(fetchInvitations.fulfilled, (state, action) => ({
             ...state,
             fetchingInvitations: false,
-            friendInvitations: action.payload.friendRequests,
+            friendRequests: action.payload.friendRequests,
             sessionInvites: action.payload.sessionInvites,
         })).addCase(fetchInvitations.rejected, (state, action) => ({
             ...state,
@@ -54,5 +57,5 @@ const invitationsSlice = createSlice({
 
 
 export const {} = invitationsSlice.actions;
-export {fetchInvitations, sendFriendRequest};
+export {fetchInvitations, addFriend};
 export default invitationsSlice.reducer;

@@ -6,7 +6,7 @@ namespace dotnet_tree_shadows.Models {
   public class UserProfile {
     public string Id { get; set; }
     public List<SessionSummary> Sessions { get; set; } = new List<SessionSummary>();
-    public List<string> Friends { get; set; } = new List<string>();
+    public List<FriendProfile> Friends { get; set; } = new List<FriendProfile>();
     public List<string> ReceivedInvitations { get; set; }= new List<string>();
     public List<string> SentInvitations  { get; set; } = new List<string>();
     public string Name { get; set; }

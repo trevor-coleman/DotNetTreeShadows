@@ -17,8 +17,8 @@ import BirchLargeTree from '../svg/exports/Birch-LargeTree.svg'
 import BirchMediumTree from '../svg/exports/Birch-MediumTree.svg'
 import BirchSmallTree from '../svg/exports/Birch-SmallTree.svg'
 import BirchSeed from '../svg/exports/Birch-Seed.svg'
-import {TreeType} from "../store/board/treeType";
-import {PieceType} from "../store/board/pieceType";
+import {TreeType} from "../store/board/types/treeType";
+import {PieceType} from "../store/board/types/pieceType";
 
 
 const TreeSVGs : {[key:string]: {

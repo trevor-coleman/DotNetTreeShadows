@@ -1,8 +1,9 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {fetchProfile} from "./actions";
+import {fetchProfile, removeFriendFromProfile} from "./actions";
 import {RequestState} from "../../api/requestState";
-import {Profile} from "./profile";
+import {Profile} from "./types/profile";
 import {Action} from "typesafe-actions";
+import {deleteSession} from "../session/actions";
 
 export interface SessionSummary {
     id: string,
@@ -12,11 +13,12 @@ export interface SessionSummary {
 export interface ProfileState extends Profile {
     loadingProfileState: RequestState;
     loadingProfileFailedMessage: string|null,
-    sessionSummaries: SessionSummary[]
+    removingFriendState: RequestState;
+    removingFriendErrorMessage: string|null,
+    lastFriendRemoved: string|null;
 }
 
 const initialProfileState : ProfileState = {
-    sessionSummaries: [],
     id: "",
     name:"",
     email:"",
@@ -25,7 +27,10 @@ const initialProfileState : ProfileState = {
     loadingProfileState: RequestState.Idle,
     receivedInvitations: [],
     sentInvitations: [],
-    sessions: []
+    sessions: [],
+    removingFriendState: RequestState.Idle,
+    removingFriendErrorMessage: null,
+    lastFriendRemoved: ""
 };
 
 const profileSlice = createSlice({
@@ -48,6 +53,29 @@ const profileSlice = createSlice({
             loadingProfileFailedMessage: action.error.toString(),
             loadingProfileState: RequestState.Rejected,
         }));
+
+        builder.addCase(removeFriendFromProfile.pending, (state:ProfileState) => ({
+            ...state,
+            loadingProfileFailedMessage: null,
+            loadingProfileState: RequestState.Pending
+        }));
+
+        builder.addCase(removeFriendFromProfile.fulfilled, (state:ProfileState, action:Action) => ({
+            ...state,
+            removingFriendErrorMessage: null,
+            removingFriendsState: RequestState.Fulfilled,
+        }));
+
+        builder.addCase(removeFriendFromProfile.rejected, (state:ProfileState, action) => ({
+            ...state,
+            removingFriendErrorMessage: action.error.toString(),
+            removingFriendState: RequestState.Rejected,
+        }));
+
+        builder.addCase(deleteSession.fulfilled,  (state:ProfileState, action:PayloadAction<string>)=>({
+            ...state,
+            sessions: state.sessions.filter(sessionSummary=>sessionSummary.id!=action.payload)
+        }))
 
 
     },

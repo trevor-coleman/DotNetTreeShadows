@@ -2,7 +2,6 @@ import {SunPosition} from "./sunPosition";
 import {ScoringToken} from "./scoringToken";
 
 export default interface Game {
-    board: { [hexCode: number]: number }
     turnOrder: string[];
     firstPlayer: string;
     playerBoards: { [playerId: string]: number }

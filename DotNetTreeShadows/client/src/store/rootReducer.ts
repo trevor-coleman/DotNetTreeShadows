@@ -5,6 +5,7 @@ import profileReducer from './profile/reducer'
 import boardReducer from './board/reducer'
 import sessionReducer from './session/reducer'
 import gameReducer from './game/reducer'
+import appStateReducer from './appState/reducer'
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     board: boardReducer,
     game: gameReducer,
     session: sessionReducer,
+    appState: appStateReducer,
 })
 
 export default rootReducer;

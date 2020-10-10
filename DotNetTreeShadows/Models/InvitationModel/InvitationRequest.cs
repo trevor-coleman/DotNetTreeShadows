@@ -24,4 +24,13 @@ namespace dotnet_tree_shadows.Models.InvitationModel {
     public InvitationType InvitationType { get; set; }
 
   }
+
+  public class ManySessionInviteRequest {
+    
+    [BsonRepresentation( BsonType.ObjectId )]
+    public string[] RecipientIds { get; set; } = null;
+    
+    [BsonRepresentation( BsonType.ObjectId )]
+    public string SessionId { get; set; } = null;
+  }
 }

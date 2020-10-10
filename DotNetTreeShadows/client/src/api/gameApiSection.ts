@@ -1,18 +1,22 @@
 import {AApiSection} from "./aApiSection";
-import {AxiosInstance, AxiosResponse} from "axios";
-import Game from "../store/game/game";
+import axios, {AxiosResponse} from "axios";
+import Game from "../store/game/types/game";
 import { ActionRequest } from '../store/game/actions';
 
 export default class GameApiSection extends AApiSection {
-    public constructor(instance: AxiosInstance) {
-        super(instance);
+    async get(id: string): Promise<AxiosResponse<Game>> {
+        return await axios.get(`game/${id}`)
     }
 
-    async getGame(id: string): Promise<AxiosResponse<Game>> {
-        return await this.instance.get(`game/${id}`)
+  public async sendAction({sessionId, actionRequest}: {sessionId:string, actionRequest:ActionRequest}): Promise<AxiosResponse<any>|{data:"none"}> {
+    let result;
+        try {
+        result = await axios.post(`/sessions/${sessionId}/actions`, actionRequest);
+        console.log(result);
+    } catch (e) {
+            console.log(e.response.data);
+            return {data: e.response.data};
     }
-
-  public async sendActionRequest({sessionId, actionRequest}: {sessionId:string, actionRequest:ActionRequest}): Promise<AxiosResponse<any>> {
-    return await this.instance.post(`/sessions/${sessionId}/actions`, actionRequest);
+    return  result
   }
 }

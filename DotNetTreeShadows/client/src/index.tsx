@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import persistedStore from './store'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import persistedStore from './store'
 import { Provider } from 'react-redux';
 import {PersistGate} from "redux-persist/integration/react";
 

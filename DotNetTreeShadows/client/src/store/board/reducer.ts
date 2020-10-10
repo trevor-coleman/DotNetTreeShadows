@@ -1,8 +1,11 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Tile} from "./tile";
+import {Tile} from "./types/tile";
 import {fetchBoard} from "./actions";
-import {TreeType} from "./treeType";
-import {PieceType} from "./pieceType";
+import {TreeType} from "./types/treeType";
+import {PieceType} from "./types/pieceType";
+import {Board} from "./types/board";
+import { updateSession } from "../session/reducer";
+import {SessionUpdate} from "../session/types";
 
 const stateWithTileAtH = (state: BoardState, tile: number, h: number): BoardState => ({
     ...state,
@@ -13,10 +16,9 @@ const stateWithTileAtH = (state: BoardState, tile: number, h: number): BoardStat
 })
 
 
-export type BoardState = {
+export interface BoardState extends Board{
     loadingBoard: boolean;
     loadingBoardRejectedMessage: string | null;
-    tiles: { [hex: number]: number };
     displayTiles: {[hex: number]: number}
 }
 
@@ -39,8 +41,11 @@ const boardSlice = createSlice({
                 ...state,
                 loadingBoardRejectedMessage: null,
                 loadingTiles: false,
-                tiles: {...action.payload.tiles}
             }));
+        builder.addCase(updateSession, (state, action:PayloadAction<SessionUpdate>)=>({
+        ...state,
+            ...action.payload.board
+        }))
     },
     reducers: {
         addPieceToHex: (state, action: PayloadAction<{ hexCode: number, pieceType: PieceType, treeType: TreeType }>) => {
@@ -58,6 +63,10 @@ const boardSlice = createSlice({
             tile = Tile.SetPieceType(tile, null);
             return stateWithTileAtH(state, tile, hexCode);
         },
+        updateTiles: (state, action :PayloadAction<Board>)=> ({
+            ...state,
+            ...action.payload
+        })
 
     },
     name: "board",

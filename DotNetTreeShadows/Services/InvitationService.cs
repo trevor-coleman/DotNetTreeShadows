@@ -45,5 +45,10 @@ namespace dotnet_tree_shadows.Services {
         public async Task<List<Invitation>> GetMany (IEnumerable<string> ids) {
             return (await invitations.FindAsync( invitation => ids.Contains( invitation.Id ) )).ToList();
         }
+
+        public async Task<List<Invitation>> GetByUserId (string id) {
+          return (await invitations.FindAsync( invitation => invitation.SenderId == id || invitation.RecipientId == id )).ToList();
+        }
+
     }
 }

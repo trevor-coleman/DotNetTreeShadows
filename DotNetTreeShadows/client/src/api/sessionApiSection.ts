@@ -1,14 +1,16 @@
 import {AApiSection} from "./aApiSection";
-import {AxiosInstance, AxiosResponse} from "axios";
-import {Session} from '../store/session/session'
-
+import axios, {AxiosResponse} from "axios";
+import {Session} from '../store/session/types'
 export default class SessionApiSection extends AApiSection {
-
-    public constructor(instance:AxiosInstance) {
-        super(instance);
+    async get(id: string): Promise<AxiosResponse<Session>> {
+        return await axios.get(`sessions/${id}`);
     }
 
-    async getBoard(id: string): Promise<AxiosResponse<Session>> {
-        return await this.instance.get(`session/${id}`);
+    async create(): Promise<AxiosResponse<Session>> {
+        return await axios.post("sessions");
+    }
+
+    async delete(id: string) {
+        return await axios.delete(`sessions/${id}`)
     }
 }

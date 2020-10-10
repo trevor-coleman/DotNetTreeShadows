@@ -1,12 +1,19 @@
 import React, {PropsWithChildren} from 'react';
-import clsx from 'clsx';
 import {makeStyles, useTheme, Theme, createStyles} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
-import Sidebar from '../components/Sidebar'
+import GameSidebar from '../game/GameSidebar'
+import Box from "@material-ui/core/Box";
+import {IconButton} from "@material-ui/core";
+import MenuIcon from '@material-ui/icons/Menu';
+import {Link, Route, useRouteMatch} from "react-router-dom";
+import HomeSidebar from "../HomeSidebar";
+import Sessions from "../Sessions";
+import Friends from "../Friends";
+import Account from "../Account";
+
 
 const drawerWidth = 280;
 
@@ -37,73 +44,67 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: 'flex-start',
         },
         content: {
-            flexGrow:1,
-            maxHeight:800,
-
-            padding: theme.spacing(3),
-            transition: theme.transitions.create('margin', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            marginLeft: 0,
-          marginTop: 64,
-            border:"1px dashed red",
-        },
-        contentShift: {
-            transition: theme.transitions.create('margin', {
-                easing: theme.transitions.easing.easeOut,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
+            marginTop: 64,
             marginLeft: drawerWidth,
+            width:"90vmin"
         },
         sessionName: {
             whiteSpace: "nowrap",
             overflow: "hidden",
             textOverflow: "ellipsis"
         },
+
         title: {
             paddingTop: theme.spacing(1),
             paddingLeft: theme.spacing(2),
+        },
+        podbar: {
+            borderTop: '2px solid grey',
+            bottom: 0,
+            position: "fixed",
+            zIndex: 150,
+            _position: "absolute",
+            _top: "expression(eval(document.documentElement.scrollTop+(document.documentElement.clientHeight-this.offsetHeight)))",
+            width: 800,
+            height: 128
+        },
+        menuIcon: {
+            color: "white"
         }
     }),
 );
 
-interface IPersistentDrawerProps {
-}
+interface IHomeScreenProps {}
 
-type PersistentDrawerProps = PropsWithChildren<IPersistentDrawerProps>;
-
-export default function PersistentDrawerRight(props: PersistentDrawerProps) {
-    const {children} = props;
+export default function HomeScreen(props: IHomeScreenProps) {
     const classes = useStyles();
+    let { path, url } = useRouteMatch();
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
-
     const toggleDrawerOpen = () => {
         setOpen(!open);
     };
 
     return (
         <div className={classes.root}>
-            <CssBaseline/>
             <AppBar
                 position="fixed"
                 className={classes.appBar}
             >
                 <Toolbar>
+                    <IconButton onClick={toggleDrawerOpen}><MenuIcon className={classes.menuIcon}/></IconButton>
                     <Typography variant="h6" noWrap>
                         TreeShadows
                     </Typography>
 
                 </Toolbar>
             </AppBar>
-            <main
-                className={clsx(classes.content, {
-                    [classes.contentShift]: open,
-                })}
-            >
-                {children}
-            </main>
+            <Box p={3} className={classes.content}>
+                <Route exact path={"/"}>Home</Route>
+                <Route exact path={`${path}sessions`} component={Sessions}/>
+                <Route exact path={`${path}friends`} component={Friends}/>
+                <Route exact path={`${path}account`} component={Account}/>
+            </Box>
             <Drawer
                 className={classes.drawer}
                 variant="persistent"
@@ -114,7 +115,7 @@ export default function PersistentDrawerRight(props: PersistentDrawerProps) {
                 }}
             >
                 <div className={classes.drawerHeader}/>
-            <Sidebar/>
+                <HomeSidebar/>
             </Drawer>
         </div>
     );

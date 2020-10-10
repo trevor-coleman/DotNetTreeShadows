@@ -1,11 +1,12 @@
-import {SessionSummary} from "./reducer";
+import {SessionSummary} from "../reducer";
+import {FriendProfile} from "./friendProfile";
 
 export interface Profile {
     id: string,
     name: string,
     email: string,
     sessions: SessionSummary[],
-    friends: string[],
+    friends: FriendProfile[],
     receivedInvitations: string []
     sentInvitations: string[]
 }

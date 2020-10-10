@@ -1,15 +1,15 @@
 import React from 'react';
-import Tile from '../store/board/tile'
-import TreeSVG from '../svg/TreeSVG';
+import Tile from '../../store/board/types/tile'
+import TreeSVG from '../../svg/TreeSVG';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import Sun from '../svg/sun-svgrepo-com.svg';
-import {RootState} from "../store";
-import {Hex} from "../store/board/hex-grid/Hex";
+import Sun from '../../svg/sun-svgrepo-com.svg';
+import {RootState} from "../../store/store";
+import {Hex} from "../../store/board/types/Hex";
 import {useSelector} from "react-redux";
-import {TreeType} from "../store/board/treeType";
-import {PieceType} from "../store/board/pieceType";
-import {HexLayout} from "../store/board/hex-grid/HexLayout";
-import {SunPosition} from "../store/game/sunPosition";
+import {TreeType} from "../../store/board/types/treeType";
+import {PieceType} from "../../store/board/types/pieceType";
+import {HexLayout} from "../../store/board/types/HexLayout";
+import {SunPosition} from "../../store/game/types/sunPosition";
 import treeColor from "./treeColor";
 
 interface IBoardTileProps {
@@ -21,12 +21,13 @@ interface IBoardTileProps {
     pieceType?: PieceType,
     treeType?: TreeType
     outline?: boolean
+    sizeFactor?: number
 }
 
 const BoardTile = (props: IBoardTileProps) => {
 
     const {outline, onClick, onMouseEnter, onMouseLeave, layout, hexCode, pieceType: propPiece, treeType: propTree} = props;
-
+    const sizeFactor = props.sizeFactor ?? 1.2;
 
     const safeHexCode = (hexCode ? hexCode : 0) as number;
     const tileCode = useSelector((state:RootState)=>state.board.tiles[safeHexCode]);
@@ -35,7 +36,6 @@ const BoardTile = (props: IBoardTileProps) => {
 
     const hex = new Hex(safeHexCode);
     const pieceType: null | PieceType = propPiece == null ? Tile.GetPieceType(tileCode) as PieceType : propPiece;
-    console.log(pieceType)
     const treeType: null | TreeType = propTree == null ? Tile.GetTreeType(tileCode) as TreeType : propTree;
     const shadowHeight: number = Tile.GetShadowHeight(tileCode);
     const shaded = shadowHeight > 0;
@@ -116,7 +116,7 @@ const BoardTile = (props: IBoardTileProps) => {
 
     return (<g>
         <circle onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={handleClick} cx={center.x}
-                cy={center.y} r={size / 1.2} fill={backgroundColor} strokeWidth={2} stroke={strokeColor}/>
+                cy={center.y} r={size/sizeFactor} fill={backgroundColor} strokeWidth={2} stroke={strokeColor}/>
         {sunIcon
             ? <image href={sunIcon} x={center.x - size / 2} y={center.y - size / 2} width={size} height={size}/>
             : ''}

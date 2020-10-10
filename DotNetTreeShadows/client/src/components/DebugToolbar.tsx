@@ -1,19 +1,23 @@
-import React, {FunctionComponent, useState} from 'react';
-import {connect, ConnectedProps, useDispatch, useSelector} from 'react-redux';
-import { RootState } from '../store';
-import { makeStyles } from '@material-ui/core/styles';
+import React, {FunctionComponent} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../store/store';
+import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
-import { InputLabel } from '@material-ui/core';
+import {InputLabel} from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
-import {NewUserInfo} from "../store/auth/newUserInfo";
+import {NewUserInfo} from "../store/auth/types/newUserInfo";
 
-import {signOut, registerNewUser, signInAndFetchProfile} from '../store/auth/reducer'
-import {SignInCredentials} from "../store/auth/signInCredentials";
+import {registerNewUser, signInAndFetchProfile, signOut} from '../store/auth/reducer'
+import {SignInCredentials} from "../store/auth/types/signInCredentials";
 import SessionCreator from "./SessionCreator";
+import {Route, Switch} from 'react-router-dom';
+import TreeAvatarIcon from "./TreeAvatarIcon";
+import {TreeType} from "../store/board/types/treeType";
+import {PieceType} from "../store/board/types/pieceType";
 
 
 const accounts: NewUserInfo[] = [
@@ -73,23 +77,21 @@ const DebugToolbar: FunctionComponent<IDebugToolbarProps> = (props: IDebugToolba
   return <Paper className={classes.root}>
     <Grid
       container
+      className={classes.container}
       spacing={1}>
-      <Grid item xs={2}>
-        Debug Toolbar
-      </Grid>
-      <Grid item xs={2}>
+      <Grid item  xs={3}>
         <Button
           variant="outlined"
           onClick={registerAll}>Mass Register</Button>
       </Grid>
 
-      <Grid item xs={2}>
+      <Grid item xs={2} >
         <Button
           variant="outlined"
           onClick={()=>signInAs(accounts[0].email)}>Sign In</Button>
       </Grid>
 
-      <Grid item xs={2}>
+      <Grid item xs={2} >
         <FormControl className={classes.viewAs}>
           <InputLabel id="view-as-label">View As</InputLabel>
           <Select
@@ -103,8 +105,13 @@ const DebugToolbar: FunctionComponent<IDebugToolbarProps> = (props: IDebugToolba
           value={account.email}>{account.username}</MenuItem>)}
         </Select></FormControl>
       </Grid>
-        <Grid item xs={4}>
-        <SessionCreator/>
+        <Grid item xs={5} >
+          <Switch>
+          <Route path={"/sessions"}/>
+          <Route>
+            <SessionCreator/>
+          </Route>
+          </Switch>
       </Grid>
     </Grid>
   </Paper>;
@@ -113,10 +120,15 @@ const DebugToolbar: FunctionComponent<IDebugToolbarProps> = (props: IDebugToolba
 const useStyles = makeStyles({
   root: {
     padding: 20,
+    flexGrow: 1,
+  },
+  container: {
+    alignItems: 'flex-end'
   },
   viewAs: {
     width:'80%'
-  }
+  },
+
 });
 
 export default DebugToolbar;

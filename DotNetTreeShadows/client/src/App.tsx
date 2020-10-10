@@ -1,22 +1,21 @@
 import React from 'react';
 import './App.css';
-import Layout from './views/Layout';
-import DrawerExample from './views/DrawerExample';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { Box } from '@material-ui/core';
-import NewApiTest from "./components/NewApiTest";
-import PersistentDrawerRight from "./views/DrawerExample";
-import GameBoard from "./components/GameBoard";
+import GameScreen from './components/views/GameScreen';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import GameBoard from "./components/game/GameBoard";
 import DebugToolbar from './components/DebugToolbar';
+import {CssBaseline} from "@material-ui/core";
+import HomeScreen from "./components/views/HomeScreen";
 
 function App() {
-  return (
-    <Router>
-      <DrawerExample>
-        <DebugToolbar/>
-        <GameBoard/>
-      </DrawerExample>
-    </Router>);
+    return (
+        <Router>
+            <CssBaseline/>
+            <Switch>
+                <Route exact path={"/sessions/:sessionId"} component={GameScreen}/>
+                <Route path={"/"} component={HomeScreen}/>
+            </Switch>
+        </Router>);
 }
 
 export default App;

@@ -113,16 +113,16 @@ namespace dotnet_tree_shadows.Models.GameActions {
       (ActionRequest request, string playerId, Game? game, SessionModel.Session? session, Board? board) = actionParams;
 
       action = actionParams switch {
-        BuyAction.Params p => request.HasRequiredProps( "PieceType" ) && AreNotNull( game )
+        BuyAction.Params p => ActionRequest.HasRequiredProps(request, "PieceType" ) && AreNotNull( game )
                                 ? new BuyAction( p )
                                 : null,
-        PlantAction.Params p => request.HasRequiredProps( "Origin", "Target" ) && AreNotNull( game, board )
+        PlantAction.Params p => ActionRequest.HasRequiredProps(request, "Origin", "Target" ) && AreNotNull( game, board )
                                   ? new PlantAction( p )
                                   : null,
-        GrowAction.Params p => request.HasRequiredProps( "Origin" ) && AreNotNull( game, board )
+        GrowAction.Params p => ActionRequest.HasRequiredProps(request, "Origin" ) && AreNotNull( game, board )
                                  ? new GrowAction( p )
                                  : null,
-        CollectAction.Params p => request.HasRequiredProps( "Origin" ) && AreNotNull( game, board )
+        CollectAction.Params p => ActionRequest.HasRequiredProps(request, "Origin" ) && AreNotNull( game, board )
                                     ? new CollectAction( p )
                                     : null,
         EndTurnAction.Params p => AreNotNull( game )
@@ -131,7 +131,7 @@ namespace dotnet_tree_shadows.Models.GameActions {
         StartGameAction.Params p => AreNotNull( session, game )
                                       ? new StartGameAction( p )
                                       : null,
-        PlaceStartingTreeAction.Params p => request.HasRequiredProps( "Origin" ) && AreNotNull( game, board )
+        PlaceStartingTreeAction.Params p => ActionRequest.HasRequiredProps(request, "Origin" ) && AreNotNull( game, board )
                                               ? new PlaceStartingTreeAction( p )
                                               : null,
         _ => throw new ArgumentOutOfRangeException()

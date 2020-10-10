@@ -1,10 +1,13 @@
 import {createAsyncThunk, ThunkDispatch} from "@reduxjs/toolkit";
-import {SignInCredentials} from "./signInCredentials";
-import api from "../../api/api";
-import {NewUserInfo} from "./newUserInfo";
-import {RootState} from "../index";
-import {sign} from "crypto";
-import {fetchProfile, clearProfile} from "../profile/reducer";
+import {SignInCredentials} from "./types/signInCredentials";
+
+import {NewUserInfo} from "./types/newUserInfo";
+import {ExtraInfo, RootState} from "../store";
+import {clearProfile, fetchProfile} from "../profile/reducer";
+import { setToken } from "./reducer";
+import {AppDispatch} from "../index";
+import Api from "../../api/api";
+import {fetchInvitations} from "../invitations/reducer";
 
 export type AnyAction = {
     type: any,
@@ -12,31 +15,31 @@ export type AnyAction = {
     meta?: any,
 }
 
-
-export type TDispatch = ThunkDispatch<RootState, void, AnyAction>;
-
-
-export const signIn = createAsyncThunk("auth/signIn",
-    async (credentials: SignInCredentials) => {
-    await api.signIn(credentials);
+export const signIn = createAsyncThunk<string|null, SignInCredentials, ExtraInfo>("auth/signIn",
+    async (credentials, {extra}) =>{
+    const {api}= extra;
+    return await api.auth.signIn(credentials);
     })
 
-export const signInAndFetchProfile = (credentials: SignInCredentials) => async (dispatch: ThunkDispatch<RootState, any, AnyAction>) => {
-    dispatch(clearProfile())
+export const signInAndFetchProfile = (credentials: SignInCredentials) => async (dispatch: AppDispatch) => {
+    dispatch(clearProfile());
     await dispatch(signIn(credentials));
     await dispatch(fetchProfile());
+    await dispatch(fetchInvitations());
+
 };
 
 
 
-export const registerNewUser = createAsyncThunk('auth/registerNewUser',
-    async (newUserInfo: NewUserInfo) => {
-        const response = await api.registerNewUser(newUserInfo);
+export const registerNewUser = createAsyncThunk<any,NewUserInfo, ExtraInfo>('auth/registerNewUser',
+    async (newUserInfo, {extra}) => {
+    const {api}= extra;
+    const response = await api.auth.registerNewUser(newUserInfo);
         return response.data;
     }
 )
 
-export const registerAndSignIn = (newUserInfo: NewUserInfo) => async (dispatch: ThunkDispatch<RootState, any, AnyAction>) => {
+export const registerAndSignIn = (newUserInfo: NewUserInfo) => async (dispatch: AppDispatch, _:any, api:Api) => {
     const registerResponse = await dispatch(registerNewUser(newUserInfo));
     const signInResponse = await dispatch(signIn({
         email: newUserInfo.email,

@@ -1,16 +1,19 @@
 import React, {FunctionComponent} from 'react';
 import {connect, ConnectedProps, useDispatch, useSelector} from 'react-redux';
-import {RootState} from '../store';
+import {RootState} from '../../store/store';
 import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import {HexLayout} from '../store/board/hex-grid/HexLayout';
-import {Orientation} from '../store/board/hex-grid/Orientation';
+import {HexLayout} from '../../store/board/types/HexLayout';
+import {Orientation} from '../../store/board/types/Orientation';
 import BoardTile from './BoardTile';
 
-import {Hex} from '../store/board/hex-grid/Hex';
-import {PieceType} from "../store/board/pieceType";
-import {TreeType} from "../store/board/treeType";
-import {addPieceToHex} from '../store/board/reducer';
+import {Hex} from '../../store/board/types/Hex';
+import {PieceType} from "../../store/board/types/pieceType";
+import {TreeType} from "../../store/board/types/treeType";
+import {addPieceToHex} from '../../store/board/reducer';
+import Typography from "@material-ui/core/Typography";
+import {useTypedSelector} from "../../store";
+import Box from "@material-ui/core/Box";
 
 
 interface IGameBoardProps {
@@ -22,7 +25,8 @@ const GameBoard: FunctionComponent<IGameBoardProps> = (props: IGameBoardProps) =
     const classes = useStyles(props);
     const dispatch = useDispatch();
 
-    const {tiles} = useSelector((state: RootState) => state.board);
+    const {tiles} = useTypedSelector(state=> state.board);
+    const {name:sessionName} = useTypedSelector(state=>state.session)
 
     const size = 2000;
     const aspect = 0.87;
@@ -49,7 +53,8 @@ const GameBoard: FunctionComponent<IGameBoardProps> = (props: IGameBoardProps) =
 
     const layout = new HexLayout(Orientation.Pointy, tileSize, origin )
 
-    return <div><Paper className={classes.root}>
+    return <Paper className={classes.root}>
+        <Box p={2}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${viewPortSize.x} ${viewPortSize.y}`}>
             <polyline id="hexagon" points={pointString} fill={"#c7ec94"}/>
             {tiles ? Object.keys(tiles).map(hexCode => {
@@ -62,9 +67,10 @@ const GameBoard: FunctionComponent<IGameBoardProps> = (props: IGameBoardProps) =
                         .MediumTree}))}
                  hexCode={parseInt(hexCode)} layout={layout}/>;
             }) : ""}</svg>
-    </Paper></div>;
+        </Box>
+    </Paper>;
 };
 
-const useStyles = makeStyles({root: {padding:'2em', marginTop:'2em'}});
+const useStyles = makeStyles({root: {width:'90vmin'}});
 
 export default GameBoard;

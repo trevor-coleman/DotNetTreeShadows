@@ -24,7 +24,8 @@ namespace dotnet_tree_shadows.Models.SessionModels {
 
     public static void AddPlayer (Game game, string playerId) {
       game.TurnOrder = game.TurnOrder.Append( playerId ).ToArray();
-      game.PlayerBoards.Add( playerId, new PlayerBoard().BoardCode );
+      PlayerBoard playerBoard = new PlayerBoard { TreeType = (TreeType) game.TurnOrder.Length };
+      game.PlayerBoards.Add( playerId, playerBoard.BoardCode );
       game.Scores.Add( playerId, new Scoring.Token[0] );
     }
   }

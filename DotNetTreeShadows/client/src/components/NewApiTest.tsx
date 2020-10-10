@@ -1,11 +1,11 @@
 import React, {FunctionComponent} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {RootState} from '../store';
+import {RootState} from '../store/store';
 import {makeStyles} from '@material-ui/core/styles';
 import {Paper} from "@material-ui/core/";
 import DebugToolbar from "./DebugToolbar";
-import GameBoard from "./GameBoard";
-import BuyingGrid from "./BuyingGrid";
+import GameBoard from "./game/GameBoard";
+import PlayerBoardDisplay from "./game/PlayerBoardDisplay";
 
 interface INewApiTestProps {
 }

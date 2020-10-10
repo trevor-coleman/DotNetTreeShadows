@@ -1,13 +1,10 @@
 import {AApiSection} from "./aApiSection";
-import {AxiosInstance, AxiosResponse} from "axios";
-import {Board} from "../store/board/board";
+import axios, {AxiosResponse} from "axios";
+import {Board} from "../store/board/types/board";
 
-export default class BoardApiSection extends AApiSection {
-    public constructor(instance:AxiosInstance) {
-        super(instance);
+    export default class BoardApiSection extends AApiSection {
+        async get(id: string): Promise<AxiosResponse<Board>> {
+            return await axios.get(`board/${id}`);
+        }
     }
 
-    async get(id: string): Promise<AxiosResponse<Board>> {
-        return await this.instance.get(`board/${id}`);
-    }
-}

@@ -1,39 +1,46 @@
-import {createAsyncThunk, ThunkDispatch, unwrapResult} from "@reduxjs/toolkit";
-import api from "../../api/api";
-import {Session} from "./session";
-import {SignInCredentials} from "../auth/signInCredentials";
-import {RootState} from "../index";
-import {clearProfile, fetchProfile} from "../profile/reducer";
-import {AnyAction, signIn} from "../auth/actions";
+import {createAsyncThunk, unwrapResult} from "@reduxjs/toolkit";
+import  {AppDispatch} from '../../store'
+import {Session} from "./types";
+
+import {ExtraInfo} from "../store";
+
+
 import {fetchBoard} from "../board/reducer";
-import {fetchGame} from "../game/actions";
+import Api from "../../api/api";
+import { updateSession } from "./reducer";
+import {fetchProfile} from "../profile/reducer";
+import {fetchGame} from "../game/reducer";
+import {AxiosResponse} from "axios";
+// import {fetchGame} from "../game/actions";
 
 
-export const createSession = createAsyncThunk(
+
+export const createSession = createAsyncThunk<Session, void,ExtraInfo>(
     'session/createSession',
-    async ():Promise<Session> => {
-        const response = await api.createSession();
+    async (_, {extra}): Promise<Session> => {
+        const {api} = extra;
+        const response = await api.session.create();
         return response.data;
     })
 
-export const createSessionAndFetchProfile = () => async (dispatch: ThunkDispatch<RootState, any, AnyAction>) => {
-
-    const session = unwrapResult(await dispatch(createSession()))
-    await dispatch(fetchBoard(session.id))
-    await dispatch(fetchProfile());
-};
-
-export const fetchSession = (id:string) => async (dispatch: ThunkDispatch<RootState, any, AnyAction>) => {
-    dispatch(fetchSessionFromApi(id));
-    dispatch(fetchBoard(id));
-    dispatch(fetchGame(id));
-};
-
-export const fetchSessionFromApi = createAsyncThunk(
-    'session/fetchSession',
-    async (sessionId: string): Promise<Session> => {
-        const response = await api.getSession(sessionId);
+export const fetchSessionFromApi = createAsyncThunk<Session, string, ExtraInfo>(
+    "session/fetchSessionFromApi",
+    async (sessionId:string, {extra}) => {
+        const api = extra.api
+        const response = await api.session.get(sessionId);
         return response.data;
-    })
+    });
+
+
+
+export const deleteSession = createAsyncThunk<string, string, ExtraInfo>(
+    "session/deleteSession",
+    async (sessionId, {extra})=>{
+        const {api}=extra;
+        const response = await api.session.delete(sessionId);
+        return sessionId
+    }
+)
+
 
 

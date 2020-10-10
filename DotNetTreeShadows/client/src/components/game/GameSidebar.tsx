@@ -1,17 +1,17 @@
 import React from 'react';
-import BuyingGrid from './BuyingGrid';
+import PlayerBoardDisplay from './PlayerBoardDisplay';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import TurnActionButtons from './TurnActionButtons';
+import AvailablePieces from "../AvailablePieces";
 
-const Sidebar = () => {
+const GameSidebar = () => {
   return <div>
     <TurnActionButtons/>
     <Divider/>
-    <BuyingGrid width={250}/>
-    <Divider/>
+    <PlayerBoardDisplay width={250}/>
 
   </div>
 }
 
-export default Sidebar;
+export default GameSidebar;

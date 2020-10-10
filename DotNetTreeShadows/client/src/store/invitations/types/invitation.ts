@@ -5,9 +5,10 @@ export interface Invitation {
     recipientId: string;
     recipientName: string;
     resourceId: string;
+    resourceName: string;
     invitationType: InvitationType;
     created: string;
-    invitationStatus: InvitationStatus
+    status: InvitationStatus;
 }
 
 export type InvitationStatus = "Accepted" | "Declined" | "Cancelled" | "Pending";

@@ -1,11 +1,11 @@
 import React from 'react';
-import {TreeType} from "../store/board/treeType";
-import {PieceType} from "../store/board/pieceType";
+import {TreeType} from "../../store/board/types/treeType";
+import {PieceType} from "../../store/board/types/pieceType";
 
-import TreeSVG from '../svg/TreeSVG';
+import TreeSVG from '../../svg/TreeSVG';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import Sun from '../svg/sun-svgrepo-com.svg';
-import Tile from "../store/board/tile";
+import Sun from '../../svg/sun-svgrepo-com.svg';
+import Tile from "../../store/board/types/tile";
 
 interface GroundTokenInfo {
   tokenType: "Ground"

@@ -11,71 +11,79 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
 
 namespace dotnet_tree_shadows.Controllers {
-    [Route( "api/[controller]" ), ApiController,
-     Authorize( Roles = UserRoles.User, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme )]
-    public class ProfilesController : AControllerWithStatusMethods {
-      private readonly UserManager<UserModel> userManager;
-        private readonly InvitationService invitationService;
+  [Route( "api/[controller]" ), ApiController,
+   Authorize( Roles = UserRoles.User, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme )]
+  public class ProfilesController : AControllerWithStatusMethods {
 
-        public ProfilesController (
-                
-                UserManager<UserModel> userManager,
-                InvitationService invitationService
-            ) {
-            this.userManager = userManager;
-            this.invitationService = invitationService;
-        }
+    private readonly UserManager<UserModel> userManager;
+    private readonly InvitationService invitationService;
 
-        [HttpGet( "{id:length(24)}", Name = "GetProfile" )]
-        public async Task<ActionResult<FriendProfile>> Get (string id) {
-            UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
+    public ProfilesController (UserManager<UserModel> userManager, InvitationService invitationService) {
+      this.userManager = userManager;
+      this.invitationService = invitationService;
+    }
 
-            if ( !userModel.HasFriend( id )) return Status403Forbidden();
+    [HttpGet( "{id:length(24)}", Name = "GetProfile" )]
+    public async Task<ActionResult<FriendProfile>> Get (string id) {
+      UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
 
-            UserModel friend = await userManager.FindByIdAsync( id );
-            FriendProfile friendProfile = new FriendProfile(friend);
+      if ( !userModel.HasFriend( id ) ) return Status403Forbidden();
 
-            return friendProfile;
-        }
+      UserModel friend = await userManager.FindByIdAsync( id );
+      FriendProfile friendProfile = new FriendProfile( friend );
 
-        [HttpGet, Route( "me" )]
-        public async Task<ActionResult<UserProfile>> GetMe () {
-            UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
-            if ( userModel == null ) return NotFound();
-            return userModel.UserProfile();
-        }
+      return friendProfile;
+    }
 
-        public class FriendEmail {
-            [EmailAddress]
-            public string Email { get; set; } = "";
-        }
+    [HttpGet, Route( "me" )]
+    public async Task<ActionResult<UserProfile>> GetMe () {
+      UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
+      if ( userModel == null ) return NotFound();
+      return userModel.UserProfile();
+    }
 
-        [HttpGet, Route( "me/friends" )]
-        public async Task<ActionResult<FriendProfile[]>> Get () {
-            UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
-            if ( userModel == null ) return Status500MissingProfile();
+    public class FriendEmail {
 
-            Task<UserModel>[] userModeTasks = userModel.Friends.Select( id => userManager.FindByIdAsync( id ) ).ToArray();
-            List<FriendProfile> friendProfiles = new List<FriendProfile>();
-            foreach ( Task<UserModel> task in userModeTasks ) {
-              friendProfiles.Add( new FriendProfile(await task));
-            }
-          
-            return friendProfiles.ToArray();
-        }
-
-        [HttpGet, Route( "me/sessions" )]
-        public async Task<ActionResult<SessionSummary[]>> GetSessions () {
-            UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
-            if ( userModel == null ) return Status500MissingProfile();
-          
-
-            return userModel.Sessions.ToArray();
-        }
+      [EmailAddress]
+      public string Email { get; set; } = "";
 
     }
 
+    [HttpGet, Route( "me/friends" )]
+    public async Task<ActionResult<FriendProfile[]>> Get () {
+      UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
+
+      return userModel.Friends.ToArray();
+    }
+
+    [HttpDelete, Route( "me/friends/{friendId:length(24)}" )]
+    public async Task<ActionResult<FriendProfile[]>> DeleteFriend ([FromRoute] string friendId) {
+      UserModel user = await userManager.GetUserAsync( HttpContext.User );
+      UserModel friend = await userManager.FindByIdAsync( friendId );
+
+      if ( !user.HasFriend( friend.UserId ) ) return Status400Invalid( "Not friends with that user" );
+
+      user.RemoveFriend( friend );
+      friend.RemoveFriend( user );
+
+      await userManager.UpdateAsync( user );
+      await userManager.UpdateAsync( friend );
+      
+
+      return NoContent();
+    }
+
+    [HttpGet, Route( "me/sessions" )]
+    public async Task<ActionResult<SessionSummary[]>> GetSessions () {
+      UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
+      if ( userModel == null ) return Status500MissingProfile();
+
+      return userModel.Sessions.ToArray();
+    }
+
+  }
 }

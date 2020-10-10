@@ -1,23 +1,44 @@
+import {Profile} from "./types/profile";
+import {FriendProfile} from "./types/friendProfile";
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import api from "../../api/api";
-import {Profile} from "./profile";
-import {FriendProfile} from "./friendProfile";
-import {SessionSummary} from "./reducer";
+import {ExtraInfo} from "../store";
+import {SignInCredentials} from "../auth/types/signInCredentials";
+import {AppDispatch} from "../index";
+import {clearProfile} from "./reducer";
+import {fetchInvitations} from "../invitations/actions";
+import {signIn} from "../auth/actions";
 
-
-export const fetchProfile = createAsyncThunk(
+export const fetchProfile = createAsyncThunk<Profile, void, ExtraInfo>(
     'profile/fetchProfile',
-    async ():Promise<Profile> =>{
+    async (_, {extra}): Promise<Profile> => {
+        const {api} = extra;
         const response = await api.profile.get();
         return response.data;
     })
 
-export const fetchFriendProfiles = createAsyncThunk(
+export const fetchFriendProfiles = createAsyncThunk<FriendProfile[], void, ExtraInfo>(
     'profile/fetchFriendProfiles',
-    async ():Promise<FriendProfile[]> => {
+    async (_, {extra}): Promise<FriendProfile[]> => {
+        const {api} = extra;
         const response = await api.profile.getFriends();
         return response.data;
 
     }
 )
 
+export const removeFriend = (id: string) => async (dispatch: AppDispatch) => {
+    await dispatch(removeFriendFromProfile(id));
+    await dispatch(fetchProfile());
+};
+
+
+export const removeFriendFromProfile = createAsyncThunk<void, string, ExtraInfo>(
+    'profile/removeFriend',
+    async (id, {extra}) => {
+        const {api} = extra;
+
+        const response = await api.profile.removeFriend(id);
+        return;
+
+    }
+)

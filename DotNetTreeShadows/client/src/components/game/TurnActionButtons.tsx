@@ -3,9 +3,9 @@ import Button from '@material-ui/core/Button';
 import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { useDispatch, useSelector } from 'react-redux';
-import { sendTurnAction, GameActionType } from '../store/game/actions';
-import { PieceType } from '../store/board/pieceType';
-import { RootState } from '../store';
+import { sendTurnAction, GameActionType } from '../../store/game/actions';
+import { PieceType } from '../../store/board/types/pieceType';
+import { RootState } from '../../store/store';
 
 const useStyles = makeStyles({root:{padding:10},
   turnActionButton: {
@@ -23,7 +23,7 @@ const TurnActionButtons = ()=>{
             sendTurnAction({
               sessionId,
               actionRequest: {
-                type: GameActionType.Buy,
+                type: GameActionType[GameActionType.Buy],
                 pieceType: PieceType[PieceType.LargeTree]
               }
             }

@@ -16,13 +16,11 @@ const statusStyles: {
     }
 } = {
     Ready: {
-        border: '1px solid yellow',
-        color: 'white',
-        hoverBackgroundColor: 'yellow',
+        backgroundColor: 'white',
     },
     Filled: {
-        border: '1px solid darkGreen',
-        color: 'white',
+        border: '1px solid black',
+        color: 'grey',
     },
     Empty: {
         backgroundColor: 'white',
@@ -39,20 +37,41 @@ const styleFromStatus = (attribute: string, fallback: string | null = null) => {
     return ({status}: IPieceProps) => statusStyles[status][attribute];
 }
 
-const backgroundColorFromProps = ({status, color}:IPieceProps) => status == "Empty"
+const backgroundColorFromProps = ({status, color}:IPieceProps) => status != "Filled"
     ? "white" : color;
+
+const colorFromProps = ({status, color}:IPieceProps) => {
+    switch (status) {
+        case "Ready":
+            return color;
+        case "Filled":
+            return "white"
+        case "Empty":
+            return "lightgrey"
+    }
+}
+
+const borderFromProps = ({status, color}:IPieceProps) => {
+    switch (status) {
+        case "Ready":
+            return `1px solid ${color}`
+        case "Filled":
+            return `1px solid ${color}`
+        case "Empty":
+            return '1px dashed lightGrey';
+    }
+}
+
+
 
 const useStyles = makeStyles({
     Piece: {
         borderRadius: '100%',
         width: sizeFromProps,
         height: sizeFromProps,
-        border: styleFromStatus('border', null),
+        border: borderFromProps,
         backgroundColor: backgroundColorFromProps,
-        "&:hover": {
-            backgroundColor: styleFromStatus('hoverBackgroundColor', 'backgroundColor')
-        },
-        color: styleFromStatus('color'),
+        color: colorFromProps,
         textAlign: 'center',
         lineHeight: ({size}: IPieceProps) => `${size}px`,
         fontSize: ({size}: IPieceProps) => `${(

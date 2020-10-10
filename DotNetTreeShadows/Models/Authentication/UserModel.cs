@@ -12,16 +12,16 @@ namespace dotnet_tree_shadows.Authentication {
         }
       
       public List<SessionSummary> Sessions { get; set; } = new List<SessionSummary>();
-      public List<string> Friends { get; set; } = new List<string>();
+      public List<FriendProfile> Friends { get; set; } = new List<FriendProfile>();
       public List<string> ReceivedInvitations { get; set; }= new List<string>();
       public List<string> SentInvitations  { get; set; } = new List<string>();
 
       
-      public bool HasFriend (string id) => Friends.Contains( id );
+      public bool HasFriend (string id) => Friends.Any(f=> f.Id== id );
       
-      public void AddFriend (string id) {
-        if ( Friends.Contains( id ) ) return;
-        Friends.Add( id );
+      public void AddFriend (FriendProfile friendProfile) {
+        if ( Friends.Any( f => f.Id == friendProfile.Id ) ) return;
+        Friends.Add( friendProfile );
       }
       
       public void RemoveInvitation (string id) {
@@ -56,6 +56,14 @@ namespace dotnet_tree_shadows.Authentication {
           ReceivedInvitations = ReceivedInvitations,
           SentInvitations = SentInvitations
         };
+
+      public void RemoveSession (string sessionId) {
+        Sessions.RemoveAll( sessionSummary => sessionSummary.Id == sessionId );
+      }
+
+      public void RemoveFriend (UserModel friend) {
+        Friends.RemoveAll( friendSummary => friendSummary.Id == friend.UserId );
+      }
 
     }
 }

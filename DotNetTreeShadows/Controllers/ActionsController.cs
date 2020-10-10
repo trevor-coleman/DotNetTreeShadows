@@ -60,14 +60,10 @@ namespace dotnet_tree_shadows.Controllers {
         failureMessage = e.Message;
       }
       
-      
 
       return failureMessage == null
                ? Status500UnknownError()
                : Status400Invalid( failureMessage );
     }
-
-    
-
   }
 }

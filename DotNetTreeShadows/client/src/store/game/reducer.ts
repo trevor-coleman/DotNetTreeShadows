@@ -1,17 +1,16 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {SunPosition} from "./sunPosition";
-import Game from "./game";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {SunPosition} from "./types/sunPosition";
+import Game from "./types/game";
 import {fetchGame} from "./actions";
 import {RequestState} from "../../api/requestState";
+import {updateSession} from "../session/reducer";
+import {SessionUpdate} from "../session/types";
 
 
 export interface GameState extends Game {
-    loadingGameStatus : RequestState,
 }
 
 const initialGameState: GameState = {
-    loadingGameStatus: RequestState.Idle,
-    board: {},
     currentTurn: 0,
     firstPlayer: "",
     gameOptions: {},
@@ -26,23 +25,10 @@ const initialGameState: GameState = {
 const gameSlice = createSlice({
     name: 'game',
     extraReducers: builder => {
-        builder.addCase(fetchGame.pending, (state) => ({
+        builder.addCase(updateSession, (state, action:PayloadAction<SessionUpdate>)=>({
             ...state,
-            loadingGameStatus: RequestState.Pending
-        }));
-
-        builder.addCase(fetchGame.rejected, (state, action) => ({
-            ...state,
-            loadingGameStatus: RequestState.Rejected
-        }));
-
-        builder.addCase(fetchGame.fulfilled, (state, action) =>
-            ({
-                ...state,
-                ...action.payload,
-                loadingGameStatus: RequestState.Fulfilled,
-
-            }));
+            ...action.payload.game
+        }))
     },
     initialState: initialGameState,
     reducers: {

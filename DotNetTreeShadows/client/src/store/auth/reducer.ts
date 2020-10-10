@@ -1,17 +1,19 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {signIn, registerNewUser, registerAndSignIn, signInAndFetchProfile} from "./actions";
-import api from "../../api/api";
+import {Action} from "typesafe-actions";
 
 export interface AuthState {
     authInProgress: boolean,
     signedIn: boolean,
     signedInRejectedMessage: string | null,
+    token: string | null,
 }
 
 const initialState: AuthState = {
     authInProgress: false,
     signedIn: false,
-    signedInRejectedMessage: null
+    signedInRejectedMessage: null,
+    token: null,
 }
 
 const authSlice = createSlice({
@@ -21,21 +23,20 @@ const authSlice = createSlice({
             authInProgress: true,
             signedIn: false,
             signedInRejectedMessage: null
-        }))
-            .addCase(signIn.fulfilled, state => {
-                return {
-                    ...state,
-                    authInProgress: false,
-                    signedIn: true
-                }}
-            )
-
-            .addCase(signIn.rejected, (state, action) => ({
+        }));
+        builder.addCase(signIn.fulfilled, (state, action: PayloadAction<string | null>) => ({
                 ...state,
                 authInProgress: false,
                 signedIn: true,
-                signedInRejectedMessage: action.error.toString() || "signIn failed"
-            }));
+                token: action.payload,
+            })
+        )
+        builder.addCase(signIn.rejected, (state, action) => ({
+            ...state,
+            authInProgress: false,
+            signedIn: true,
+            signedInRejectedMessage: action.error.toString() || "signIn failed"
+        }));
 
         builder.addCase(registerNewUser.pending, state => ({
             ...state,
@@ -44,11 +45,12 @@ const authSlice = createSlice({
             signedInRejectedMessage: null
         }))
             .addCase(registerNewUser.fulfilled, state => {
-                return {
-                    ...state,
-                    authInProgress: false,
-                    signedIn: true
-                }}
+                    return {
+                        ...state,
+                        authInProgress: false,
+                        signedIn: true
+                    }
+                }
             )
 
             .addCase(registerNewUser.rejected, (state, action) => ({
@@ -59,15 +61,24 @@ const authSlice = createSlice({
             }));
     },
     reducers: {
-        signOut() {
-            api.signOut()
-        }
+        signOut: (state: AuthState, action: Action) => {
+            return {
+                ...state,
+                token: null
+            }
+        },
+        setToken: (state: AuthState, action: PayloadAction<string | null>) => {
+            return {
+                ...state,
+                token: action.payload
+            }
+        },
     },
     name: "board",
     initialState: initialState
 })
 
 
-export const {signOut} = authSlice.actions;
+export const {signOut, setToken} = authSlice.actions;
 export {signIn, registerNewUser, registerAndSignIn, signInAndFetchProfile};
 export default authSlice.reducer;

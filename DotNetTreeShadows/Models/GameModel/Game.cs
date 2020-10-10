@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using dotnet_tree_shadows.Models.SessionModels;
 using dotnet_tree_shadows.Services;
 using MongoDB.Bson;
@@ -48,6 +49,11 @@ namespace dotnet_tree_shadows.Models.GameModel {
     
     public Dictionary<string, Scoring.Token[]> Scores = new Dictionary<string, Scoring.Token[]>();
 
+    public void AddPlayer (string playerId) {
+      TurnOrder = TurnOrder.Append( playerId ).ToArray();
+      
+    }
+    
     public int LengthOfGame {
       get =>
         GameOptions.Has( GameOption.LongGame )

@@ -1,22 +1,19 @@
 import {AApiSection} from "./aApiSection";
-import {AxiosInstance, AxiosResponse} from "axios";
-import {Invitation} from "../store/invitations/invitation";
+import axios, {AxiosResponse} from "axios";
+import {Invitation, InvitationStatus} from "../store/invitations/types/invitation";
 
 export default class InvitationApiSection extends AApiSection {
-    public constructor(instance: AxiosInstance) {
-        super(instance);
-    }
-
     async getMany(ids:string[]): Promise<AxiosResponse<Invitation[]>> {
-        return await this.instance.get(`invitations`, {params: {ids}}  );
+        return await axios.get(`invitations`, {params: {ids}}  );
     }
 
     async get(id:string): Promise<AxiosResponse<Invitation>> {
-        return await this.instance.get(`invitations/${id}`);
+        return await axios.get(`invitations/${id}`);
     }
 
     async getAll(): Promise<AxiosResponse<Invitation[]>> {
-        return await this.instance.get(`invitations`);
+        console.log("getting all");
+        return await axios.get(`invitations`);
     }
 
     async sendFriendRequest(email: string) {
@@ -25,7 +22,19 @@ export default class InvitationApiSection extends AApiSection {
             email
         }
 
-        return await this.instance.post('invitations', friendRequestRequest);
+        return await axios.post('invitations/friend-request', friendRequestRequest);
 
+    }
+
+    async updateStatus(id: string, invitationStatus: InvitationStatus) {
+        return await axios.post(`invitations/${id}/status`, {invitationStatus})
+    }
+
+
+    async sendManySessionInvites(recipientIds: string[], sessionId: string) {
+        return await axios.post('invitations/session-invites', {
+            recipientIds,
+            sessionId
+        })
     }
 }
