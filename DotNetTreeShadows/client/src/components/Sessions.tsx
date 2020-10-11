@@ -15,6 +15,10 @@ import {createSessionAndFetchProfile} from "../store/session/thunks";
 import AddCircleOutlineOutlinedIcon from "@material-ui/icons/AddCircleOutlineOutlined";
 import Grid from "@material-ui/core/Grid";
 import SessionInviteList from "./SessionInvites";
+import Paper from "@material-ui/core/Paper";
+import ListItemText from "@material-ui/core/ListItemText";
+import FriendAvatar from "./FriendAvatar";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 
 
 interface SessionsProps {
@@ -25,10 +29,13 @@ const Sessions: FunctionComponent<SessionsProps> = (props: SessionsProps) => {
     const {} = props;
     const classes = useStyles();
     const dispatch = useDispatch();
-    const {sessions} = useTypedSelector(state => state.profile)
+    const {sessions, id, friends} = useTypedSelector(state => state.profile)
+
+    console.log(sessions);
 
     return (
-        <div className={classes.root}>
+        <Paper className={classes.root}>
+            <Box p={3}>
             <Typography variant={'h4'}>Sessions</Typography>
             <Box>
                 <Button variant={"outlined"} onClick={() => {
@@ -37,10 +44,12 @@ const Sessions: FunctionComponent<SessionsProps> = (props: SessionsProps) => {
             </Box>
             <SessionInviteList type={"received"}/>
             <List>
-            {sessions.map(session=><ListItem component={Link} to={`/sessions/${session.id}`} button key={session.id}>{session.name}
-            <ListItemSecondaryAction><IconButton onClick={()=>dispatch(deleteSession(session.id))}><DeleteOutlineOutlinedIcon color={"secondary"}/></IconButton></ListItemSecondaryAction></ListItem>)}
+            {sessions.map(session=><ListItem component={Link} to={`/sessions/${session.id}`} button key={session.id}>
+                <ListItemAvatar><FriendAvatar id={session.host}/></ListItemAvatar><ListItemText primary={session.name} secondary={`Hosted by ${id == session.host ? "you" : friends.find(f => f.id == session.host)?.name}`}/>
+                {session.host == id ? <ListItemSecondaryAction><IconButton onClick={()=>dispatch(deleteSession(session.id))}><DeleteOutlineOutlinedIcon color={"secondary"}/></IconButton></ListItemSecondaryAction>:""}</ListItem>)}
             </List>
-        </div>)
+            </Box>
+        </Paper>)
 };
 
 const useStyles = makeStyles({

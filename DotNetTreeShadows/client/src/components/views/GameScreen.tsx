@@ -85,23 +85,30 @@ export default function GameScreen(props: IGameScreenProps) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
     const {sessionId: sessionIdFromPath} = useParams();
-    const {id: sessionIdFromState, loadingSessionState, name: sessionName} = useTypedSelector(state => state.session);
+    const {id: sessionIdFromState, loadingSessionState, name: sessionName, firstLoad} = useTypedSelector(state => state.session);
     const dispatch = useDispatch();
 
-    const loadSession= async ()=>{
+    const loadSession = async () => {
         await dispatch(fetchSession(sessionIdFromPath))
+    }
+
+    const clearSessionOnLeave = () => {
+        dispatch(clearSession())
     }
 
     const shouldLoadSession = (sessionIdFromState != sessionIdFromPath) && (loadingSessionState != RequestState.Pending);
 
-    useEffect(()=> {
-        if(shouldLoadSession) {
-            loadSession()
-        }
-    })
-
-
-
+    console.log("rendering");
+    useEffect(() => {
+        console.log("loadingSession")
+            loadSession();
+            return () => {
+                console.log("cleaningUpSession")
+                clearSessionOnLeave();
+            }
+        },
+        []
+    )
 
 
     const toggleDrawerOpen = () => {
@@ -115,7 +122,8 @@ export default function GameScreen(props: IGameScreenProps) {
                 className={classes.appBar}
             >
                 <Toolbar>
-                    <IconButton component={Link} to={'/sessions'}><ArrowBackIosIcon className={classes.menuIcon}/></IconButton>
+                    <IconButton component={Link} to={'/sessions'}><ArrowBackIosIcon
+                        className={classes.menuIcon}/></IconButton>
                     <Typography variant="h6" noWrap>
                         TreeShadows - {sessionName}
                     </Typography>

@@ -3,7 +3,7 @@ import PlayerBoardDisplay from './PlayerBoardDisplay';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import TurnActionButtons from './TurnActionButtons';
-import AvailablePieces from "../AvailablePieces";
+import AvailablePieces from "./AvailablePieces";
 
 const GameSidebar = () => {
   return <div>

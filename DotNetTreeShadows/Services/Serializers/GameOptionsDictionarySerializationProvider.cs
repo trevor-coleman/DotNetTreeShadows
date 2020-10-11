@@ -1,4 +1,6 @@
 using System;
+using System.Text.Json.Serialization;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Options;
 using MongoDB.Bson.Serialization.Serializers;
@@ -15,7 +17,7 @@ namespace dotnet_tree_shadows.Services.Serializers {
 
       public GameOptionsDictionarySerializer () : base(
           DictionaryRepresentation.Document,
-          new StringSerializer(),
+          new EnumSerializer<GameOption>(BsonType.String),
           new BooleanSerializer()
         ) { }
 

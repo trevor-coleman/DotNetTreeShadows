@@ -8,6 +8,7 @@ import treeColor from "./treeColor";
 import React, {useState} from "react";
 import {createStyles, makeStyles, Theme, useTheme} from '@material-ui/core/styles';
 import WrappedBoardTile from "./WrappedBoardTile";
+import TreeAvatarIcon from "./TreeAvatarIcon";
 
 interface Props {
     index: number,
@@ -24,15 +25,11 @@ const PiecesGrid = (props: Props) => {
     return <Grid item key={index.toString() + col.toString()} className={classes.root}>
         <Grid container item direction={'column'} spacing={1}>
             <Grid item>
-                <Piece status={"Ready"} size={size} price={PlayerBoard.currentPrice(boardCode, index).toString()} color={treeColor(PlayerBoard.TreeType(boardCode))} />
+                <TreeAvatarIcon treeType={PlayerBoard.TreeType(boardCode)} pieceType={index as PieceType} gridHeader/>
             </Grid>
             {col.map(({status, price, key}: PieceDetails) => (
                 <Grid item className={classes.gridItem} key={key} onMouseEnter={()=>setHoverKey(key)} onMouseLeave={()=>setHoverKey("")}>
-                    {hoverKey == key || status=="Empty" ? <Piece size={size}
-                           status={status}
-                           price={price}
-                           color={treeColor(PlayerBoard.TreeType(boardCode))}
-                    /> : <WrappedBoardTile pieceType={index as PieceType} treeType={PlayerBoard.TreeType(boardCode)} size={size} sizeFactor={1.1}/>}
+                     <TreeAvatarIcon treeType={PlayerBoard.TreeType(boardCode)} text={hoverKey == key || status=="Empty" ? price : ""}  empty={status=="Empty"} pieceType={index as PieceType}/>
                 </Grid>
             ))}
         </Grid>

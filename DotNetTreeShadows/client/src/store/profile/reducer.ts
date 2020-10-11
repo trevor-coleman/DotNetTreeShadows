@@ -8,6 +8,7 @@ import {deleteSession} from "../session/actions";
 export interface SessionSummary {
     id: string,
     name:string,
+    host:string,
 }
 
 export interface ProfileState extends Profile {

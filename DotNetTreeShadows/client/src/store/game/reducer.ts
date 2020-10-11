@@ -5,6 +5,7 @@ import {fetchGame} from "./actions";
 import {RequestState} from "../../api/requestState";
 import {updateSession} from "../session/reducer";
 import {SessionUpdate} from "../session/types";
+import {GameStatus} from "./types/GameStatus";
 
 
 export interface GameState extends Game {
@@ -19,7 +20,8 @@ const initialGameState: GameState = {
     sunPosition: SunPosition.NorthWest,
     scores: {},
     scoringTokens: {},
-    turnOrder: []
+    turnOrder: [],
+    status: GameStatus.Preparing
 }
 
 const gameSlice = createSlice({

@@ -21,7 +21,7 @@ namespace dotnet_tree_shadows.Models.SessionModel {
 
     [BsonIgnore]
     public SessionSummary Summary {
-      get => new SessionSummary( Id, Name );
+      get => new SessionSummary( Id, Name, Host );
     }
 
     public bool HasPlayer (string id) => Players.ContainsKey( id ) || Host == id;

@@ -31,9 +31,6 @@ const AddPlayerDialog: FunctionComponent<AddPlayerDialogProps> = (props: AddPlay
     const {open, requestState, message, checked} = useTypedSelector(state => state.appState.addPlayerDialog);
     const {turnOrder} = useTypedSelector(state => state.game);
 
-    const handleClickOpen = () => {
-        dispatch(showAddPlayerDialog(true))
-    };
 
     const setChecked = (ids: string[]): void => {
         dispatch(setAddPlayerDialogChecked(ids))
@@ -90,9 +87,6 @@ const AddPlayerDialog: FunctionComponent<AddPlayerDialogProps> = (props: AddPlay
     }
     return (
         <div>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                Open form dialog
-            </Button><DebugToolbar/>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Select Friends to Add</DialogTitle>
                 <DialogContent>

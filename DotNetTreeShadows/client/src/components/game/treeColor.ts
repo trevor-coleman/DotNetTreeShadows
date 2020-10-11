@@ -6,12 +6,16 @@ export default function treeColor (treeType: TreeType, opacity:number = 1):strin
     switch (treeType as TreeType) {
         case TreeType.Aspen:
             color="#703510";
+            break;
         case TreeType.Ash:
             color= "#275371"
+            break;
         case TreeType.Birch:
             color= "#6d4c0a";
+            break;
         case TreeType.Poplar:
-            color= "#19572b";
+            color= "#144d23";
+            break;
     }
 
     return Color(color).alpha(opacity).toString();

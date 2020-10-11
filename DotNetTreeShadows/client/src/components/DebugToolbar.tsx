@@ -15,7 +15,7 @@ import {registerNewUser, signInAndFetchProfile, signOut} from '../store/auth/red
 import {SignInCredentials} from "../store/auth/types/signInCredentials";
 import SessionCreator from "./SessionCreator";
 import {Route, Switch} from 'react-router-dom';
-import TreeAvatarIcon from "./TreeAvatarIcon";
+import TreeAvatarIcon from "./game/TreeAvatarIcon";
 import {TreeType} from "../store/board/types/treeType";
 import {PieceType} from "../store/board/types/pieceType";
 

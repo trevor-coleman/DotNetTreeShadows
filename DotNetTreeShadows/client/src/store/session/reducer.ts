@@ -11,6 +11,7 @@ import Game from "../game/types/game";
 export interface SessionState extends Session {
     loadingSessionFailureMessage: string|null,
     loadingSessionState: RequestState,
+    firstLoad: boolean
 }
 
 const initialSessionState: SessionState = {
@@ -21,7 +22,8 @@ const initialSessionState: SessionState = {
     invitations: [],
     invitedPlayers:[],
     name: "",
-    players: {}
+    players: {},
+    firstLoad: true,
 }
 
 interface PendingAction<ArgType> {
@@ -78,7 +80,8 @@ const sessionSlice = createSlice({
         updateSession: (state: SessionState, action: PayloadAction<SessionUpdate>) => {
             return {
                 ...state,
-                ...action.payload.session
+                ...action.payload.session,
+                firstLoad: false
             }},
         clearSession:(state => ({
             ...initialSessionState

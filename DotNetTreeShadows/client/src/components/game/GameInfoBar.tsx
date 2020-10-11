@@ -12,7 +12,10 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import IconButton from "@material-ui/core/IconButton";
 import AddPlayerDialog from "./AddPlayerDialog";
 import FriendAvatar from "../FriendAvatar";
-import TreeAvatarIcon from "../TreeAvatarIcon";
+import TreeAvatarIcon from "./TreeAvatarIcon";
+import {showAddPlayerDialog} from "../../store/appState/reducer";
+import {GameOption} from "../../store/game/types/GameOption";
+import {GameStatus} from "../../store/game/types/GameStatus";
 
 interface GameInfoBarProps {
 }
@@ -22,20 +25,27 @@ const GameInfoBar: FunctionComponent<GameInfoBarProps> = (props: GameInfoBarProp
     const {} = props;
     const classes = useStyles();
     const dispatch = useDispatch();
-    const {playerBoards, turnOrder, currentTurn} = useTypedSelector(state => state.game)
+    const {playerBoards, turnOrder, currentTurn, revolution, gameOptions, status } = useTypedSelector(state => state.game)
     const {players, host, invitedPlayers} = useTypedSelector(state=> state.session);
     const {id:playerId, friends} = useTypedSelector(state=> state.profile);
 
+    const openAddPlayerDialog = () => {
+        dispatch(showAddPlayerDialog(true))
+    };
+
+    console.log(gameOptions)
 
     return (
         <Box m={1} className={classes.root}>
             <Paper>
-                <Box p={1}>
+                <Box p={2}>
             <Grid container alignItems={"center"}>
-                <Grid item xs={2}>
-                    <Typography align={"center"}>Turn Order</Typography>
+                <Grid item xs={3}>
+                    <Grid container direction={"column"} spacing={2}>
+                        <Grid item><div>Game Status: {GameStatus[status]}</div></Grid>
+                        <Grid item>Revolution: {revolution} / {gameOptions[GameOption.LongGame] ? 4 : 3}</Grid>
+                    </Grid>
                 </Grid>
-
                 {turnOrder.map((id:string)=>(
                     <Grid item xs={1} key={id}>
                         <Grid container alignItems={"center"} direction={"column"}>
@@ -49,7 +59,7 @@ const GameInfoBar: FunctionComponent<GameInfoBarProps> = (props: GameInfoBarProp
                 </Grid>)}
                 {(turnOrder.length + invitedPlayers.length) < 4 && playerId == host  ? <Grid item xs={1} >
                     <Grid container alignItems={"center"} direction={"column"}>
-                        <Grid item><div className={classes.turnOrderIcon}><div className={classes.addPlayerButton}><IconButton><PersonAddIcon/></IconButton></div></div></Grid>
+                        <Grid item><div className={classes.turnOrderIcon}><div className={classes.addPlayerButton}><IconButton onClick={openAddPlayerDialog}><PersonAddIcon/></IconButton></div></div></Grid>
                         <Grid item><Typography variant={"caption"} align={"center"} className={classes.playerLabel}>Add Player</Typography></Grid></Grid>
                 </Grid> :<div/>}
             </Grid>

@@ -76,7 +76,7 @@ namespace dotnet_tree_shadows.Controllers {
       Board board = BoardFactory.New( session.Id );
 
       GameOperations.AddPlayer( game, user.UserId );
-      
+
 
       await gameService.Create( game );
       await boardService.Create( board );

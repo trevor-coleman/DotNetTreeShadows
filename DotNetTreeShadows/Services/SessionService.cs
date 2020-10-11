@@ -27,7 +27,8 @@ namespace dotnet_tree_shadows.Services {
                                                                                 Builders<Session>.Projection.Expression(
                                                                                         session => new SessionSummary(
                                                                                                 session.Id,
-                                                                                                session.Name
+                                                                                                session.Name,
+                                                                                                session.Host
                                                                                             )
                                                                                     )
                                                                         };
@@ -38,6 +39,7 @@ namespace dotnet_tree_shadows.Services {
             return (await sessions.FindAsync( filter, findOptions )).ToList();
         }
 
+      
         public async Task<List<Session>> GetByHostId (string id) =>
           (await sessions.FindAsync( sessionInfo => sessionInfo.Host == id )).ToList();
 

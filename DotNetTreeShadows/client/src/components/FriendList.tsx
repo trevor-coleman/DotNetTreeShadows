@@ -17,6 +17,9 @@ import {RequestState} from "../api/requestState";
 import { showRemoveFriendConfirmDialog, setFriendToRemove } from '../store/appState/reducer';
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
+import FriendAvatar from "./FriendAvatar";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import ListItemText from "@material-ui/core/ListItemText";
 
 
 interface FriendListProps {
@@ -50,8 +53,12 @@ const FriendList: FunctionComponent<FriendListProps> = (props: FriendListProps) 
             <Typography>Friends</Typography>
             <Divider/>
             <List>
-                {friends.map(f => <ListItem key={f.id}>{f.name}
-                    <ListItemSecondaryAction>
+                {friends.map(f => <ListItem key={f.id}>
+                <ListItemAvatar>
+                    <FriendAvatar id={f.id}/>
+                </ListItemAvatar>
+                    <ListItemText>{f.name}</ListItemText>
+                <ListItemSecondaryAction>
                         <Button variant={"outlined"} color={"secondary"} size={"small"}
                                 onClick={() => handleClickOpen(f)}>Remove
                         </Button>

@@ -11,7 +11,7 @@ import BoardTile from "./BoardTile";
 import Box from "@material-ui/core/Box";
 import {ClassNameMap} from "@material-ui/core/styles/withStyles";
 import PiecesGrid from "./PiecesGrid";
-import AvailablePieces from "../AvailablePieces";
+import AvailablePieces from "./AvailablePieces";
 import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
 import LightDisplay from "./LightDisplay";

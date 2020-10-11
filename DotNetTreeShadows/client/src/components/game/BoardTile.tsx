@@ -11,6 +11,7 @@ import {PieceType} from "../../store/board/types/pieceType";
 import {HexLayout} from "../../store/board/types/HexLayout";
 import {SunPosition} from "../../store/game/types/sunPosition";
 import treeColor from "./treeColor";
+import Color from "color";
 
 interface IBoardTileProps {
     onClick?: (hexCode: number) => void,
@@ -69,9 +70,6 @@ const BoardTile = (props: IBoardTileProps) => {
 
     const classes = useStyles(props);
 
-
-
-
     const handleClick = () => {
         if (onClick && !sky) onClick(safeHexCode);
     }
@@ -117,6 +115,7 @@ const BoardTile = (props: IBoardTileProps) => {
     return (<g>
         <circle onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={handleClick} cx={center.x}
                 cy={center.y} r={size/sizeFactor} fill={backgroundColor} strokeWidth={2} stroke={strokeColor}/>
+        {treeIcon ? <circle cx={center.x} cy={center.y} r={size/1.8} fill={Color(backgroundColor).lighten(2).toString()} strokeWidth={"0.2"} stroke={"#000"}/>:""}
         {sunIcon
             ? <image href={sunIcon} x={center.x - size / 2} y={center.y - size / 2} width={size} height={size}/>
             : ''}

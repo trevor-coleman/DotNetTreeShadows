@@ -15,11 +15,11 @@ const FriendAvatar: FunctionComponent<FriendAvatarProps> = (props: FriendAvatarP
     const {id, addFriend} = props;
 
     const dispatch = useDispatch();
-    const {friends} = useTypedSelector(state => state.profile)
+    const {friends, id:userId, name:userName} = useTypedSelector(state => state.profile)
 
-    const friend = friends.find(f=>f.id == id)
+    const name = userId == id ? userName : friends.find(f=>f.id == id)?.name;
 
-    const initials = friend && friend.name ? friend.name.split(' ').map(x => x.charAt(0)).join('').substr(0, 2).toUpperCase() : "";
+    const initials = name ? name.split(' ').map(x => x.charAt(0)).join('').substr(0, 2).toUpperCase() : "";
 
     const stringToHslColor= (str:string, s:number, l:number): string => {
         let hash = 0;
@@ -31,7 +31,7 @@ const FriendAvatar: FunctionComponent<FriendAvatarProps> = (props: FriendAvatarP
         return 'hsl('+h+', '+s+'%, '+l+'%)';
     }
 
-    const friendColor = friend ? stringToHslColor(friend.name, 50,50) : "#363636";
+    const friendColor = name ? stringToHslColor(name, 60,70) : "#363636";
 
     const classes = useStyles({friendColor});
 
