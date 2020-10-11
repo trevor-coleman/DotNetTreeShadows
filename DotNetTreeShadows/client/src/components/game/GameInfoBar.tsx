@@ -16,6 +16,7 @@ import TreeAvatarIcon from "./TreeAvatarIcon";
 import {showAddPlayerDialog} from "../../store/appState/reducer";
 import {GameOption} from "../../store/game/types/GameOption";
 import {GameStatus} from "../../store/game/types/GameStatus";
+import Button from "@material-ui/core/Button";
 
 interface GameInfoBarProps {
 }
@@ -39,11 +40,12 @@ const GameInfoBar: FunctionComponent<GameInfoBarProps> = (props: GameInfoBarProp
         <Box m={1} className={classes.root}>
             <Paper>
                 <Box p={2}>
-            <Grid container alignItems={"center"}>
+            <Grid container alignItems={"center"} spacing={2}>
                 <Grid item xs={3}>
                     <Grid container direction={"column"} spacing={2}>
                         <Grid item><div>Game Status: {GameStatus[status]}</div></Grid>
                         <Grid item>Revolution: {revolution} / {gameOptions[GameOption.LongGame] ? 4 : 3}</Grid>
+                        {playerId==host?<Grid item><Button variant={"contained"}>Start Game</Button></Grid> :""}
                     </Grid>
                 </Grid>
                 {turnOrder.map((id:string)=>(
@@ -62,7 +64,9 @@ const GameInfoBar: FunctionComponent<GameInfoBarProps> = (props: GameInfoBarProp
                         <Grid item><div className={classes.turnOrderIcon}><div className={classes.addPlayerButton}><IconButton onClick={openAddPlayerDialog}><PersonAddIcon/></IconButton></div></div></Grid>
                         <Grid item><Typography variant={"caption"} align={"center"} className={classes.playerLabel}>Add Player</Typography></Grid></Grid>
                 </Grid> :<div/>}
+
             </Grid>
+
                 </Box>
             </Paper>
             <AddPlayerDialog/>
