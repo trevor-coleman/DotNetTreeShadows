@@ -1,8 +1,8 @@
 import React, {FunctionComponent} from 'react';
 import {useDispatch} from 'react-redux';
 import {makeStyles, Theme} from '@material-ui/core/styles';
-import {useTypedSelector} from "../../store";
-import PlayerBoard from "../../store/game/types/playerBoard";
+import {useTypedSelector} from "../../../store";
+import PlayerBoard from "../../../store/game/types/playerBoard";
 import {Box} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";

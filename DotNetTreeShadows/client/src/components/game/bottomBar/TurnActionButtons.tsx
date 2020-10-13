@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import {makeStyles, Theme} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+import { RootState } from '../../../store/store';
 import {Typography} from "@material-ui/core";
 
 const useStyles = makeStyles((theme:Theme)=>(

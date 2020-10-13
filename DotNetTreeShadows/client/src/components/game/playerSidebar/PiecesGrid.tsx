@@ -1,6 +1,6 @@
-import PlayerBoard, {PieceDetails} from "../../store/game/types/playerBoard";
+import PlayerBoard, {PieceDetails} from "../../../store/game/types/playerBoard";
 import {Grid} from "@material-ui/core";
-import {PieceType} from "../../store/board/types/pieceType";
+import {PieceType} from "../../../store/board/types/pieceType";
 import React, {useState} from "react";
 import {makeStyles} from '@material-ui/core/styles';
 import TreeAvatarIcon from "./TreeAvatarIcon";
@@ -17,7 +17,7 @@ const PiecesGrid = (props: Props) => {
     const classes = useStyles()
     const [hoverKey, setHoverKey] = useState("")
 
-    return <Grid item key={index.toString() + col.toString()} className={classes.root}>
+    return(
         <Grid container item direction={'column'} spacing={1}>
             <Grid item>
                 <TreeAvatarIcon treeType={PlayerBoard.TreeType(boardCode)} pieceType={index as PieceType} gridHeader/>
@@ -30,8 +30,7 @@ const PiecesGrid = (props: Props) => {
                                     pieceType={index as PieceType}/>
                 </Grid>
             ))}
-        </Grid>
-    </Grid>;
+        </Grid>);
 }
 
 const useStyles = makeStyles({

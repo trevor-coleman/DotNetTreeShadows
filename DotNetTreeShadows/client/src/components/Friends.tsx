@@ -6,8 +6,8 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import DebugToolbar from "./DebugToolbar";
 import AddFriendCard from "./AddFriendCard";
-import FriendRequestList from "./FriendRequestList";
-import FriendList from "./FriendList";
+import FriendRequestList from "./friends/FriendRequestList";
+import FriendList from "./friends/FriendList";
 import Grid from "@material-ui/core/Grid";
 
 interface FriendsProps {

@@ -1,16 +1,16 @@
 import React from 'react';
-import Tile from '../../store/board/types/tile'
-import TreeSVG from '../../svg/TreeSVG';
+import Tile from '../../../store/board/types/tile'
+import TreeSVG from '../../../svg/TreeSVG';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import Sun from '../../svg/sun-svgrepo-com.svg';
-import {RootState} from "../../store/store";
-import {Hex} from "../../store/board/types/Hex";
+import Sun from '../../../svg/sun-svgrepo-com.svg';
+import {RootState} from "../../../store/store";
+import {Hex} from "../../../store/board/types/Hex";
 import {useSelector} from "react-redux";
-import {TreeType} from "../../store/board/types/treeType";
-import {PieceType} from "../../store/board/types/pieceType";
-import {HexLayout} from "../../store/board/types/HexLayout";
-import {SunPosition} from "../../store/game/types/sunPosition";
-import treeColor from "./treeColor";
+import {TreeType} from "../../../store/board/types/treeType";
+import {PieceType} from "../../../store/board/types/pieceType";
+import {HexLayout} from "../../../store/board/types/HexLayout";
+import {SunPosition} from "../../../store/game/types/sunPosition";
+import treeColor from "../treeColor";
 import Color from "color";
 
 interface IBoardTileProps {

@@ -1,7 +1,11 @@
 import React, {FunctionComponent} from 'react';
 import {useDispatch} from 'react-redux';
 import {makeStyles} from '@material-ui/core/styles';
-import ListTurnOrder from "./game/ListTurnOrder";
+import ListTurnOrder from "./ListTurnOrder";
+import GameInfoDisplay from "./GameInfoDisplay";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import SidebarGrid from "../SidebarGrid";
 
 
 interface SessionSidebarProps {
@@ -14,9 +18,11 @@ const SessionSidebar: FunctionComponent<SessionSidebarProps> = (props: SessionSi
     const dispatch = useDispatch();
 
     return (
-        <div className={classes.root}>
-            <ListTurnOrder/>
-        </div>);
+        <SidebarGrid>
+                <GameInfoDisplay/>
+                <ListTurnOrder/>
+        </SidebarGrid>
+            );
 };
 
 const useStyles = makeStyles({

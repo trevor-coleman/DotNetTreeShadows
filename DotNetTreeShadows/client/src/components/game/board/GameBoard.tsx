@@ -1,16 +1,15 @@
 import React, {FunctionComponent} from 'react';
 import {useDispatch} from 'react-redux';
 import {makeStyles} from '@material-ui/core/styles';
-import {HexLayout} from '../../store/board/types/HexLayout';
-import {Orientation} from '../../store/board/types/Orientation';
+import {HexLayout} from '../../../store/board/types/HexLayout';
+import {Orientation} from '../../../store/board/types/Orientation';
 import BoardTile from './BoardTile';
-
-import {Hex} from '../../store/board/types/Hex';
-import {TreeType} from "../../store/board/types/treeType";
-import {useTypedSelector} from "../../store";
+import {Hex} from '../../../store/board/types/Hex';
+import {TreeType} from "../../../store/board/types/treeType";
+import {useTypedSelector} from "../../../store";
 import Box from "@material-ui/core/Box";
-import {connection} from "../../store/signalR/listeners";
-import PlayerBoard from "../../store/game/types/playerBoard";
+import {connection} from "../../../store/signalR/listeners";
+import PlayerBoard from "../../../store/game/types/playerBoard";
 
 
 interface IGameBoardProps {

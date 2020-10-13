@@ -3,12 +3,13 @@ import {useDispatch} from 'react-redux';
 import {makeStyles} from '@material-ui/core/styles';
 import Box from "@material-ui/core/Box";
 import {Typography} from "@material-ui/core";
-import {useTypedSelector} from "../../store";
-import PlayerBoard from "../../store/game/types/playerBoard";
-import {PieceType} from "../../store/board/types/pieceType";
+import {useTypedSelector} from "../../../store";
+import PlayerBoard from "../../../store/game/types/playerBoard";
+import {PieceType} from "../../../store/board/types/pieceType";
 import Divider from "@material-ui/core/Divider";
 import TreeAvatarIcon from "./TreeAvatarIcon";
 import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 
 
 interface Props {
@@ -39,8 +40,9 @@ const AvailablePieces: FunctionComponent<Props> = (props: Props) => {
     });
     let lastPiece: { pieceType: PieceType, key: string };
 
-    return <Box p={1} className={classes.root}>
-        <Typography className={classes.pieceTypeName}>Available</Typography>
+    return <Paper><Box p={2} className={classes.root}>
+        <Typography paragraph variant={"h6"}>Available</Typography>
+        <Divider/>
         <Grid direction={"column"} container>
             {availablePieces.map((pieces, index) => {
                 return (
@@ -48,7 +50,7 @@ const AvailablePieces: FunctionComponent<Props> = (props: Props) => {
                         {pieces.map(piece => {
                             return (
                                 <Grid item key={piece.key}>
-                                    <Box m={1}>
+                                    <Box m={0.5}>
                                         <TreeAvatarIcon
                                             pieceType={piece.pieceType}
                                             treeType={PlayerBoard.TreeType(boardCode)}
@@ -58,10 +60,10 @@ const AvailablePieces: FunctionComponent<Props> = (props: Props) => {
                         })
                         }
                     </Grid>
-                        <Divider/></div>)
+                    </div>)
             })}
         </Grid>
-    </Box>;
+    </Box></Paper>;
 };
 
 
@@ -78,8 +80,8 @@ const useStyles = makeStyles({
 
     },
     divider: {
-        marginTop: 8,
-        marginBottom: 8,
+        marginTop: 4,
+        marginBottom: 4,
         display: "block"
     },
 });

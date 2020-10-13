@@ -4,16 +4,16 @@ import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import GameSidebar from '../game/GameSidebar'
+import PlayerSidebar from '../game/playerSidebar/PlayerSidebar'
 import Box from "@material-ui/core/Box";
-import GameBoard from "../game/GameBoard";
+import GameBoard from "../game/board/GameBoard";
 import {IconButton} from "@material-ui/core";
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import {Link, useParams} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useTypedSelector} from "../../store";
 import Grid from "@material-ui/core/Grid";
-import SessionSidebar from "../SessionSidebar";
+import SessionSidebar from "../game/sessionSidebar/SessionSidebar";
 
 const leftDrawerWidth = 280;
 const rightDrawerWidth = 500;
@@ -138,7 +138,7 @@ export default function GameScreen(props: IGameScreenProps) {
                 }}
             >
                 <div className={classes.drawerHeader}/>
-                <GameSidebar/>
+                <PlayerSidebar/>
             </Drawer>
             <Drawer
                 className={classes.rightDrawer}

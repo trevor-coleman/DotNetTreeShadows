@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../store/store';
 import {makeStyles} from '@material-ui/core/styles';
 import DebugToolbar from "./DebugToolbar";
-import GameBoard from "./game/GameBoard";
+import GameBoard from "./game/board/GameBoard";
 
 interface INewApiTestProps {
 }

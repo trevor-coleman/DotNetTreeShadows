@@ -2,10 +2,10 @@ import React, {FunctionComponent, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {makeStyles, Theme} from '@material-ui/core/styles';
 import {Box, IconButton} from "@material-ui/core";
-import GameBoard from "../game/GameBoard";
-import SessionSidebar from "../SessionSidebar";
-import GameSidebar from "../game/GameSidebar";
-import BottomBar from "../game/BottomBar";
+import GameBoard from "../game/board/GameBoard";
+import SessionSidebar from "../game/sessionSidebar/SessionSidebar";
+import PlayerSidebar from "../game/playerSidebar/PlayerSidebar";
+import BottomBar from "../game/bottomBar/BottomBar";
 import {fetchSession} from "../../store/session/thunks";
 import {connectToSession, disconnectFromSession} from "../../store/signalR/actions";
 import {clearSession} from "../../store/session/reducer";
@@ -88,7 +88,7 @@ const FlexGameScreen: FunctionComponent<FlexGameScreenProps> = (props: FlexGameS
             </Box>
             <Box className={classes.rightPanel}>
                 <div className={classes.toolbarSpacer}/>
-                <GameSidebar/>
+                <PlayerSidebar/>
             </Box>
         </Container>
     );

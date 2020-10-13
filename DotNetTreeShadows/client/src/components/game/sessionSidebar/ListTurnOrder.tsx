@@ -1,7 +1,7 @@
 import React, {FunctionComponent} from 'react';
 import {useDispatch} from 'react-redux';
 import {makeStyles, Theme} from '@material-ui/core/styles';
-import {useTypedSelector} from "../../store";
+import {useTypedSelector} from "../../../store";
 import {List} from "@material-ui/core";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -9,18 +9,18 @@ import Avatar from "@material-ui/core/Avatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
-import PlayerBoard from "../../store/game/types/playerBoard";
-import TreeAvatarIcon from "./TreeAvatarIcon";
+import PlayerBoard from "../../../store/game/types/playerBoard";
+import TreeAvatarIcon from "../playerSidebar/TreeAvatarIcon";
 import Typography from "@material-ui/core/Typography";
-import FriendAvatar from "../FriendAvatar";
+import FriendAvatar from "../../FriendAvatar";
 import Divider from "@material-ui/core/Divider";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import IconButton from "@material-ui/core/IconButton";
-import {showAddPlayerDialog} from "../../store/appState/reducer";
-import AddPlayerDialog from "./AddPlayerDialog";
+import {showAddPlayerDialog} from "../../../store/appState/reducer";
+import AddPlayerDialog from "../AddPlayerDialog";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import DeleteOutlineOutlinedIcon from "@material-ui/icons/DeleteOutlineOutlined";
-import {updateInvitation} from "../../store/invitations/actions";
+import {updateInvitation} from "../../../store/invitations/actions";
 
 
 interface ListTurnOrderProps {
@@ -51,7 +51,7 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (props: ListTurnOrd
     }
 
     return (
-        <Box m={2} className={classes.root}><Paper>
+        <Paper>
             <Box p={2}>
                 <Typography variant={'h6'}>Turn Order</Typography>
                 <Divider/>
@@ -98,7 +98,7 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (props: ListTurnOrd
 
             </Box>
             <AddPlayerDialog/>
-        </Paper></Box>);
+        </Paper>);
 };
 
 const useStyles = makeStyles((theme: Theme) => ({
