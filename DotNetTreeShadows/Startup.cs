@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.WebSockets;
 using System.Security.Claims;
@@ -24,148 +25,140 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
 using dotnet_tree_shadows.Hubs;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Primitives;
 
 namespace dotnet_tree_shadows {
-    public class Startup {
-        public Startup (IConfiguration configuration) { Configuration = configuration; }
+  public class Startup {
 
-        public IConfiguration Configuration { get; }
+    public Startup (IConfiguration configuration) { Configuration = configuration; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices (IServiceCollection services) {
-            //MongoDb
-            services.Configure<GameDatabaseSettings>( Configuration.GetSection( nameof(GameDatabaseSettings) ) );
-            services.AddSignalR();
-            services.AddIdentityMongoDbProvider<UserModel, MongoRole>(
-                    identityOptions => {
-                        identityOptions.Password.RequiredLength = 6;
-                        identityOptions.Password.RequireLowercase = false;
-                        identityOptions.Password.RequireUppercase = false;
-                        identityOptions.Password.RequireNonAlphanumeric = false;
-                        identityOptions.Password.RequireDigit = false;
-                    },
-                    mongoIdentityOptions => {
-                        mongoIdentityOptions.ConnectionString =
-                            Configuration.GetSection( nameof(AuthDatabaseSettings) )["ConnectionString"];
+    public IConfiguration Configuration { get; }
 
-                        mongoIdentityOptions.UsersCollection = Configuration["AuthDatabaseSettings:UsersCollection"];
-                    }
-                );
-            
-            BsonSerializer.RegisterSerializationProvider(new HexCoordinatesSerializationProvider());
-            BsonSerializer.RegisterSerializationProvider(new TilesDictionarySerializationProvider());
-            BsonSerializer.RegisterSerializationProvider(new GameOptionsDictionarySerializationProvider());
-            BsonSerializer.RegisterSerializationProvider(new IntStackDictionarySerializationProvider());
+    // This method gets called by the runtime. Use this method to add services to the container.
+    public void ConfigureServices (IServiceCollection services) {
+      //MongoDb
+      services.Configure<GameDatabaseSettings>( Configuration.GetSection( nameof(GameDatabaseSettings) ) );
+      services.AddSignalR();
+      services.AddIdentityMongoDbProvider<UserModel, MongoRole>(
+          identityOptions => {
+            identityOptions.Password.RequiredLength = 6;
+            identityOptions.Password.RequireLowercase = false;
+            identityOptions.Password.RequireUppercase = false;
+            identityOptions.Password.RequireNonAlphanumeric = false;
+            identityOptions.Password.RequireDigit = false;
+          },
+          mongoIdentityOptions => {
+            mongoIdentityOptions.ConnectionString =
+              Configuration.GetSection( nameof(AuthDatabaseSettings) )["ConnectionString"];
 
-            services.AddSingleton<SessionService>();
-            services.AddSingleton<InvitationService>();
-            services.AddSingleton<GameService>();
-            services.AddSingleton<BoardService>();
+            mongoIdentityOptions.UsersCollection = Configuration["AuthDatabaseSettings:UsersCollection"];
+          }
+        );
 
-            services.AddSingleton<IGameDatabaseSettings>(
-                    sp => sp.GetRequiredService<IOptions<GameDatabaseSettings>>().Value
-                );
+      BsonSerializer.RegisterSerializationProvider( new HexCoordinatesSerializationProvider() );
+      BsonSerializer.RegisterSerializationProvider( new TilesDictionarySerializationProvider() );
+      BsonSerializer.RegisterSerializationProvider( new GameOptionsDictionarySerializationProvider() );
+      BsonSerializer.RegisterSerializationProvider( new IntStackDictionarySerializationProvider() );
 
-            //Authentication
-            services.AddAuthentication(
-                         options => {
-                             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                             options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+      services.AddSingleton<SessionService>();
+      services.AddSingleton<InvitationService>();
+      services.AddSingleton<GameService>();
+      services.AddSingleton<BoardService>();
+
+      services.AddSingleton<IGameDatabaseSettings>(
+          sp => sp.GetRequiredService<IOptions<GameDatabaseSettings>>().Value
+        );
+
+      //Authentication
+      services.AddAuthentication(
+                 options => {
+                   options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                   options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                   options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                 }
+               )
+              .AddJwtBearer(
+                   options => {
+                     options.Events = new JwtBearerEvents {
+                       OnTokenValidated = context => {
+                         if ( !(context.SecurityToken is JwtSecurityToken accessToken) ) return Task.CompletedTask;
+
+                         if ( context.Principal.Identity is ClaimsIdentity identity ) {
+                           identity.AddClaim( new Claim( "access_token", accessToken.RawData ) );
                          }
-                     )
-                    .AddJwtBearer(
-                             options => {
-                                 options.Events = new JwtBearerEvents {
-                                                                          OnTokenValidated = context => {
-                                                                              if ( context.SecurityToken is
-                                                                                  JwtSecurityToken
-                                                                                  accessToken ) {
-                                                                                  if ( context.Principal.Identity is
-                                                                                      ClaimsIdentity
-                                                                                      identity ) {
-                                                                                      identity.AddClaim(
-                                                                                              new Claim(
-                                                                                                      "access_token",
-                                                                                                      accessToken
-                                                                                                         .RawData
-                                                                                                  )
-                                                                                          );
-                                                                                  }
-                                                                              }
 
-                                                                              return Task.CompletedTask;
-                                                                          }
-                                                                      };
+                         return Task.CompletedTask;
+                       },
+                       OnMessageReceived = context => {
+                         StringValues accessToken = context.Request.Query["access_token"];
 
-                                 options.SaveToken = true;
-                                 options.RequireHttpsMetadata = false;
-                                 options.TokenValidationParameters = new TokenValidationParameters {
-                                                                         ValidateIssuer = true,  
-                                                                         ValidateAudience = true,  
-                                                                         ValidAudience = Configuration["AuthenticationSettings:JWT:ValidAudience"],  
-                                                                         ValidIssuer = Configuration["AuthenticationSettings:JWT:ValidIssuer"],
-                                                                         IssuerSigningKey = new SymmetricSecurityKey(
-                                                                                 Encoding.UTF8.GetBytes(
-                                                                                         Configuration[
-                                                                                             "AuthenticationSettings:JWT:Secret"]
-                                                                                     )
-                                                                             )
-                                                                     };
-                             }
-                         );
+                         PathString path = context.HttpContext.Request.Path;
+                         if ( !string.IsNullOrEmpty( accessToken ) && path.StartsWithSegments( "/gamehub" ) ) {
+                           context.Token = accessToken;
+                         }
 
-            services.AddControllersWithViews().AddNewtonsoftJson();
+                         return Task.CompletedTask;
+                       }
+                     };
 
-            // In production, the React files will be served from this directory
-            services.AddSpaStaticFiles( configuration => { configuration.RootPath = "client/build"; } );
-        }
+                     options.SaveToken = true;
+                     options.RequireHttpsMetadata = false;
+                     options.TokenValidationParameters = new TokenValidationParameters {
+                       ValidateIssuer = true,
+                       ValidateAudience = true,
+                       ValidAudience = Configuration["AuthenticationSettings:JWT:ValidAudience"],
+                       ValidIssuer = Configuration["AuthenticationSettings:JWT:ValidIssuer"],
+                       IssuerSigningKey = new SymmetricSecurityKey(
+                           Encoding.UTF8.GetBytes( Configuration["AuthenticationSettings:JWT:Secret"] )
+                         )
+                     };
+                   }
+                 );
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
-            if ( env.IsDevelopment() ) {
-                app.UseDeveloperExceptionPage();
-            } else {
-                app.UseExceptionHandler( "/Error" );
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+      services.AddControllersWithViews().AddNewtonsoftJson();
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
-          
-
-            app.UseRouting();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseEndpoints(
-                    endpoints => {
-                        endpoints.MapControllerRoute( name: "default", pattern: "{controller}/{action=Index}/{id?}" );
-                        endpoints.MapHub<GameHub>( "/gamehub" );
-                    }
-                );
-            
-            
-            app.UseSpa(
-                    spa => {
-                        spa.Options.SourcePath = "client";
-
-                        if ( env.IsDevelopment() ) {
-                            spa.UseReactDevelopmentServer( npmScript: "start" );
-                        }
-                    }
-                );
-            
-           
-            
-            
-        }
-        
-        
+      // In production, the React files will be served from this directory
+      services.AddSpaStaticFiles( configuration => { configuration.RootPath = "client/build"; } );
+      services.AddSingleton<IUserIdProvider, EmailBasedUserIdProvider>();
     }
-    
-    
+
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
+      if ( env.IsDevelopment() ) {
+        app.UseDeveloperExceptionPage();
+      } else {
+        app.UseExceptionHandler( "/Error" );
+        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+        app.UseHsts();
+      }
+
+      app.UseHttpsRedirection();
+      app.UseStaticFiles();
+      app.UseSpaStaticFiles();
+
+      app.UseRouting();
+
+      app.UseAuthentication();
+      app.UseAuthorization();
+
+      app.UseEndpoints(
+          endpoints => {
+            endpoints.MapControllerRoute( name: "default", pattern: "{controller}/{action=Index}/{id?}" );
+            endpoints.MapHub<GameHub>( "/gamehub" );
+          }
+        );
+
+      app.UseSpa(
+          spa => {
+            spa.Options.SourcePath = "client";
+
+            if ( env.IsDevelopment() ) {
+              spa.UseReactDevelopmentServer( npmScript: "start" );
+            }
+          }
+        );
+    }
+
+  }
 }

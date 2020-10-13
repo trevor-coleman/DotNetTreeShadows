@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace dotnet_tree_shadows.Services {
@@ -14,10 +15,11 @@ namespace dotnet_tree_shadows.Services {
     public void Set (GameOption option, bool value) {
       if ( value ) {
         Add( option );
+        return;
       }
 
       Remove( option );
     }
-
+    
   }
 }

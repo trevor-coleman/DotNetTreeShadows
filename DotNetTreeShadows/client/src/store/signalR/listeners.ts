@@ -10,20 +10,24 @@ import {connectToSession} from "./actions";
 
 const {store} = enhancedStore;
 
-export const connection = new signalR
-    .HubConnectionBuilder()
-    .withUrl("/gamehub")
-    .withAutomaticReconnect([0, 2000, 4000, 6000, 8000, 10000, 20000, 30000, 60000])
-    .configureLogging(signalR.LogLevel.Information)
-    .build();
-
 export type AddPieceToTileRequest = {
     sessionId: string, hexCode: number, treeType: TreeType, pieceType: PieceType
 }
 
+export const connection = new signalR
+    .HubConnectionBuilder()
+    .withUrl("/gamehub", { accessTokenFactory: () => {
+            console.log("-------------------------------------------")
+            console.log( store.getState());
+            return store.getState().auth.token
+        } })
+    .withAutomaticReconnect([0, 2000, 4000, 6000, 8000, 10000, 20000, 30000, 60000])
+    .configureLogging(signalR.LogLevel.Information)
+    .build();
+
 connection.on("ClientAddPieceToTile", (request: AddPieceToTileRequest) => {
     store.dispatch(addPieceToHex(request))
-})
+});
 
 connection.onclose(() => setTimeout(() => {
     connection.start().catch(err => console.error(err.toString()));
@@ -51,7 +55,17 @@ connection.on("UpdateGameOptions", (request: { sessionId: string, gameOption: st
     store.dispatch(gameOptionUpdate(request))
 })
 
-connection.start().catch(err => console.error(err.toString()));
+
+export const connectToSignalR = async () => {
+    await connection.start().catch(err => console.error(err.toString()));
+}
+
+export const disconnectFromSignalR = async ()=> {
+    await connection.stop();
+}
+
+
+
 
 export function sendMessage(senderId: string, message: string): void {
     connection.send("newMessage", senderId, message)

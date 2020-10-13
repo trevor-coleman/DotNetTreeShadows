@@ -80,14 +80,15 @@ const HostOptions: FunctionComponent<GameStatusProps> = (props: GameStatusProps)
                 <List>
                     {gameOptionDescriptions.map(option=><GameOptionItem key={option.id} {...option}/>)}
                 </List>
-                <Button color={"secondary"} variant={"contained"}>Start Game</Button>
-
+                <Box m={1} className={classes.startGameButtonContainer}><Button className={classes.startGameButton} color={"secondary"} variant={"contained"}>Start Game</Button></Box>
             </Box>
         </Paper>);
 };
 
 const useStyles = makeStyles((theme: Theme) => ({
-    root: {}
+    root: {},
+    startGameButton: {align:"right"},
+    startGameButtonContainer: {display:"flex", justifyContent:"center"}
 }));
 
 export default HostOptions;

@@ -25,8 +25,8 @@ const SessionSidebar: FunctionComponent<SessionSidebarProps> = (props: SessionSi
     const showHostOptions = playerId == host && status == GameStatus.Preparing;
     return (
         <SidebarGrid>
-            {showHostOptions ? <HostOptions/> : <GameInfo/>}
                 <ListTurnOrder/>
+            {showHostOptions ? <HostOptions/> : <GameInfo/>}
         </SidebarGrid>
             );
 };

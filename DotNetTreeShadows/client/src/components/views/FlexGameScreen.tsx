@@ -19,6 +19,7 @@ import AppBar from "@material-ui/core/AppBar";
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import {Link} from 'react-router-dom'
 import { signOut } from '../../store/auth/reducer';
+import {connectToSignalR, disconnectFromSignalR} from "../../store/signalR/listeners";
 
 
 interface FlexGameScreenProps {
@@ -34,13 +35,16 @@ const FlexGameScreen: FunctionComponent<FlexGameScreenProps> = (props: FlexGameS
 
     const loadSession = async () => {
         await dispatch(fetchSession(sessionIdFromPath))
+        await connectToSignalR();
         await dispatch(connectToSession(sessionIdFromPath));
     }
 
     const clearSessionOnLeave = async () => {
 
         await dispatch(disconnectFromSession(sessionIdFromPath));
+        await disconnectFromSignalR();
         dispatch(clearSession())
+
 
     }
 
