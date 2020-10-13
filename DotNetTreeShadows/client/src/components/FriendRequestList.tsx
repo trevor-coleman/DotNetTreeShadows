@@ -31,19 +31,18 @@ const FriendRequestList: FunctionComponent<FriendRequestListProps> = (props: Fri
     const {id: userId, name: userName, email: userEmail} = useTypedSelector(state => state.profile);
     const {friendRequests} = useTypedSelector(state => state.invitations)
 
-    console.log(friendRequests);
     const sentFilter = (invitation: Invitation): boolean => invitation.senderId == userId;
     const receivedFilter = (invitation: Invitation): boolean => invitation.recipientId == userId;
     const filter = requestType == "sent" ? sentFilter : receivedFilter;
 
     let receivedRequests = friendRequests.filter(filter);
-    const handleAcceptFriendRequest = (id: string) => {
-        dispatch(updateInvitation(id, "Accepted"));
+    const handleAcceptFriendRequest = (invitation: Invitation) => {
+        dispatch(updateInvitation(invitation, "Accepted"));
     }
 
 
-    function handleCancelOrDeleteFriendRequest(id: string) {
-        dispatch(updateInvitation(id, requestType == "sent" ? "Cancelled" : "Declined"));
+    function handleCancelOrDeleteFriendRequest(invitation: Invitation) {
+        dispatch(updateInvitation(invitation, requestType == "sent" ? "Cancelled" : "Declined"));
     }
 
     return receivedRequests.length > 0 ? <Card
@@ -54,8 +53,8 @@ const FriendRequestList: FunctionComponent<FriendRequestListProps> = (props: Fri
                 <ListItemText primary={`${requestType == "sent" ? invitation.recipientName :invitation.senderName} - ${invitation.status}`} secondary={formatDistanceToNow(new Date(invitation.created))}/>
                 <ListItemSecondaryAction>
                     {requestType == "received" ? <IconButton
-                        onClick={() => handleAcceptFriendRequest(invitation.id)}><CheckCircleOutlineIcon/></IconButton> : ""}
-                    <IconButton onClick={()=>handleCancelOrDeleteFriendRequest(invitation.id)}><CancelIcon/></IconButton></ListItemSecondaryAction>
+                        onClick={() => handleAcceptFriendRequest(invitation)}><CheckCircleOutlineIcon/></IconButton> : ""}
+                    <IconButton onClick={()=>handleCancelOrDeleteFriendRequest(invitation)}><CancelIcon/></IconButton></ListItemSecondaryAction>
             </ListItem>)}
         </List></CardContent></Card> : <div/>
 };

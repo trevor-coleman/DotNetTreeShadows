@@ -7,20 +7,20 @@ import {fetchProfile} from "../profile/reducer";
 type InvitationsResponse = { friendRequests: Invitation[], sessionInvites: Invitation[] }
 
 
-export const sendManySessionInvite = createAsyncThunk<string[], {friendIds: string[], sessionId: string}, ExtraInfo>(
-    'invitations/sendSessionInvite',
-    async ({friendIds, sessionId}, {extra})=>{
-        const{api}= extra;
-        try{
-            await api.invitations.sendManySessionInvites(friendIds, sessionId);
-            return friendIds
+export const sendManySessionInvites = createAsyncThunk<Invitation[], { friendIds: string[], sessionId: string }, ExtraInfo>(
+    'invitations/sendManySessionInvites',
+    async ({friendIds, sessionId}, {extra}) => {
+        const {api} = extra;
+        try {
+            const response = await api.invitations.sendManySessionInvites(friendIds, sessionId);
+            console.log(response);
+            return response.data;
         } catch (e) {
-            console.log(e.response.data);
+            console.error(e.response.data);
             return []
         }
     }
 );
-
 
 
 export const fetchInvitations = createAsyncThunk<InvitationsResponse, void, ExtraInfo>(
@@ -74,30 +74,32 @@ export const sendFriendRequest = createAsyncThunk<void, string, ExtraInfo>(
 )
 
 
+export const updateInvitation = (invitation: Invitation, status: InvitationStatus) => async (dispatch: AppDispatch) => {
+    try {
+        await dispatch(updateInvitationStatus({
+            invitation,
+            status
+        }));
+        await dispatch(fetchProfile())
+        await dispatch(fetchInvitations())
+    } catch (e) {
 
-
-export const updateInvitation = (id: string, status: InvitationStatus) => async (dispatch: AppDispatch) => {
-    await dispatch(updateInvitationStatus({
-        id,
-        status
-    }));
-    await dispatch(fetchProfile())
-    await dispatch(fetchInvitations())
+    }
 };
 
 
-export const updateInvitationStatus = createAsyncThunk<void, { id: string, status: InvitationStatus }, ExtraInfo>(
+export const updateInvitationStatus = createAsyncThunk<Invitation, { invitation: Invitation, status: InvitationStatus }, ExtraInfo>(
     'invitations/updateInvitationStatus',
-    async ({id, status}, {extra}) => {
-
+    async ({invitation, status}, {extra}) => {
         const {api} = extra;
-        console.log("sending");
+        const {id} = invitation;
+        console.log("sending", id);
         try {
             const response = await api.invitations.updateStatus(id, status);
-            console.log(response);
-            return;
+            return response.data;
         } catch (e) {
             console.log(e.response.data)
+            return e.response.data;
         }
     }
 )

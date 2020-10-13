@@ -1,5 +1,10 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {fetchInvitations, sendFriendRequest, addFriend} from "./actions";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {
+    fetchInvitations,
+    sendFriendRequest,
+    addFriend,
+    sendManySessionInvites
+} from "./actions";
 import {Invitation} from "./types/invitation";
 import {RequestState} from "../../api/requestState";
 
@@ -10,7 +15,7 @@ export type InvitationsState = {
     friendRequests: Invitation[],
     sessionInvites: Invitation[],
     sendingFriendRequestState: RequestState,
-    sendingFriendRequestFailureMessage: string|null,
+    sendingFriendRequestFailureMessage: string | null,
     fetchingInvitations: boolean,
     fetchingInvitationsFailureMessage: string | null,
 }
@@ -20,7 +25,7 @@ let initialInvitationState: InvitationsState = {
     sendingFriendRequestFailureMessage: null,
     fetchingInvitations: false,
     fetchingInvitationsFailureMessage: null,
-    invitations:[],
+    invitations: [],
     friendRequests: [],
     sessionInvites: []
 };
@@ -43,12 +48,26 @@ const invitationsSlice = createSlice({
         }));
 
         builder.addCase(sendFriendRequest.pending, state => ({
-            ...state, sendingFriendRequestState: RequestState.Pending, sendingFriendRequestFailureMessage: null
+            ...state,
+            sendingFriendRequestState: RequestState.Pending,
+            sendingFriendRequestFailureMessage: null
         })).addCase(sendFriendRequest.fulfilled, state => ({
-            ...state, sendingFriendRequestState: RequestState.Fulfilled,
+            ...state,
+            sendingFriendRequestState: RequestState.Fulfilled,
         })).addCase(sendFriendRequest.rejected, (state, action) => ({
-            ...state, sendingFriendRequestState: RequestState.Rejected, sendingFriendRequestFailureMessage: action.error.toString() || "Failed to send friendRequest"
+            ...state,
+            sendingFriendRequestState: RequestState.Rejected,
+            sendingFriendRequestFailureMessage: action.error.toString() || "Failed to send friendRequest"
         }))
+
+        builder.addCase(sendManySessionInvites.fulfilled, (state: InvitationsState, {payload}: PayloadAction<Invitation[]>) => {
+            return {
+                ...state,
+                sessionInvites: [...state.sessionInvites, ...payload]
+            }
+        })
+
+
     },
     reducers: {},
     name: "invitations",

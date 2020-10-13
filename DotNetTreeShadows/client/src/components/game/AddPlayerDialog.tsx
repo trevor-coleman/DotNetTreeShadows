@@ -5,7 +5,6 @@ import {Button, DialogContent, DialogActions, ListItem} from "@material-ui/core"
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContentText from "@material-ui/core/DialogContentText";
-import DebugToolbar from "../DebugToolbar";
 import {useTypedSelector} from "../../store";
 import List from "@material-ui/core/List";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -41,7 +40,7 @@ const AddPlayerDialog: FunctionComponent<AddPlayerDialogProps> = (props: AddPlay
     };
 
     async function inviteFriends() {
-        console.log("inviting to session:", sessionId);
+        console.log("inviting to session:", sessionId, checked);
         await dispatch(inviteFriendsToSession(checked, sessionId));
         setChecked(checked.filter(c => invitedPlayers.indexOf(c) == -1));
     }

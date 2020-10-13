@@ -4,16 +4,9 @@ import axios, {AxiosResponse} from "axios";
 import {NewUserInfo} from "../store/auth/types/newUserInfo";
 
 export default class AuthApiSection extends AApiSection {
-    async signIn(credentials: SignInCredentials): Promise<string | null> {
-        try {
+    async signIn(credentials: SignInCredentials): Promise<string> {
             const response: AxiosResponse = await axios.post("auth/login", credentials);
-            const token: string | null = response.headers["x-auth-token"];
-            return token
-        } catch (e) {
-            console.warn(`Sign In Failed for ${credentials.email}`)
-            console.warn(e)
-        }
-        return null;
+        return response.headers["x-auth-token"]
     }
 
     async registerNewUser(newUserInfo: NewUserInfo) {

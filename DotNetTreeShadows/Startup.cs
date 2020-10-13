@@ -1,6 +1,9 @@
+using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.WebSockets;
 using System.Security.Claims;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using AspNetCore.Identity.Mongo;
 using AspNetCore.Identity.Mongo.Model;
@@ -12,6 +15,7 @@ using dotnet_tree_shadows.Services.Serializers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +23,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
+using dotnet_tree_shadows.Hubs;
 
 namespace dotnet_tree_shadows {
     public class Startup {
@@ -30,7 +35,7 @@ namespace dotnet_tree_shadows {
         public void ConfigureServices (IServiceCollection services) {
             //MongoDb
             services.Configure<GameDatabaseSettings>( Configuration.GetSection( nameof(GameDatabaseSettings) ) );
-
+            services.AddSignalR();
             services.AddIdentityMongoDbProvider<UserModel, MongoRole>(
                     identityOptions => {
                         identityOptions.Password.RequiredLength = 6;
@@ -129,6 +134,7 @@ namespace dotnet_tree_shadows {
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+          
 
             app.UseRouting();
 
@@ -138,9 +144,11 @@ namespace dotnet_tree_shadows {
             app.UseEndpoints(
                     endpoints => {
                         endpoints.MapControllerRoute( name: "default", pattern: "{controller}/{action=Index}/{id?}" );
+                        endpoints.MapHub<GameHub>( "/gamehub" );
                     }
                 );
-
+            
+            
             app.UseSpa(
                     spa => {
                         spa.Options.SourcePath = "client";
@@ -150,6 +158,14 @@ namespace dotnet_tree_shadows {
                         }
                     }
                 );
+            
+           
+            
+            
         }
+        
+        
     }
+    
+    
 }

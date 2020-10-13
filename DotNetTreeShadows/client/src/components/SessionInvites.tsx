@@ -29,19 +29,18 @@ const SessionInviteList: FunctionComponent<SessionInviteListProps> = (props: Ses
     const {id: userId, name: userName, email: userEmail} = useTypedSelector(state => state.profile);
     const {sessionInvites} = useTypedSelector(state => state.invitations)
 
-    console.log(sessionInvites);
     const sentFilter = (invitation: Invitation): boolean => invitation.senderId == userId;
     const receivedFilter = (invitation: Invitation): boolean => invitation.recipientId == userId;
     const filter = requestType == "sent" ? sentFilter : receivedFilter;
 
     let filteredInvites = sessionInvites.filter(filter);
-    const handleAcceptSessionInvite = (id: string) => {
-        dispatch(updateInvitation(id, "Accepted"));
+    const handleAcceptSessionInvite = (invitation:Invitation) => {
+        dispatch(updateInvitation(invitation, "Accepted"));
     }
 
 
-    function handleCancelOrDeleteSessionInvite(id: string) {
-        dispatch(updateInvitation(id, requestType == "sent" ? "Cancelled" : "Declined"));
+    function handleCancelOrDeleteSessionInvite(invitation:Invitation) {
+        dispatch(updateInvitation(invitation, requestType == "sent" ? "Cancelled" : "Declined"));
     }
 
     return filteredInvites.length > 0 ? <Card
@@ -55,9 +54,9 @@ const SessionInviteList: FunctionComponent<SessionInviteListProps> = (props: Ses
                                   secondary={`From: ${invitation.senderName} - ${sentDateString} ago`}/>
                     <ListItemSecondaryAction>
                         {requestType == "received" ? <IconButton
-                            onClick={() => handleAcceptSessionInvite(invitation.id)}><CheckCircleOutlineIcon/></IconButton> : ""}
+                            onClick={() => handleAcceptSessionInvite(invitation)}><CheckCircleOutlineIcon/></IconButton> : ""}
                         <IconButton
-                            onClick={() => handleCancelOrDeleteSessionInvite(invitation.id)}><CancelIcon/></IconButton></ListItemSecondaryAction>
+                            onClick={() => handleCancelOrDeleteSessionInvite(invitation)}><CancelIcon/></IconButton></ListItemSecondaryAction>
                 </ListItem>;
             })}
         </List></CardContent></Card> : <div/>

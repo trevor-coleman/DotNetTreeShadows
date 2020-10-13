@@ -2,11 +2,8 @@ import {Profile} from "./types/profile";
 import {FriendProfile} from "./types/friendProfile";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {ExtraInfo} from "../store";
-import {SignInCredentials} from "../auth/types/signInCredentials";
 import {AppDispatch} from "../index";
-import {clearProfile} from "./reducer";
-import {fetchInvitations} from "../invitations/actions";
-import {signIn} from "../auth/actions";
+import {ProfileState} from "./reducer";
 
 export const fetchProfile = createAsyncThunk<Profile, void, ExtraInfo>(
     'profile/fetchProfile',
@@ -31,6 +28,26 @@ export const removeFriend = (id: string) => async (dispatch: AppDispatch) => {
     await dispatch(fetchProfile());
 };
 
+
+export const updateProfileAsync = createAsyncThunk<
+    Profile,
+    { profileProp: keyof ProfileState,
+        value: string,
+        profile: Profile, },
+    ExtraInfo>(
+    "profile/updateProfileItem",
+    async ({profileProp, value}, {extra}) => {
+        const {api} = extra;
+        try {
+            const changeRequest = {
+                [profileProp]: value
+            }
+            const response = await api.profile.updateProfile(changeRequest);
+            return response.data;
+        } catch (e) {
+            return e.response.data;
+        }
+    });
 
 export const removeFriendFromProfile = createAsyncThunk<void, string, ExtraInfo>(
     'profile/removeFriend',

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace dotnet_tree_shadows {
     public class Program {
@@ -7,6 +8,11 @@ namespace dotnet_tree_shadows {
 
         public static IHostBuilder CreateHostBuilder (string[] args) =>
             Host.CreateDefaultBuilder( args )
+                .ConfigureLogging(logging =>
+                 {
+                   logging.ClearProviders();
+                   logging.AddConsole();
+                 })
                 .ConfigureWebHostDefaults( webBuilder => { webBuilder.UseStartup<Startup>(); } );
     }
 }

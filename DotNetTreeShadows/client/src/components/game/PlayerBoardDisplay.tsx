@@ -2,23 +2,17 @@ import React, {FunctionComponent} from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../store/store';
 import {createStyles, makeStyles, Theme, useTheme} from '@material-ui/core/styles';
-import Piece from './Piece';
 import {Grid, Typography} from '@material-ui/core';
 import {PieceType} from "../../store/board/types/pieceType";
-import PlayerBoard, {PieceDetails} from "../../store/game/types/playerBoard";
-import treeColor from "./treeColor";
-import BoardTile from "./BoardTile";
+import PlayerBoard from "../../store/game/types/playerBoard";
 import Box from "@material-ui/core/Box";
-import {ClassNameMap} from "@material-ui/core/styles/withStyles";
 import PiecesGrid from "./PiecesGrid";
 import AvailablePieces from "./AvailablePieces";
-import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
-import LightDisplay from "./LightDisplay";
 
 interface BuyingGridProps {
     width?: number
-};
+}
 
 
 const PlayerBoardDisplay: FunctionComponent<BuyingGridProps> = (props: BuyingGridProps) => {
@@ -44,19 +38,19 @@ const PlayerBoardDisplay: FunctionComponent<BuyingGridProps> = (props: BuyingGri
     newBoardCode = PlayerBoard.getPieces(newBoardCode, PieceType.SmallTree).decreaseOnPlayerBoard();
     newBoardCode = PlayerBoard.getPieces(newBoardCode, PieceType.MediumTree).increaseOnPlayerBoard();
 
-    return boardCode ? <Box p={2} className={classes.paper}>
+    return boardCode ? <Box m={2} className={classes.paper}>
         <Grid container direction={'column'}>
-            <Grid item><LightDisplay/></Grid>
-            <Divider/>
-            <Grid item><Typography className={classes.playerBoardTitle}>Player Board</Typography></Grid>
-        <Grid container direction={'row'} spacing={1}>
-            {PlayerBoard.MakeGrid(newBoardCode).map((col, index) => {
-                console.log()
-                return <PiecesGrid key={`${boardCode}-${index}-${col}`}index={index} col={col} boardCode={boardCode} size={size}/>
-            })}
-            </Grid>
+            <Paper><Box p={2}>
+                <Typography variant={"h6"} className={classes.title}>Player Board</Typography>
+
+                <Grid container direction={'row'} spacing={2}>
+                {PlayerBoard.MakeGrid(newBoardCode).map((col, index) => {
+                    console.log()
+                    return <PiecesGrid key={`${boardCode}-${index}-${col}`}index={index} col={col} boardCode={boardCode} size={size}/>
+                })}
+            </Grid></Box></Paper>
             <Grid>
-                <Box className={classes.available}><Divider/><AvailablePieces/></Box>
+                <Paper><Box p={2} className={classes.available}><AvailablePieces/></Box></Paper>
             </Grid>
         </Grid>
     </Box> : <div/>
@@ -64,6 +58,9 @@ const PlayerBoardDisplay: FunctionComponent<BuyingGridProps> = (props: BuyingGri
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     paper: {},
+    title: {
+      marginBottom:theme.spacing(1),
+    },
     available: {marginTop: 16},
     playerBoardTitle: {
         marginTop:16

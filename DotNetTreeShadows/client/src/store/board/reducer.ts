@@ -1,11 +1,10 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Tile} from "./types/tile";
 import {fetchBoard} from "./actions";
-import {TreeType} from "./types/treeType";
-import {PieceType} from "./types/pieceType";
 import {Board} from "./types/board";
 import { updateSession } from "../session/reducer";
 import {SessionUpdate} from "../session/types";
+import {AddPieceToTileRequest} from "../signalR/listeners";
 
 const stateWithTileAtH = (state: BoardState, tile: number, h: number): BoardState => ({
     ...state,
@@ -48,10 +47,15 @@ const boardSlice = createSlice({
         }))
     },
     reducers: {
-        addPieceToHex: (state, action: PayloadAction<{ hexCode: number, pieceType: PieceType, treeType: TreeType }>) => {
-            const {hexCode, pieceType, treeType} = action.payload;
+        addPieceToHex: (state, action: PayloadAction<AddPieceToTileRequest>) => {
+            const {sessionId, hexCode, pieceType, treeType} = action.payload;
             let tile: number = state.tiles[hexCode];
-            console.log("addPiece", hexCode, tile)
+            console.group(action.type)
+            console.log(`session: ${sessionId}`);
+            console.log(`hexCode: ${hexCode}`);
+            console.log(`pieceType: ${pieceType}`);
+            console.log(`treeType: ${treeType}`);
+
             tile = Tile.SetPieceType(tile, pieceType);
             tile = Tile.SetTreeType(tile, treeType);
             return stateWithTileAtH(state, tile, hexCode);

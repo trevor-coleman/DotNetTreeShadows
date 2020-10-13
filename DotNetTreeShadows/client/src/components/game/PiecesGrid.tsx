@@ -1,13 +1,8 @@
 import PlayerBoard, {PieceDetails} from "../../store/game/types/playerBoard";
-import {ClassNameMap} from "@material-ui/core/styles/withStyles";
-import {Grid, Typography} from "@material-ui/core";
-import BoardTile from "./BoardTile";
+import {Grid} from "@material-ui/core";
 import {PieceType} from "../../store/board/types/pieceType";
-import Piece from "./Piece";
-import treeColor from "./treeColor";
 import React, {useState} from "react";
-import {createStyles, makeStyles, Theme, useTheme} from '@material-ui/core/styles';
-import WrappedBoardTile from "./WrappedBoardTile";
+import {makeStyles} from '@material-ui/core/styles';
 import TreeAvatarIcon from "./TreeAvatarIcon";
 
 interface Props {
@@ -28,8 +23,11 @@ const PiecesGrid = (props: Props) => {
                 <TreeAvatarIcon treeType={PlayerBoard.TreeType(boardCode)} pieceType={index as PieceType} gridHeader/>
             </Grid>
             {col.map(({status, price, key}: PieceDetails) => (
-                <Grid item className={classes.gridItem} key={key} onMouseEnter={()=>setHoverKey(key)} onMouseLeave={()=>setHoverKey("")}>
-                     <TreeAvatarIcon treeType={PlayerBoard.TreeType(boardCode)} text={hoverKey == key || status=="Empty" ? price : ""}  empty={status=="Empty"} pieceType={index as PieceType}/>
+                <Grid item className={classes.gridItem} key={key} onMouseEnter={() => setHoverKey(key)}
+                      onMouseLeave={() => setHoverKey("")}>
+                    <TreeAvatarIcon treeType={PlayerBoard.TreeType(boardCode)}
+                                    text={hoverKey == key || status == "Empty" ? price : ""} empty={status == "Empty"}
+                                    pieceType={index as PieceType}/>
                 </Grid>
             ))}
         </Grid>
@@ -37,16 +35,14 @@ const PiecesGrid = (props: Props) => {
 }
 
 const useStyles = makeStyles({
-    root:{
-        marginTop: 16,
-        marginBottom: 16
-    },
-    gridItem:{
-        height: 60
+    root: {},
+    gridItem: {
+        height: 50
     },
     piece: {
         width: 50
-    }})
+    }
+})
 
 
 export default PiecesGrid;

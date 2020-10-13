@@ -75,6 +75,7 @@ namespace dotnet_tree_shadows.Controllers {
         public async Task<IActionResult> Register ([FromBody] RegisterModel model) {
             UserModel userModelExists = await userManager.FindByEmailAsync( model.Email );
             if(userModelExists != null) return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User already exists!" });
+            if ( model.InviteCode != "ilovetrees" ) return Status403Forbidden();
             
             UserModel userModel = new UserModel() {
                                                              Email = model.Email,

@@ -1,15 +1,9 @@
 import Api from "../api/api";
 import {
     Action,
-    AnyAction,
-    CombinedState,
     configureStore, Dispatch,
-    EnhancedStore,
-    Middleware,
-    ThunkAction,
-    ThunkDispatch
+    ThunkAction
 } from "@reduxjs/toolkit";
-import thunk from "redux-thunk";
 import {persistReducer, persistStore} from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import rootReducer from "./rootReducer";
@@ -23,13 +17,12 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 export type RootState = ReturnType<typeof rootReducer>;
 
-export interface ExtraInfo {
+export interface ExtraInfo  {
     state?: RootState
     dispatch?: Dispatch
     extra: {
         api: Api
     }
-    rejectValue?: unknown
 }
 
 const getToken = (state: RootState): string | null => {

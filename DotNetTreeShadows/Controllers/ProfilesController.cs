@@ -46,13 +46,22 @@ namespace dotnet_tree_shadows.Controllers {
       return userModel.UserProfile();
     }
 
-    public class FriendEmail {
+    public class ProfileInfoChangeRequest {
 
-      [EmailAddress]
-      public string Email { get; set; } = "";
+      public string? Name { get; set; }
+      public string? Email { get; set; }
 
     }
-
+    
+    [HttpPut] [Route( "me" )]
+    public async Task<ActionResult<UserProfile>> PutMe (ProfileInfoChangeRequest profile) {
+      UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
+      if ( userModel == null ) return NotFound();
+      userModel.HandleChangeRequest( profile );
+      return userModel.UserProfile();
+    } 
+    
+    
     [HttpGet, Route( "me/friends" )]
     public async Task<ActionResult<FriendProfile[]>> Get () {
       UserModel userModel = await userManager.GetUserAsync( HttpContext.User );
@@ -60,6 +69,7 @@ namespace dotnet_tree_shadows.Controllers {
       return userModel.Friends.ToArray();
     }
 
+    
     [HttpDelete, Route( "me/friends/{friendId:length(24)}" )]
     public async Task<ActionResult<FriendProfile[]>> DeleteFriend ([FromRoute] string friendId) {
       UserModel user = await userManager.GetUserAsync( HttpContext.User );

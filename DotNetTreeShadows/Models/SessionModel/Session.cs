@@ -16,6 +16,7 @@ namespace dotnet_tree_shadows.Models.SessionModel {
     public string Host { get; set; } = "";
     public string[] Invitations { get; set; } = new string[0];
     public string[] InvitedPlayers { get; set; } = new string[0];
+    public string[] ConnectedPlayers { get; set; } = new string[0];
     public Dictionary<string, PlayerSummary> Players { get; set; } = new Dictionary<string, PlayerSummary>();
     public GameOptionsDictionary gameOptions { get; set; } = new GameOptionsDictionary();
 

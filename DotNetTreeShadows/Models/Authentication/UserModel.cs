@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AspNetCore.Identity.Mongo.Model;
+using dotnet_tree_shadows.Controllers;
 using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.SessionModel;
 using dotnet_tree_shadows.Models.SessionModels;
@@ -63,6 +64,11 @@ namespace dotnet_tree_shadows.Authentication {
 
       public void RemoveFriend (UserModel friend) {
         Friends.RemoveAll( friendSummary => friendSummary.Id == friend.UserId );
+      }
+
+      public void HandleChangeRequest (ProfilesController.ProfileInfoChangeRequest request) {
+        UserName = request.Name ?? UserName;
+        Email = request.Email ?? Email;
       }
 
     }

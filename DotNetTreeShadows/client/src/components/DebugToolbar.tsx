@@ -15,9 +15,6 @@ import {registerNewUser, signInAndFetchProfile, signOut} from '../store/auth/red
 import {SignInCredentials} from "../store/auth/types/signInCredentials";
 import SessionCreator from "./SessionCreator";
 import {Route, Switch} from 'react-router-dom';
-import TreeAvatarIcon from "./game/TreeAvatarIcon";
-import {TreeType} from "../store/board/types/treeType";
-import {PieceType} from "../store/board/types/pieceType";
 
 
 const accounts: NewUserInfo[] = [
@@ -25,18 +22,22 @@ const accounts: NewUserInfo[] = [
     email: 'trevor@trevor.com',
     password: 'Password',
     username: 'Trevor',
+    inviteCode: 'ilovetrees'
   }, {
     email: 'billy@trevor.com',
     password: 'Password',
     username: 'Billy',
+    inviteCode: 'ilovetrees'
   }, {
     email: 'sam@trevor.com',
     password: 'Password',
     username: 'Sam',
+    inviteCode: 'ilovetrees'
   }, {
     email: 'sherman@trevor.com',
     password: 'Password',
     username: 'Sherman',
+    inviteCode: 'ilovetrees'
   },
 ];
 

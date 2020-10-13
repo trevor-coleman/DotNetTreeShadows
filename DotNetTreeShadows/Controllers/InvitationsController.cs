@@ -78,7 +78,7 @@ namespace dotnet_tree_shadows.Controllers {
 
     [HttpPost]
     [Route( "{id:length(24)}/status" )]
-    public async Task<ActionResult> SetStatus ([FromRoute] string id, [FromBody] InvitationUpdate invitationUpdate) {
+    public async Task<ActionResult<Invitation>> SetStatus ([FromRoute] string id, [FromBody] InvitationUpdate invitationUpdate) {
       InvitationStatus invitationStatus = invitationUpdate.InvitationStatus;
       
       UserModel user = await userManager.GetUserAsync( HttpContext.User );
@@ -102,7 +102,7 @@ namespace dotnet_tree_shadows.Controllers {
       };
     }
 
-    private async Task<ActionResult> UpdateSessionInviteStatus (
+    private async Task<ActionResult<Invitation>> UpdateSessionInviteStatus (
         UserModel user,
         Invitation invitation,
         InvitationStatus status
@@ -140,7 +140,7 @@ namespace dotnet_tree_shadows.Controllers {
       };
     }
     
-    private async Task<ActionResult> UpdateFriendRequestStatus (
+    private async Task<ActionResult<Invitation>> UpdateFriendRequestStatus (
         UserModel user,
         Invitation invitation,
         InvitationStatus status
@@ -172,7 +172,7 @@ namespace dotnet_tree_shadows.Controllers {
       };
     }
 
-    private async Task<ActionResult> DeclineFriendRequest (Invitation invitation, UserModel recipient) {
+    private async Task<ActionResult<Invitation>> DeclineFriendRequest (Invitation invitation, UserModel recipient) {
       recipient.RemoveInvitation( invitation.Id );
 
       Task updateInvitation = invitationService.Update( invitation.Id, InvitationOperations.Decline( invitation ) );
@@ -180,10 +180,10 @@ namespace dotnet_tree_shadows.Controllers {
 
       await Task.WhenAll( updateInvitation, updateRecipient );
 
-      return Ok();
+      return invitation;
     }
 
-    private async Task<ActionResult> CancelFriendRequest (Invitation invitation, UserModel sender, UserModel recipient) {
+    private async Task<ActionResult<Invitation>> CancelFriendRequest (Invitation invitation, UserModel sender, UserModel recipient) {
       sender.RemoveInvitation( invitation.Id );
       recipient.RemoveInvitation( invitation.Id );
 
@@ -193,10 +193,10 @@ namespace dotnet_tree_shadows.Controllers {
 
       await Task.WhenAll( updateInvitation, updateSender, updateRecipient );
 
-      return Ok();
+      return invitation;
     }
 
-    private async Task<ActionResult> AcceptFriendRequest (Invitation invitation, UserModel sender, UserModel recipient) {
+    private async Task<ActionResult<Invitation>> AcceptFriendRequest (Invitation invitation, UserModel sender, UserModel recipient) {
       recipient.AddFriend( new FriendProfile(sender) );
       sender.AddFriend( new FriendProfile(recipient) );
 
@@ -207,10 +207,10 @@ namespace dotnet_tree_shadows.Controllers {
       await userManager.UpdateAsync( sender );
       await invitationService.Update( invitation.Id, InvitationOperations.Accept( invitation ) );
 
-      return Ok();
+      return invitation;
     }
 
-    private async Task<ActionResult> DeclineSessionInvite (Invitation invitation, UserModel recipient, Session session) {
+    private async Task<ActionResult<Invitation>> DeclineSessionInvite (Invitation invitation, UserModel recipient, Session session) {
 
       recipient.RemoveInvitation( invitation.Id );
       Task updateRecipient = userManager.UpdateAsync( recipient );
@@ -221,10 +221,10 @@ namespace dotnet_tree_shadows.Controllers {
       Task updateSession = sessionService.Update( session );
       Task updateInvitation = invitationService.Update( invitation.Id, InvitationOperations.Decline( invitation ) );
       await Task.WhenAll( updateInvitation, updateRecipient, updateSession );
-      return Ok();
+      return invitation;
     }
 
-    private async Task<ActionResult> CancelSessionInvite (
+    private async Task<ActionResult<Invitation>> CancelSessionInvite (
         Invitation invitation,
         UserModel sender,
         UserModel recipient,
@@ -242,10 +242,10 @@ namespace dotnet_tree_shadows.Controllers {
 
       await Task.WhenAll( updateInvitation, updateSender, updateRecipient, updateSession );
 
-      return Ok();
+      return invitation;
     }
 
-    private async Task<ActionResult> AcceptSessionInvite (
+    private async Task<ActionResult<Invitation>> AcceptSessionInvite (
         Invitation invitation,
         UserModel sender,
         UserModel recipient,
@@ -269,12 +269,12 @@ namespace dotnet_tree_shadows.Controllers {
 
       Task.WaitAll( updateRecipient, updateSender, updateSession, updateGame );
 
-      return Ok();
+      return invitation;
     }
     
     [HttpPost]
     [Route("session-invites")]
-    public async Task<ActionResult> SendManySessionInvites (ManySessionInviteRequest invitationInfo) {
+    public async Task<ActionResult<Invitation[]>> SendManySessionInvites (ManySessionInviteRequest invitationInfo) {
       string[] recipientIds = invitationInfo.RecipientIds;
       string sessionId = invitationInfo.SessionId;
       if ( sessionId == null ) return Status400MissingRequiredField( "sessionId" );
@@ -289,7 +289,7 @@ namespace dotnet_tree_shadows.Controllers {
       if ( recipientIds.Contains( sender.UserId ) ) return Status400Invalid( "Cannot invite yourself" );
 
       List<Task> recipientUpdates = new List<Task>();
-      
+      List<Invitation> invitations = new List<Invitation>();
       foreach ( string recipientId in recipientIds ) {
         UserModel recipient = await userManager.FindByIdAsync( recipientId );
         if ( recipient == null ) return Status404NotFound( "Recipient" );
@@ -312,6 +312,7 @@ namespace dotnet_tree_shadows.Controllers {
         session.Invitations = session.Invitations.Append( sessionInvitation.Id ).ToArray();
         session.InvitedPlayers = session.InvitedPlayers.Append( recipientId ).ToArray();
         recipientUpdates.Add(userManager.UpdateAsync( recipient ));
+        invitations.Add( sessionInvitation );
       }
       Task allRecipientUpdates = Task.WhenAll( recipientUpdates );
       Task updateSender = userManager.UpdateAsync( sender );
@@ -319,7 +320,7 @@ namespace dotnet_tree_shadows.Controllers {
       
       await Task.WhenAll( updateSession, updateSender, allRecipientUpdates );
 
-      return Ok();
+      return invitations.ToArray();
     }
 
     [HttpPost]

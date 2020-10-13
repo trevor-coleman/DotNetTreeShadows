@@ -1,9 +1,11 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {fetchProfile, removeFriendFromProfile} from "./actions";
+import {fetchProfile, removeFriendFromProfile, updateProfileAsync} from "./actions";
 import {RequestState} from "../../api/requestState";
 import {Profile} from "./types/profile";
 import {Action} from "typesafe-actions";
 import {deleteSession} from "../session/actions";
+import {sendManySessionInvites} from "../invitations/actions";
+import {Invitation} from "../invitations/types/invitation";
 
 export interface SessionSummary {
     id: string,
@@ -77,6 +79,16 @@ const profileSlice = createSlice({
             ...state,
             sessions: state.sessions.filter(sessionSummary=>sessionSummary.id!=action.payload)
         }))
+
+        builder.addCase(sendManySessionInvites.fulfilled, ((state:ProfileState, action:PayloadAction<Invitation[]>) => {
+            console.log(action.payload)
+            return{...state}
+        } ))
+
+        builder.addCase(updateProfileAsync.fulfilled, (state:ProfileState, action:PayloadAction<Profile>) => ({
+            ...state,
+            ...action.payload
+        }) )
 
 
     },

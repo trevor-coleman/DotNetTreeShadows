@@ -26,12 +26,12 @@ export default class InvitationApiSection extends AApiSection {
 
     }
 
-    async updateStatus(id: string, invitationStatus: InvitationStatus) {
+    async updateStatus(id: string, invitationStatus: InvitationStatus):Promise<AxiosResponse<Invitation>> {
         return await axios.post(`invitations/${id}/status`, {invitationStatus})
     }
 
 
-    async sendManySessionInvites(recipientIds: string[], sessionId: string) {
+    async sendManySessionInvites(recipientIds: string[], sessionId: string):Promise<AxiosResponse<Invitation[]>> {
         return await axios.post('invitations/session-invites', {
             recipientIds,
             sessionId

@@ -3,15 +3,16 @@ import {Session, SessionUpdate} from './types'
 import {RequestState} from "../../api/requestState";
 import {createSession, fetchSessionFromApi} from "./actions";
 import {createSessionAndFetchProfile, fetchSession} from './thunks'
-import {Board} from "../board/types/board";
-import Game from "../game/types/game";
+import {sendManySessionInvites, updateInvitationStatus} from "../invitations/actions";
+import {Invitation} from "../invitations/types/invitation";
 
 
 
 export interface SessionState extends Session {
     loadingSessionFailureMessage: string|null,
     loadingSessionState: RequestState,
-    firstLoad: boolean
+    firstLoad: boolean,
+    connectedPlayers: string[],
 }
 
 const initialSessionState: SessionState = {
@@ -24,6 +25,7 @@ const initialSessionState: SessionState = {
     name: "",
     players: {},
     firstLoad: true,
+    connectedPlayers: [],
 }
 
 interface PendingAction<ArgType> {
@@ -37,7 +39,7 @@ interface PendingAction<ArgType> {
 const sessionSlice = createSlice({
     name: 'session',
     extraReducers: builder => {
-        builder.addCase(fetchSessionFromApi.pending, (state:SessionState, action:PendingAction<string>) => {
+        builder.addCase(fetchSessionFromApi.pending, (state:SessionState) => {
             return ({
                 ...state,
                 loadingSessionFailureMessage: null,
@@ -45,7 +47,7 @@ const sessionSlice = createSlice({
             })
         });
 
-        builder.addCase(fetchSessionFromApi.fulfilled, (state:SessionState, action:PayloadAction<Session>) => ({
+        builder.addCase(fetchSessionFromApi.fulfilled, (state:SessionState) => ({
             ...state,
             loadingSessionFailureMessage: null,
             loadingSessionState: RequestState.Fulfilled,
@@ -63,7 +65,7 @@ const sessionSlice = createSlice({
             loadingSessionState: RequestState.Pending
         }));
 
-        builder.addCase(createSession.fulfilled, (state:SessionState, action:PayloadAction<Session>) => ({
+        builder.addCase(createSession.fulfilled, (state:SessionState) => ({
             ...state,
             loadingSessionFailureMessage: null,
             loadingSessionState: RequestState.Fulfilled,
@@ -74,6 +76,30 @@ const sessionSlice = createSlice({
             loadingSessionFailureMessage: action.error.toString(),
             loadingSessionState: RequestState.Rejected,
         }));
+
+        builder.addCase(sendManySessionInvites.fulfilled, ((state:SessionState, action:PayloadAction<Invitation[]>) => {
+            const invitesToAdd = action.payload.filter(inv=> inv.resourceId == state.id);
+            const newInvitedPLayers = invitesToAdd.map(inv=>inv.recipientId)
+            const newInvitationIds = invitesToAdd.map(inv=>inv.id)
+            return {
+                ...state,
+                invitedPlayers: [...state.invitedPlayers, ...newInvitedPLayers],
+                invitations: [...state.invitations, ...newInvitationIds]
+            }
+        }))
+
+        builder.addCase(updateInvitationStatus.fulfilled, ((state:SessionState, action:PayloadAction<Invitation>)=>{
+            const invitation = action.payload;
+            if(invitation.resourceId !== state.id) return state;
+            //TODO: Keep list of invited players who declined.
+            if(invitation.status === "Declined" || invitation.status==="Cancelled"){
+                return  {...state,
+                    invitedPlayers: state.invitedPlayers.filter(id=>id !== invitation.recipientId),
+                    invitations: state.invitations.filter(id=>id!==invitation.id),
+                }
+            }
+        }))
+
     },
     initialState: initialSessionState,
     reducers:{
@@ -83,14 +109,20 @@ const sessionSlice = createSlice({
                 ...action.payload.session,
                 firstLoad: false
             }},
-        clearSession:(state => ({
+        clearSession:(() => ({
             ...initialSessionState
-        }))
+        })),
+        updateConnectedPlayers: (state:SessionState, action:PayloadAction<string[]>)=> ({
+         ...state,
+         connectedPlayers: action.payload,
+        })
+
+
     }
 });
 
 
-export const {updateSession, clearSession} = sessionSlice.actions;
-export {createSession, fetchSession, createSessionAndFetchProfile};
+export const {updateSession, clearSession, updateConnectedPlayers} = sessionSlice.actions;
+export {createSession, fetchSession, createSessionAndFetchProfile };
 export default sessionSlice.reducer;
 

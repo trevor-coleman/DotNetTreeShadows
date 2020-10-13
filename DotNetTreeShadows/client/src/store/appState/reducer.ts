@@ -3,7 +3,7 @@ import {FriendProfile} from "../profile/types/friendProfile";
 import {Action} from "typesafe-actions";
 import {removeFriendFromProfile} from "../profile/actions";
 import {RequestState} from "../../api/requestState";
-import {inviteFriendsToSession} from "./addPlayerDialogActions";
+import {inviteFriendsToSession} from "./addPlayerDialog/actions";
 import {Session} from "../session/types";
 import {fetchSessionFromApi} from "../session/actions";
 import {updateSession} from '../session/reducer'

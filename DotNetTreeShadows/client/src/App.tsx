@@ -1,19 +1,20 @@
 import React from 'react';
 import './App.css';
-import GameScreen from './components/views/GameScreen';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import GameBoard from "./components/game/GameBoard";
-import DebugToolbar from './components/DebugToolbar';
 import {CssBaseline} from "@material-ui/core";
 import HomeScreen from "./components/views/HomeScreen";
+import FlexGameScreen from "./components/views/FlexGameScreen";
+import SignIn from "./components/views/SignIn";
+import PrivateRoute from "./routes/PrivateRoute";
 
 function App() {
     return (
         <Router>
             <CssBaseline/>
             <Switch>
-                <Route exact path={"/sessions/:sessionId"} component={GameScreen}/>
-                <Route path={"/"} component={HomeScreen}/>
+                <PrivateRoute exact path={"/sessions/:sessionId"}><FlexGameScreen/></PrivateRoute>
+                <Route exact path={"/auth"} component={SignIn}/>
+                <PrivateRoute path={"/"} component={HomeScreen}><HomeScreen/></PrivateRoute>
             </Switch>
         </Router>);
 }

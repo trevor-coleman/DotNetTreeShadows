@@ -15,5 +15,8 @@ namespace dotnet_tree_shadows.Authentication {
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
         
+        [Required(ErrorMessage = "Invite code is required")]
+        public string InviteCode { get; set; }
+        
     }
 }

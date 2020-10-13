@@ -1,9 +1,7 @@
-import {AppDispatch} from "../index";
-import {setInviteFriendsToSessionState, clearAddPlayerDialogCheckForPlayers} from "./reducer";
-import {RequestState} from "../../api/requestState";
-import {fetchSession} from "../session/thunks";
-import {fetchProfile} from "../profile/actions";
-import {sendManySessionInvite} from "../invitations/actions";
+import {AppDispatch} from "../../index";
+import {setInviteFriendsToSessionState, clearAddPlayerDialogCheckForPlayers} from "../reducer";
+import {RequestState} from "../../../api/requestState";
+import {sendManySessionInvites} from "../../invitations/actions";
 
 
 export const inviteFriendsToSession = (friendIds: string[], sessionId:string)=> async (dispatch:AppDispatch)=> {
@@ -13,10 +11,8 @@ export const inviteFriendsToSession = (friendIds: string[], sessionId:string)=> 
         message: null,
     }))
     try{
-        await dispatch(sendManySessionInvite({friendIds, sessionId}));
+        await dispatch(sendManySessionInvites({friendIds, sessionId}));
         await dispatch( clearAddPlayerDialogCheckForPlayers(friendIds))
-        await dispatch (fetchSession(sessionId));
-        await dispatch (fetchProfile());
         dispatch(setInviteFriendsToSessionState({
             requestState: RequestState.Fulfilled,
             message: null,
@@ -24,7 +20,7 @@ export const inviteFriendsToSession = (friendIds: string[], sessionId:string)=> 
     } catch (e) {
         dispatch(setInviteFriendsToSessionState({
             requestState: RequestState.Rejected,
-            message: e.response.data
+            message: e?.message ?? "setInviteFriendsToSessionState failed."
         }))
     }
 }

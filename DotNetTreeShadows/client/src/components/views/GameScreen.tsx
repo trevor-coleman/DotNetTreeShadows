@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {makeStyles, useTheme, Theme, createStyles} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -12,12 +12,11 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import {Link, useParams} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useTypedSelector} from "../../store";
-import {RequestState} from "../../api/requestState";
-import {fetchSession, clearSession} from "../../store/session/reducer";
-import GameInfoBar from "../game/GameInfoBar";
+import Grid from "@material-ui/core/Grid";
+import SessionSidebar from "../SessionSidebar";
 
-
-const drawerWidth = 280;
+const leftDrawerWidth = 280;
+const rightDrawerWidth = 500;
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -30,12 +29,16 @@ const useStyles = makeStyles((theme: Theme) =>
         hide: {
             display: 'none',
         },
-        drawer: {
-            width: drawerWidth,
+        leftDrawer: {
+            width: leftDrawerWidth,
+            flexShrink: 0,
+        },
+        rightDrawer: {
+            width: rightDrawerWidth,
             flexShrink: 0,
         },
         drawerPaper: {
-            width: drawerWidth,
+            width: leftDrawerWidth,
         },
         drawerHeader: {
             display: 'flex',
@@ -47,10 +50,10 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         content: {
             alignItems: 'flex-start',
-            marginLeft: drawerWidth,
-            width: "95vmin",
+            marginLeft: leftDrawerWidth,
+            marginRight: rightDrawerWidth,
             marginTop: 64,
-            border: '1px dotted red',
+            border: "3px dashed magenta"
         },
         sessionName: {
             whiteSpace: "nowrap",
@@ -73,6 +76,15 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         menuIcon: {
             color: "white"
+        },
+        gameBoard: {
+            width: '90vh',
+            margin: "auto"
+        },
+        gameBoardGrid: {
+            alignSelf: 'center',
+            width: '100vh',
+            margin: "auto",
         }
     }),
 );
@@ -88,27 +100,7 @@ export default function GameScreen(props: IGameScreenProps) {
     const {id: sessionIdFromState, loadingSessionState, name: sessionName, firstLoad} = useTypedSelector(state => state.session);
     const dispatch = useDispatch();
 
-    const loadSession = async () => {
-        await dispatch(fetchSession(sessionIdFromPath))
-    }
 
-    const clearSessionOnLeave = () => {
-        dispatch(clearSession())
-    }
-
-    const shouldLoadSession = (sessionIdFromState != sessionIdFromPath) && (loadingSessionState != RequestState.Pending);
-
-    console.log("rendering");
-    useEffect(() => {
-        console.log("loadingSession")
-            loadSession();
-            return () => {
-                console.log("cleaningUpSession")
-                clearSessionOnLeave();
-            }
-        },
-        []
-    )
 
 
     const toggleDrawerOpen = () => {
@@ -129,12 +121,15 @@ export default function GameScreen(props: IGameScreenProps) {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Box p={3} className={classes.content}>
-                <GameInfoBar/>
-                <GameBoard/>
+            <Box className={classes.content}>
+                <Grid container className={classes.gameBoardGrid}>
+                    <Grid item xs={12}>
+                        <GameBoard/>
+                    </Grid>
+                </Grid>
             </Box>
             <Drawer
-                className={classes.drawer}
+                className={classes.leftDrawer}
                 variant="persistent"
                 anchor="left"
                 open={open}
@@ -144,6 +139,18 @@ export default function GameScreen(props: IGameScreenProps) {
             >
                 <div className={classes.drawerHeader}/>
                 <GameSidebar/>
+            </Drawer>
+            <Drawer
+                className={classes.rightDrawer}
+                variant="persistent"
+                anchor="right"
+                open={open}
+                classes={{
+                    paper: classes.drawerPaper,
+                }}
+            >
+                <div className={classes.drawerHeader}/>
+                <SessionSidebar/>
             </Drawer>
         </div>
     );

@@ -6,6 +6,7 @@ import boardReducer from './board/reducer'
 import sessionReducer from './session/reducer'
 import gameReducer from './game/reducer'
 import appStateReducer from './appState/reducer'
+import signalrReducer from "./signalR/reducer";
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     game: gameReducer,
     session: sessionReducer,
     appState: appStateReducer,
+    signalR: signalrReducer,
 })
 
 export default rootReducer;

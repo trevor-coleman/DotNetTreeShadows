@@ -8,7 +8,11 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 interface FriendAvatarProps {
     id?:string,
     addFriend?: boolean
+    size?: number,
+    fontSize?: "inherit" | "default" | "large" | "small" | undefined,
 }
+
+type StyleProps = FriendAvatarProps & {friendColor:string}
 
 //COMPONENT
 const FriendAvatar: FunctionComponent<FriendAvatarProps> = (props: FriendAvatarProps) => {
@@ -33,7 +37,7 @@ const FriendAvatar: FunctionComponent<FriendAvatarProps> = (props: FriendAvatarP
 
     const friendColor = name ? stringToHslColor(name, 60,70) : "#363636";
 
-    const classes = useStyles({friendColor});
+    const classes = useStyles( {...props, friendColor});
 
     return (
         <Avatar className={classes.avatar}>
@@ -41,15 +45,17 @@ const FriendAvatar: FunctionComponent<FriendAvatarProps> = (props: FriendAvatarP
                 ? initials
                 : addFriend
                     ? <PersonAddIcon/>
-                    :<PersonIcon/>
+                    :<PersonIcon fontSize={props.fontSize}/>
             }
         </Avatar>);
 };
 
 const useStyles = makeStyles((theme:Theme)=>({
     avatar: {
-        color: ({friendColor}:{friendColor:string})=>theme.palette.getContrastText(friendColor),
-        backgroundColor: ({friendColor}:{friendColor:string})=>friendColor
+        color: ({friendColor}:StyleProps)=>theme.palette.getContrastText(friendColor),
+        backgroundColor: ({friendColor}:StyleProps)=>friendColor,
+        width:({size}:StyleProps)=>size,
+        height:({size}:StyleProps)=>size,
     }
 }));
 

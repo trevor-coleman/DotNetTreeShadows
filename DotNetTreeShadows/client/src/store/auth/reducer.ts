@@ -1,6 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {signIn, registerNewUser, registerAndSignIn, signInAndFetchProfile} from "./actions";
-import {Action} from "typesafe-actions";
 
 export interface AuthState {
     authInProgress: boolean,
@@ -24,18 +23,20 @@ const authSlice = createSlice({
             signedIn: false,
             signedInRejectedMessage: null
         }));
-        builder.addCase(signIn.fulfilled, (state, action: PayloadAction<string | null>) => ({
-                ...state,
-                authInProgress: false,
-                signedIn: true,
-                token: action.payload,
-            })
+        builder.addCase(signIn.fulfilled, (state, action: PayloadAction<string | null>) => {
+                return action.payload == null ? state : {
+                    ...state,
+                    authInProgress: false,
+                    signedIn: true,
+                    token: action.payload,
+                }
+            }
         )
         builder.addCase(signIn.rejected, (state, action) => ({
             ...state,
             authInProgress: false,
-            signedIn: true,
-            signedInRejectedMessage: action.error.toString() || "signIn failed"
+            signedIn: false,
+            signedInRejectedMessage: action.error.message || "signIn failed"
         }));
 
         builder.addCase(registerNewUser.pending, state => ({
@@ -61,10 +62,11 @@ const authSlice = createSlice({
             }));
     },
     reducers: {
-        signOut: (state: AuthState, action: Action) => {
+        signOut: (state: AuthState) => {
             return {
                 ...state,
-                token: null
+                token: null,
+                signedIn: false,
             }
         },
         setToken: (state: AuthState, action: PayloadAction<string | null>) => {
@@ -74,7 +76,7 @@ const authSlice = createSlice({
             }
         },
     },
-    name: "board",
+    name: "auth",
     initialState: initialState
 })
 

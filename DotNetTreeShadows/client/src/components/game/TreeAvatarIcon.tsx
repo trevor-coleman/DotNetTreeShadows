@@ -14,8 +14,12 @@ interface TreeAvatarIconProps {
     pieceType?: PieceType,
     text?: string,
     active?: boolean,
-    gridHeader?: boolean
-    empty?: boolean
+    gridHeader?: boolean,
+    empty?: boolean,
+    connected?: boolean,
+    size?: number,
+    fontSize?: "inherit" | "default" | "large" | "small" | undefined,
+
 }
 
 interface styleProps extends TreeAvatarIconProps {
@@ -24,11 +28,14 @@ interface styleProps extends TreeAvatarIconProps {
 
 //COMPONENT
 const TreeAvatarIcon: FunctionComponent<TreeAvatarIconProps> = (props: TreeAvatarIconProps) => {
-    const {treeType, text, gridHeader, empty} = props;
+    const {treeType, text, gridHeader, empty, size:propSize} = props;
     const pieceType = props.pieceType ?? PieceType.MediumTree;
     const active = props.active ?? true;
 
-    let size = 24;
+    let connected = props.connected ?? false;
+
+
+    let size = propSize ?? 24;
     let center = size / 2;
     let scale: number;
 
@@ -47,30 +54,36 @@ const TreeAvatarIcon: FunctionComponent<TreeAvatarIconProps> = (props: TreeAvata
             break;
 
     }
+    const color = treeColor(treeType, active ? 1 : 0.2);
 
+    let styleProps={
+        ...props,
+        connected,
+        color
+    };
+
+    const classes = useStyles(styleProps);
 
     useDispatch();
 
     const svgTree = TreeSVG(treeType, pieceType)
 
-    const color = treeColor(treeType, active ? 1 : 0.2);
 
-    const classes = useStyles({
-        ...props,
-        color
-    });
+
+
 
     return (
-        <Avatar className={classes.avatar}>
+        <Avatar style={{border: gridHeader ? `2px outset ${color}` : empty ? "1px dashed grey" : connected == true ? "3px solid green" : undefined}} className={classes.avatar}>
             {text || empty
                 ? text
-                : <SvgIcon>
+                : <SvgIcon fontSize={props.fontSize ?? "inherit"}>
                     <svg className={classes.svg} xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${size} ${size}`}>
                         {gridHeader ? "" :
                             <circle cx={center} cy={center} r={size / 2} fill={Color(color).lighten(2.5).toString()}/>}
-                        <image href={svgTree} x={center - (size * scale * 0.5)} y={center - (size * scale * 0.5)}
-                               width={size * scale} height={size * scale}/>
-
+                        {connected?
+                            <image href={svgTree} x={center - (size * scale * 0.5)} y={center - (size * scale * 0.5)}
+                               width={size * scale} height={size * scale}/>:<image href={svgTree} x={center - (size * scale * 0.5)} y={center - (size * scale * 0.5)}
+                                                                                   width={size * scale} height={size * scale}/>}
                     </svg>
                 </SvgIcon>}
         </Avatar>);
@@ -83,9 +96,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     avatar: {
         backgroundColor: ({color, empty, gridHeader}: styleProps) => empty || gridHeader ? "#fff" : color,
-        color: ({color, empty}: styleProps) => empty ? "#ccc" : theme.palette.getContrastText(color),
-        border: ({color, empty, gridHeader}) => gridHeader ? `2px outset ${color}` : empty ? "1px dashed lightgrey" : undefined,
-
+        color: ({color, empty}: styleProps) => empty ? "grey" : theme.palette.getContrastText(color),
+        width: ({size}:styleProps) => size,
+        height: ({size}:styleProps) => size,
     },
 }));
 
