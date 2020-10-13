@@ -1,5 +1,4 @@
 import {AppDispatch} from "../index";
-import Api from "../../api/api";
 import {Session} from "./types";
 import {unwrapResult} from "@reduxjs/toolkit";
 import {createSession, updateSession} from "./reducer";

@@ -2,7 +2,6 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {SunPosition} from "./types/sunPosition";
 import Game from "./types/game";
 import {fetchGame} from "./actions";
-import {RequestState} from "../../api/requestState";
 import {updateSession} from "../session/reducer";
 import {SessionUpdate} from "../session/types";
 import {GameStatus} from "./types/GameStatus";

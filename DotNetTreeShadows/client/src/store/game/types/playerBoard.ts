@@ -1,6 +1,5 @@
 import {TreeType} from "../../board/types/treeType";
 import {PieceType} from "../../board/types/pieceType";
-import treeColor from "../../../components/game/treeColor";
 
 interface PieceCount {
     available: number;

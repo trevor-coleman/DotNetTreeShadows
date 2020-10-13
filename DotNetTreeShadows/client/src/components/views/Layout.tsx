@@ -1,4 +1,4 @@
-import React, {FunctionComponent, PropsWithChildren, Component, useState} from 'react';
+import React, {FunctionComponent, PropsWithChildren, useState} from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../../store/store';
 import { makeStyles } from '@material-ui/core/styles';

@@ -1,8 +1,8 @@
 import React, {FunctionComponent, useState} from 'react';
-import {connect, ConnectedProps, useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../store/store';
 import {makeStyles} from '@material-ui/core/styles';
-import {Card, CardContent, InputLabel, Typography, IconButton, Box} from '@material-ui/core';
+import {InputLabel, IconButton, Box} from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';

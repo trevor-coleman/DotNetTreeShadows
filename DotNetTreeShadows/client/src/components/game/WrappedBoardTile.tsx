@@ -1,6 +1,5 @@
 import React from "react";
 import BoardTile from "./BoardTile";
-import PlayerBoard from "../../store/game/types/playerBoard";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {PieceType} from "../../store/board/types/pieceType";
 import {TreeType} from "../../store/board/types/treeType";

@@ -1,9 +1,7 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {AppDispatch} from '../../store'
-import Api from "../../api/api";
 import {ExtraInfo} from "../store";
 import Game from "./types/game";
-import {AxiosResponse} from "axios";
 
 
 export const fetchGame = createAsyncThunk<Game, string, ExtraInfo>('game/fetchGame',

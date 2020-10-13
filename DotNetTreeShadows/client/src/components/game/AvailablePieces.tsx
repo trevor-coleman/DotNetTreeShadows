@@ -1,14 +1,12 @@
 import React, {FunctionComponent} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {makeStyles} from '@material-ui/core/styles';
 import Box from "@material-ui/core/Box";
 import {Typography} from "@material-ui/core";
 import {useTypedSelector} from "../../store";
 import PlayerBoard from "../../store/game/types/playerBoard";
-import {PieceType, pieceTypeName} from "../../store/board/types/pieceType";
-import BoardTile from "./BoardTile";
+import {PieceType} from "../../store/board/types/pieceType";
 import Divider from "@material-ui/core/Divider";
-import WrappedBoardTile from "./WrappedBoardTile";
 import TreeAvatarIcon from "./TreeAvatarIcon";
 import Grid from "@material-ui/core/Grid";
 

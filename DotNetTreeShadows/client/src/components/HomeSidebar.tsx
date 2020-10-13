@@ -5,8 +5,6 @@ import {Box} from "@material-ui/core";
 import ListItem from "@material-ui/core/ListItem";
 import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import {Link, useRouteMatch} from "react-router-dom";
 
 interface HomeSidebarProps {

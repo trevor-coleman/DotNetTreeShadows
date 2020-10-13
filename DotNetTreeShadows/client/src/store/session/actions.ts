@@ -1,16 +1,9 @@
-import {createAsyncThunk, unwrapResult} from "@reduxjs/toolkit";
-import  {AppDispatch} from '../../store'
+import {createAsyncThunk} from "@reduxjs/toolkit";
 import {Session} from "./types";
 
 import {ExtraInfo} from "../store";
 
 
-import {fetchBoard} from "../board/reducer";
-import Api from "../../api/api";
-import { updateSession } from "./reducer";
-import {fetchProfile} from "../profile/reducer";
-import {fetchGame} from "../game/reducer";
-import {AxiosResponse} from "axios";
 // import {fetchGame} from "../game/actions";
 
 
