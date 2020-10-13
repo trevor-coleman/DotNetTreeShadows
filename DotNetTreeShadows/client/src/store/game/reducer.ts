@@ -33,12 +33,22 @@ const gameSlice = createSlice({
     },
     initialState: initialGameState,
     reducers: {
+        gameOptionUpdate: (state:GameState, action:PayloadAction<{sessionId:string,gameOption:string, value:boolean}>) => {
+            const {gameOption, value} = action.payload;
+            return ({
+                ...state,
+                gameOptions: {
+                    ...state.gameOptions,
+                    [gameOption]: value || undefined,
+                }
+            });
+        }
 
     }
 
 })
 
 
-export const {} = gameSlice.actions;
+export const {gameOptionUpdate} = gameSlice.actions;
 export {fetchGame};
 export default gameSlice.reducer;

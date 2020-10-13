@@ -1,11 +1,12 @@
 import React, {FunctionComponent} from 'react';
 import {useDispatch} from 'react-redux';
-import {makeStyles} from '@material-ui/core/styles';
-import ListTurnOrder from "./ListTurnOrder";
-import GameInfoDisplay from "./GameInfoDisplay";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
+import HostOptions from "./HostOptions";
 import SidebarGrid from "../SidebarGrid";
+import {useTypedSelector} from "../../../store";
+import GameInfo from "./GameInfo";
+import ListTurnOrder from "./ListTurnOrder";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import {GameStatus} from "../../../store/game/types/GameStatus";
 
 
 interface SessionSidebarProps {
@@ -16,10 +17,15 @@ const SessionSidebar: FunctionComponent<SessionSidebarProps> = (props: SessionSi
     const {} = props;
     const classes = useStyles();
     const dispatch = useDispatch();
+    const {id: playerId} = useTypedSelector(state => state.profile);
+    const {host} = useTypedSelector(state => state.session);
+    const {status} = useTypedSelector(state => state.game);
 
+
+    const showHostOptions = playerId == host && status == GameStatus.Preparing;
     return (
         <SidebarGrid>
-                <GameInfoDisplay/>
+            {showHostOptions ? <HostOptions/> : <GameInfo/>}
                 <ListTurnOrder/>
         </SidebarGrid>
             );

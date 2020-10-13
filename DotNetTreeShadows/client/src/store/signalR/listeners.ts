@@ -5,10 +5,17 @@ import {TreeType} from "../board/types/treeType";
 import {PieceType} from "../board/types/pieceType";
 import {addPieceToHex} from '../board/reducer';
 import {updateConnectedPlayers} from '../session/reducer';
+import {gameOptionUpdate} from '../game/reducer';
+import {connectToSession} from "./actions";
 
 const {store} = enhancedStore;
 
-export const connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build();
+export const connection = new signalR
+    .HubConnectionBuilder()
+    .withUrl("/gamehub")
+    .withAutomaticReconnect([0, 2000, 4000, 6000, 8000, 10000, 20000, 30000, 60000])
+    .configureLogging(signalR.LogLevel.Information)
+    .build();
 
 export type AddPieceToTileRequest = {
     sessionId: string, hexCode: number, treeType: TreeType, pieceType: PieceType
@@ -22,6 +29,10 @@ connection.onclose(() => setTimeout(() => {
     connection.start().catch(err => console.error(err.toString()));
 }, 5000))
 
+connection.onreconnected(()=> {
+    store.dispatch(connectToSession(store.getState().session.id));
+})
+
 connection.on("UpdateConnectedPlayers", (connectedPlayers: string[]) => {
     console.log("UpdateConnectedPlayers", connectedPlayers)
     store.dispatch(updateConnectedPlayers(connectedPlayers));
@@ -32,6 +43,12 @@ connection.on("MessageReceived", (sender: string, message: string) => {
         sender,
         message
     }))
+})
+
+connection.on("UpdateGameOptions", (request: { sessionId: string, gameOption: string, value: boolean }) => {
+    console.log("UPDATE: ", request)
+    if (store.getState().session.id != request.sessionId) return;
+    store.dispatch(gameOptionUpdate(request))
 })
 
 connection.start().catch(err => console.error(err.toString()));

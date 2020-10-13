@@ -68,7 +68,7 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (props: ListTurnOrd
                                         treeType={PlayerBoard.TreeType(playerBoards[id])}/>
                                 </ListItemAvatar>
                                 <ListItemText primary={id == playerId ? "You" : players[id]?.name ?? "Player"}
-                                              secondary={(isConnected ? "Connected" : "Disconnected") + (playerId == host ? " - Host" : "")}/>
+                                              secondary={(isConnected ? "Connected" : "Disconnected") + (id == host ? " - Host" : "")}/>
                             </ListItem>
                         )
                     })}

@@ -17,6 +17,6 @@ export default interface Game {
         [playerId: string]: ScoringToken[]
     }
     gameOptions: {
-        [option: string]: boolean
+        [option: string]: boolean | undefined,
     }
 }
