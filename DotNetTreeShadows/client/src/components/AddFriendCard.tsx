@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
-import {addFriend} from "../store/invitations/actions";
+import {addFriend} from "../store/invitations/thunks";
 
 
 interface AddFriendCardProps {

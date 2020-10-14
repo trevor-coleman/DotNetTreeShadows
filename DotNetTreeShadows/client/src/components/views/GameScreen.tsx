@@ -7,7 +7,7 @@ import SessionSidebar from "../game/sessionSidebar/SessionSidebar";
 import PlayerSidebar from "../game/playerSidebar/PlayerSidebar";
 import BottomBar from "../game/bottomBar/BottomBar";
 import {fetchSession} from "../../store/session/thunks";
-import {connectToSession, disconnectFromSession} from "../../store/signalR/actions";
+import {disconnectFromSession} from "../../store/signalR/thunks";
 import {clearSession} from "../../store/session/reducer";
 import {Link, useParams} from "react-router-dom";
 import {useTypedSelector} from "../../store";
@@ -34,31 +34,32 @@ const GameScreen: FunctionComponent<FlexGameScreenProps> = (props: FlexGameScree
   const classes = useStyles();
   const dispatch = useDispatch();
   const {sessionId: sessionIdFromPath} = useParams();
-  const {id: sessionIdFromState, loadingSessionState, name: sessionName} = useTypedSelector(state => state.session);
+  const {name: sessionName} = useTypedSelector(state => state.session);
   const {connectionState} = useTypedSelector(state => state.signalR);
 
-  const loadSession = async () => {
+  const onLoad = async () => {
     await dispatch(fetchSession(sessionIdFromPath))
-    if (connectionState == HubConnectionState.Disconnected) {
-      await gameHub.tryConnectToSession(sessionIdFromPath);
-    }
-    await dispatch(connectToSession(sessionIdFromPath));
+    console.log(connectionState);
+    await gameHub.tryConnectToSession(sessionIdFromPath);
+
+
   }
 
-  const clearSessionOnLeave = async () => {
-
+  const cleanUp = async () => {
     await dispatch(disconnectFromSession(sessionIdFromPath));
-    await gameHub.disconnect();
+    gameHub.disconnect()
     dispatch(clearSession())
 
   }
 
   useEffect(() => {
+    console.log("gameScreen.useEffect")
 
-      loadSession();
+      onLoad();
 
       return () => {
-        clearSessionOnLeave();
+        console.log("Cleanup")
+        cleanUp();
       }
     },
     []

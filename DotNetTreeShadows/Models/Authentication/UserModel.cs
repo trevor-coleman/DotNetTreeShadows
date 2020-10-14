@@ -16,9 +16,8 @@ namespace dotnet_tree_shadows.Authentication {
       public List<FriendProfile> Friends { get; set; } = new List<FriendProfile>();
       public List<string> ReceivedInvitations { get; set; }= new List<string>();
       public List<string> SentInvitations  { get; set; } = new List<string>();
-      public List<string> ConnectedSessions { get; set; } = new List<string>();
-      
-      
+
+
       public bool HasFriend (string id) => Friends.Any(f=> f.Id== id );
       
       public void AddFriend (FriendProfile friendProfile) {
@@ -43,13 +42,6 @@ namespace dotnet_tree_shadows.Authentication {
 
       public void AddSession (Session session) {
         if ( Sessions.All( s => s.Id != session.Id ) ) Sessions.Add( session.Summary);
-      }
-
-      public void AddConnectedSession (string sessionId) {
-        ConnectedSessions = ConnectedSessions.Where( id => id != sessionId ).Append( sessionId ).ToList();
-      }
-      public void RemoveConnectedSession (string sessionId) {
-        ConnectedSessions = ConnectedSessions.Where( id => id != sessionId ).ToList();
       }
       
       public bool HasSentInvitation (string id) => SentInvitations.Any( i => i == id );

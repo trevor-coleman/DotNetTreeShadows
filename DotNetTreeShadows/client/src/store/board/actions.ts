@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {ExtraInfo} from "../store";
 import {Board} from "./types/board";
+import {ExtraInfo} from "../extraInfo";
 
 
 export const fetchBoard = createAsyncThunk<Board,string,ExtraInfo>(

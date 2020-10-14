@@ -20,9 +20,9 @@ import {showAddPlayerDialog} from "../../../store/appState/reducer";
 import AddPlayerDialog from "../AddPlayerDialog";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import DeleteOutlineOutlinedIcon from "@material-ui/icons/DeleteOutlineOutlined";
-import {updateInvitation, updateInvitationStatus} from "../../../store/invitations/actions";
 import {cancelSessionInvite} from "../../../store/signalR/actions";
 import {GameStatus} from "../../../store/game/types/GameStatus";
+import {updateInvitation} from "../../../store/invitations/thunks";
 
 
 interface ListTurnOrderProps {

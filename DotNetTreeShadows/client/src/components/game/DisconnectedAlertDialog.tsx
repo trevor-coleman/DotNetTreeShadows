@@ -25,10 +25,9 @@ const DisconnectedAlertDialog: FunctionComponent<DisconnectedAlertProps> = (prop
   const {} = props;
   const classes = useStyles();
   const dispatch = useDispatch();
-  const {connectionState, connectionMessage} = useTypedSelector(state => state.signalR);
+  const {connectionMessage, connectedSession} = useTypedSelector(state => state.signalR);
   const {id:sessionId}  = useTypedSelector(state => state.session);
 
-  const isDisconnected = connectionState == HubConnectionState.Disconnected;
 
 
   return (<>
@@ -53,7 +52,7 @@ const DisconnectedAlertDialog: FunctionComponent<DisconnectedAlertProps> = (prop
       </DialogActions>
     </Dialog>)
     <Dialog
-      open={connectionMessage == ConnectionMessage.ConnectingToServer}
+      open={connectionMessage == ConnectionMessage.ConnectingToServer || connectedSession == null}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description">
       <DialogTitle id="alert-dialog-title">{"Connecting to Server"}</DialogTitle>

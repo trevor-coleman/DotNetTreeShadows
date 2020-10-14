@@ -12,7 +12,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import {FriendProfile} from "../../store/profile/types/friendProfile";
-import {removeFriend} from "../../store/profile/actions";
+import {removeFriend} from "../../store/profile/thunks";
 import {RequestState} from "../../api/requestState";
 import { showRemoveFriendConfirmDialog, setFriendToRemove } from '../../store/appState/reducer';
 import CardContent from "@material-ui/core/CardContent";

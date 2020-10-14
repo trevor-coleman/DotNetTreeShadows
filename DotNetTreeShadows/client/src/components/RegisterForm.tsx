@@ -1,7 +1,7 @@
 import React, {FunctionComponent, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {makeStyles, Theme} from '@material-ui/core/styles';
-import {registerAndSignIn} from "../store/auth/actions";
+import {registerAndSignIn} from "../store/auth/thunks";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";

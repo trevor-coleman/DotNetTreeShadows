@@ -8,6 +8,7 @@ import {GameStatus} from "./types/GameStatus";
 import {ActionStage} from "./gameActions";
 import {IGameActionRequest} from "../../gamehub/gameActions/ActionFactory";
 import {PieceType} from "../board/types/pieceType";
+import {signOut} from "../auth/reducer";
 
 
 export interface GameState extends Game {
@@ -47,6 +48,7 @@ const gameSlice = createSlice({
             ...state,
             ...action.payload.game
         }))
+          builder.addCase(signOut, (state) => initialGameState);
     },
     initialState: initialGameState,
     reducers: {
@@ -81,6 +83,7 @@ const gameSlice = createSlice({
                 ...initialGameState.currentAction
             }
         })
+
     }
 
 })

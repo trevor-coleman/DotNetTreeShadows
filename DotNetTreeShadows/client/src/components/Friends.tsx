@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {makeStyles} from '@material-ui/core/styles';
 import {Box} from "@material-ui/core";
@@ -9,6 +9,8 @@ import AddFriendCard from "./AddFriendCard";
 import FriendRequestList from "./friends/FriendRequestList";
 import FriendList from "./friends/FriendList";
 import Grid from "@material-ui/core/Grid";
+import {fetchProfile} from "../store/profile/actions";
+import {fetchInvitations} from "../store/invitations/actions";
 
 interface FriendsProps {
 }
@@ -18,6 +20,15 @@ const Friends: FunctionComponent<FriendsProps> = (props: FriendsProps) => {
     const {} = props;
     const classes = useStyles();
     const dispatch = useDispatch();
+
+    const onLoad = async ()=> {
+        await dispatch(fetchProfile());
+        await dispatch(fetchInvitations());
+    }
+
+    useEffect(()=>{
+        onLoad();
+    }, [])
 
     return (
         <Box p={3} className={classes.root}>

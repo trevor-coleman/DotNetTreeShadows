@@ -7,7 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import {SignInCredentials} from "../store/auth/types/signInCredentials";
-import {signInAndFetchProfile} from "../store/auth/actions";
+import {signInAndFetchProfile} from "../store/auth/thunks";
 import {useTypedSelector} from "../store";
 import Alert from '@material-ui/lab/Alert';
 

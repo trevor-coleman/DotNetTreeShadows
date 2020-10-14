@@ -30,49 +30,49 @@ namespace dotnet_tree_shadows.Hubs {
     private InvitationService invitationService;
     private ActionFactory actionFactory;
     private BoardService boardService;
-
-    public GameHub (
-        SessionService sessionService,
-        GameService gameService,
-        UserManager<UserModel> userManager,
-        InvitationService invitationService,
-        BoardService boardService
-      ) {
-      this.sessionService = sessionService;
-      this.gameService = gameService;
-      this.userManager = userManager;
-      this.invitationService = invitationService;
-      this.boardService = boardService;
-      actionFactory = new ActionFactory( gameService, boardService,sessionService );
-    }
+    private HubGroupService hubGroupService;
 
     public async Task NewMessage (string senderId, string message) {
       Console.WriteLine( $"NewMessage: {senderId} - {message}" );
       await Clients.All.SendAsync( "MessageReceived", senderId, message );
     }
 
+    public GameHub (
+        SessionService sessionService,
+        GameService gameService,
+        UserManager<UserModel> userManager,
+        InvitationService invitationService,
+        BoardService boardService,
+        HubGroupService hubGroupService
+      ) {
+      this.sessionService = sessionService;
+      this.gameService = gameService;
+      this.userManager = userManager;
+      this.invitationService = invitationService;
+      this.boardService = boardService;
+      this.hubGroupService = hubGroupService;
+      actionFactory = new ActionFactory( gameService, boardService,sessionService );
+    }
+
     public async Task ConnectToSession (string sessionId) {
       UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
-      Task<Session> getSession = sessionService.Get( sessionId );
       await Groups.AddToGroupAsync( Context.ConnectionId, sessionId );
-      Session session = await getSession;
-      IEnumerable<string> connectedPlayers = session.ConnectedPlayers;
-      session.ConnectedPlayers = connectedPlayers.Where( i => i != user.UserId ).Append( user.UserId ).ToArray();
-      await Clients.Group( sessionId ).SendAsync( "UpdateConnectedPlayers", session.ConnectedPlayers.ToArray() );
-      await sessionService.Update( session );
+      string[] membersAfter = hubGroupService.AddToGroup( sessionId, user.UserId );
+      
+      await Clients.Group( sessionId ).SendAsync( 
+        "UpdateConnectedPlayers",
+        sessionId,
+        membersAfter 
+        );
     }
 
     public async Task DisconnectFromSession (string sessionId) {
-      Task<Session> getSession = sessionService.Get( sessionId );
-      Task<UserModel> getUser = userManager.GetUserAsync( Context.GetHttpContext().User );
-      Session session = await getSession;
-      UserModel user = await getUser;
-      session.ConnectedPlayers = session.ConnectedPlayers.Where( i => i != user.UserId ).ToArray();
-      await Clients.Group( sessionId )
-                   .SendAsync( "UpdateConnectedPlayers", sessionId, session.ConnectedPlayers.ToArray() );
-
+      UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
       await Groups.RemoveFromGroupAsync( Context.ConnectionId, sessionId );
-      await sessionService.Update( session );
+      string[] membersAfter = hubGroupService.RemoveFromGroup( sessionId, user.UserId );
+      
+      await Clients.Group( sessionId )
+                   .SendAsync( "UpdateConnectedPlayers", sessionId, membersAfter);
     }
 
     public async Task ServerAddPieceToTile (AddPieceToTileRequest request) {
@@ -97,31 +97,19 @@ namespace dotnet_tree_shadows.Hubs {
     public override async Task OnDisconnectedAsync (Exception exception) {
       await base.OnDisconnectedAsync( exception );
       UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
-      Queue<Task<Session>> getSessionTasks = new Queue<Task<Session>>(
-          from sessionId in user.ConnectedSessions select sessionService.Get( sessionId )
-        );
 
-      Queue<Task> savingTasks = new Queue<Task>();
+      IEnumerable<string> groups = hubGroupService.PlayerGroups( user.UserId );
 
-      while ( getSessionTasks.Count > 0 ) {
-        Session session = await getSessionTasks.Dequeue();
-        Task removeFromGroupTask = Groups.RemoveFromGroupAsync( Context.ConnectionId, session.Id );
-        session.ConnectedPlayers = session.ConnectedPlayers.Where( id => id != user.UserId ).ToArray();
-        user.RemoveConnectedSession( session.Id );
-        await removeFromGroupTask;
-        await Clients.Group( session.Id )
-                     .SendAsync( "UpdateConnectedPlayers", session.Id, session.ConnectedPlayers.ToArray() );
-
-        savingTasks.Enqueue( sessionService.Update( session ) );
-      }
-
-      savingTasks.Enqueue( userManager.UpdateAsync( user ) );
-      while ( savingTasks.Count > 0 ) {
-        await savingTasks.Dequeue();
+      foreach ( string groupId in groups ) {
+        await Groups.RemoveFromGroupAsync( Context.ConnectionId, groupId );
+        string[] membersAfter = hubGroupService.RemoveFromGroup( groupId, user.UserId );
+        await Clients.Group( groupId )
+                     .SendAsync( "UpdateConnectedPlayers",groupId, membersAfter  );
       }
     }
-    
-    
+
+
+
     public async Task DoAction (
         string sessionId,
         ActionRequest actionRequest
@@ -149,7 +137,7 @@ namespace dotnet_tree_shadows.Hubs {
           if ( action != null && action.Execute( out failureMessage ) ) {
             actionFactory.Commit( action );
             await Clients.Group( sessionId ).SendAsync( "LogMessage", "WE DID IT KIDS" );
-            await Clients.Group( sessionId ).SendAsync( "HandleActionResult", action );
+            await Clients.Group( sessionId ).SendAsync( "HandleActionResult", "failure" );
           }
         } else {
           failureMessage = "Request missing required parameter.";

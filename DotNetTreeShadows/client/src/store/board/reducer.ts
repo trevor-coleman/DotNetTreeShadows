@@ -5,6 +5,7 @@ import {Board} from "./types/board";
 import { updateSession } from "../session/reducer";
 import {SessionUpdate} from "../session/types";
 import {AddPieceToTileRequest} from "../../gamehub";
+import { signOut } from "../auth/reducer";
 
 const stateWithTileAtH = (state: BoardState, tile: number, h: number): BoardState => ({
     ...state,
@@ -45,6 +46,10 @@ const boardSlice = createSlice({
         ...state,
             ...action.payload.board
         }))
+
+        builder.addCase(signOut, (state) => {}
+        )
+
     },
     reducers: {
         updateTiles: (state, action :PayloadAction<Board>)=> ({

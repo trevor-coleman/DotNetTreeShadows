@@ -1,7 +1,7 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {AppDispatch} from '../../store'
-import {ExtraInfo} from "../store";
 import Game from "./types/game";
+import {ExtraInfo} from "../extraInfo";
 
 
 export const fetchGame = createAsyncThunk<Game, string, ExtraInfo>('game/fetchGame',

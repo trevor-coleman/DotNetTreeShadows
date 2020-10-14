@@ -19,6 +19,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import AddIcon from '@material-ui/icons/Add';
 import {fetchProfile} from "../store/profile/reducer";
+import {fetchInvitations} from "../store/invitations/reducer";
 
 interface SessionsProps {
 }
@@ -31,6 +32,7 @@ const Sessions: FunctionComponent<SessionsProps> = (props: SessionsProps) => {
 
     const onLoad = async ()=> {
         await dispatch(fetchProfile());
+        await dispatch(fetchInvitations());
     }
 
     useEffect(()=>{

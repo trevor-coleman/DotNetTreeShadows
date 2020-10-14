@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {signIn, registerNewUser, registerAndSignIn, signInAndFetchProfile} from "./actions";
+import {signIn, registerNewUser} from "./actions";
 
 export interface AuthState {
     authInProgress: boolean,
@@ -82,5 +82,5 @@ const authSlice = createSlice({
 
 
 export const {signOut, setToken} = authSlice.actions;
-export {signIn, registerNewUser, registerAndSignIn, signInAndFetchProfile};
+export {signIn, registerNewUser};
 export default authSlice.reducer;

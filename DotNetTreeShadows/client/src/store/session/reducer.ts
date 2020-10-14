@@ -5,6 +5,7 @@ import {createSession, fetchSessionFromApi} from "./actions";
 import {createSessionAndFetchProfile, fetchSession} from './thunks'
 import {sendManySessionInvites, updateInvitationStatus} from "../invitations/actions";
 import {Invitation} from "../invitations/types/invitation";
+import {signOut} from "../auth/reducer";
 
 
 export interface SessionState extends Session {
@@ -100,6 +101,7 @@ const sessionSlice = createSlice({
                 }
             }
         }))
+        builder.addCase(signOut, (state) => initialSessionState);
 
     },
     initialState: initialSessionState,
@@ -116,7 +118,6 @@ const sessionSlice = createSlice({
         })),
         updateConnectedPlayers(state: SessionState, action: PayloadAction<{ sessionId: string, connectedPlayers: string[] }>) {
             const {sessionId, connectedPlayers} = action.payload
-
             return sessionId == state.id ? {
                 ...state,
                 connectedPlayers,

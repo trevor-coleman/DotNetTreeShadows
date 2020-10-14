@@ -1,13 +1,13 @@
 import * as signalR from '@microsoft/signalr'
 import {HubConnection, HubConnectionState} from '@microsoft/signalr'
 import enhancedStore from '../store/store'
-import {setConnectionState} from '../store/signalR/reducer'
+import {setConnectionState, setConnectedSession} from '../store/signalR/reducer'
 import {TreeType} from "../store/board/types/treeType";
 import {PieceType} from "../store/board/types/pieceType";
 import {gameOptionUpdate} from '../store/game/reducer';
 import {GameHubMethod} from "./methods";
-import connectListeners from "./listeners";
-
+import applyListeners from "./listeners";
+import {connectToSession} from "../store/signalR/actions";
 
 const {store} = enhancedStore;
 
@@ -26,8 +26,7 @@ const connection: HubConnection = new signalR
   .configureLogging(signalR.LogLevel.Information)
   .build();
 
-connectListeners(connection);
-
+applyListeners(connection);
 
 connection.on("UpdateGameOptions", (request: { sessionId: string, gameOption: string, value: boolean }) => {
   if (store.getState().session.id != request.sessionId) return;
@@ -38,35 +37,39 @@ connection.on("LogMessage", (message: string) => {
   console.log(message);
 })
 
-let tries = 0;
-const maxTries = 30;
-const tryConnectToSession = async (sessionId: string) => {
-  if (connection.state != "Connected") {
-    console.log("Attempting to connect");
-    connect();
-    if(tries < maxTries) {
-      setTimeout(() => tryConnectToSession(sessionId), 2000);
-      return
-    } else {
-      console.log(`Connection attempt failed after ${tries} tries`)
-    }
-  }
-  try {
-    connection.send("ConnectToSession", sessionId)
 
+
+const tryConnectToSession = async (sessionId: string) => {
+  console.log("Attempting to connect");
+  if (connection.state != "Connected") {
+    store.dispatch(setConnectedSession(null))
+    console.log("Connection is not connected")
+      connect().then(()=> {
+        store.dispatch(setConnectionState(connection.state));
+
+        tryConnectToSession(sessionId)
+      }).catch(()=>setTimeout(()=> {
+        tryConnectToSession(sessionId)
+      }, 2000));
+  } else
+  try {
+    connection.send("ConnectToSession", sessionId).then(i=> {
+      store.dispatch(setConnectedSession(sessionId));
+    });
+    return
   } catch (e) {
-    console.log(e.message);
+    console.error(e)
+    setTimeout(() => connection.send("ConnectToSession", sessionId), 2000)
   }
 }
 
 const connect = async (retry: boolean = false) => {
-  if (connection.state == HubConnectionState.Connected) return;
   try {
     await connection.start()
     store.dispatch(setConnectionState(connection.state));
-    tries = 0;
     return;
   } catch (err) {
+    store.dispatch(setConnectionState(connection.state));
     console.error(err);
     return;
   }

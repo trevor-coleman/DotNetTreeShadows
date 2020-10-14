@@ -6,6 +6,7 @@ import {Action} from "typesafe-actions";
 import {deleteSession} from "../session/actions";
 import {sendManySessionInvites} from "../invitations/actions";
 import {Invitation} from "../invitations/types/invitation";
+import { signOut } from "../auth/reducer";
 
 export interface SessionSummary {
     id: string,
@@ -89,6 +90,8 @@ const profileSlice = createSlice({
             ...state,
             ...action.payload
         }) )
+
+        builder.addCase(signOut, (state) => initialProfileState);
 
 
     },

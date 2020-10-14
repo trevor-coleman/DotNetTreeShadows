@@ -11,7 +11,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import CancelIcon from "@material-ui/icons/Cancel";
 import {useTypedSelector} from "../../store";
-import {updateInvitation} from "../../store/invitations/actions";
+import {updateInvitation} from "../../store/invitations/thunks";
 import {Invitation} from "../../store/invitations/types/invitation";
 import {CardContent} from "@material-ui/core";
 import Card from "@material-ui/core/Card";

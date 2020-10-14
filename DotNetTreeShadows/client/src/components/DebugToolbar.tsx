@@ -11,10 +11,11 @@ import {InputLabel} from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import {NewUserInfo} from "../store/auth/types/newUserInfo";
 
-import {registerNewUser, signInAndFetchProfile, signOut} from '../store/auth/reducer'
+import {registerNewUser, signOut} from '../store/auth/reducer'
 import {SignInCredentials} from "../store/auth/types/signInCredentials";
 import SessionCreator from "./SessionCreator";
 import {Route, Switch} from 'react-router-dom';
+import {signInAndFetchProfile} from "../store/auth/thunks";
 
 
 const accounts: NewUserInfo[] = [

@@ -1,9 +1,8 @@
 import {Profile} from "./types/profile";
 import {FriendProfile} from "./types/friendProfile";
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {ExtraInfo} from "../store";
-import {AppDispatch} from "../index";
 import {ProfileState} from "./reducer";
+import {ExtraInfo} from "../extraInfo";
 
 export const fetchProfile = createAsyncThunk<Profile, void, ExtraInfo>(
     'profile/fetchProfile',
@@ -22,11 +21,6 @@ export const fetchFriendProfiles = createAsyncThunk<FriendProfile[], void, Extra
 
     }
 )
-
-export const removeFriend = (id: string) => async (dispatch: AppDispatch) => {
-    await dispatch(removeFriendFromProfile(id));
-    await dispatch(fetchProfile());
-};
 
 
 export const updateProfileAsync = createAsyncThunk<

@@ -9,6 +9,7 @@ import {fetchSessionFromApi} from "../session/actions";
 import {updateSession} from '../session/reducer'
 import Game from "../game/types/game";
 import {Board} from "../board/types/board";
+import {signOut} from "../auth/reducer";
 
 export interface AppState {
     friendList: {
@@ -51,29 +52,34 @@ const appStateSlice = createSlice({
             }
         }));
         builder.addCase(fetchSessionFromApi.fulfilled, (state: AppState, action: PayloadAction<Session>) => {
-            const {id:sessionId} = action.payload;
-            if(sessionId == state.addPlayerDialog.lastSession) return state;
+            const {id: sessionId} = action.payload;
+            if (sessionId == state.addPlayerDialog.lastSession) return state;
 
-            return  {
-            ...state,
-            addPlayerDialog: {
-                ...initialAppState.addPlayerDialog,
-                lastSession: sessionId
-            },
-        }})
-        builder.addCase(updateSession, (state: AppState, action: PayloadAction<{ session:Session, game:Game, board: Board }>) => {
+            return {
+                ...state,
+                addPlayerDialog: {
+                    ...initialAppState.addPlayerDialog,
+                    lastSession: sessionId
+                },
+            }
+        })
+        builder.addCase(updateSession, (state: AppState, action: PayloadAction<{ session: Session, game: Game, board: Board }>) => {
             const {session} = action.payload;
             const sessionId = session.id;
-            if(sessionId == state.addPlayerDialog.lastSession) return state;
+            if (sessionId == state.addPlayerDialog.lastSession) return state;
 
-            return  {
-            ...state,
-            addPlayerDialog: {
-                ...initialAppState.addPlayerDialog,
-                lastSession: sessionId
-            },
-        }})
-    },
+            return {
+                ...state,
+                addPlayerDialog: {
+                    ...initialAppState.addPlayerDialog,
+                    lastSession: sessionId
+                },
+
+            }
+        })
+        builder.addCase(signOut, (state) => initialAppState);
+    }
+    ,
 
 
     initialState: initialAppState,

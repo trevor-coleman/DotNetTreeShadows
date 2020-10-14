@@ -2,11 +2,11 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {
     fetchInvitations,
     sendFriendRequest,
-    addFriend,
     sendManySessionInvites
 } from "./actions";
 import {Invitation} from "./types/invitation";
 import {RequestState} from "../../api/requestState";
+import {signOut} from "../auth/reducer";
 
 export type InvitationsState = {
     invitations: Invitation[],
@@ -64,6 +64,7 @@ const invitationsSlice = createSlice({
                 sessionInvites: [...state.sessionInvites, ...payload]
             }
         })
+        builder.addCase(signOut, (state) => initialInvitationState);
 
 
     },
@@ -74,5 +75,5 @@ const invitationsSlice = createSlice({
 
 
 export const {} = invitationsSlice.actions;
-export {fetchInvitations, addFriend};
+export {fetchInvitations};
 export default invitationsSlice.reducer;

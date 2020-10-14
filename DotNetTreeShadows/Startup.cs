@@ -64,8 +64,10 @@ namespace dotnet_tree_shadows {
       services.AddSingleton<SessionService>();
       services.AddSingleton<InvitationService>();
       services.AddSingleton<GameService>();
+      services.AddSingleton<HubGroupService>();
       services.AddSingleton<BoardService>();
-
+      
+      
       services.AddSingleton<IGameDatabaseSettings>(
           sp => sp.GetRequiredService<IOptions<GameDatabaseSettings>>().Value
         );
@@ -132,6 +134,10 @@ namespace dotnet_tree_shadows {
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
       }
+      
+      
+      
+      
 
       app.UseHttpsRedirection();
       app.UseStaticFiles();

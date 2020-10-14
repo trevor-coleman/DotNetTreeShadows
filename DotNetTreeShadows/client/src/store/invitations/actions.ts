@@ -1,8 +1,7 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {AppDispatch} from '../index'
 import {Invitation, InvitationStatus} from "./types/invitation";
-import {ExtraInfo} from "../store";
-import {fetchProfile} from "../profile/reducer";
+import {ExtraInfo} from "../extraInfo";
 
 type InvitationsResponse = { friendRequests: Invitation[], sessionInvites: Invitation[] }
 
@@ -50,13 +49,6 @@ export const fetchInvitations = createAsyncThunk<InvitationsResponse, void, Extr
     })
 
 
-export const addFriend = (email: string) => async (dispatch: AppDispatch) => {
-    await dispatch(sendFriendRequest(email));
-    await dispatch(fetchProfile());
-    await dispatch(fetchInvitations());
-};
-
-
 export const sendFriendRequest = createAsyncThunk<void, string, ExtraInfo>(
     'invitations/sendFriendRequest',
     async (email, {extra}) => {
@@ -70,20 +62,6 @@ export const sendFriendRequest = createAsyncThunk<void, string, ExtraInfo>(
         }
     }
 )
-
-
-export const updateInvitation = (invitation: Invitation, status: InvitationStatus) => async (dispatch: AppDispatch) => {
-    try {
-        await dispatch(updateInvitationStatus({
-            invitation,
-            status
-        }));
-        await dispatch(fetchProfile())
-        await dispatch(fetchInvitations())
-    } catch (e) {
-
-    }
-};
 
 
 export const updateInvitationStatus = createAsyncThunk<Invitation, { invitation: Invitation, status: InvitationStatus }, ExtraInfo>(

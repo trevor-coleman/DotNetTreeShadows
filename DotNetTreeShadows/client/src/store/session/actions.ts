@@ -1,7 +1,7 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {Session} from "./types";
 
-import {ExtraInfo} from "../store";
+import {ExtraInfo} from "../extraInfo";
 
 
 // import {fetchGame} from "../game/actions";
