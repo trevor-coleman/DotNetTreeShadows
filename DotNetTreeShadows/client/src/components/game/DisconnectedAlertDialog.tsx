@@ -12,6 +12,9 @@ import {HubConnectionState} from "@microsoft/signalr";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import gameHub from '../../gamehub'
 import {Link} from "react-router-dom";
+import {ConnectionMessage} from "../../store/signalR/connectionMessage";
+import { retryConnection, retryTimeout } from '../../store/signalR/reducer';
+import uuid from 'uuid-random';
 
 
 interface DisconnectedAlertProps {
@@ -19,55 +22,59 @@ interface DisconnectedAlertProps {
 
 //COMPONENT
 const DisconnectedAlertDialog: FunctionComponent<DisconnectedAlertProps> = (props: DisconnectedAlertProps) => {
-    const {} = props;
-    const classes = useStyles();
-    const dispatch = useDispatch();
-    const {connectionState, sessionDisconnected} = useTypedSelector(state => state.signalR);
+  const {} = props;
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const {connectionState, connectionMessage} = useTypedSelector(state => state.signalR);
+  const {id:sessionId}  = useTypedSelector(state => state.session);
 
-    const isDisconnected = connectionState == HubConnectionState.Disconnected;
+  const isDisconnected = connectionState == HubConnectionState.Disconnected;
 
-    switch (sessionDisconnected) {
-        case true:
-            return <Dialog
-                open={isDisconnected}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">{"Game Server Disconnected"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>The connection to the game server has been interrupted.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={()=>gameHub.connect()}>Reconnect</Button>
-                    <Button component={Link} to={"/sessions"}>Exit Session</Button>
-                </DialogActions>
-            </Dialog>
-        default:
-            return <Dialog
-            open={isDisconnected}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description">
-            <DialogTitle id="alert-dialog-title">{"Connecting to Server"}</DialogTitle>
-            <DialogContent>
-                <div className={classes.circularProgress}><CircularProgress/></div>
-            </DialogContent>
-            <DialogActions>
-                <Button component={Link} to={"/sessions"}>Exit Session</Button>
-            </DialogActions>
-        </Dialog>
 
-    }
-};
+  return (<>
+    <Dialog
+      open={connectionMessage == ConnectionMessage.ConnectionLost}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">{"Game Server Disconnected"}</DialogTitle>
+      <DialogContent>
+        <DialogContentText>The connection to the game server could not be re-established.
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => {
+          const retryId = uuid()
+          dispatch(retryConnection(retryId))
+          setTimeout(()=>dispatch(retryTimeout(retryId)), 60000)
+          gameHub.tryConnectToSession(sessionId)
+        }}>Retry</Button>
+        <Button component={Link} to={"/sessions"}>Exit Session</Button>
+      </DialogActions>
+    </Dialog>)
+    <Dialog
+      open={connectionMessage == ConnectionMessage.ConnectingToServer}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description">
+      <DialogTitle id="alert-dialog-title">{"Connecting to Server"}</DialogTitle>
+      <DialogContent>
+        <div className={classes.circularProgress}><CircularProgress/></div>
+      </DialogContent>
+      <DialogActions>
+        <Button component={Link} to={"/sessions"}>Cancel</Button>
+      </DialogActions>
+    </Dialog></>)
+}
+
 
 const useStyles = makeStyles((theme: Theme) => ({
-    root: {},
-    circularProgress: {
-        display: "flex",
-        width: "100%",
-        justifyContent:"center",
-        paddingBottom: theme.spacing(2)
-    }
+  root: {},
+  circularProgress: {
+    display: "flex",
+    width: "100%",
+    justifyContent: "center",
+    paddingBottom: theme.spacing(2)
+  }
 }));
 
 export default DisconnectedAlertDialog;

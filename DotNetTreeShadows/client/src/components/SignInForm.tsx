@@ -26,7 +26,7 @@ const SignInForm: FunctionComponent<ISignInFormProps> = (props: ISignInFormProps
     const dispatch = useDispatch();
 
     const signIn =async (credentials: SignInCredentials) => {
-           dispatch(signInAndFetchProfile(credentials));
+        dispatch(signInAndFetchProfile(credentials));
         }
 
     return <Card className={classes.SignInForm}>

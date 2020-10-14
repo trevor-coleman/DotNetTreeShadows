@@ -34,7 +34,6 @@ const TurnActionButtons = () => {
   const light = PlayerBoard.GetLight(playerBoards[playerId]);
 
   const currentActionType = currentAction?.type;
-  console.log(currentActionType);
 
   const onClickActionButton = (gat: GameActionType) => {
     if (gat == currentActionType) dispatch(clearCurrentAction())

@@ -51,11 +51,9 @@ namespace dotnet_tree_shadows.Hubs {
       await Clients.All.SendAsync( "MessageReceived", senderId, message );
     }
 
-    public async Task ConnectToSession (GroupMember groupMember) {
+    public async Task ConnectToSession (string sessionId) {
       UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
-      string sessionId = groupMember.SessionId;
       Task<Session> getSession = sessionService.Get( sessionId );
-      string playerId = groupMember.PlayerId;
       await Groups.AddToGroupAsync( Context.ConnectionId, sessionId );
       Session session = await getSession;
       IEnumerable<string> connectedPlayers = session.ConnectedPlayers;

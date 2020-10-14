@@ -3,7 +3,7 @@ import './App.css';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {CssBaseline} from "@material-ui/core";
 import HomeScreen from "./components/views/HomeScreen";
-import FlexGameScreen from "./components/views/FlexGameScreen";
+import GameScreen from "./components/views/GameScreen";
 import SignIn from "./components/views/SignIn";
 import PrivateRoute from "./routes/PrivateRoute";
 
@@ -12,7 +12,7 @@ function App() {
         <Router>
             <CssBaseline/>
             <Switch>
-                <PrivateRoute exact path={"/sessions/:sessionId"}><FlexGameScreen/></PrivateRoute>
+                <PrivateRoute exact path={"/sessions/:sessionId"}><GameScreen/></PrivateRoute>
                 <Route exact path={"/auth"} component={SignIn}/>
                 <PrivateRoute path={"/"} component={HomeScreen}><HomeScreen/></PrivateRoute>
             </Switch>

@@ -6,14 +6,15 @@ const {store} = enhancedStore;
 
 export default function connectListeners(connection:HubConnection){
 
-    connection.onclose(() => setTimeout(() => {
-        store.dispatch(setConnectionState(connection.state))
-        connection.start().catch(err => console.error(err.toString()));
-    }, 5000))
+    connection.onclose(() => {
+        store.dispatch(setConnectionState(connection.state));
+        console.log(`Onclose -- ${connection.state}`)
+    });
 
     connection.onreconnecting(() => store.dispatch(setConnectionState(connection.state)));
 
     connection.onreconnected(() => {
+        console.log("onReconnected")
         store.dispatch(setConnectionState(connection.state))
         store.dispatch(connectToSession(store.getState().session.id));
     })
