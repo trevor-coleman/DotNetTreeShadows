@@ -13,8 +13,9 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Tooltip from "@material-ui/core/Tooltip";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
-import {setGameOption} from "../../../store/signalR/actions";
+import {doGameAction, setGameOption} from "../../../store/signalR/actions";
 import {GameOption} from "../../../store/game/types/GameOption";
+import ActionFactory from "../../../gamehub/gameActions/ActionFactory";
 
 
 interface GameStatusProps {
@@ -30,10 +31,6 @@ const HostOptions: FunctionComponent<GameStatusProps> = (props: GameStatusProps)
     const {id:playerId}= useTypedSelector(state => state.profile);
     const {gameOptions}= useTypedSelector(state => state.game);
 
-    console.log(gameOptions)
-
-
-
     const LightTooltip = withStyles((theme: Theme) => ({
         tooltip: {
             backgroundColor: theme.palette.common.white,
@@ -42,6 +39,10 @@ const HostOptions: FunctionComponent<GameStatusProps> = (props: GameStatusProps)
             fontSize: 13,
         },
     }))(Tooltip);
+
+    const handleStartGame = ()=>{
+        dispatch(doGameAction(sessionId, ActionFactory.StartGameAction()))
+    }
 
     const GameOptionItem = ({id,name,description}: {
         id: string,
@@ -80,7 +81,11 @@ const HostOptions: FunctionComponent<GameStatusProps> = (props: GameStatusProps)
                 <List>
                     {gameOptionDescriptions.map(option=><GameOptionItem key={option.id} {...option}/>)}
                 </List>
-                <Box m={1} className={classes.startGameButtonContainer}><Button className={classes.startGameButton} color={"secondary"} variant={"contained"}>Start Game</Button></Box>
+                <Box m={1} className={classes.startGameButtonContainer}>
+                    <Button className={classes.startGameButton} color={"secondary"} variant={"contained"} onClick={handleStartGame}>
+                        Start Game
+                    </Button>
+                </Box>
             </Box>
         </Paper>);
 };

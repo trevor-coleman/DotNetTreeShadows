@@ -5,11 +5,8 @@ import {HexLayout} from '../../../store/board/types/HexLayout';
 import {Orientation} from '../../../store/board/types/Orientation';
 import BoardTile from './BoardTile';
 import {Hex} from '../../../store/board/types/Hex';
-import {TreeType} from "../../../store/board/types/treeType";
 import {useTypedSelector} from "../../../store";
 import Box from "@material-ui/core/Box";
-import {connection} from "../../../store/signalR/listeners";
-import PlayerBoard from "../../../store/game/types/playerBoard";
 
 
 interface IGameBoardProps {
@@ -18,58 +15,60 @@ interface IGameBoardProps {
 
 //COMPONENT
 const GameBoard: FunctionComponent<IGameBoardProps> = (props: IGameBoardProps) => {
-    const classes = useStyles(props);
-    const dispatch = useDispatch();
+    useStyles(props);
+    useDispatch();
 
-    const {tiles} = useTypedSelector(state=> state.board);
-    const {name:sessionName, id:sessionId} = useTypedSelector(state=>state.session)
-    const {id:playerId}=useTypedSelector(state => state.profile)
-    const {playerBoards} = useTypedSelector(state => state.game)
+    const {tiles} = useTypedSelector(state => state.board);
+
 
     const size = 2000;
     const aspect = 0.87;
-    const viewPortSize = {x: size, y: size*aspect}
-    const middle = size/2;
-    const origin = {x:middle, y:middle*aspect};
+    const viewPortSize = {
+        x: size,
+        y: size * aspect
+    }
+    const middle = size / 2;
+    const origin = {
+        x: middle,
+        y: middle * aspect
+    };
     const zoom = 17;
-    const tileSize = {x:size/zoom, y:size/zoom}
+    const tileSize = {
+        x: size / zoom,
+        y: size / zoom
+    }
     const buffer = 20;
 
     const points = [];
-    for(let i=0; i<360; i+=60) {
+    for (let i = 0; i < 360; i += 60) {
         const radians = Math.PI / 180 * i
         points.push({
-            x: origin.x + (size-buffer)/2 * Math.cos(radians),
-            y: origin.y + (size-buffer)/2 * Math.sin(radians)
+            x: origin.x + (size - buffer) / 2 * Math.cos(radians),
+            y: origin.y + (size - buffer) / 2 * Math.sin(radians)
         })
     }
 
     let pointString = "";
-    for(let i =0; i<points.length; i++) {
+    for (let i = 0; i < points.length; i++) {
         pointString += `${points[i].x}, ${points[i].y} `;
     }
 
-    const layout = new HexLayout(Orientation.Pointy, tileSize, origin )
+    const layout = new HexLayout(Orientation.Pointy, tileSize, origin)
 
     return (
         <Box p={2}>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${viewPortSize.x} ${viewPortSize.y}`}>
-            <polyline id="hexagon" points={pointString} fill={"#c7ec94"}/>
-            {tiles ? Object.keys(tiles).map(hexCodeString => {
-                const hexCode = parseInt(hexCodeString);
-                const h = new Hex(hexCode);
-                return <BoardTile key={hexCode} onClick={async (thisHexCode: number) => {
-                    console.log("doing it")
-                    try {
-                        const request = {sessionId:sessionId, hexCode:hexCode, treeType: TreeType.Poplar, pieceType: PlayerBoard.TreeType(playerBoards[playerId])}
-                        await connection.send("ServerAddPieceToTile", request);
-                    } catch (e) {
-                        console.log(e);
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${viewPortSize.x} ${viewPortSize.y}`}>
+                <polyline id="hexagon" points={pointString} fill={"#c7ec94"}/>
+                {tiles ? Object.keys(tiles).map(hexCodeString => {
+                    const hexCode = parseInt(hexCodeString);
+                    new Hex(hexCode);
+                    return <BoardTile key={hexCode} onClick={async () => {
+                        console.log(`clicked on ${hexCode}`);
+
                     }
-                }
-                }
-                 hexCode={hexCode} layout={layout}/>;
-            }) : ""}</svg>
+                    }
+                                      hexCode={hexCode} layout={layout}/>;
+                }) : ""}</svg>
         </Box>);
 };
 

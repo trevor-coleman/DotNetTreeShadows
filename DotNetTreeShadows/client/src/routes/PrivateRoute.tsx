@@ -13,12 +13,11 @@ const PrivateRoute: FunctionComponent<PrivateRouteProps> = (props: PrivateRouteP
     const classes = useStyles();
     const dispatch = useDispatch();
     const {signedIn} = useTypedSelector(state => state.auth)
-    console.log("privateRoute:", signedIn);
 
     return (
         <Route {...rest}>
             {({location}) => {
-                console.log("Rendering privateRoute", location);
+
                 return signedIn ? (
                     children
                 ) : (

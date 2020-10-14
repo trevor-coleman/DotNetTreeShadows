@@ -33,6 +33,7 @@ namespace dotnet_tree_shadows.Models.GameActions {
       AActionParams actionParams;
       Game game;
       Board board;
+      SessionModel.Session session;
       string playerId = userModel.UserId;
 
       switch ( actionRequest.Type ) {
@@ -61,7 +62,8 @@ namespace dotnet_tree_shadows.Models.GameActions {
           break;
         case GameActionType.StartGame:
           game = await gameService.Get( sessionId );
-          actionParams = new EndTurnAction.Params( actionRequest, playerId, game );
+          session = await sessionService.Get( sessionId );
+          actionParams = new StartGameAction.Params( actionRequest, playerId, session, game );
           break;
         case GameActionType.PlaceStartingTree:
           game = await gameService.Get( sessionId );

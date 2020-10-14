@@ -9,7 +9,7 @@ import BottomBar from "../game/bottomBar/BottomBar";
 import {fetchSession} from "../../store/session/thunks";
 import {connectToSession, disconnectFromSession} from "../../store/signalR/actions";
 import {clearSession} from "../../store/session/reducer";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {useTypedSelector} from "../../store";
 import Container from "@material-ui/core/Container";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -17,9 +17,14 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import AppBar from "@material-ui/core/AppBar";
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import {Link} from 'react-router-dom'
-import { signOut } from '../../store/auth/reducer';
-import {connectToSignalR, disconnectFromSignalR} from "../../store/signalR/listeners";
+import {signOut} from '../../store/auth/reducer';
+import gameHub from "../../gamehub";
+import DisconnectedAlertDialog from "../game/DisconnectedAlertDialog";
+import {Alert} from "@material-ui/lab";
+import Collapse from "@material-ui/core/Collapse";
+import {HubConnectionState} from "@microsoft/signalr";
+import { setSessionDisconnected } from '../../store/signalR/reducer';
+
 
 
 interface FlexGameScreenProps {
@@ -32,18 +37,22 @@ const FlexGameScreen: FunctionComponent<FlexGameScreenProps> = (props: FlexGameS
     const dispatch = useDispatch();
     const {sessionId: sessionIdFromPath} = useParams();
     const {id: sessionIdFromState, loadingSessionState, name: sessionName} = useTypedSelector(state => state.session);
+    const {connectionState} = useTypedSelector(state => state.signalR);
 
     const loadSession = async () => {
         await dispatch(fetchSession(sessionIdFromPath))
-        await connectToSignalR();
+        if(connectionState == HubConnectionState.Disconnected) {
+            await gameHub.connect();
+        }
         await dispatch(connectToSession(sessionIdFromPath));
     }
 
     const clearSessionOnLeave = async () => {
 
         await dispatch(disconnectFromSession(sessionIdFromPath));
-        await disconnectFromSignalR();
+        await gameHub.disconnect();
         dispatch(clearSession())
+        dispatch(setSessionDisconnected(false))
 
 
     }
@@ -61,7 +70,6 @@ const FlexGameScreen: FunctionComponent<FlexGameScreenProps> = (props: FlexGameS
 
     const handleSignOut = ()=>{dispatch(signOut())};
 
-
     return (
         <Container maxWidth={false} className={classes.root}>
             <AppBar
@@ -71,11 +79,12 @@ const FlexGameScreen: FunctionComponent<FlexGameScreenProps> = (props: FlexGameS
                 <Toolbar>
                     <IconButton color={"inherit"}  component={Link} to={"/sessions"}><ArrowBackIosIcon/></IconButton>
                     <Typography variant="h6" noWrap className={classes.title}>
-                        {sessionName}
+                        {sessionName} - {connectionState ?? undefined}
                     </Typography>
                     <Button color="inherit" onClick={handleSignOut}>Sign Out</Button>
                 </Toolbar>
             </AppBar>
+
 
             <Box className={classes.leftPanel}>
                 <div className={classes.toolbarSpacer}/>
@@ -84,6 +93,7 @@ const FlexGameScreen: FunctionComponent<FlexGameScreenProps> = (props: FlexGameS
             <Box className={classes.gamePanel}>
                 <div className={classes.toolbarSpacer}/>
                 <Box className={classes.gameWrapper}>
+                    <Box zIndex={"modal"}><Collapse in={connectionState==HubConnectionState.Reconnecting}><Alert severity="warning">Connection disconnected - attempting to reconnect.</Alert></Collapse></Box>
                     <GameBoard/>
                 </Box>
                 <Box className={classes.bottomBar}>
@@ -94,6 +104,7 @@ const FlexGameScreen: FunctionComponent<FlexGameScreenProps> = (props: FlexGameS
                 <div className={classes.toolbarSpacer}/>
                 <PlayerSidebar/>
             </Box>
+            <DisconnectedAlertDialog/>
         </Container>
     );
 };

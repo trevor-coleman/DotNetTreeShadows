@@ -1,36 +1,35 @@
-import {connection} from "./listeners";
+import gameHub from "../../gamehub";
 import enhancedStore, {ExtraInfo} from "../store";
-import {createAsyncThunk, unwrapResult} from "@reduxjs/toolkit";
-import {SignInCredentials} from "../auth/types/signInCredentials";
+import {createAsyncThunk} from "@reduxjs/toolkit";
 import {AppDispatch} from "../index";
-import {clearProfile, fetchProfile} from "../profile/reducer";
-import {fetchInvitations} from "../invitations/actions";
-import {signIn} from "../auth/actions";
 import {GameOption} from "../game/types/GameOption";
-import { gameOptionUpdate } from "../game/reducer";
-import game from "../game/types/game";
+import {gameOptionUpdate, clearCurrentAction} from "../game/reducer";
+import {GameHubMethod} from "../../gamehub/methods";
+import {Invitation} from "../invitations/types/invitation";
+import {IGameActionRequest} from "../../gamehub/gameActions/ActionFactory";
+import session from "../../gamehub/listeners/session";
 
 const {store} = enhancedStore;
 
-export const connectToSession = createAsyncThunk<void,string>('signalr/connectToSession',
+export const connectToSession = createAsyncThunk<void, string>('gamehub/connectToSession',
     async (sessionId) => {
-    try {
-        await connection.send("ConnectPlayer", {
-            sessionId,
-            playerId: store.getState().profile.id
-        });
-        return;
-    } catch (e) {
-        console.log(e);
-        return e.message ?? "disconnect failed";
-    }
+        try {
+            await gameHub.send(GameHubMethod.ConnectToSession, {
+                sessionId,
+                playerId: store.getState().profile.id
+            });
+            return;
+        } catch (e) {
+            console.log();
+            return e.message ?? "disconnect failed";
+        }
     })
 
 
-export const disconnectFromSession = createAsyncThunk<void,string>('signalr/disconnectFromSession',
+export const disconnectFromSession = createAsyncThunk<void, string>('gamehub/disconnectFromSession',
     async (sessionId) => {
         try {
-            await connection.send("DisconnectPlayer", {
+            await gameHub.send(GameHubMethod.DisconnectFromSession, {
                 sessionId,
                 playerId: store.getState().profile.id
             });
@@ -42,8 +41,12 @@ export const disconnectFromSession = createAsyncThunk<void,string>('signalr/disc
     })
 
 
-export const setGameOption = (gameOption:GameOption, value:boolean, sessionId:string) => async (dispatch: AppDispatch) => {
-    await dispatch(sendGameOptionUpdate({gameOption,value,sessionId}));
+export const setGameOption = (gameOption: GameOption, value: boolean, sessionId: string) => async (dispatch: AppDispatch) => {
+    await dispatch(sendGameOptionUpdate({
+        gameOption,
+        value,
+        sessionId
+    }));
     const newGameOptions = {
         ...store.getState().game.gameOptions,
         [gameOption]: value ? value : undefined
@@ -51,18 +54,57 @@ export const setGameOption = (gameOption:GameOption, value:boolean, sessionId:st
     dispatch(gameOptionUpdate(newGameOptions))
 };
 
+export const cancelSessionInvite = (invitation: Invitation) => async (dispatch: AppDispatch) => {
+    await dispatch(cancelSessionInviteAsync(invitation));
+};
 
 
-export const sendGameOptionUpdate = createAsyncThunk<void, {gameOption: string, value: boolean, sessionId: string}>(
-    'signalr/sendGameOptionsUpdate',
-    async (request)=> {
+const cancelSessionInviteAsync = createAsyncThunk<void, Invitation, ExtraInfo>(
+    'gamehub/cancelSessionInvite',
+    async (invitation, thunkAPI) => {
+        const result = await gameHub.send(GameHubMethod.CancelSessionInvite, invitation);
+        console.log(result);
+        return result;
+    }
+)
+
+export const sendGameOptionUpdate = createAsyncThunk<void, { gameOption: string, value: boolean, sessionId: string }>(
+    'gamehub/sendGameOptionsUpdate',
+    async (request) => {
         try {
-            await connection.send("SetGameOption", request);
+            await gameHub.send(GameHubMethod.SetGameOption, request);
             return
         } catch (e) {
-            console.log(e);
-            return(e.message ?? "failed to update option")
+            console.error("e.message");
+            return (e.message ?? "failed to update option")
         }
     }
 )
 
+export const doGameAction = (sessionId:string, request: IGameActionRequest) => async (dispatch: AppDispatch) => {
+    try {
+        await dispatch(sendGameAction({
+            sessionId,
+            request
+        }));
+        dispatch (clearCurrentAction())
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+
+
+const sendGameAction = createAsyncThunk<void, { sessionId: string, request: IGameActionRequest }>(
+    "gamehub/doGameAction",
+    async ({request, sessionId}) => {
+        try {
+            console.log("sendGameAction");
+            await gameHub.connection.send("DoAction", sessionId, request);
+            return;
+        } catch (e) {
+            console.log(e);
+            return e.message ?? "Failed to send DoGameAction";
+        }
+    }
+)

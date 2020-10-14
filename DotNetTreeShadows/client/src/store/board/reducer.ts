@@ -4,7 +4,7 @@ import {fetchBoard} from "./actions";
 import {Board} from "./types/board";
 import { updateSession } from "../session/reducer";
 import {SessionUpdate} from "../session/types";
-import {AddPieceToTileRequest} from "../signalR/listeners";
+import {AddPieceToTileRequest} from "../../gamehub";
 
 const stateWithTileAtH = (state: BoardState, tile: number, h: number): BoardState => ({
     ...state,
@@ -47,26 +47,6 @@ const boardSlice = createSlice({
         }))
     },
     reducers: {
-        addPieceToHex: (state, action: PayloadAction<AddPieceToTileRequest>) => {
-            const {sessionId, hexCode, pieceType, treeType} = action.payload;
-            let tile: number = state.tiles[hexCode];
-            console.group(action.type)
-            console.log(`session: ${sessionId}`);
-            console.log(`hexCode: ${hexCode}`);
-            console.log(`pieceType: ${pieceType}`);
-            console.log(`treeType: ${treeType}`);
-
-            tile = Tile.SetPieceType(tile, pieceType);
-            tile = Tile.SetTreeType(tile, treeType);
-            return stateWithTileAtH(state, tile, hexCode);
-
-        },
-        removePieceFromHex: (state, action: PayloadAction<{ hexCode: number }>) => {
-            const {hexCode} = action.payload;
-            let tile: number = state.tiles[hexCode];
-            tile = Tile.SetPieceType(tile, null);
-            return stateWithTileAtH(state, tile, hexCode);
-        },
         updateTiles: (state, action :PayloadAction<Board>)=> ({
             ...state,
             ...action.payload
@@ -78,6 +58,6 @@ const boardSlice = createSlice({
 })
 
 
-export const {addPieceToHex, removePieceFromHex} = boardSlice.actions;
+export const {} = boardSlice.actions;
 export {fetchBoard};
 export default boardSlice.reducer;

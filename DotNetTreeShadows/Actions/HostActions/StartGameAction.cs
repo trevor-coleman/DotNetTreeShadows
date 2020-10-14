@@ -27,7 +27,7 @@ namespace dotnet_tree_shadows.Models.GameActions.HostActions {
       for (int i = 0; i < Game.TurnOrder.Length; i++) {
         foreach ( (string id, int boardValue) in Game.PlayerBoards ) {
           PlayerBoard newBoard = new PlayerBoard( boardValue ) { TreeType = (TreeType) i };
-          newPlayerBoards.Add(id, newBoard.BoardCode  );
+          newPlayerBoards[id] = newBoard.BoardCode;
         }
       }
 

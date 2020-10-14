@@ -44,8 +44,6 @@ const GameInfo: FunctionComponent<GameInfoProps> = (props: GameInfoProps) => {
                             <ListItemText primary={name} secondary={description}/>
                         </ListItem>))}
                 </List>
-
-
             </Box>
         </Paper>);
 };

@@ -20,7 +20,9 @@ import {showAddPlayerDialog} from "../../../store/appState/reducer";
 import AddPlayerDialog from "../AddPlayerDialog";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import DeleteOutlineOutlinedIcon from "@material-ui/icons/DeleteOutlineOutlined";
-import {updateInvitation} from "../../../store/invitations/actions";
+import {updateInvitation, updateInvitationStatus} from "../../../store/invitations/actions";
+import {cancelSessionInvite} from "../../../store/signalR/actions";
+import {GameStatus} from "../../../store/game/types/GameStatus";
 
 
 interface ListTurnOrderProps {
@@ -31,7 +33,7 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (props: ListTurnOrd
     const {} = props;
     const classes = useStyles();
     const dispatch = useDispatch();
-    const {playerBoards, turnOrder, currentTurn} = useTypedSelector(state => state.game);
+    const {playerBoards, turnOrder, currentTurn, status} = useTypedSelector(state => state.game);
     const {players, host, invitedPlayers, connectedPlayers, id: sessionId} = useTypedSelector(state => state.session);
     const {friends, id: playerId} = useTypedSelector(state => state.profile);
     const {sessionInvites} = useTypedSelector(state => state.invitations);
@@ -41,9 +43,9 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (props: ListTurnOrd
     };
 
     async function cancelInvitation(recipientId: string) {
-        console.log(`SESSION:${sessionId}`)
         const toCancel = sessionInvites.find(inv => inv.resourceId == sessionId && inv.recipientId == recipientId);
-        if (toCancel) await dispatch(updateInvitation(toCancel, "Cancelled"));
+        console.log(toCancel);
+        if (toCancel) await dispatch(updateInvitation(toCancel, "Cancelled"))
         else console.error(`Could not find invitation for recipient in session:
          Recipient: ${recipientId} 
          Session  : ${sessionId})
@@ -88,7 +90,7 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (props: ListTurnOrd
                             </ListItemSecondaryAction> : ""}
                         </ListItem>
                     })}
-                    {(turnOrder.length + invitedPlayers.length) < 4 && playerId == host
+                    {((turnOrder.length + invitedPlayers.length) < 4) && (playerId == host) && (status == GameStatus.Preparing)
                         ? <ListItem
                             button onClick={openAddPlayerDialog}>
                             <ListItemAvatar><Avatar><PersonAddIcon/></Avatar></ListItemAvatar>

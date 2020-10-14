@@ -5,7 +5,6 @@ import {sendManySessionInvites} from "../../invitations/actions";
 
 
 export const inviteFriendsToSession = (friendIds: string[], sessionId:string)=> async (dispatch:AppDispatch)=> {
-    console.log("here we go");
     dispatch(setInviteFriendsToSessionState({
         requestState: RequestState.Pending,
         message: null,

@@ -22,7 +22,7 @@ const SessionSidebar: FunctionComponent<SessionSidebarProps> = (props: SessionSi
     const {status} = useTypedSelector(state => state.game);
 
 
-    const showHostOptions = playerId == host && status == GameStatus.Preparing;
+    const showHostOptions = (playerId == host) && (status == GameStatus.Preparing);
     return (
         <SidebarGrid>
                 <ListTurnOrder/>

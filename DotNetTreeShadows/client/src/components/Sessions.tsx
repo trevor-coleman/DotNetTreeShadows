@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {makeStyles} from '@material-ui/core/styles';
 import {Box, Typography} from "@material-ui/core";
@@ -8,7 +8,7 @@ import ListItem from "@material-ui/core/ListItem";
 import {Link} from "react-router-dom";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
-import {deleteSession} from "../store/session/actions";
+import {deleteSession, fetchSessionFromApi} from "../store/session/actions";
 import DeleteOutlineOutlinedIcon from "@material-ui/icons/DeleteOutlineOutlined";
 import {createSessionAndFetchProfile} from "../store/session/thunks";
 import SessionInviteList from "./SessionInvites";
@@ -18,6 +18,7 @@ import FriendAvatar from "./FriendAvatar";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import AddIcon from '@material-ui/icons/Add';
+import {fetchProfile} from "../store/profile/reducer";
 
 interface SessionsProps {
 }
@@ -27,6 +28,15 @@ const Sessions: FunctionComponent<SessionsProps> = (props: SessionsProps) => {
     const {} = props;
     const classes = useStyles();
     const dispatch = useDispatch();
+
+    const onLoad = async ()=> {
+        await dispatch(fetchProfile());
+    }
+
+    useEffect(()=>{
+        onLoad();
+    }, [])
+
     const {sessions, id, friends} = useTypedSelector(state => state.profile)
     return (
         <Box><Typography paragraph variant={'h6'}>Sessions</Typography>

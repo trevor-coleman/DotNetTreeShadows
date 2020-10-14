@@ -13,7 +13,6 @@ export const sendManySessionInvites = createAsyncThunk<Invitation[], { friendIds
         const {api} = extra;
         try {
             const response = await api.invitations.sendManySessionInvites(friendIds, sessionId);
-            console.log(response);
             return response.data;
         } catch (e) {
             console.error(e.response.data);
@@ -30,7 +29,6 @@ export const fetchInvitations = createAsyncThunk<InvitationsResponse, void, Extr
         const response = await api.invitations.getAll();
         const friendRequests = [];
         const sessionInvites = [];
-        console.log("Fetching invitations: ", response);
         for (let i = 0; i < response.data.length; i++) {
             const invitation = response.data[i];
             switch (invitation.invitationType) {
@@ -41,7 +39,7 @@ export const fetchInvitations = createAsyncThunk<InvitationsResponse, void, Extr
                     sessionInvites.push(invitation);
                     break;
                 default:
-                    console.error("AHA!", invitation)
+                    break;
             }
         }
         ;
@@ -93,7 +91,6 @@ export const updateInvitationStatus = createAsyncThunk<Invitation, { invitation:
     async ({invitation, status}, {extra}) => {
         const {api} = extra;
         const {id} = invitation;
-        console.log("sending", id);
         try {
             const response = await api.invitations.updateStatus(id, status);
             return response.data;

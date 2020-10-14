@@ -29,7 +29,7 @@ namespace dotnet_tree_shadows.Services {
       return game;
     }
 
-    public async Task Update (Game actionGame) { await games.InsertOneAsync( actionGame ); }
+    public async Task Update (Game gameIn) { await games.ReplaceOneAsync( game => game.Id == gameIn.Id, gameIn ); }
 
     public async Task Update (string id, Game game) =>
       await games.ReplaceOneAsync( session => session.Id == id, game);

@@ -1,13 +1,23 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {SunPosition} from "./types/sunPosition";
 import Game from "./types/game";
-import {fetchGame} from "./actions";
+import {fetchGame, GameActionType} from "./actions";
 import {updateSession} from "../session/reducer";
 import {SessionUpdate} from "../session/types";
 import {GameStatus} from "./types/GameStatus";
+import {ActionStage} from "./gameActions";
+import {IGameActionRequest} from "../../gamehub/gameActions/ActionFactory";
+import {PieceType} from "../board/types/pieceType";
 
 
 export interface GameState extends Game {
+    currentAction: {
+        type: GameActionType | null,
+        stage: ActionStage,
+        origin: number | null,
+        target: number | null,
+        pieceType: PieceType | null,
+    }
 }
 
 const initialGameState: GameState = {
@@ -20,7 +30,14 @@ const initialGameState: GameState = {
     scores: {},
     scoringTokens: {},
     turnOrder: [],
-    status: GameStatus.Preparing
+    status: GameStatus.Preparing,
+    currentAction: {
+        type: null,
+        stage: null,
+        origin: null,
+        target:null,
+        pieceType: null
+    }
 }
 
 const gameSlice = createSlice({
@@ -42,13 +59,33 @@ const gameSlice = createSlice({
                     [gameOption]: value || undefined,
                 }
             });
-        }
+        },
+        setCurrentAction:(state, action:PayloadAction<GameActionType>) => ({
+            ...state,
+            currentAction: {
+                ...state.currentAction,
+                type: action.payload
+            }
 
+        }),
+        setActionOrigin: (state:GameState, action:PayloadAction<number>) => ({
+            ...state,
+            currentAction: {
+                ...state.currentAction,
+                origin: action.payload
+            }
+        }),
+        clearCurrentAction:state => ({
+            ...state,
+            currentAction: {
+                ...initialGameState.currentAction
+            }
+        })
     }
 
 })
 
 
-export const {gameOptionUpdate} = gameSlice.actions;
+export const {gameOptionUpdate, setActionOrigin, setCurrentAction, clearCurrentAction} = gameSlice.actions;
 export {fetchGame};
 export default gameSlice.reducer;

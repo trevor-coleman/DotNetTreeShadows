@@ -8,8 +8,6 @@ import {
 import {Invitation} from "./types/invitation";
 import {RequestState} from "../../api/requestState";
 
-console.log("INVITATIONS REDUCER");
-
 export type InvitationsState = {
     invitations: Invitation[],
     friendRequests: Invitation[],
