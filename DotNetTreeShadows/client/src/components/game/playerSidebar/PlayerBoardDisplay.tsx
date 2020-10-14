@@ -42,7 +42,7 @@ const PlayerBoardDisplay: FunctionComponent<BuyingGridProps> = (props: BuyingGri
     return boardCode ?
         <Paper>
             <Box p={2}>
-                <Typography variant={'h6'}>Player Board</Typography>
+                <Typography variant={'subtitle1'}>Player Board</Typography>
                 <Divider className={classes.divider}/>
 
                 <Box className={classes.gridBox}><Grid container direction={'row'} spacing={2}>

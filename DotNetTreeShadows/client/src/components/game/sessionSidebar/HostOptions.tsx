@@ -76,7 +76,7 @@ const HostOptions: FunctionComponent<GameStatusProps> = (props: GameStatusProps)
     return (
         <Paper>
             <Box p={2}>
-                <Typography variant={"h6"}>{sessionName}</Typography>
+                <Typography variant={"subtitle1"}>{sessionName}</Typography>
                 <Divider/>
                 <List>
                     {gameOptionDescriptions.map(option=><GameOptionItem key={option.id} {...option}/>)}

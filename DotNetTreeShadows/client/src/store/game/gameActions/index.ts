@@ -1,17 +1,26 @@
 import enhancedStore from "../../store";
 import {GameActionType} from "../actions";
 import {doGameAction} from "../../signalR/actions";
-import actionFactory from "../../../gamehub/gameActions/ActionFactory";
-import { setActionOrigin } from "../reducer";
+import {setActionOrigin} from "../reducer";
+import {GameStatus} from "../types/GameStatus";
+
 const {store} = enhancedStore;
 
 export type ActionStage = "selectingAction" | "selectingPiece" | "selectingTiles" | null
 
 export function handleTileClick(hexCode: number) {
+    const {turnOrder, currentTurn, status} = store.getState().game
     const {type, stage, origin, target} = store.getState().game.currentAction;
     const {id:sessionId} = store.getState().game.currentAction;
+    const {id: playerId} = store.getState().profile;
 
-    if (stage=="selectingAction" || stage == "selectingPiece") return;
+    if (stage=="selectingAction" || stage == "selectingPiece" || playerId !== turnOrder[currentTurn]) return;
+
+    if(status == GameStatus.PlacingFirstTrees) {
+        store.dispatch(doGameAction(
+          sessionId, {type: GameActionType.PlaceStartingTree, origin: hexCode}
+        ))
+    }
 
     switch (type) {
         case GameActionType.Plant:

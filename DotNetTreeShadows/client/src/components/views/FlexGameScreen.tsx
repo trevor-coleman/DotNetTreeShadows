@@ -121,7 +121,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     leftPanel: {
         flexShrink: 0,
         backgroundColor: "#c9c9c9",
-        width: 320,
+        width: 280,
         height: "100vh"
     },
     gamePanel: {
@@ -134,17 +134,18 @@ const useStyles = makeStyles((theme: Theme) => ({
         minWidth: 600,
     },
     bottomBar: {
-        width: "100%",
+        width:"100%",
+        height: "fit-content",
     },
     gameWrapper: {
         width: "100%",
         flex: 1,
-        maxWidth: "80vh",
+        maxWidth: "75vh",
     },
 
     rightPanel: {
         backgroundColor: "#c9c9c9",
-        width: 320,
+        width: 280,
         flexShrink: 0,
         height: "100vh"
     },

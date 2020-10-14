@@ -7,6 +7,7 @@ import BoardTile from './BoardTile';
 import {Hex} from '../../../store/board/types/Hex';
 import {useTypedSelector} from "../../../store";
 import Box from "@material-ui/core/Box";
+import {handleTileClick} from "../../../store/game/gameActions";
 
 
 interface IGameBoardProps {
@@ -63,8 +64,7 @@ const GameBoard: FunctionComponent<IGameBoardProps> = (props: IGameBoardProps) =
                     const hexCode = parseInt(hexCodeString);
                     new Hex(hexCode);
                     return <BoardTile key={hexCode} onClick={async () => {
-                        console.log(`clicked on ${hexCode}`);
-
+                        handleTileClick(hexCode);
                     }
                     }
                                       hexCode={hexCode} layout={layout}/>;

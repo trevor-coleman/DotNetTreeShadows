@@ -16,9 +16,9 @@ type SidebarGridProps = PropsWithChildren<ISidebarGridProps>
 //COMPONENT
 const SidebarGrid: FunctionComponent<SidebarGridProps> = (props: SidebarGridProps) => {
     const {children} = props;
-    const spacing = props.spacing ?? 2;
-    const m = props.m ?? 2;
-    const p = props.p ?? 2;
+    const spacing = props.spacing ?? 1;
+    const m = props.m ?? 1;
+    const p = props.p ?? 1;
 
     return (
         <Box p={p}>

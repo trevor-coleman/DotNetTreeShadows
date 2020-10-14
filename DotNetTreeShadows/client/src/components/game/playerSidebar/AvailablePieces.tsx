@@ -41,7 +41,7 @@ const AvailablePieces: FunctionComponent<Props> = (props: Props) => {
     let lastPiece: { pieceType: PieceType, key: string };
 
     return <Paper><Box p={2} className={classes.root}>
-        <Typography variant={"h6"}>Available</Typography>
+        <Typography variant={"subtitle1"}>Available</Typography>
         <Divider className={classes.divider}/>
         <Grid direction={"column"} container>
             {availablePieces.map((pieces, index) => {

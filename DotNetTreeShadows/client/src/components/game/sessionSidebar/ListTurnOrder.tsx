@@ -55,7 +55,7 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (props: ListTurnOrd
     return (
         <Paper>
             <Box p={2}>
-                <Typography variant={'h6'}>Turn Order</Typography>
+                <Typography variant={'subtitle1'}>Turn Order</Typography>
                 <Divider/>
                 <List>
                     {turnOrder.map((id: string) => {
