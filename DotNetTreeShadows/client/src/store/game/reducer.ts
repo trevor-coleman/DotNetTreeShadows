@@ -18,7 +18,9 @@ export interface GameState extends Game {
         origin: number | null,
         target: number | null,
         pieceType: PieceType | null,
+
     }
+  blacklist:string[]
 }
 
 const initialGameState: GameState = {
@@ -38,7 +40,8 @@ const initialGameState: GameState = {
         origin: null,
         target:null,
         pieceType: null
-    }
+    },
+  blacklist:['currentAction']
 }
 
 const gameSlice = createSlice({

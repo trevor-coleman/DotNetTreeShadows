@@ -3,6 +3,7 @@ import {GameActionType} from "../actions";
 import {doGameAction} from "../../signalR/actions";
 import {setActionOrigin} from "../reducer";
 import {GameStatus} from "../types/GameStatus";
+import actionFactory from '../../../gamehub/gameActions/ActionFactory';
 
 const {store} = enhancedStore;
 
@@ -18,7 +19,7 @@ export function handleTileClick(hexCode: number) {
 
     if(status == GameStatus.PlacingFirstTrees) {
         store.dispatch(doGameAction(
-          sessionId, {type: GameActionType.PlaceStartingTree, origin: hexCode}
+          sessionId, actionFactory.PlaceStartingTreeAction(hexCode)
         ))
     }
 
@@ -26,7 +27,7 @@ export function handleTileClick(hexCode: number) {
         case GameActionType.Plant:
             if(origin) {
                 store.dispatch(doGameAction(
-                    sessionId, {type, origin: hexCode}
+                    sessionId, actionFactory.PlantAction(origin, hexCode)
                 ))
             } else {
                 store.dispatch(setActionOrigin(hexCode))
@@ -35,11 +36,7 @@ export function handleTileClick(hexCode: number) {
         case GameActionType.Grow:
         case GameActionType.PlaceStartingTree:
         case GameActionType.Collect:
-            if(stage == "selectingOrigin") {
-                store.dispatch(doGameAction(
-                    sessionId, {type, origin: hexCode}
-                    ))
-            }
+            console.log('not implemented')
             break;
         case GameActionType.Buy:
         case GameActionType.EndTurn:

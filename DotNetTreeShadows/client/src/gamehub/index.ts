@@ -7,7 +7,6 @@ import {PieceType} from "../store/board/types/pieceType";
 import {gameOptionUpdate} from '../store/game/reducer';
 import {GameHubMethod} from "./methods";
 import applyListeners from "./listeners";
-import {connectToSession} from "../store/signalR/actions";
 
 const {store} = enhancedStore;
 
@@ -28,14 +27,6 @@ const connection: HubConnection = new signalR
 
 applyListeners(connection);
 
-connection.on("UpdateGameOptions", (request: { sessionId: string, gameOption: string, value: boolean }) => {
-  if (store.getState().session.id != request.sessionId) return;
-  store.dispatch(gameOptionUpdate(request))
-})
-
-connection.on("LogMessage", (message: string) => {
-  console.log(message);
-})
 
 
 

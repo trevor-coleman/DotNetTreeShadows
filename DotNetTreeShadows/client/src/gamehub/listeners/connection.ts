@@ -19,5 +19,6 @@ export default function connectListeners(connection:HubConnection){
         store.dispatch(connectToSession(store.getState().session.id));
     })
 
+    connection.on("LogMessage", (message:string)=>console.log(message))
 
 }

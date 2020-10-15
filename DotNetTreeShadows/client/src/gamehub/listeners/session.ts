@@ -1,6 +1,7 @@
 import {HubConnection} from "@microsoft/signalr";
 import enhancedStore from "../../store/store";
 import {fetchSession, updateConnectedPlayers} from "../../store/session/reducer";
+import { gameOptionUpdate } from '../../store/game/reducer';
 
 const {store} = enhancedStore;
 
@@ -22,5 +23,11 @@ export default function connectListeners(connection:HubConnection) {
     connection.on("HandleActionFailure", (message:string)=>{
         console.log(message);
     })
+
+  connection.on("UpdateGameOptions", (request: { sessionId: string, gameOption: string, value: boolean }) => {
+    if (store.getState().session.id != request.sessionId) return;
+    store.dispatch(gameOptionUpdate(request))
+  })
+
 
 }

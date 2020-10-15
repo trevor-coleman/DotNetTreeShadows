@@ -84,7 +84,7 @@ export const sendGameOptionUpdate = createAsyncThunk<void, { gameOption: string,
 )
 
 export const doGameAction = (sessionId:string, request: IGameActionRequest) => async (dispatch: AppDispatch) => {
-    try {
+  try {
         await dispatch(sendGameAction({
             sessionId,
             request
@@ -95,13 +95,17 @@ export const doGameAction = (sessionId:string, request: IGameActionRequest) => a
     }
 };
 
-
+//TODO: REMOVE STRING FROM ENUM
 
 const sendGameAction = createAsyncThunk<void, { sessionId: string, request: IGameActionRequest }>(
     "gamehub/doGameAction",
     async ({request, sessionId}) => {
-        try {
-            console.log("sendGameAction", request, sessionId);
+      const{
+        type, pieceType, target, origin, targetPlayerId
+      }=request
+      try {
+            console.log("sendGameAction:", "DoSomeAction", {sessionId, testProp: 242, type: "StartGame"} );
+            await gameHub.connection.send("doSomeAction", {sessionId, testProp: 242, type: 0});
             await gameHub.connection.send("DoAction", sessionId, request);
             return;
         } catch (e) {

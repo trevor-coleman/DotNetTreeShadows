@@ -74,7 +74,7 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (props: ListTurnOrd
                             </ListItem>
                         )
                     })}
-                    {invitedPlayers.map(id => {
+                    {  invitedPlayers ?invitedPlayers.map(id => {
                         return <ListItem key={id} selected={turnOrder[currentTurn] == id}>
                             <ListItemAvatar>
                                 <FriendAvatar
@@ -89,7 +89,7 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (props: ListTurnOrd
                                 </IconButton>
                             </ListItemSecondaryAction> : ""}
                         </ListItem>
-                    })}
+                    }):<div/>}
                     {((turnOrder.length + invitedPlayers.length) < 4) && (playerId == host) && (status == GameStatus.Preparing)
                         ? <ListItem
                             button onClick={openAddPlayerDialog}>
