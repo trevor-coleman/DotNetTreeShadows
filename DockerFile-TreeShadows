@@ -1,25 +1,26 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 WORKDIR /app
-
-# copy csproj and restore as distinct layers
 COPY *.sln .
 COPY DotNetTreeShadows/*.csproj ./DotNetTreeShadows/
 RUN dotnet restore
 
-# build client app
 FROM node:10.19.0 as clientBuild
 WORKDIR /client
-COPY ./DotNetTreeShadows/client .
+COPY ./DotNetTreeShadows/client/package.json .
 RUN npm install
-RUN npm build
+COPY ./DotNetTreeShadows/client .
+RUN npm run build
 
-FROM build as publish
+FROM build-env as publish
 COPY . ./
 RUN dotnet publish -c Release -o out
-COPY --from=clientBuild ./build ./src/DotNetTreeShadows/out/client/build
+COPY --from=clientBuild ./client/build ./DotNetTreeShadows/out/client/build
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS runtime
 WORKDIR /app
 COPY --from=publish /app/DotNetTreeShadows/out ./
-EXPOSE 5000:80
+
+EXPOSE 80
+EXPOSE 443
+EXPOSE 5--
 ENTRYPOINT ["dotnet", "DotNetTreeShadows.dll"]

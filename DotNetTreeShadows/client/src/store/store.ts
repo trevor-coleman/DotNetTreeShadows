@@ -24,7 +24,7 @@ const initStore = () => {
         () => {
             return getToken(store?.getState())
         },
-        "https://localhost:5001/api/"
+      process.env.TREE_SHADOWS_API_URL ?? "https://localhost:5001/api/"
     );
     store = configureStore({
         reducer: persistedReducer,

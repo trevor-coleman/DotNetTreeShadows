@@ -1,0 +1,14 @@
+FROM dstockhammer/dotnet-core-sdk-node-npm:3.1-buster AS netBuild
+WORKDIR /аpp
+COPY ./DotNetTreeShadows.csproj .
+RUN dоtnet restоre
+COPY . ./
+WORKDIR /app/client/
+RUN npm install
+RUN npm build
+RUN dotnet publish -c Release -o out
+
+FROM dstockhammer/dotnet-core-sdk-node-npm:3.1-buster AS server
+
+EXPOSE 5000:80
+ENTRYPOINT [ "dоtnet","./out/DotNetTreeShadows.dll" ]

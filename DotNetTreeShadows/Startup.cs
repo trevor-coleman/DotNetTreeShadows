@@ -1,16 +1,11 @@
-using System;
-using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.WebSockets;
 using System.Security.Claims;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using AspNetCore.Identity.Mongo;
 using AspNetCore.Identity.Mongo.Model;
 using dotnet_tree_shadows.Authentication;
 using dotnet_tree_shadows.Models;
-using dotnet_tree_shadows.Models.GameActions;
 using dotnet_tree_shadows.Services;
 using dotnet_tree_shadows.Services.Serializers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -25,10 +20,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
 using dotnet_tree_shadows.Hubs;
-using dotnet_tree_shadows.Models.BoardModel;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Primitives;
-using MongoDB.Bson;
 
 namespace dotnet_tree_shadows {
   public class Startup {

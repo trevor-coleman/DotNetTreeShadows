@@ -22,11 +22,16 @@ services:
   dotnet-treeshadows-server:
     build:
       context: .
-      dockerfile: ./DockerFile
+      dockerfile: DockerFile-FromMS
     restart: always
     ports:
-      - 5000:80
+      - "80:80"
+      - "443:443"
     environment:
       MongoDB__Host: mongo
+      TREE_SHADOWS_API_URL: "http://localhost/api"
+      ASPNETCORE_URLS: "http://+:80;https://+:443"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "./webserver.pfx"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: icansee2
     depends_on:
       - mongo
