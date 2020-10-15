@@ -14,7 +14,8 @@ export type Session = {
 
 
 export type SessionUpdate = {
-    session:Session,
-    game: Game,
-    board: Board
+    sessionId:string,
+    session?:Session,
+    game?: Game,
+    board?: Board
 }

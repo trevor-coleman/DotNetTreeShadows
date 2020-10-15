@@ -1,0 +1,32 @@
+version: '3.6'
+services:
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: 0ee7288a-0a29-4c17-a194-c651668d2ba3
+      MONGO_INITDB_ROOT_PASSWORD: ec9e32ff-17d4-4321-8d3e-3949d593376e
+    ports:
+      - 27017:27017
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: 0ee7288a-0a29-4c17-a194-c651668d2ba3
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ec9e32ff-17d4-4321-8d3e-3949d593376e
+    depends_on:
+      - mongo
+        
+  dotnet-treeshadows-server:
+    build:
+      context: .
+      dockerfile: ./DockerFile
+    restart: always
+    ports:
+      - 5000:80
+    environment:
+      MongoDB__Host: mongo
+    depends_on:
+      - mongo

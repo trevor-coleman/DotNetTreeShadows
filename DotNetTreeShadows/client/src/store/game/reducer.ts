@@ -47,10 +47,11 @@ const initialGameState: GameState = {
 const gameSlice = createSlice({
     name: 'game',
     extraReducers: builder => {
-        builder.addCase(updateSession, (state, action:PayloadAction<SessionUpdate>)=>({
+        builder.addCase(updateSession, (state, action:PayloadAction<SessionUpdate>)=>
+          action.payload.game ? ({
             ...state,
             ...action.payload.game
-        }))
+        }) : state)
           builder.addCase(signOut, (state) => initialGameState);
     },
     initialState: initialGameState,

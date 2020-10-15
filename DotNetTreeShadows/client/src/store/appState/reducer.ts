@@ -4,7 +4,7 @@ import {Action} from "typesafe-actions";
 import {removeFriendFromProfile} from "../profile/actions";
 import {RequestState} from "../../api/requestState";
 import {inviteFriendsToSession} from "./addPlayerDialog/actions";
-import {Session} from "../session/types";
+import {Session, SessionUpdate} from "../session/types";
 import {fetchSessionFromApi} from "../session/actions";
 import {updateSession} from '../session/reducer'
 import Game from "../game/types/game";
@@ -63,12 +63,11 @@ const appStateSlice = createSlice({
                 },
             }
         })
-        builder.addCase(updateSession, (state: AppState, action: PayloadAction<{ session: Session, game: Game, board: Board }>) => {
-            const {session} = action.payload;
-            const sessionId = session.id;
+        builder.addCase(updateSession, (state: AppState, action: PayloadAction<SessionUpdate>) => {
+            const {sessionId} = action.payload;
             if (sessionId == state.addPlayerDialog.lastSession) return state;
 
-            return {
+            return  {
                 ...state,
                 addPlayerDialog: {
                     ...initialAppState.addPlayerDialog,

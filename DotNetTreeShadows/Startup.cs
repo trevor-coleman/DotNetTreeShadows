@@ -25,8 +25,10 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
 using dotnet_tree_shadows.Hubs;
+using dotnet_tree_shadows.Models.BoardModel;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Primitives;
+using MongoDB.Bson;
 
 namespace dotnet_tree_shadows {
   public class Startup {
@@ -61,6 +63,7 @@ namespace dotnet_tree_shadows {
       BsonSerializer.RegisterSerializationProvider( new GameOptionsDictionarySerializationProvider() );
       BsonSerializer.RegisterSerializationProvider( new IntStackDictionarySerializationProvider() );
 
+      
       services.AddSingleton<SessionService>();
       services.AddSingleton<InvitationService>();
       services.AddSingleton<GameService>();

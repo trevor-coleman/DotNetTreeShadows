@@ -17,7 +17,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
       this.game = game;
       this.board = board;
 
-      if ( board.tiles.TryGetValue( target, out int t ) ) largerPiecePrice = (int) (Tile.GetPieceType( t ) ?? 0) + 1;
+      if ( board.Tiles.TryGetValue( target, out int t ) ) largerPiecePrice = (int) (Tile.GetPieceType( t ) ?? 0) + 1;
     }
 
     public override bool IsValid {

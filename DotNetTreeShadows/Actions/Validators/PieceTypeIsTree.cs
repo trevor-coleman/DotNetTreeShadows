@@ -12,12 +12,11 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
             this.origin = origin;
             this.game = game;
             this.board = board;
-
-            throw new System.NotImplementedException();
+            
         }
 
         public override bool IsValid {
-            get => (int) (Tile.GetPieceType(board[origin]) ?? 0) > (int) PieceType.Seed;
+          get => (int) (Tile.GetPieceType( board.Tiles[origin] ) ?? 0) > (int) PieceType.Seed;
         }
 
         public override string? FailureMessage {

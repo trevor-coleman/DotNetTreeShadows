@@ -10,7 +10,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
         private readonly Game game;
         private readonly Board board;
         public GrowthInShadowAllowed (in Hex target, Game game, Board board) {
-            tileCode = board.tiles[target];
+            tileCode = board.Tiles[target];
             this.game = game;
             
         }

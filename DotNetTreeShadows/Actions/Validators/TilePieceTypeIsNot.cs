@@ -14,7 +14,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
         }
 
         public override bool IsValid {
-            get => Tile.GetPieceType( board.tiles[target]) != pieceType;
+            get => Tile.GetPieceType( board.Tiles[target]) != pieceType;
         }
         public override string? FailureMessage {
             get =>

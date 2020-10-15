@@ -13,7 +13,7 @@ export const createSessionAndFetchProfile = () => async (dispatch: AppDispatch) 
     const session:Session = unwrapResult(await dispatch(createSession())) as Session
     const game = unwrapResult(await dispatch(fetchGame(session.id))) as Game;
     const board = unwrapResult(await dispatch(fetchBoard(session.id))) as Board;
-    dispatch(updateSession({session,game,board}))
+    dispatch(updateSession({sessionId: session.id, session,game,board}))
     await dispatch(fetchProfile());
     return
 };
@@ -23,7 +23,7 @@ export const fetchSession = (sessionId: string) => async (dispatch: AppDispatch)
     const session:Session = unwrapResult(result) as Session
     const game = unwrapResult(await dispatch(fetchGame(session.id))) as Game;
     const board = unwrapResult(await dispatch(fetchBoard(session.id))) as Board;
-    dispatch(updateSession({session,game,board}))
+    dispatch(updateSession({sessionId:session.id, session,game,board}))
     await dispatch(fetchProfile());
 
 };

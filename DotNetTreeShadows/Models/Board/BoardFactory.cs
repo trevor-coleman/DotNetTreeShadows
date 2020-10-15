@@ -7,7 +7,8 @@ namespace dotnet_tree_shadows.Models.BoardModel {
 
     public static Board New (string id = "", int radius = 4) {
       Board board = new Board() {
-        Id=id
+        Id=id,
+        Tiles=new Dictionary<Hex, int>()
       };
       for (int q = -radius; q <= radius; q++) {
         int r1 = Math.Max( -radius, -q - radius );

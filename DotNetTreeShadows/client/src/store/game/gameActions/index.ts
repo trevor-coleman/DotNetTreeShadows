@@ -12,8 +12,10 @@ export type ActionStage = "selectingAction" | "selectingPiece" | "selectingTiles
 export function handleTileClick(hexCode: number) {
     const {turnOrder, currentTurn, status} = store.getState().game
     const {type, stage, origin, target} = store.getState().game.currentAction;
-    const {id:sessionId} = store.getState().game.currentAction;
+    const {id:sessionId} = store.getState().session;
     const {id: playerId} = store.getState().profile;
+
+    console.log(sessionId);
 
     if (stage=="selectingAction" || stage == "selectingPiece" || playerId !== turnOrder[currentTurn]) return;
 

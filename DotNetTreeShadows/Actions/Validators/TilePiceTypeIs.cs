@@ -3,27 +3,27 @@ using dotnet_tree_shadows.Models.GameModel;
 using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameActions.Validators {
-    public class TilePieceTypeIs : ATurnAction.AActionValidator {
-        private readonly Hex target;
-        private readonly PieceType? pieceType;
-        private readonly Game game;
-        private readonly Board board;
+    public class TilePieceTypeIs : AAction.AActionValidator {
+        private readonly Hex Target;
+        private readonly PieceType? PieceType;
+        private readonly Game Game;
+        private readonly Board Board;
 
         public TilePieceTypeIs (in Hex target, PieceType? pieceType, Game game, Board board) {
-            this.target = target;
-            this.pieceType = pieceType;
-            this.game = game;
-            this.board = board;
+            Target = target;
+            PieceType = pieceType;
+            Game = game;
+            Board = board;
         }
 
         public override bool IsValid {
-            get => Tile.GetPieceType( board.tiles[target]) == pieceType;
+            get => Tile.GetPieceType( Board.Tiles[Target]) == PieceType;
         }
         public override string? FailureMessage {
             get =>
                 IsValid
                     ? null
-                    : $"PieceType at target is {pieceType.ToString()} .";
+                    : $"PieceType at target is {PieceType.ToString()} .";
         }
     }
 }

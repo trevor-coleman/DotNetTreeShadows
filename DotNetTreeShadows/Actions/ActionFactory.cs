@@ -82,58 +82,58 @@ namespace dotnet_tree_shadows.Models.GameActions {
 
     public async void Commit (AAction action) {
       switch ( action ) {
-        case StartGameAction startGameAction:
-          await gameService.Update( startGameAction.Game );
+        case StartGameAction a:
+          await gameService.Update( a.Game );
           break;
-        case BuyAction buyAction:
-          await gameService.Update( buyAction.Game );
+        case BuyAction a:
+          await gameService.Update( a.Game );
           break;
-        case CollectAction collectAction:
-          await gameService.Update( collectAction.Game );
-          await boardService.Update( collectAction.Board );
+        case CollectAction a:
+          await gameService.Update( a.Game );
+          await boardService.Update(a.Board.Id, a.Board );
           break;
-        case EndTurnAction endTurnAction:
-          await gameService.Update( endTurnAction.Game );
+        case EndTurnAction a:
+          await gameService.Update(a.Game.Id, a.Game );
           break;
-        case GrowAction growAction:
-          await gameService.Update( growAction.Game );
-          await boardService.Update( growAction.Board );
+        case GrowAction a:
+          await gameService.Update( a.Game );
+          await boardService.Update(a.Board.Id, a.Board );
           break;
-        case PlaceStartingTreeAction placeStartingTreeAction:
-          await gameService.Update( placeStartingTreeAction.Game );
-          await boardService.Update( placeStartingTreeAction.Board );
+        case PlaceStartingTreeAction a:
+          await gameService.Update( a.Game );
+          await boardService.Update(a.Board.Id, a.Board );
           break;
-        case PlantAction plantAction:
-          await gameService.Update( plantAction.Game );
-          await boardService.Update( plantAction.Board );
+        case PlantAction a:
+          await gameService.Update( a.Game );
+          await boardService.Update(a.Board.Id, a.Board );
           break;
         default: throw new ArgumentOutOfRangeException( nameof(action) );
       }
     }
 
     public static bool Create (AActionParams actionParams, out AAction? action) {
-      (ActionRequest request, string playerId, Game? game, SessionModel.Session? session, Board? board) = actionParams;
+      
 
       action = actionParams switch {
-        BuyAction.Params p => ActionRequest.HasRequiredProps(request, "PieceType" ) && AreNotNull( game )
+        BuyAction.Params p => ActionRequest.HasRequiredProps(actionParams.Request, "PieceType" ) && AreNotNull( actionParams.Game )
                                 ? new BuyAction( p )
                                 : null,
-        PlantAction.Params p => ActionRequest.HasRequiredProps(request, "Origin", "Target" ) && AreNotNull( game, board )
+        PlantAction.Params p => ActionRequest.HasRequiredProps(actionParams.Request, "Origin", "Target" ) && AreNotNull( actionParams.Game, actionParams.Board )
                                   ? new PlantAction( p )
                                   : null,
-        GrowAction.Params p => ActionRequest.HasRequiredProps(request, "Origin" ) && AreNotNull( game, board )
+        GrowAction.Params p => ActionRequest.HasRequiredProps(actionParams.Request, "Origin" ) && AreNotNull( actionParams.Game, actionParams.Board )
                                  ? new GrowAction( p )
                                  : null,
-        CollectAction.Params p => ActionRequest.HasRequiredProps(request, "Origin" ) && AreNotNull( game, board )
+        CollectAction.Params p => ActionRequest.HasRequiredProps(actionParams.Request, "Origin" ) && AreNotNull( actionParams.Game, actionParams.Board )
                                     ? new CollectAction( p )
                                     : null,
-        EndTurnAction.Params p => AreNotNull( game )
+        EndTurnAction.Params p => AreNotNull( actionParams.Game )
                                     ? new EndTurnAction( p )
                                     : null,
-        StartGameAction.Params p => AreNotNull( session, game )
+        StartGameAction.Params p => AreNotNull( actionParams.Session, actionParams.Game )
                                       ? new StartGameAction( p )
                                       : null,
-        PlaceStartingTreeAction.Params p => ActionRequest.HasRequiredProps(request, "Origin" ) && AreNotNull( game, board )
+        PlaceStartingTreeAction.Params p => ActionRequest.HasRequiredProps(actionParams.Request, "Origin" ) && AreNotNull( actionParams.Game, actionParams.Board )
                                               ? new PlaceStartingTreeAction( p )
                                               : null,
         _ => throw new ArgumentOutOfRangeException()

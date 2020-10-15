@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
+using dotnet_tree_shadows.Hubs;
 using dotnet_tree_shadows.Models.GameModel;
 using dotnet_tree_shadows.Models.SessionModels;
 using dotnet_tree_shadows.Services;
@@ -56,6 +57,7 @@ namespace dotnet_tree_shadows.Models.GameActions {
         DoAction();
       }
       catch (Exception e) {
+        Console.WriteLine(e.StackTrace);
         failureMessage = e.Message;
         return false;
       }
@@ -108,5 +110,8 @@ namespace dotnet_tree_shadows.Models.GameActions {
     protected class UndoNotPermittedException : InvalidOperationException {
       public UndoNotPermittedException () : base( "Undo not permitted for this type of action." ) { }
     }
+
+    public abstract GameHub.SessionUpdate SessionUpdate ();
+
   }
 }

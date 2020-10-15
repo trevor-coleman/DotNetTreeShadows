@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using dotnet_tree_shadows.Controllers;
+using dotnet_tree_shadows.Hubs;
 using dotnet_tree_shadows.Models.BoardModel;
 using dotnet_tree_shadows.Models.GameActions.Validators;
 using dotnet_tree_shadows.Models.GameModel;
@@ -49,7 +50,12 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
       playerBoard.Pieces( PieceType ).IncreaseOnPlayerBoard();
       PlayerBoard.Set( Game, PlayerId, playerBoard );
     }
-    
+
+    public override GameHub.SessionUpdate SessionUpdate () =>
+      new GameHub.SessionUpdate() {
+        Game = Game, 
+      };
+
     public class Params :AActionParams {
     
       public Params (ActionRequest request, string playerId, Game game) : base( request, playerId ) { Game = game; }

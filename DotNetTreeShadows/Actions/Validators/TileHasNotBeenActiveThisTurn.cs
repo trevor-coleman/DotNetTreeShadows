@@ -7,14 +7,16 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
         private readonly Hex origin;
         private readonly Game game;
 
-        public TileHasNotBeenActiveThisTurn (in Hex tile, Game game) {
+        public TileHasNotBeenActiveThisTurn (in Hex origin, Game game) {
             this.origin = origin;
             this.game = game;
-            throw new System.NotImplementedException();
         }
 
         public override bool IsValid {
-          get => game.TilesActiveThisTurn.All( t => t != origin );
+          get {
+            Hex[] activeTiles = game.TilesActiveThisTurn ?? new Hex[0]; 
+            return activeTiles.All( t => t != origin );
+          }
         }
         public override string? FailureMessage {
             get =>

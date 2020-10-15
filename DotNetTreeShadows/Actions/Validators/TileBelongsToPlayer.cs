@@ -17,7 +17,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
         }
 
         public override bool IsValid {
-          get => Tile.GetTreeType( board.tiles[target] ) == PlayerBoard.Get( game, playerId ).TreeType;
+          get => Tile.GetTreeType( board.Tiles[target] ) == PlayerBoard.Get( game, playerId ).TreeType;
         }
 
         public override string? FailureMessage {

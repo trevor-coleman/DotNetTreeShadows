@@ -36,8 +36,9 @@ const tryConnectToSession = async (sessionId: string) => {
     store.dispatch(setConnectedSession(null))
     console.log("Connection is not connected")
       connect().then(()=> {
-        store.dispatch(setConnectionState(connection.state));
-
+        if(store.getState().signalR.connectionState != connection.state) {
+          store.dispatch(setConnectionState(connection.state));
+        }
         tryConnectToSession(sessionId)
       }).catch(()=>setTimeout(()=> {
         tryConnectToSession(sessionId)

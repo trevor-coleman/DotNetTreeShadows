@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using dotnet_tree_shadows.Controllers;
+using dotnet_tree_shadows.Hubs;
 using dotnet_tree_shadows.Models.GameModel;
 using dotnet_tree_shadows.Models.SessionModels;
 using dotnet_tree_shadows.Services;
@@ -41,7 +42,8 @@ namespace dotnet_tree_shadows.Models.GameActions.HostActions {
     }
 
     protected override void UndoAction () { throw new UndoNotPermittedException(); }
-    
+    public override GameHub.SessionUpdate SessionUpdate () => new GameHub.SessionUpdate { Game = Game };
+
     public class Params : AActionParams {
 
       public Params (ActionRequest request, string playerId, SessionModel.Session? session, Game game) : base( request, playerId ) {

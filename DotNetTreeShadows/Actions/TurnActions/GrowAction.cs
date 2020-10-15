@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using dotnet_tree_shadows.Controllers;
+using dotnet_tree_shadows.Hubs;
 using dotnet_tree_shadows.Models.BoardModel;
 using dotnet_tree_shadows.Models.GameActions.Validators;
 using dotnet_tree_shadows.Models.GameModel;
@@ -31,7 +32,7 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
     }
 
     protected override void DoAction () {
-      int tileCode = Board[Origin];
+      int tileCode = Board.Tiles[Origin];
       int growingTypeCode = (int) (Tile.GetPieceType( tileCode ) ?? 0);
       int grownTypeCode = growingTypeCode + 1;
       int price = grownTypeCode;
@@ -41,12 +42,12 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
       int resultingTile = Tile.SetPieceType( tileCode, (PieceType) grownTypeCode );
       playerBoard.Pieces( (PieceType) growingTypeCode ).IncreaseOnPlayerBoard();
       playerBoard.SpendLight( price );
-      Board[Origin] = resultingTile;
+      Board.Tiles[Origin] = resultingTile;
     }
 
     protected override void UndoAction () {
       PlayerBoard playerBoard = PlayerBoard.Get( Game, PlayerId );
-      int tileCode = Board[Origin];
+      int tileCode = Board.Tiles[Origin];
 
       int grownTypeCode = (int) (Tile.GetPieceType( tileCode ) ?? 0);
 
@@ -60,7 +61,7 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
       playerBoard.Pieces( (PieceType) grownTypeCode ).IncreaseAvailable();
       int resultTile = Tile.SetPieceType( tileCode, (PieceType) growingTypeCode );
 
-      Board[Origin] = resultTile;
+      Board.Tiles[Origin] = resultTile;
       PlayerBoard.Set( Game, PlayerId, playerBoard );
     }
 
@@ -74,6 +75,12 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
         ) { }
 
     }
+    
+    public override GameHub.SessionUpdate SessionUpdate () =>
+      new GameHub.SessionUpdate() {
+        Game = Game,
+        Board = Board,
+      };
 
   }
 }

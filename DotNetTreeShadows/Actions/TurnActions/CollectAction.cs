@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using dotnet_tree_shadows.Controllers;
+using dotnet_tree_shadows.Hubs;
 using dotnet_tree_shadows.Models.BoardModel;
 using dotnet_tree_shadows.Models.GameActions.Validators;
 using dotnet_tree_shadows.Models.GameModel;
@@ -17,7 +18,7 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
 
     public CollectAction (Params actionParams) : base( actionParams ) {
       (ActionRequest request, string playerId, Game? game, _, Board? board) = actionParams;
-      Hex origin = new Hex( request.Origin );
+      Hex origin = (Hex) request.Origin;
       AddValidators(
           new AActionValidator[] {
             new TilePieceTypeIs( origin, PieceType.LargeTree, Game, board ),
@@ -30,7 +31,7 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
       PlayerBoard playerBoard = PlayerBoard.Get( Game, PlayerId );
       Scoring.Token[] playerScore = Game.Scores[PlayerId];
       playerBoard.SpendLight( 4 ); 
-      Board[Origin] = Tile.Empty;
+      Board.Tiles[Origin] = Tile.Empty;
       playerBoard.Pieces( PieceType.LargeTree ).IncreaseOnPlayerBoard();
       if ( ScoreTokens.Take(Game, Origin, out Scoring.Token token )) {
         if ( token != Scoring.Token.NullToken) Game.Scores[PlayerId] = playerScore!.Append( token ).ToArray();
@@ -51,5 +52,11 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
 
     }
 
+    public override GameHub.SessionUpdate SessionUpdate () =>
+      new GameHub.SessionUpdate() {
+        Game = Game,
+        Board = Board,
+      };
+    
   }
 }

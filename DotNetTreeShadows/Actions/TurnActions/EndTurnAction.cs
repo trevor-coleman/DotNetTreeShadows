@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using dotnet_tree_shadows.Controllers;
+using dotnet_tree_shadows.Hubs;
+using dotnet_tree_shadows.Models.BoardModel;
 using dotnet_tree_shadows.Models.GameModel;
 using dotnet_tree_shadows.Models.SessionModels;
 
@@ -38,5 +40,10 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
       }
 
     }
+    
+    public override GameHub.SessionUpdate SessionUpdate () =>
+      new GameHub.SessionUpdate() {
+        Game = Game,
+      };
   }
 }

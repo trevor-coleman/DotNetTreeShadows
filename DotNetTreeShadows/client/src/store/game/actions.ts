@@ -43,15 +43,15 @@ export interface ActionRequest {
 }
 
 export enum GameActionType {
-  Buy = "Buy",
-  Plant = "Plant",
-  Grow = "Grow",
-  Collect = "Collect",
-  EndTurn = "EndTurn",
-  StartGame = "StartGame",
-  PlaceStartingTree = "PlaceStartingTree",
-  UndoAction = "Undo",
-  Resign = "Resign",
-  Kick = "Kick",
+  Buy,
+  Plant,
+  Grow,
+  Collect,
+  EndTurn,
+  StartGame,
+  PlaceStartingTree,
+  UndoAction,
+  Resign,
+  Kick,
 }
 

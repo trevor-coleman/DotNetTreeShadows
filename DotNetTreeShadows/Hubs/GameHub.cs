@@ -114,18 +114,18 @@ namespace dotnet_tree_shadows.Hubs {
         string sessionId,
         ActionRequest actionRequest
       ) {
-      
       UserModel userModel = await userManager.GetUserAsync( Context.GetHttpContext().User );
       Task<Session?> sessionTask = sessionService.Get( sessionId );
       
       Session? session = await sessionTask;
       if ( session == null ) {
-        await Clients.Caller.SendAsync( "HandleActionFailure", actionRequest, sessionId, "Session not found" );
+        await Clients.Caller.SendAsync( "HandleActionFailure", "Can't find session");
+        
         return;
       }
 
       if ( !session.HasPlayer( userModel.UserId ) ) {
-        await Clients.Caller.SendAsync( "HandleActionFailure", actionRequest, sessionId, "You are not a part of that session." );
+        await Clients.Caller.SendAsync( "HandleActionFailure", "You are not a part of that session." );
         return;
       }
       
@@ -136,8 +136,9 @@ namespace dotnet_tree_shadows.Hubs {
         if ( ActionFactory.Create( actionParams, out AAction action) ) {
           if ( action != null && action.Execute( out failureMessage ) ) {
             actionFactory.Commit( action );
-            await Clients.Group( sessionId ).SendAsync( "LogMessage", "WE DID IT KIDS" );
-            await Clients.Group( sessionId ).SendAsync( "HandleActionResult", "failure" );
+            SessionUpdate sessionUpdate = action.SessionUpdate();
+            sessionUpdate.SessionId = sessionId;
+            await Clients.Group( sessionId ).SendAsync( "HandleActionResult", sessionUpdate  );
           }
         } else {
           failureMessage = "Request missing required parameter.";
@@ -151,15 +152,13 @@ namespace dotnet_tree_shadows.Hubs {
       await Clients.Caller.SendAsync( "LogMessage", failureMessage );
     }
 
-    
-
-    public class GroupMember {
-
-      public string SessionId { get; set; }
-      public string PlayerId { get; set; }
-
+    public class SessionUpdate {
+      public string SessionId { get; set; } = "";
+      public Session? Session { get; set; }
+      public Game? Game { get; set; }
+      public Board? Board { get; set; }
     }
-
+    
     public class AddPieceToTileRequest {
 
       public string SessionId { get; set; }

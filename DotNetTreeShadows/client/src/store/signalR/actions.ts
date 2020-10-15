@@ -100,12 +100,8 @@ export const doGameAction = (sessionId:string, request: IGameActionRequest) => a
 const sendGameAction = createAsyncThunk<void, { sessionId: string, request: IGameActionRequest }>(
     "gamehub/doGameAction",
     async ({request, sessionId}) => {
-      const{
-        type, pieceType, target, origin, targetPlayerId
-      }=request
+      console.log(request);
       try {
-            console.log("sendGameAction:", "DoSomeAction", {sessionId, testProp: 242, type: "StartGame"} );
-            await gameHub.connection.send("doSomeAction", {sessionId, testProp: 242, type: 0});
             await gameHub.connection.send("DoAction", sessionId, request);
             return;
         } catch (e) {

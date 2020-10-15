@@ -12,7 +12,6 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
             this.playerId = playerId;
             this.pieceType = pieceType;
             this.game = game;
-            throw new System.NotImplementedException();
         }
 
         public override bool IsValid {

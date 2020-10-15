@@ -13,7 +13,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
             this.playerId = playerId;
             this.target = target;
             this.game = game;
-            pieceType = Tile.GetPieceType( board.tiles[target] );
+            pieceType = Tile.GetPieceType( board.Tiles[target] );
         }
 
         public override bool IsValid {
