@@ -1,3 +1,5 @@
+using System;
+
 #pragma warning disable 8618
 namespace dotnet_tree_shadows.Models {
   public class GameDatabaseSettings : IGameDatabaseSettings {
@@ -10,13 +12,15 @@ namespace dotnet_tree_shadows.Models {
     public string ProfilesCollectionName { get; set; }
     public string GamesCollectionName { get; set; }
     public string BoardsCollectionName { get; set; }
+    public string UsersCollection { get; set; }
     public string User { get; set; }
     public string Password { get; set; }
 
     public string ConnectionString {
       get {
         if ( string.IsNullOrEmpty( User ) || string.IsNullOrEmpty( Password ) ) return $@"mongodb://{Host}:{Port}";
-        return $@"mongodb://{User}:{Password}@{Host}:{Port}";
+        return $"mongodb://{User}:{Password}@{Host}:{Port}";
+
       }
     }
 
@@ -33,6 +37,7 @@ namespace dotnet_tree_shadows.Models {
     public string ProfilesCollectionName { get; set; }
     public string GamesCollectionName { get; set; }
     public string BoardsCollectionName { get; set; }
+    public string UsersCollection { get; set; }
     public string User { get; set; }
     public string Password { get; set; }
 

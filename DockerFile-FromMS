@@ -4,16 +4,25 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x |  bash -
 RUN apt-get install -y nodejs
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+
+ARG NODE_ENV
+ARG TREE_SHADOWS_API_URL
+ENV NODE_ENV=$NODE_ENV
+ENV TREE_SHADOWS_API_URL=$TREE_SHADOWS_API_URL
+
 RUN curl -sL https://deb.nodesource.com/setup_10.x |  bash -
 RUN apt-get install -y nodejs
+
+FROM build AS compile
 WORKDIR /src
+
 COPY ["DotNetTreeShadows/DotNetTreeShadows.csproj", "DotNetTreeShadows/"]
 RUN dotnet restore "DotNetTreeShadows/DotNetTreeShadows.csproj"
 COPY . .
 WORKDIR "/src/DotNetTreeShadows"
 RUN dotnet build "DotNetTreeShadows.csproj" -c Release -o /app/build
 
-FROM build AS publish
+FROM compile AS publish
 RUN dotnet publish "DotNetTreeShadows.csproj" -c Release -o /app/publish
 
 FROM base AS final

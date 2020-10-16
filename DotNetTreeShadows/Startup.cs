@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,14 +28,40 @@ namespace dotnet_tree_shadows {
   public class Startup {
 
     public Startup (IConfiguration configuration) { Configuration = configuration; }
-
+    readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
     public IConfiguration Configuration { get; }
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices (IServiceCollection services) {
       //MongoDb
+      
       services.Configure<GameDatabaseSettings>( Configuration.GetSection( nameof(GameDatabaseSettings) ) );
       services.AddSignalR();
+
+      string[] allowedOrigins = Configuration.GetSection( "CORS:AllowedOrigins" ).Get<string[]>() ?? new string[0];
+      
+      services.AddCors(
+          options => {
+            options.AddPolicy(
+                name: MyAllowSpecificOrigins,
+                builder => {
+                  builder.WithOrigins(
+                            allowedOrigins
+                           )
+                         .AllowAnyHeader()
+                         .AllowAnyMethod();
+                }
+              );
+          }
+        );
+      
+      string host = Configuration.GetSection( nameof(GameDatabaseSettings) )["Host"];
+      string port = Configuration.GetSection( nameof(GameDatabaseSettings) )["Port"];
+      string user = Configuration.GetSection( nameof(GameDatabaseSettings) )["User"];
+      string password = Configuration.GetSection( nameof(GameDatabaseSettings) )["Password"];
+      
+      string connectionString = ( string.IsNullOrEmpty( user ) || string.IsNullOrEmpty( password ) ) ? $"mongodb://localhost:{port}": $"mongodb://{user}:{password}@{host}:{port}";
+      
       services.AddIdentityMongoDbProvider<UserModel, MongoRole>(
           identityOptions => {
             identityOptions.Password.RequiredLength = 6;
@@ -44,10 +71,8 @@ namespace dotnet_tree_shadows {
             identityOptions.Password.RequireDigit = false;
           },
           mongoIdentityOptions => {
-            mongoIdentityOptions.ConnectionString =
-              Configuration.GetSection( nameof(AuthDatabaseSettings) )["ConnectionString"];
-
-            mongoIdentityOptions.UsersCollection = Configuration["AuthDatabaseSettings:UsersCollection"];
+            mongoIdentityOptions.ConnectionString = connectionString;
+            mongoIdentityOptions.UsersCollection = Configuration["GameDatabaseSettings:UsersCollection"];
           }
         );
 
@@ -140,6 +165,7 @@ namespace dotnet_tree_shadows {
       app.UseSpaStaticFiles();
 
       app.UseRouting();
+      app.UseCors(MyAllowSpecificOrigins);
 
       app.UseAuthentication();
       app.UseAuthorization();
