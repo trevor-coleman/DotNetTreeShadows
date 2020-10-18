@@ -1,13 +1,12 @@
-using dotnet_tree_shadows.Controllers;
-using dotnet_tree_shadows.Models.BoardModel;
+using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.GameModel;
 
-namespace dotnet_tree_shadows.Models.GameActions {
+namespace dotnet_tree_shadows.Actions {
   public abstract class AActionParams {
     public ActionRequest Request { get; protected set; }
     public string PlayerId { get; protected set; }
     public Game? Game { get; protected set; }
-    public SessionModel.Session? Session { get; protected set; }
+    public Models.SessionModel.Session? Session { get; protected set; }
     public Board? Board { get; protected set; }
 
     protected AActionParams (ActionRequest request, string playerId) {
@@ -19,7 +18,7 @@ namespace dotnet_tree_shadows.Models.GameActions {
         out ActionRequest request,
         out string playerId,
         out Game? game,
-        out SessionModel.Session? session,
+        out Models.SessionModel.Session? session,
         out Board? board
       ) {
       request = Request;
@@ -37,7 +36,7 @@ namespace dotnet_tree_shadows.Models.GameActions {
         ActionRequest request,
         string playerId,
         Game? game,
-        SessionModel.Session? session,
+        Models.SessionModel.Session? session,
         Board? board
       ) : base( request, playerId ) {
       Game = game;

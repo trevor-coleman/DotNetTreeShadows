@@ -1,10 +1,9 @@
-using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
+using dotnet_tree_shadows.Actions.Validators;
 
-namespace dotnet_tree_shadows.Models.GameActions {
+namespace dotnet_tree_shadows.Actions {
   public abstract class AHostAction:AAction {
 
-    public readonly SessionModel.Session Session;
+    public readonly Models.SessionModel.Session Session;
 
     protected AHostAction (AActionParams actionParams) : base( actionParams ) {
       Session = actionParams.Session!;

@@ -1,5 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
+using dotnet_tree_shadows.Models.Enums;
+using dotnet_tree_shadows.Models.GameModel;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Options;

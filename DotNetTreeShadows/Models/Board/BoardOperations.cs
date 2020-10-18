@@ -1,7 +1,7 @@
 using System.Linq;
-using dotnet_tree_shadows.Models.SessionModels;
+using dotnet_tree_shadows.Models.Enums;
 
-namespace dotnet_tree_shadows.Models.BoardModel {
+namespace dotnet_tree_shadows.Models {
   public class BoardOperations {
 
     public static int CountLight (Board board, TreeType treeType) {

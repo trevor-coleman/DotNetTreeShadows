@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using dotnet_tree_shadows.Controllers;
+using dotnet_tree_shadows.Actions.Validators;
 using dotnet_tree_shadows.Hubs;
-using dotnet_tree_shadows.Models.BoardModel;
-using dotnet_tree_shadows.Models.GameActions.Validators;
+using dotnet_tree_shadows.Models;
+using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
+namespace dotnet_tree_shadows.Actions.TurnActions {
     public class PlantAction : ATurnActionWithOrigin {
       public override GameActionType Type {
         get => GameActionType.Plant;
@@ -32,7 +31,7 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
                   new PlayerHasAvailablePiece( PlayerId, PieceType.Seed, Game ),
                   new PieceTypeIsTree( Origin, Game, Board),
                   new TilePieceTypeIs( Target, null, Game, Board ),
-                  new WithinRangeOfOrigin( Origin, Target, Tile.GetPieceHeight(Board.Tiles[Origin]) ),
+                  new WithinRangeOfOrigin( Origin, Target, Tile.GetPieceHeight(Board.Get(Origin)) ),
                   new GrowthInShadowAllowed( Target, Game, Board ),
                 }
               );
@@ -41,12 +40,12 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
 
         protected override void DoAction () {
           PlayerBoard playerBoard = PlayerBoard.Get( Game, PlayerId );
-          int tileCode = Board.Tiles[Origin];
+          int tileCode = Board.Get( Origin );
           tileCode = Tile.SetPieceType( tileCode, PieceType.Seed );
           tileCode = Tile.SetTreeType( tileCode, TreeType );
           playerBoard.SpendLight( 1 );
           Game.PlayerBoards[PlayerId] = playerBoard.BoardCode;
-          Board.Tiles[Origin] = tileCode;
+          Board.Set(Origin, tileCode);
           Game.TilesActiveThisTurn = Game.TilesActiveThisTurn.Append( Origin ).ToArray();
           Game.TilesActiveThisTurn = Game.TilesActiveThisTurn.Append( Target ).ToArray();
           PlayerBoard.Set( Game, PlayerId, playerBoard );
@@ -54,12 +53,12 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
 
         protected override void UndoAction () {
           PlayerBoard playerBoard = PlayerBoard.Get( Game, PlayerId );
-          int result = Board.Tiles[Origin];
+          int result = Board.Get(Origin);
           result = Tile.SetPieceType( result, null );
           result = Tile.SetTreeType( result, null );
           playerBoard.RecoverLight( 1 );
           Game.PlayerBoards[PlayerId] = playerBoard.BoardCode;
-          Board.Tiles[Target] = result;
+          Board.Set( Target, result );
           Game.TilesActiveThisTurn = Game.TilesActiveThisTurn.Where( h => h != Target ).ToArray();
             Game.TilesActiveThisTurn= Game.TilesActiveThisTurn.Where( h => h != Origin ).ToArray();
         }

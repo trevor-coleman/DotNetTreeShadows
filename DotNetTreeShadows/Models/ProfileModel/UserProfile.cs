@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using dotnet_tree_shadows.Models.SessionModels;
+using dotnet_tree_shadows.Models.SessionModel;
 
-namespace dotnet_tree_shadows.Models {
+namespace dotnet_tree_shadows.Models.ProfileModel {
   public class UserProfile {
     public string Id { get; set; }
     public List<SessionSummary> Sessions { get; set; } = new List<SessionSummary>();

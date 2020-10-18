@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using dotnet_tree_shadows.Models.SessionModels;
+using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Services;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;

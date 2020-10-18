@@ -1,7 +1,7 @@
 using System;
-using dotnet_tree_shadows.Models.SessionModels;
+using dotnet_tree_shadows.Models;
 
-namespace dotnet_tree_shadows.Models.GameActions.Validators {
+namespace dotnet_tree_shadows.Actions.Validators {
     public class ValidTile : ATurnAction.AActionValidator {
 
         private readonly Hex target;

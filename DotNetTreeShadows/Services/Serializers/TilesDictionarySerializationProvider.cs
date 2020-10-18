@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using dotnet_tree_shadows.Models.SessionModels;
+using dotnet_tree_shadows.Models;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Options;
 using MongoDB.Bson.Serialization.Serializers;

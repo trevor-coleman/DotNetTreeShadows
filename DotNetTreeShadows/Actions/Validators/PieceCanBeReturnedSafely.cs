@@ -1,8 +1,7 @@
-using dotnet_tree_shadows.Models.BoardModel;
+using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Models.GameActions.Validators {
+namespace dotnet_tree_shadows.Actions.Validators {
     public class PieceCanBeReturnedSafely : ATurnAction.AActionValidator {
         private readonly string playerId;
         private readonly Hex target;
@@ -13,7 +12,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
             this.playerId = playerId;
             this.target = target;
             this.game = game;
-            pieceType = Tile.GetPieceType( board.Tiles[target] );
+            pieceType = Tile.GetPieceType( board.Get(target) );
         }
 
         public override bool IsValid {

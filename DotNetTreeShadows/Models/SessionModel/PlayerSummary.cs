@@ -1,9 +1,9 @@
-using dotnet_tree_shadows.Authentication;
-using dotnet_tree_shadows.Models.SessionModels;
+using dotnet_tree_shadows.Models.Authentication;
+using dotnet_tree_shadows.Models.Enums;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace dotnet_tree_shadows.Models.DataModels {
+namespace dotnet_tree_shadows.Models.SessionModel {
   public class PlayerSummary {
 
     public PlayerSummary () { }

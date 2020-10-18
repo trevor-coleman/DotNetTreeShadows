@@ -1,10 +1,7 @@
-using System.Collections.Generic;
-using dotnet_tree_shadows.Models.BoardModel;
-using dotnet_tree_shadows.Models.GameActions.Validators;
-using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
+using dotnet_tree_shadows.Actions.Validators;
+using dotnet_tree_shadows.Models;
 
-namespace dotnet_tree_shadows.Models.GameActions {
+namespace dotnet_tree_shadows.Actions {
     public abstract class ATurnActionWithOrigin : ATurnAction {
 
       public Board Board { get; }

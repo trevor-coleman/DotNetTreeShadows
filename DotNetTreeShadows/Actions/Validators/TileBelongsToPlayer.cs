@@ -1,8 +1,7 @@
-using dotnet_tree_shadows.Models.BoardModel;
+using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Models.GameActions.Validators {
+namespace dotnet_tree_shadows.Actions.Validators {
     public class TileBelongsToPlayer : ATurnAction.AActionValidator {
         private readonly string playerId;
         private readonly Board board;
@@ -17,7 +16,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
         }
 
         public override bool IsValid {
-          get => Tile.GetTreeType( board.Tiles[target] ) == PlayerBoard.Get( game, playerId ).TreeType;
+          get => Tile.GetTreeType( board.Get(target) ) == PlayerBoard.Get( game, playerId ).TreeType;
         }
 
         public override string? FailureMessage {

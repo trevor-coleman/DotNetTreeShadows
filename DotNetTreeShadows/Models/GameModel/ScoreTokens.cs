@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using dotnet_tree_shadows.Models.SessionModels;
 
 namespace dotnet_tree_shadows.Models.GameModel {
   

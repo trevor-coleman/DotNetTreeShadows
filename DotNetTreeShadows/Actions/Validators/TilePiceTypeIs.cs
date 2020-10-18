@@ -1,8 +1,7 @@
-using dotnet_tree_shadows.Models.BoardModel;
+using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Models.GameActions.Validators {
+namespace dotnet_tree_shadows.Actions.Validators {
     public class TilePieceTypeIs : AAction.AActionValidator {
         private readonly Hex Target;
         private readonly PieceType? PieceType;
@@ -17,7 +16,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
         }
 
         public override bool IsValid {
-            get => Tile.GetPieceType( Board.Tiles[Target]) == PieceType;
+            get => Tile.GetPieceType( Board.Get(Target)) == PieceType;
         }
         public override string? FailureMessage {
             get =>

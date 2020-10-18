@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using dotnet_tree_shadows.Controllers;
+using dotnet_tree_shadows.Actions.Validators;
 using dotnet_tree_shadows.Hubs;
-using dotnet_tree_shadows.Models.BoardModel;
-using dotnet_tree_shadows.Models.GameActions.Validators;
+using dotnet_tree_shadows.Models;
+using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
+namespace dotnet_tree_shadows.Actions.TurnActions {
   class PlaceStartingTreeAction : ATurnActionWithOrigin {
     
 
@@ -29,13 +28,13 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
 
     protected override void DoAction () {
       PlayerBoard playerBoard = PlayerBoard.Get( Game, PlayerId );
-      int result = Board.Tiles[Origin];
+      int result = Board.Get(Origin);
       result = Tile.SetPieceType(result, PieceType.SmallTree );
       TreeType treeType = playerBoard.TreeType;
       result = Tile.SetTreeType( result, treeType );
       playerBoard.Pieces( PieceType.SmallTree ).DecreaseAvailable();
       PlayerBoard.Set( Game, PlayerId, playerBoard );
-      Board.Tiles[Origin] = result;
+      Board.Set(Origin, result);
       PlayerBoard.Set( Game, PlayerId, playerBoard );
     }
     protected override void UndoAction () { throw new NotImplementedException(); }

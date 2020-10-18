@@ -1,5 +1,4 @@
-using dotnet_tree_shadows.Authentication;
-using dotnet_tree_shadows.Models.DataModels;
+using dotnet_tree_shadows.Models.Authentication;
 
 namespace dotnet_tree_shadows.Models.SessionModel {
   public static class SessionOperations {

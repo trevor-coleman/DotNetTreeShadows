@@ -1,10 +1,9 @@
 using System;
 using System.Linq;
-using dotnet_tree_shadows.Models.BoardModel;
-using dotnet_tree_shadows.Models.GameModel;
-using static dotnet_tree_shadows.Models.SessionModels.PlayerBoard.PieceCount;
+using dotnet_tree_shadows.Models.Enums;
+using static dotnet_tree_shadows.Models.GameModel.PlayerBoard.PieceCount;
 
-namespace dotnet_tree_shadows.Models.SessionModels {
+namespace dotnet_tree_shadows.Models.GameModel {
   public class PlayerBoard {
 
     private PieceCount[] PieceCounts { get; } = {

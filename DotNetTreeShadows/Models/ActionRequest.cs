@@ -1,11 +1,9 @@
 using System.Linq;
-using dotnet_tree_shadows.Models.BoardModel;
-using dotnet_tree_shadows.Models.GameActions;
-using dotnet_tree_shadows.Models.SessionModels;
+using dotnet_tree_shadows.Actions;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace dotnet_tree_shadows.Controllers {
+namespace dotnet_tree_shadows.Models {
   public class ActionRequest {
     
     [BsonRepresentation(BsonType.String)]

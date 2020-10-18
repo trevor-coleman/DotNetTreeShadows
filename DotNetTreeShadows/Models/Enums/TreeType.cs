@@ -1,4 +1,4 @@
-namespace dotnet_tree_shadows.Models.SessionModels {
+namespace dotnet_tree_shadows.Models.Enums {
     public enum TreeType {
         Ash,
         Aspen,

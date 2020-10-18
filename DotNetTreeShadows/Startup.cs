@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using AspNetCore.Identity.Mongo;
 using AspNetCore.Identity.Mongo.Model;
-using dotnet_tree_shadows.Authentication;
 using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Services;
 using dotnet_tree_shadows.Services.Serializers;
@@ -21,6 +20,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
 using dotnet_tree_shadows.Hubs;
+using dotnet_tree_shadows.Models.Authentication;
+using dotnet_tree_shadows.Services.GameActionService;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Primitives;
 
@@ -80,6 +81,7 @@ namespace dotnet_tree_shadows {
       BsonSerializer.RegisterSerializationProvider( new TilesDictionarySerializationProvider() );
       BsonSerializer.RegisterSerializationProvider( new GameOptionsDictionarySerializationProvider() );
       BsonSerializer.RegisterSerializationProvider( new IntStackDictionarySerializationProvider() );
+      BsonSerializer.RegisterSerializationProvider( new IntIntDictionarySerializationProvider() );
 
       
       services.AddSingleton<SessionService>();
@@ -87,6 +89,7 @@ namespace dotnet_tree_shadows {
       services.AddSingleton<GameService>();
       services.AddSingleton<HubGroupService>();
       services.AddSingleton<BoardService>();
+      services.AddSingleton<GameActionService>();
       
       
       services.AddSingleton<IGameDatabaseSettings>(

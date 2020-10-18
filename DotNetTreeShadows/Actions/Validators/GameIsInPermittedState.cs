@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Models.GameActions {
+namespace dotnet_tree_shadows.Actions.Validators {
   public class GameIsInPermittedState: ATurnAction.AActionValidator {
     private readonly Game game;
     private readonly IEnumerable<GameStatus> permittedDuring;

@@ -1,13 +1,10 @@
-using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
-
-namespace dotnet_tree_shadows.Models.GameActions {
+namespace dotnet_tree_shadows.Actions.Validators {
   public class PlayerIsHost : AAction.AActionValidator {
 
     private readonly string playerId;
-    private readonly SessionModel.Session session;
+    private readonly Models.SessionModel.Session session;
 
-    public PlayerIsHost (SessionModel.Session session, string playerId) {
+    public PlayerIsHost (Models.SessionModel.Session session, string playerId) {
       this.playerId = playerId;
       this.session = session;
     }

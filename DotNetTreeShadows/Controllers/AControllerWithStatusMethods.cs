@@ -1,4 +1,4 @@
-using dotnet_tree_shadows.Authentication;
+using dotnet_tree_shadows.Models.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

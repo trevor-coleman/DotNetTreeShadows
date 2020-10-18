@@ -1,7 +1,6 @@
 using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Models.GameActions {
+namespace dotnet_tree_shadows.Actions.Validators {
   public class GameHasMinimumTwoPlayers : ATurnAction.AActionValidator {
     private readonly Game game;
     public GameHasMinimumTwoPlayers (Game game) {

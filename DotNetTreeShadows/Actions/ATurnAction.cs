@@ -1,8 +1,6 @@
-using dotnet_tree_shadows.Models.GameActions.Validators;
-using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
+using dotnet_tree_shadows.Actions.Validators;
 
-namespace dotnet_tree_shadows.Models.GameActions {
+namespace dotnet_tree_shadows.Actions {
   public abstract class ATurnAction : AAction {
 
     protected ATurnAction (AActionParams actionParams) : base( actionParams ) {

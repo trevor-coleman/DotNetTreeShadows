@@ -1,7 +1,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace dotnet_tree_shadows.Models.SessionModels {
+namespace dotnet_tree_shadows.Models.SessionModel {
     public class SessionSummary {
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }

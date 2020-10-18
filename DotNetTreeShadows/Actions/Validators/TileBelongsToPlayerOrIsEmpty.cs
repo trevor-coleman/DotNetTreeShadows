@@ -1,9 +1,7 @@
-using System;
-using dotnet_tree_shadows.Models.BoardModel;
+using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Models.GameActions.Validators {
+namespace dotnet_tree_shadows.Actions.Validators {
   public class TileBelongsToPlayerOrIsEmpty : AAction.AActionValidator {
     private readonly string PlayerId;
     private readonly Board Board;
@@ -19,9 +17,9 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
 
     public override bool IsValid {
       get {
-        Console.WriteLine(Board.Tiles[Target]);
-        return Tile.GetTreeType( Board.Tiles[Target] ) == null ||
-               Tile.GetTreeType( Board.Tiles[Target] ) == PlayerBoard.Get( Game, PlayerId ).TreeType;
+        
+        return Tile.GetTreeType( Board.Tiles[Target.HexCode] ) == null ||
+               Tile.GetTreeType( Board.Tiles[Target.HexCode] ) == PlayerBoard.Get( Game, PlayerId ).TreeType;
       }
     }
 

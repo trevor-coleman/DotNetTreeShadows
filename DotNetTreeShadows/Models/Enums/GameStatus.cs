@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Newtonsoft.Json.Converters;
 
-namespace dotnet_tree_shadows.Models.SessionModels {
+namespace dotnet_tree_shadows.Models.Enums {
   [JsonConverter(typeof(StringEnumConverter))]
   public enum GameStatus {
     Preparing,

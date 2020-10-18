@@ -2,11 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using AspNetCore.Identity.Mongo.Model;
 using dotnet_tree_shadows.Controllers;
-using dotnet_tree_shadows.Models;
+using dotnet_tree_shadows.Models.ProfileModel;
 using dotnet_tree_shadows.Models.SessionModel;
-using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Authentication {
+namespace dotnet_tree_shadows.Models.Authentication {
     public class UserModel:MongoUser {
       public string UserId {
             get => Id.ToString();

@@ -1,5 +1,5 @@
 using System;
-using dotnet_tree_shadows.Models.SessionModels;
+using dotnet_tree_shadows.Models;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;

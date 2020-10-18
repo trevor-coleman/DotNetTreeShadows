@@ -1,10 +1,7 @@
-using System;
-using dotnet_tree_shadows.Models.BoardModel;
+using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
-using Microsoft.Extensions.ObjectPool;
 
-namespace dotnet_tree_shadows.Models.GameActions.Validators {
+namespace dotnet_tree_shadows.Actions.Validators {
   public class PlayerHasLargerPieceAvailable : ATurnAction.AActionValidator {
 
     private readonly string playerId;

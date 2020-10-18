@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
+using dotnet_tree_shadows.Models.Enums;
 
-namespace dotnet_tree_shadows.Services {
+namespace dotnet_tree_shadows.Models.GameModel {
   public class GameOptionsDictionary : Dictionary<GameOption, bool> {
 
     public void Add (GameOption option) { TryAdd( option, true ); }

@@ -1,8 +1,7 @@
-using dotnet_tree_shadows.Models.BoardModel;
+using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Models.GameActions.Validators {
+namespace dotnet_tree_shadows.Actions.Validators {
   public class PlayerCanAffordLargerPiece : ATurnAction.AActionValidator {
 
     private readonly string playerId;
@@ -17,7 +16,7 @@ namespace dotnet_tree_shadows.Models.GameActions.Validators {
       this.game = game;
       this.board = board;
 
-      if ( board.Tiles.TryGetValue( target, out int t ) ) largerPiecePrice = (int) (Tile.GetPieceType( t ) ?? 0) + 1;
+      if ( board.TryGetValue( target, out int t ) ) largerPiecePrice = (int) (Tile.GetPieceType( t ) ?? 0) + 1;
     }
 
     public override bool IsValid {

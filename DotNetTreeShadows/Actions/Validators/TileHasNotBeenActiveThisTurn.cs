@@ -1,8 +1,8 @@
 using System.Linq;
+using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Models.GameActions.Validators {
+namespace dotnet_tree_shadows.Actions.Validators {
     public class TileHasNotBeenActiveThisTurn : ATurnAction.AActionValidator {
         private readonly Hex origin;
         private readonly Game game;

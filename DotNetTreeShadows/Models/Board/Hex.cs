@@ -1,7 +1,7 @@
 #nullable enable
 using System;
 
-namespace dotnet_tree_shadows.Models.SessionModels {
+namespace dotnet_tree_shadows.Models {
     public readonly struct Hex {
         public readonly int Q;
         public readonly int R;
@@ -44,24 +44,32 @@ namespace dotnet_tree_shadows.Models.SessionModels {
 
         public Hex(int? hexCode)
         {
-            Q = hexCode >> 16 & 0xff ?? 0;
-            R = hexCode >> 8 & 0xff ?? 0;
-            S = hexCode & 0xff ?? 0;
+            sbyte q = (sbyte) (hexCode >> 16 & 0xff ?? 0);
+            sbyte r = (sbyte) (hexCode >> 8 & 0xff ?? 0);
+            sbyte s = (sbyte) (hexCode >> 0 & 0xff ?? 0);
+            
+            Q = q;
+            R = r;
+            S = s;
         }
 
-        public override string ToString () {
-          int hexCode = 0;
+        public int HexCode {
+          get {
+            int hexCode = 0;
 
-          sbyte q = (sbyte) Q;
-          sbyte r = (sbyte) R;
-          sbyte s = (sbyte) S;
+            sbyte q = (sbyte) Q;
+            sbyte r = (sbyte) R;
+            sbyte s = (sbyte) S;
 
-          hexCode |= (q & 0xff) << 16 ;
-          hexCode |= (r & 0xff) << 8;
-          hexCode |= s & 0xff;
+            hexCode |= (q & 0xff) << 16 ;
+            hexCode |= (r & 0xff) << 8;
+            hexCode |= s & 0xff;
 
-          return hexCode.ToString();
+            return hexCode;
+          }
         }
+
+        public override string ToString () => HexCode.ToString();
         public int[] ToArray () => new[] { Q, R, S };
 
         public int[] AxialArray {

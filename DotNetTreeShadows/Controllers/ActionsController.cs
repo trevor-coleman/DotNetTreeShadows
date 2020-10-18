@@ -1,7 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using dotnet_tree_shadows.Authentication;
-using dotnet_tree_shadows.Models.GameActions;
+using dotnet_tree_shadows.Actions;
+using dotnet_tree_shadows.Models;
+using dotnet_tree_shadows.Models.Authentication;
 using dotnet_tree_shadows.Models.SessionModel;
 using dotnet_tree_shadows.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

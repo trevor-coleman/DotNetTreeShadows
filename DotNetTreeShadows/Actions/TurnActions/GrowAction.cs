@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using dotnet_tree_shadows.Controllers;
+using dotnet_tree_shadows.Actions.Validators;
 using dotnet_tree_shadows.Hubs;
-using dotnet_tree_shadows.Models.BoardModel;
-using dotnet_tree_shadows.Models.GameActions.Validators;
+using dotnet_tree_shadows.Models;
+using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
+namespace dotnet_tree_shadows.Actions.TurnActions {
   public class GrowAction : ATurnActionOnOwnPiece {
 
     public override GameActionType Type {
@@ -32,7 +31,7 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
     }
 
     protected override void DoAction () {
-      int tileCode = Board.Tiles[Origin];
+      int tileCode = Board.Tiles[Origin.HexCode];
       int growingTypeCode = (int) (Tile.GetPieceType( tileCode ) ?? 0);
       int grownTypeCode = growingTypeCode + 1;
       int price = grownTypeCode;
@@ -42,12 +41,12 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
       int resultingTile = Tile.SetPieceType( tileCode, (PieceType) grownTypeCode );
       playerBoard.Pieces( (PieceType) growingTypeCode ).IncreaseOnPlayerBoard();
       playerBoard.SpendLight( price );
-      Board.Tiles[Origin] = resultingTile;
+      Board.Tiles[Origin.HexCode] = resultingTile;
     }
 
     protected override void UndoAction () {
       PlayerBoard playerBoard = PlayerBoard.Get( Game, PlayerId );
-      int tileCode = Board.Tiles[Origin];
+      int tileCode = Board.Tiles[Origin.HexCode];
 
       int grownTypeCode = (int) (Tile.GetPieceType( tileCode ) ?? 0);
 
@@ -61,7 +60,7 @@ namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
       playerBoard.Pieces( (PieceType) grownTypeCode ).IncreaseAvailable();
       int resultTile = Tile.SetPieceType( tileCode, (PieceType) growingTypeCode );
 
-      Board.Tiles[Origin] = resultTile;
+      Board.Set( Origin, resultTile );
       PlayerBoard.Set( Game, PlayerId, playerBoard );
     }
 

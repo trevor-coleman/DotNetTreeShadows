@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using dotnet_tree_shadows.Controllers;
 using dotnet_tree_shadows.Hubs;
-using dotnet_tree_shadows.Models.BoardModel;
+using dotnet_tree_shadows.Models;
+using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Models.GameActions.TurnActions {
+namespace dotnet_tree_shadows.Actions.TurnActions {
   public class EndTurnAction : ATurnAction {
     public override GameActionType Type {
       get => GameActionType.EndTurn;

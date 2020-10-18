@@ -1,16 +1,14 @@
-using System.Collections.Generic;
-using dotnet_tree_shadows.Models.BoardModel;
+using dotnet_tree_shadows.Models;
+using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
-using dotnet_tree_shadows.Services;
 
-namespace dotnet_tree_shadows.Models.GameActions.Validators {
+namespace dotnet_tree_shadows.Actions.Validators {
     public class GrowthInShadowAllowed : ATurnAction.AActionValidator {
         private readonly int tileCode;
         private readonly Game game;
         private readonly Board board;
         public GrowthInShadowAllowed (in Hex target, Game game, Board board) {
-            tileCode = board.Tiles[target];
+          tileCode = board.Get( target );
             this.game = game;
             
         }

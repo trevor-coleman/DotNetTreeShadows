@@ -1,18 +1,14 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using dotnet_tree_shadows.Authentication;
-using dotnet_tree_shadows.Controllers;
-using dotnet_tree_shadows.Models.BoardModel;
-using dotnet_tree_shadows.Models.GameActions.HostActions;
-using dotnet_tree_shadows.Models.GameActions.TurnActions;
+using dotnet_tree_shadows.Actions.HostActions;
+using dotnet_tree_shadows.Actions.TurnActions;
+using dotnet_tree_shadows.Models;
+using dotnet_tree_shadows.Models.Authentication;
 using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
 using dotnet_tree_shadows.Services;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
-using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace dotnet_tree_shadows.Models.GameActions {
+namespace dotnet_tree_shadows.Actions {
   public class ActionFactory {
 
     private readonly GameService gameService;
@@ -33,7 +29,7 @@ namespace dotnet_tree_shadows.Models.GameActions {
       AActionParams actionParams;
       Game game;
       Board board;
-      SessionModel.Session session;
+      Models.SessionModel.Session session;
       string playerId = userModel.UserId;
 
       switch ( actionRequest.Type ) {
@@ -80,7 +76,7 @@ namespace dotnet_tree_shadows.Models.GameActions {
       return actionParams;
     }
 
-    public async void Commit (AAction action) {
+    public async Task Commit (AAction action) {
       switch ( action ) {
         case StartGameAction a:
           await gameService.Update( a.Game );

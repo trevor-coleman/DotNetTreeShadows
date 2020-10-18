@@ -1,9 +1,7 @@
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace dotnet_tree_shadows.Models.GameActions {
+namespace dotnet_tree_shadows.Actions {
   
   [JsonConverter(typeof(StringEnumConverter))]  
   public enum GameActionType {
@@ -14,6 +12,7 @@ namespace dotnet_tree_shadows.Models.GameActions {
         EndTurn,
         StartGame,
         PlaceStartingTree,
+        PlaceSecondTree,
         UndoAction,
         Resign,
         Kick,

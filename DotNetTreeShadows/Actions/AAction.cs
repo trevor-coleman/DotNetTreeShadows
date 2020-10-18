@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
+using dotnet_tree_shadows.Actions.Validators;
 using dotnet_tree_shadows.Hubs;
+using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
-using dotnet_tree_shadows.Services;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json.Converters;
 
-namespace dotnet_tree_shadows.Models.GameActions {
+namespace dotnet_tree_shadows.Actions {
   public abstract class AAction {
 
     [BsonId]
@@ -93,7 +93,7 @@ namespace dotnet_tree_shadows.Models.GameActions {
     }
 
     protected bool CanUndo {
-      get => ActionValidators.All( validator => CanDo );
+      get => ActionValidators.All( validator => CanUndo );
     }
 
     public string FailureMessage {

@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using dotnet_tree_shadows.Controllers;
+using dotnet_tree_shadows.Actions.Validators;
 using dotnet_tree_shadows.Hubs;
+using dotnet_tree_shadows.Models;
+using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModels;
-using dotnet_tree_shadows.Services;
 
-namespace dotnet_tree_shadows.Models.GameActions.HostActions {
+namespace dotnet_tree_shadows.Actions.HostActions {
   public class StartGameAction : AHostAction {
 
     public override GameActionType Type {
@@ -46,7 +46,7 @@ namespace dotnet_tree_shadows.Models.GameActions.HostActions {
 
     public class Params : AActionParams {
 
-      public Params (ActionRequest request, string playerId, SessionModel.Session? session, Game game) : base( request, playerId ) {
+      public Params (ActionRequest request, string playerId, Models.SessionModel.Session? session, Game game) : base( request, playerId ) {
         Session = session;
         Game = game;
       }

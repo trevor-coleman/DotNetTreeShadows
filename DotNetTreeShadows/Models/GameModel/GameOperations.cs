@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Services;
+using dotnet_tree_shadows.Models.Enums;
 
-namespace dotnet_tree_shadows.Models.SessionModels {
+namespace dotnet_tree_shadows.Models.GameModel {
   public static class GameOperations {
     
     public static void RandomizeTurns (Game game) {

@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using dotnet_tree_shadows.Models.SessionModels;
 
-namespace dotnet_tree_shadows.Models.BoardModel {
+namespace dotnet_tree_shadows.Models {
   public class BoardFactory {
 
     public static Board New (string id = "", int radius = 4) {
       Board board = new Board() {
         Id=id,
-        Tiles=new Dictionary<Hex, int>()
+        Tiles=new Dictionary<int, int>()
       };
       for (int q = -radius; q <= radius; q++) {
         int r1 = Math.Max( -radius, -q - radius );

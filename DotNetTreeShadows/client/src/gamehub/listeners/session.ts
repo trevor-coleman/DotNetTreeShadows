@@ -28,6 +28,11 @@ export default function connectListeners(connection:HubConnection) {
         console.log(message);
     })
 
+    connection.on("RefreshSession", (sessionId:string)=>{
+      if (store.getState().session.id != sessionId) return;
+      store.dispatch(fetchSession(sessionId))
+    })
+
   connection.on("UpdateGameOptions", (request: { sessionId: string, gameOption: string, value: boolean }) => {
     if (store.getState().session.id != request.sessionId) return;
     store.dispatch(gameOptionUpdate(request))

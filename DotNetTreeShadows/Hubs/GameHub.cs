@@ -4,21 +4,24 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using dotnet_tree_shadows.Authentication;
+
 using dotnet_tree_shadows.Controllers;
 using dotnet_tree_shadows.Models;
-using dotnet_tree_shadows.Models.BoardModel;
-using dotnet_tree_shadows.Models.GameActions;
+using dotnet_tree_shadows.Models.Authentication;
+using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Models.GameModel;
 using dotnet_tree_shadows.Models.InvitationModel;
 using dotnet_tree_shadows.Models.SessionModel;
-using dotnet_tree_shadows.Models.SessionModels;
 using dotnet_tree_shadows.Services;
+using dotnet_tree_shadows.Services.GameActionService;
+using dotnet_tree_shadows.Services.GameActionService.Actions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Session;
 using Microsoft.AspNetCore.SignalR;
+using MongoDB.Driver;
 
 namespace dotnet_tree_shadows.Hubs {
   [Authorize( AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme )]
@@ -28,9 +31,9 @@ namespace dotnet_tree_shadows.Hubs {
     private GameService gameService;
     private UserManager<UserModel> userManager;
     private InvitationService invitationService;
-    private ActionFactory actionFactory;
     private BoardService boardService;
     private HubGroupService hubGroupService;
+    private GameActionService gameActionService;
 
     public async Task NewMessage (string senderId, string message) {
       Console.WriteLine( $"NewMessage: {senderId} - {message}" );
@@ -43,7 +46,8 @@ namespace dotnet_tree_shadows.Hubs {
         UserManager<UserModel> userManager,
         InvitationService invitationService,
         BoardService boardService,
-        HubGroupService hubGroupService
+        HubGroupService hubGroupService,
+        GameActionService gameActionService
       ) {
       this.sessionService = sessionService;
       this.gameService = gameService;
@@ -51,7 +55,7 @@ namespace dotnet_tree_shadows.Hubs {
       this.invitationService = invitationService;
       this.boardService = boardService;
       this.hubGroupService = hubGroupService;
-      actionFactory = new ActionFactory( gameService, boardService,sessionService );
+      this.gameActionService = gameActionService;
     }
 
     public async Task ConnectToSession (string sessionId) {
@@ -75,10 +79,7 @@ namespace dotnet_tree_shadows.Hubs {
                    .SendAsync( "UpdateConnectedPlayers", sessionId, membersAfter);
     }
 
-    public async Task ServerAddPieceToTile (AddPieceToTileRequest request) {
-      await Clients.Group( request.SessionId ).SendAsync( "ClientAddPieceToTile", request );
-    }
-
+    
     public class SetGameOptionRequest {
 
       public string SessionId { get; set; }
@@ -108,65 +109,65 @@ namespace dotnet_tree_shadows.Hubs {
       }
     }
 
-
-
-    public async Task DoAction (
-        string sessionId,
-        ActionRequest actionRequest
-      ) {
-      UserModel userModel = await userManager.GetUserAsync( Context.GetHttpContext().User );
-      Task<Session?> sessionTask = sessionService.Get( sessionId );
-      
-      Session? session = await sessionTask;
-      if ( session == null ) {
-        await Clients.Caller.SendAsync( "HandleActionFailure", "Can't find session");
-        
-        return;
-      }
-
-      if ( !session.HasPlayer( userModel.UserId ) ) {
-        await Clients.Caller.SendAsync( "HandleActionFailure", "You are not a part of that session." );
-        return;
-      }
-      
-      string? failureMessage = null;
-
-      try {
-        AActionParams actionParams = await actionFactory.MakeActionParams( sessionId, actionRequest, userModel );
-        if ( ActionFactory.Create( actionParams, out AAction action) ) {
-          if ( action != null && action.Execute( out failureMessage ) ) {
-            actionFactory.Commit( action );
-            SessionUpdate sessionUpdate = action.SessionUpdate();
-            sessionUpdate.SessionId = sessionId;
-            await Clients.Group( sessionId ).SendAsync( "HandleActionResult", sessionUpdate  );
-          }
-        } else {
-          failureMessage = "Request missing required parameter.";
-        }
-      }
-      catch (Exception e) {
-        failureMessage = e.Message;
-      }
-      
-
-      await Clients.Caller.SendAsync( "LogMessage", failureMessage );
-    }
-
+    
     public class SessionUpdate {
       public string SessionId { get; set; } = "";
       public Session? Session { get; set; }
       public Game? Game { get; set; }
       public Board? Board { get; set; }
     }
-    
-    public class AddPieceToTileRequest {
 
-      public string SessionId { get; set; }
-      public int HexCode { get; set; }
-      public TreeType TreeType { get; set; }
-      public PieceType PieceType { get; set; }
+    public async Task Commit (ActionContext context) {
 
+      Queue<Task> savingTasks = new Queue<Task>();
+      
+      
+
+      if ( context.Session != null ) {
+        savingTasks.Enqueue( sessionService.Update( context.SessionId, context.Session ) );
+      }
+
+      if ( context.Game!= null ) {
+        savingTasks.Enqueue( gameService.Update( context.SessionId, context.Game) );
+      }
+      
+      if ( context.Board!= null ) {
+        savingTasks.Enqueue( boardService.Update( context.SessionId, context.Board) );
+      }
+
+      while ( savingTasks.Count > 0 ) {
+        await savingTasks.Dequeue();
+      }
     }
+
+    public async Task DoAction (AAction action) {
+      if(action.Execute( out ActionContext context, out string failureMessage )) {
+        await Commit( context );
+        await Clients.Group( context.SessionId ).SendAsync( "HandleSessionUpdate", new SessionUpdate() {
+          SessionId = context.SessionId,
+          Game = context.Game,
+          Board = context.Board,
+        } );
+      } else {
+        Console.WriteLine(failureMessage);
+        await Clients.Caller.SendAsync( "LogMessage", failureMessage );
+      }
+    }
+    
+    public async Task PlaceStartingTree (string sessionId, int origin) {
+      Clients.Caller.SendAsync( "LogMessage", $"Received Request - PlaceStartingTree ({sessionId} - {origin})" );
+      UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
+      PlaceStartingTreeAction action = gameActionService.PlaceStartingTreeAction( sessionId, user.UserId, origin ));
+      DoAction( action );
+    }
+
+    public async Task StartGame (string sessionId) {
+      Clients.Caller.SendAsync( "LogMessage", $"Received Request - StartGame ({sessionId})" );
+      UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
+      StartGameAction action = await gameActionService.StartGameAction( sessionId, user.UserId );
+      await DoAction( action );
+    }
+    
 
   }
 }
