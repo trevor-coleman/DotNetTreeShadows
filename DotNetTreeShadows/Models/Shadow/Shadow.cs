@@ -18,16 +18,16 @@ namespace dotnet_tree_shadows.Models.Shadow {
       };
     }
 
-    public static Dictionary<int, int> GetShadows (Board board, SunPosition sunPosition) {
-      Dictionary<int, int> shadows = new Dictionary<int, int>();
+    public static Dictionary<Hex, int> GetShadows (Board board, SunPosition sunPosition) {
+      Dictionary<Hex, int> shadows = new Dictionary<Hex, int>();
 
-      IEnumerable<KeyValuePair<int, int>>? treeTiles = board.Tiles.Where( kvp => Tile.HasTree( kvp.Value ) );
+      IEnumerable<KeyValuePair<Hex, int>>? treeTiles = board.Tiles.Where( kvp => Tile.HasTree( kvp.Value ) );
 
-      foreach ( (int h, int t) in treeTiles ) {
+      foreach ( (Hex h, int t) in treeTiles ) {
         int height = Tile.GetPieceHeight( t );
         for (int i = 0; i < height; i++) {
-          Hex hShadow = new Hex(h) + (i * ShadowDirection( sunPosition ));
-          shadows[hShadow.HexCode] = shadows.TryGetValue( hShadow.HexCode, out int tileHeight )
+          Hex hShadow = h + (i * ShadowDirection( sunPosition ));
+          shadows[hShadow] = shadows.TryGetValue( hShadow, out int tileHeight )
                                ? Math.Max( height, tileHeight )
                                : height;
         }
@@ -35,11 +35,11 @@ namespace dotnet_tree_shadows.Models.Shadow {
       return shadows;
     }
 
-    public static Dictionary<int, int> CastShadow (in Board board, in Hex hex, in int tileCode, in SunPosition sunPosition) {
-      Dictionary<int, int> result = new Dictionary<int, int>( board.Tiles );
+    public static Dictionary<Hex, int> CastShadow (in Board board, in Hex hex, in int tileCode, in SunPosition sunPosition) {
+      Dictionary<Hex, int> result = new Dictionary<Hex, int>( board.Tiles );
       int height = Tile.GetPieceHeight( tileCode );
       for (int i = 0; i < height; i++) {
-        int h = (hex + (i * ShadowDirection( sunPosition ))).HexCode;
+        Hex h = (hex + i * ShadowDirection( sunPosition ));
         if ( result.TryGetValue( h, out int t ) ) {
           result[h] = Tile.GetShadowHeight( t ) < height
                         ? height
@@ -49,17 +49,17 @@ namespace dotnet_tree_shadows.Models.Shadow {
       return result;
     }
     
-    public static Dictionary<int, int> UpdateAllShadows (Board board, SunPosition sunPos) {
-      Dictionary<int, int> shadows = GetShadows( board, sunPos );
+    public static Dictionary<Hex, int> UpdateAllShadows (Board board, SunPosition sunPos) {
+      Dictionary<Hex, int> shadows = GetShadows( board, sunPos );
       return board.Tiles.Select(
                        kvp => {
-                         (int h, int t) = kvp;
+                         (Hex h, int t) = kvp;
 
                          int newTile = shadows.TryGetValue( h, out int shadowHeight )
                                          ? Tile.SetShadowHeight( t, shadowHeight )
                                          : Tile.SetShadowHeight( t, 0 );
 
-                         return new KeyValuePair<int, int>( h, newTile );
+                         return new KeyValuePair<Hex, int>( h, newTile );
                        }
                      )
                   .ToDictionary( kvp => kvp.Key, kvp => kvp.Value );

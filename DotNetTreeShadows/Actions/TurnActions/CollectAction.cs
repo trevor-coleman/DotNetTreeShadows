@@ -30,7 +30,7 @@ namespace dotnet_tree_shadows.Actions.TurnActions {
       PlayerBoard playerBoard = PlayerBoard.Get( Game, PlayerId );
       Scoring.Token[] playerScore = Game.Scores[PlayerId];
       playerBoard.SpendLight( 4 ); 
-      Board[Origin.HexCode] = Tile.Empty;
+      Board[Origin] = Tile.Empty;
       playerBoard.Pieces( PieceType.LargeTree ).IncreaseOnPlayerBoard();
       if ( ScoreTokens.Take(Game, Origin, out Scoring.Token token )) {
         if ( token != Scoring.Token.NullToken) Game.Scores[PlayerId] = playerScore!.Append( token ).ToArray();

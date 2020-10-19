@@ -63,7 +63,7 @@ namespace dotnet_tree_shadows {
       string password = Configuration.GetSection( nameof(GameDatabaseSettings) )["Password"];
       string databaseName = Configuration.GetSection( nameof(GameDatabaseSettings) )["DatabaseName"];
       
-      string connectionString = ( string.IsNullOrEmpty( user ) || string.IsNullOrEmpty( password ) ) ? $"mongodb://127.0.0.1:{port}": $"mongodb://{user}:{password}@{host}:{port}/{databaseName}/?authSource=admin";
+      string connectionString = ( string.IsNullOrEmpty( user ) || string.IsNullOrEmpty( password ) ) ? $"mongodb://127.0.0.1:{port}": $"mongodb://{user}:{password}@{host}:{port}/{databaseName}?authSource=admin";
       Console.WriteLine($"\n\n{connectionString}\n\n");
       services.AddIdentityMongoDbProvider<UserModel, MongoRole>(
           identityOptions => {
@@ -81,14 +81,11 @@ namespace dotnet_tree_shadows {
           }
         );
 
-      BsonSerializer.RegisterSerializationProvider( new HexCoordinatesSerializationProvider() );
+      BsonSerializer.RegisterSerializationProvider( new HexSerializationProvider() );
       BsonSerializer.RegisterSerializationProvider( new TilesDictionarySerializationProvider() );
-      // BsonSerializer.RegisterSerializationProvider( new GameOptionsDictionarySerializationProvider() );
-      // BsonSerializer.RegisterSerializationProvider( new IntStackDictionarySerializationProvider() );
-      // BsonSerializer.RegisterSerializationProvider( new IntIntDictionarySerializationProvider() );
-      // BsonSerializer.RegisterSerializationProvider( new IntArrayOfIntDictionarySerializationProvider() );
-
       
+
+
       services.AddSingleton<SessionService>();
       services.AddSingleton<InvitationService>();
       services.AddSingleton<GameService>();

@@ -8,7 +8,7 @@ using MongoDB.Bson.Serialization.Serializers;
 namespace dotnet_tree_shadows.Services.Serializers {
   public class TilesDictionarySerializationProvider : IBsonSerializationProvider {
 
-    public IBsonSerializer GetSerializer (Type type) =>
+    public IBsonSerializer? GetSerializer (Type type) =>
       type == typeof( Dictionary<Hex, int> )
         ? new TilesDictionarySerializer()
         : null;
@@ -17,7 +17,7 @@ namespace dotnet_tree_shadows.Services.Serializers {
 
       public TilesDictionarySerializer () : base(
           DictionaryRepresentation.Document,
-          new HexCoordinatesSerializationProvider.HexCoordinatesSerializer(),
+          new HexSerializationProvider.HexCoordinatesSerializer(),
           new Int32Serializer()
         ) { }
 

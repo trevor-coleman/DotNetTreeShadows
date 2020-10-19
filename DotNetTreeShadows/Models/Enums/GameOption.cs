@@ -1,7 +1,10 @@
-using System.Text.Json.Serialization;
+
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace dotnet_tree_shadows.Models.Enums {
-  [JsonConverter(typeof(JsonStringEnumConverter))]
+  [JsonConverter(typeof(StringEnumConverter))]
   public enum GameOption {
     PreventActionsInShadow,
     AssignTurnOrder,
