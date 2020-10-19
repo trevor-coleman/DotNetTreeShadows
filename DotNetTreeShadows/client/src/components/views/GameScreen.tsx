@@ -40,6 +40,7 @@ const GameScreen: FunctionComponent<FlexGameScreenProps> = (props: FlexGameScree
   const onLoad = async () => {
     await dispatch(fetchSession(sessionIdFromPath))
     console.log("GAMESCREEN ONLOAD -- ", connectionState);
+    console.log("SessionIdFromPath: " , sessionIdFromPath, typeof(sessionIdFromPath))
     await gameHub.tryConnectToSession(sessionIdFromPath);
 
 

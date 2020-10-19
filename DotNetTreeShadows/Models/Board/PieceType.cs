@@ -1,8 +1,8 @@
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+
+using System.Text.Json.Serialization;
 
 namespace dotnet_tree_shadows.Models {
-    [JsonConverter( typeof( StringEnumConverter ) )]
+    [JsonConverter( typeof( JsonStringEnumConverter) )]
     public enum PieceType {
         Seed,
         SmallTree,

@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
-using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.Authentication;
+using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Models.GameModel;
 using dotnet_tree_shadows.Models.InvitationModel;
 using dotnet_tree_shadows.Models.ProfileModel;
@@ -17,8 +16,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
 
@@ -64,7 +61,9 @@ namespace dotnet_tree_shadows.Controllers {
       Task<List<Invitation>> receivedInvitations = invitationService.GetMany( userModel.ReceivedInvitations );
       Task<List<Invitation>> sentInvitations = invitationService.GetMany( userModel.SentInvitations );
 
-      return (await receivedInvitations).Concat( await sentInvitations ).ToArray();
+      Invitation[] invitations = (await sentInvitations).Concat( await receivedInvitations ).ToArray();
+      
+      return invitations;
     }
 
     public class InvitationUpdate {

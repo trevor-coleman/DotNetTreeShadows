@@ -1,5 +1,3 @@
-using System;
-
 #pragma warning disable 8618
 namespace dotnet_tree_shadows.Models {
   public class GameDatabaseSettings : IGameDatabaseSettings {

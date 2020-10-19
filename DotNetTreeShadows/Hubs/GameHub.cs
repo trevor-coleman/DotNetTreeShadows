@@ -1,27 +1,18 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-
-using dotnet_tree_shadows.Controllers;
 using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.Authentication;
 using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.InvitationModel;
 using dotnet_tree_shadows.Models.SessionModel;
 using dotnet_tree_shadows.Services;
 using dotnet_tree_shadows.Services.GameActionService;
 using dotnet_tree_shadows.Services.GameActionService.Actions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Session;
 using Microsoft.AspNetCore.SignalR;
-using MongoDB.Driver;
 
 namespace dotnet_tree_shadows.Hubs {
   [Authorize( AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme )]
@@ -141,13 +132,17 @@ namespace dotnet_tree_shadows.Hubs {
     }
 
     public async Task DoAction (AAction action) {
+      await Clients.Caller.SendAsync( "LogMessage", "starting DoAction" );
       if(action.Execute( out ActionContext context, out string failureMessage )) {
+        await Clients.Caller.SendAsync( "LogMessage", "committing" );
         await Commit( context );
+        await Clients.Caller.SendAsync( "LogMessage", "sendingUpdate" );
         await Clients.Group( context.SessionId ).SendAsync( "HandleSessionUpdate", new SessionUpdate() {
           SessionId = context.SessionId,
           Game = context.Game,
           Board = context.Board,
         } );
+        await Clients.Caller.SendAsync( "LogMessage", "sentUpdate" );
       } else {
         Console.WriteLine(failureMessage);
         await Clients.Caller.SendAsync( "LogMessage", failureMessage );
@@ -155,14 +150,14 @@ namespace dotnet_tree_shadows.Hubs {
     }
     
     public async Task PlaceStartingTree (string sessionId, int origin) {
-      Clients.Caller.SendAsync( "LogMessage", $"Received Request - PlaceStartingTree ({sessionId} - {origin})" );
+      await Clients.Caller.SendAsync( "LogMessage", $"Received Request - PlaceStartingTree ({sessionId} - {origin})" );
       UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
-      PlaceStartingTreeAction action = gameActionService.PlaceStartingTreeAction( sessionId, user.UserId, origin ));
-      DoAction( action );
+      PlaceStartingTreeAction action = gameActionService.PlaceStartingTreeAction( sessionId, user.UserId, origin );
+      await DoAction( action );
     }
 
     public async Task StartGame (string sessionId) {
-      Clients.Caller.SendAsync( "LogMessage", $"Received Request - StartGame ({sessionId})" );
+      await Clients.Caller.SendAsync( "LogMessage", $"Received Request - StartGame ({sessionId})" );
       UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
       StartGameAction action = await gameActionService.StartGameAction( sessionId, user.UserId );
       await DoAction( action );

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Services;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 

@@ -18,8 +18,8 @@ namespace dotnet_tree_shadows.Actions.Validators {
     public override bool IsValid {
       get {
         
-        return Tile.GetTreeType( Board.Tiles[Target.HexCode] ) == null ||
-               Tile.GetTreeType( Board.Tiles[Target.HexCode] ) == PlayerBoard.Get( Game, PlayerId ).TreeType;
+        return Tile.GetTreeType( Board[Target.HexCode] ) == null ||
+               Tile.GetTreeType( Board[Target.HexCode] ) == PlayerBoard.Get( Game, PlayerId ).TreeType;
       }
     }
 

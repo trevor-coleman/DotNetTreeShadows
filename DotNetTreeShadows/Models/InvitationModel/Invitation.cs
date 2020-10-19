@@ -1,5 +1,5 @@
 using System;
-using System.Runtime.CompilerServices;
+using dotnet_tree_shadows.Models.Enums;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 // ReSharper disable MemberCanBeProtected.Global

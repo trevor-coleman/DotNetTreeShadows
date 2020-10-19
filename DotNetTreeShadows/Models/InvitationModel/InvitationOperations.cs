@@ -1,3 +1,5 @@
+using dotnet_tree_shadows.Models.Enums;
+
 namespace dotnet_tree_shadows.Models.InvitationModel {
   public static class InvitationOperations {
 

@@ -26,14 +26,14 @@ const GameInfo: FunctionComponent<GameInfoProps> = (props: GameInfoProps) => {
   const {} = props;
   const classes = useStyles();
   const dispatch = useDispatch();
-  const {gameOptions} = useTypedSelector(state => state.game)
+  const {gameOptions, status} = useTypedSelector(state => state.game)
   const {name: sessionName} = useTypedSelector(state => state.session)
   const [open, setOpen] = useState();
 
   return (
     <Paper onClick={() => setOpen(!open)}>
       <Box p={2}>
-        <Box className={classes.titleWrapper}><Typography className={classes.title} variant={"subtitle1"}>Game options</Typography>
+        <Box className={classes.titleWrapper}><Typography className={classes.title} variant={"subtitle1"}>{status}</Typography>
         {open?<IconButton size={"small"} className={classes.expander} onClick={() => setOpen(!open)}>
           <Fade in={open}><ExpandLessIcon/></Fade>
         </IconButton>:

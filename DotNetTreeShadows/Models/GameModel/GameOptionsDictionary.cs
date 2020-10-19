@@ -1,16 +1,54 @@
+using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
 using dotnet_tree_shadows.Models.Enums;
+using dotnet_tree_shadows.Utilities;
 
 namespace dotnet_tree_shadows.Models.GameModel {
-  public class GameOptionsDictionary : Dictionary<GameOption, bool> {
+  [Serializable]
+  public class GameOptionsDictionary {
 
-    public void Add (GameOption option) { TryAdd( option, true ); }
+    public GameOptionsDictionary () { }
 
-    public void Remove (GameOption option) {
-      if ( ContainsKey( option ) ) base.Remove( option );
+    private Dictionary<GameOption, bool> gameOptions = new Dictionary<GameOption, bool>();
+
+    protected GameOptionsDictionary (SerializationInfo info, StreamingContext context) {
+
+      foreach ( GameOption option in EnumUtil.GetValues<GameOption>() ) {
+        string? optionName = Enum.GetName( typeof( GameOption ), (int) option );
+        if ( optionName == null ) continue;
+
+        try {
+          bool value = info.GetBoolean( optionName );
+          gameOptions.Add( option, true );
+        }
+        catch(Exception e) {
+          Console.WriteLine("------------ GAME OPTIONS DICT SERIALIZATION EXCEPTION");
+          Console.WriteLine(e);
+        }
+      }
     }
 
-    public bool Has (GameOption option) => ContainsKey( option );
+    [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+    public void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+      foreach ( GameOption option in EnumUtil.GetValues<GameOption>() ) {
+        if ( !gameOptions.TryGetValue( option, out bool value ) || !value ) continue;
+        string? optionName = Enum.GetName( typeof(GameOption), (int) option );
+        if(optionName == null) continue;
+        info.AddValue( optionName , true );
+      }
+    }  
+    
+    
+    public void Add (GameOption option) { gameOptions.TryAdd( option, true ); }
+
+    public void Remove (GameOption option) {
+      if ( gameOptions.ContainsKey( option ) ) gameOptions.Remove( option );
+    }
+
+    public bool Has (GameOption option) => gameOptions.ContainsKey( option );
 
     public void Set (GameOption option, bool value) {
       if ( value ) {

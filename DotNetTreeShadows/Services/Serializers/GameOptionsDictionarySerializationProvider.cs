@@ -1,5 +1,5 @@
 using System;
-using System.Text.Json.Serialization;
+using System.Collections.Generic;
 using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Models.GameModel;
 using MongoDB.Bson;
@@ -15,7 +15,7 @@ namespace dotnet_tree_shadows.Services.Serializers {
         ? new GameOptionsDictionarySerializer()
         : null;
 
-    public class GameOptionsDictionarySerializer : DictionarySerializerBase<GameOptionsDictionary> {
+    public class GameOptionsDictionarySerializer : DictionarySerializerBase<Dictionary<GameOption, bool>> {
 
       public GameOptionsDictionarySerializer () : base(
           DictionaryRepresentation.Document,
@@ -23,7 +23,7 @@ namespace dotnet_tree_shadows.Services.Serializers {
           new BooleanSerializer()
         ) { }
 
-      protected override GameOptionsDictionary CreateInstance () => new GameOptionsDictionary();
+      protected override Dictionary<GameOption, bool> CreateInstance () => new Dictionary<GameOption, bool>();
 
     }
 

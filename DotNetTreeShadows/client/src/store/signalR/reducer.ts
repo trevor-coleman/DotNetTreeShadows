@@ -2,6 +2,8 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HubConnectionState} from "@microsoft/signalr";
 import {ConnectionMessage, getConnectionMessage} from "./connectionMessage";
 import {signOut} from "../auth/reducer";
+import uuid from 'uuid-random'
+import {GameActionType} from "../game/actions";
 
 
 interface SignalrState {
@@ -9,6 +11,8 @@ interface SignalrState {
   connectionMessage: ConnectionMessage | null;
   connectedSession: string | null
   retryId: string | null;
+  sendingAction: boolean;
+  lastActionId: string | null;
   blacklist: string[];
 }
 
@@ -17,7 +21,9 @@ const initialSignalRState: SignalrState = {
   connectionMessage: ConnectionMessage.ConnectingToServer,
   connectedSession: null,
   retryId: null,
-  blacklist: ['connectionState', 'connectionMessage', 'connectedToSession', 'retryId']
+  sendingAction: false,
+  lastActionId: null,
+  blacklist: ['connectionState', 'connectionMessage', 'connectedToSession', 'retryId', 'sendingAction']
 }
 
 const signalrSlice = createSlice({
@@ -59,11 +65,14 @@ const signalrSlice = createSlice({
         ...state,
         connectedSession: action.payload
       }
-    }
+    },
+    sentGameAction(state, action:PayloadAction<{type: GameActionType, context?: {[key:string]:any}}>) {
+      return {...state }
+    },
   }
 
 })
 
 
-export const {setConnectionState, retryConnection, retryTimeout, setConnectedSession} = signalrSlice.actions;
+export const {setConnectionState, retryConnection, retryTimeout, setConnectedSession, sentGameAction} = signalrSlice.actions;
 export default signalrSlice.reducer;

@@ -1,5 +1,5 @@
+using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +22,7 @@ using MongoDB.Bson.Serialization;
 using dotnet_tree_shadows.Hubs;
 using dotnet_tree_shadows.Models.Authentication;
 using dotnet_tree_shadows.Services.GameActionService;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Primitives;
 
@@ -60,9 +61,10 @@ namespace dotnet_tree_shadows {
       string port = Configuration.GetSection( nameof(GameDatabaseSettings) )["Port"];
       string user = Configuration.GetSection( nameof(GameDatabaseSettings) )["User"];
       string password = Configuration.GetSection( nameof(GameDatabaseSettings) )["Password"];
+      string databaseName = Configuration.GetSection( nameof(GameDatabaseSettings) )["DatabaseName"];
       
-      string connectionString = ( string.IsNullOrEmpty( user ) || string.IsNullOrEmpty( password ) ) ? $"mongodb://localhost:{port}": $"mongodb://{user}:{password}@{host}:{port}";
-      
+      string connectionString = ( string.IsNullOrEmpty( user ) || string.IsNullOrEmpty( password ) ) ? $"mongodb://127.0.0.1:{port}": $"mongodb://{user}:{password}@{host}:{port}/{databaseName}/?authSource=admin";
+      Console.WriteLine($"\n\n{connectionString}\n\n");
       services.AddIdentityMongoDbProvider<UserModel, MongoRole>(
           identityOptions => {
             identityOptions.Password.RequiredLength = 6;
@@ -73,15 +75,18 @@ namespace dotnet_tree_shadows {
           },
           mongoIdentityOptions => {
             mongoIdentityOptions.ConnectionString = connectionString;
-            mongoIdentityOptions.UsersCollection = Configuration["GameDatabaseSettings:UsersCollection"];
+            mongoIdentityOptions.UsersCollection = "Users";
+            mongoIdentityOptions.RolesCollection = "Roles";
+            
           }
         );
 
       BsonSerializer.RegisterSerializationProvider( new HexCoordinatesSerializationProvider() );
       BsonSerializer.RegisterSerializationProvider( new TilesDictionarySerializationProvider() );
-      BsonSerializer.RegisterSerializationProvider( new GameOptionsDictionarySerializationProvider() );
-      BsonSerializer.RegisterSerializationProvider( new IntStackDictionarySerializationProvider() );
-      BsonSerializer.RegisterSerializationProvider( new IntIntDictionarySerializationProvider() );
+      // BsonSerializer.RegisterSerializationProvider( new GameOptionsDictionarySerializationProvider() );
+      // BsonSerializer.RegisterSerializationProvider( new IntStackDictionarySerializationProvider() );
+      // BsonSerializer.RegisterSerializationProvider( new IntIntDictionarySerializationProvider() );
+      // BsonSerializer.RegisterSerializationProvider( new IntArrayOfIntDictionarySerializationProvider() );
 
       
       services.AddSingleton<SessionService>();
@@ -143,6 +148,7 @@ namespace dotnet_tree_shadows {
                  );
 
       services.AddControllersWithViews().AddNewtonsoftJson();
+      services.AddControllers().AddNewtonsoftJson();
 
       // In production, the React files will be served from this directory
       services.AddSpaStaticFiles( configuration => { configuration.RootPath = "client/build"; } );

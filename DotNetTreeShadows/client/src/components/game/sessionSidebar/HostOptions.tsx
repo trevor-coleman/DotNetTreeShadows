@@ -13,9 +13,11 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Tooltip from "@material-ui/core/Tooltip";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
-import {doGameAction, setGameOption} from "../../../store/signalR/actions";
+import {setGameOption} from "../../../store/signalR/actions";
 import {GameOption} from "../../../store/game/types/GameOption";
 import ActionFactory from "../../../gamehub/gameActions/ActionFactory";
+import gameActions from "../../../gamehub/gameActions";
+import {GameStatus} from "../../../store/game/types/GameStatus";
 
 
 interface GameStatusProps {
@@ -29,7 +31,7 @@ const HostOptions: FunctionComponent<GameStatusProps> = (props: GameStatusProps)
     const [checked, setChecked] = React.useState<string[]>(["AssignTurnOrder"]);
     const {name: sessionName, id:sessionId, host} = useTypedSelector(state => state.session);
     const {id:playerId}= useTypedSelector(state => state.profile);
-    const {gameOptions}= useTypedSelector(state => state.game);
+    const {gameOptions, status}= useTypedSelector(state => state.game);
 
     const LightTooltip = withStyles((theme: Theme) => ({
         tooltip: {
@@ -40,8 +42,8 @@ const HostOptions: FunctionComponent<GameStatusProps> = (props: GameStatusProps)
         },
     }))(Tooltip);
 
-    const handleStartGame = ()=>{
-        dispatch(doGameAction(sessionId, ActionFactory.StartGameAction()))
+    const handleStartGame = async () => {
+        await gameActions.startGame();
     }
 
     const GameOptionItem = ({id,name,description}: {
@@ -76,7 +78,7 @@ const HostOptions: FunctionComponent<GameStatusProps> = (props: GameStatusProps)
     return (
         <Paper>
             <Box p={2}>
-                <Typography variant={"subtitle1"}>{sessionName}</Typography>
+                <Typography variant={"subtitle1"}>{GameStatus[status]}</Typography>
                 <Divider/>
                 <List>
                     {gameOptionDescriptions.map(option=><GameOptionItem key={option.id} {...option}/>)}

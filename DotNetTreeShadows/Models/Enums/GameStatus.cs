@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
-using Newtonsoft.Json.Converters;
+
 
 namespace dotnet_tree_shadows.Models.Enums {
-  [JsonConverter(typeof(StringEnumConverter))]
+  [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum GameStatus {
     Preparing,
     PlacingFirstTrees,

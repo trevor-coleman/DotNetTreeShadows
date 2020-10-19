@@ -9,6 +9,9 @@ export const fetchProfile = createAsyncThunk<Profile, void, ExtraInfo>(
     async (_, {extra}): Promise<Profile> => {
         const {api} = extra;
         const response = await api.profile.get();
+        console.group("fetchProfile")
+      console.log(response.data);
+        console.groupEnd()
         return response.data;
     })
 
@@ -17,6 +20,9 @@ export const fetchFriendProfiles = createAsyncThunk<FriendProfile[], void, Extra
     async (_, {extra}): Promise<FriendProfile[]> => {
         const {api} = extra;
         const response = await api.profile.getFriends();
+      console.group("fetchFriendProfiles")
+      console.log(response.data);
+      console.groupEnd()
         return response.data;
 
     }

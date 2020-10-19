@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
 using dotnet_tree_shadows.Actions.Validators;
 using dotnet_tree_shadows.Hubs;
 using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Models.GameModel;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using Newtonsoft.Json.Converters;
 
 namespace dotnet_tree_shadows.Actions {
   public abstract class AAction {
@@ -16,8 +14,7 @@ namespace dotnet_tree_shadows.Actions {
     [BsonId]
     [BsonRepresentation( BsonType.ObjectId )]
     public string Id { get; set; } = "";
-
-    [JsonConverter( typeof( StringEnumConverter ) )]
+    
     [BsonRepresentation( BsonType.String )]
     public abstract GameActionType Type { get; }
     

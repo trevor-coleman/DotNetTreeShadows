@@ -19,7 +19,7 @@ export default function connectListeners(connection:HubConnection) {
 
     })
 
-    connection.on("HandleActionResult", (sessionUpdate: SessionUpdate)=>{
+    connection.on("HandleSessionUpdate", (sessionUpdate: SessionUpdate)=>{
       console.log("actionResult", sessionUpdate)
       if(store.getState().session.id == sessionUpdate.sessionId) store.dispatch(updateSession(sessionUpdate));
     })

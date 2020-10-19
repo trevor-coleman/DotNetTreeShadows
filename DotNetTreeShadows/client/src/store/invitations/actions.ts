@@ -28,6 +28,9 @@ export const fetchInvitations = createAsyncThunk<InvitationsResponse, void, Extr
         const response = await api.invitations.getAll();
         const friendRequests = [];
         const sessionInvites = [];
+      console.group("fetchInvitations")
+      console.log(response.data);
+      console.groupEnd()
         for (let i = 0; i < response.data.length; i++) {
             const invitation = response.data[i];
             switch (invitation.invitationType) {

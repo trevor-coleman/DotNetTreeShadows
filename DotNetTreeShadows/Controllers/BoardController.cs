@@ -1,18 +1,13 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.Authentication;
-using dotnet_tree_shadows.Models.GameModel;
-using dotnet_tree_shadows.Models.SessionModel;
 using dotnet_tree_shadows.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
 
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
 

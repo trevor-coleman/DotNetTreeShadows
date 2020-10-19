@@ -35,7 +35,7 @@ namespace dotnet_tree_shadows.Services {
       if ( players.TryGetValue( playerId, out string[] playerGroups ) ) {
         players[playerId] = playerGroups.Where( id => id != groupId ).Append( playerId ).ToArray();
       } else {
-        players[playerId] = new[] { groupId };
+        players.Add(playerId, new[] { groupId });
       }
     }
 
@@ -43,7 +43,7 @@ namespace dotnet_tree_shadows.Services {
       if ( groups.TryGetValue( groupId, out string[] group ) ) {
         groups[groupId] = @group.Where( id => id != playerId ).Append( playerId ).ToArray();
       } else {
-        groups[groupId] = new[] { playerId };
+        groups.Add(groupId, new[] { playerId });
       }
     }
 

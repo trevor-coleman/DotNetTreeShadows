@@ -22,7 +22,7 @@ const connection: HubConnection = new signalR
     }
   })
   .withAutomaticReconnect([0, 2000, 2000, 2000, 2000, 2000])
-  .configureLogging(signalR.LogLevel.Information)
+  .configureLogging(signalR.LogLevel.Trace)
   .build();
 
 applyListeners(connection);
@@ -31,26 +31,29 @@ applyListeners(connection);
 
 
 const tryConnectToSession = async (sessionId: string) => {
-  console.log("Attempting to connect");
+  console.log(`Connecting to Session ${sessionId}`);
   if (connection.state != "Connected") {
-    store.dispatch(setConnectedSession(null))
-    console.log("Connection is not connected")
-      connect().then(()=> {
-        if(store.getState().signalR.connectionState != connection.state) {
-          store.dispatch(setConnectionState(connection.state));
-        }
+    console.log("Hub is not connected")
+    try {
+      await connect();
+      if(store.getState().signalR.connectionState != connection.state) {
+        store.dispatch(setConnectionState(connection.state));
+      }
+      tryConnectToSession(sessionId);
+    } catch (e) {
+      setTimeout(() => {
         tryConnectToSession(sessionId)
-      }).catch(()=>setTimeout(()=> {
-        tryConnectToSession(sessionId)
-      }, 2000));
+      }, 2000);
+    }
   } else
   try {
-    connection.send("ConnectToSession", sessionId).then(i=> {
-      store.dispatch(setConnectedSession(sessionId));
-    });
+    console.log("Hub is connected -- connecting to session", sessionId)
+    await connection.send("ConnectToSession", sessionId.toString())
+    store.dispatch(setConnectedSession(sessionId));
     return
   } catch (e) {
     console.error(e)
+    console.log(`ConnectToSession - catch -- ${sessionId})`);
     setTimeout(() => connection.send("ConnectToSession", sessionId), 2000)
   }
 }
@@ -69,6 +72,7 @@ const connect = async (retry: boolean = false) => {
 
 const disconnect = async () => {
   try {
+    console.log("Diconnecting!")
     await connection.stop();
     store.dispatch(setConnectionState(connection.state));
   } catch (err) {

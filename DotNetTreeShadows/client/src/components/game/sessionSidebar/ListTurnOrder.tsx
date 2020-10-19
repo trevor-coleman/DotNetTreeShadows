@@ -52,10 +52,14 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (props: ListTurnOrd
          SessionInvites:`, sessionInvites)
     }
 
+    const showInvitePlayers = ((turnOrder.length + invitedPlayers.length) < 4) && (playerId == host) && (status == GameStatus.Preparing);
+    console.log(`${status}-${typeof(status)}-${status == GameStatus.Preparing}`);
+
+
     return (
         <Paper>
             <Box p={2}>
-                <Typography variant={'subtitle1'}>Turn Order</Typography>
+                <Typography variant={'subtitle1'}>Turn Order - here</Typography>
                 <Divider/>
                 <List>
                     {turnOrder.map((id: string) => {
@@ -90,7 +94,7 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (props: ListTurnOrd
                             </ListItemSecondaryAction> : ""}
                         </ListItem>
                     }):<div/>}
-                    {((turnOrder.length + invitedPlayers.length) < 4) && (playerId == host) && (status == GameStatus.Preparing)
+                    {showInvitePlayers
                         ? <ListItem
                             button onClick={openAddPlayerDialog}>
                             <ListItemAvatar><Avatar><PersonAddIcon/></Avatar></ListItemAvatar>

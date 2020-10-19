@@ -50,7 +50,7 @@ namespace dotnet_tree_shadows.Controllers {
         AActionParams actionParams = await actionFactory.MakeActionParams( sessionId, actionRequest, userModel );
         if ( ActionFactory.Create( actionParams, out AAction action) ) {
           if ( action != null && action.Execute( out failureMessage ) ) {
-            actionFactory.Commit( action );
+            await  actionFactory.Commit( action );
             return Ok();
           }
         } else {

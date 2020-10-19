@@ -4,10 +4,7 @@ using System.Threading.Tasks;
 using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.Authentication;
 using dotnet_tree_shadows.Models.InvitationModel;
-using dotnet_tree_shadows.Models.SessionModel;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 
 namespace dotnet_tree_shadows.Services {

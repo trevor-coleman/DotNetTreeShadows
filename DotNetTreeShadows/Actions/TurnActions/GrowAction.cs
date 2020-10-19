@@ -31,7 +31,7 @@ namespace dotnet_tree_shadows.Actions.TurnActions {
     }
 
     protected override void DoAction () {
-      int tileCode = Board.Tiles[Origin.HexCode];
+      int tileCode = Board[Origin.HexCode];
       int growingTypeCode = (int) (Tile.GetPieceType( tileCode ) ?? 0);
       int grownTypeCode = growingTypeCode + 1;
       int price = grownTypeCode;
@@ -41,12 +41,12 @@ namespace dotnet_tree_shadows.Actions.TurnActions {
       int resultingTile = Tile.SetPieceType( tileCode, (PieceType) grownTypeCode );
       playerBoard.Pieces( (PieceType) growingTypeCode ).IncreaseOnPlayerBoard();
       playerBoard.SpendLight( price );
-      Board.Tiles[Origin.HexCode] = resultingTile;
+      Board[Origin.HexCode] = resultingTile;
     }
 
     protected override void UndoAction () {
       PlayerBoard playerBoard = PlayerBoard.Get( Game, PlayerId );
-      int tileCode = Board.Tiles[Origin.HexCode];
+      int tileCode = Board[Origin.HexCode];
 
       int grownTypeCode = (int) (Tile.GetPieceType( tileCode ) ?? 0);
 

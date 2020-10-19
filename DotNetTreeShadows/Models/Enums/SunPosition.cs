@@ -1,5 +1,9 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
 namespace dotnet_tree_shadows.Models.Enums {
-    public enum SunPosition {
+  [JsonConverter(typeof(StringEnumConverter))]  
+  public enum SunPosition {
         NorthWest,
         NorthEast,
         East,

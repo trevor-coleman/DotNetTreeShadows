@@ -9,7 +9,7 @@ import AddFriendCard from "./AddFriendCard";
 import FriendRequestList from "./friends/FriendRequestList";
 import FriendList from "./friends/FriendList";
 import Grid from "@material-ui/core/Grid";
-import {fetchProfile} from "../store/profile/actions";
+import {fetchFriendProfiles, fetchProfile} from "../store/profile/actions";
 import {fetchInvitations} from "../store/invitations/actions";
 
 interface FriendsProps {

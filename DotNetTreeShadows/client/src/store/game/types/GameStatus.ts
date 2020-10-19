@@ -1,6 +1,7 @@
 export enum GameStatus {
-    Preparing,
-    PlacingFirstTrees,
-    InProgress,
-    Ended
+    Preparing="Preparing",
+    PlacingFirstTrees="PlacingFirstTrees",
+    PlacingSecondTrees="PlacingSecondTrees",
+    InProgress="InProgress",
+    Ended="Ended",
 }

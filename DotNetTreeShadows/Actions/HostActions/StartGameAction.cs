@@ -33,7 +33,7 @@ namespace dotnet_tree_shadows.Actions.HostActions {
       }
 
       if ( Game.TurnOrder.Length == 2 ) {
-        Game.ScoringTokens[4] = new Stack<int>();
+        Game.ScoringTokens[4] = new int[0];
       }
 
       Game.FirstPlayer = Game.TurnOrder[0];

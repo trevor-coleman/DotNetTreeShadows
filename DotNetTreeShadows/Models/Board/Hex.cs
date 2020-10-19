@@ -1,5 +1,7 @@
 #nullable enable
 using System;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace dotnet_tree_shadows.Models {
     public readonly struct Hex {
@@ -53,6 +55,23 @@ namespace dotnet_tree_shadows.Models {
             S = s;
         }
 
+        public static Hex? ParseIndexString (string indexString) {
+          Console.WriteLine($"parsing {indexString}");
+          Regex regex = new Regex(@"\[(.+),(.+),(.+)\]");
+          Match match = regex.Match("");
+          if (match.Success) {
+            match = match.NextMatch();
+            int[] parts = match.Groups.Cast<Group>().Where(x => x.Success).Select(x => int.Parse(x.Value)).ToArray();
+            foreach ( int s in parts ) {
+              Console.WriteLine($"match: {s}");
+            }
+            return new Hex(parts);
+          }
+
+          return null;
+
+        }
+
         public int HexCode {
           get {
             int hexCode = 0;
@@ -67,6 +86,12 @@ namespace dotnet_tree_shadows.Models {
 
             return hexCode;
           }
+        }
+        
+        
+
+        public string IndexString {
+          get => $"[{Q},{R},{S}]";
         }
 
         public override string ToString () => HexCode.ToString();

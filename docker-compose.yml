@@ -7,7 +7,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: "${MONGO_INITDB_ROOT_USERNAME}"
       MONGO_INITDB_ROOT_PASSWORD: "${MONGO_INITDB_ROOT_PASSWORD}"
     ports:
-      - 27017:27017
+      - 27017:27017    
   mongo-express:
     image: mongo-express
     restart: always
@@ -31,7 +31,6 @@ services:
       - "80:80"
       - "443:443"
     environment:
-      
       ASPNETCORE_URLS: "http://+:80;https://+:443"
       ASPNETCORE_Kestrel__Certificates__Default__Path: "./webserver.pfx"
       ASPNETCORE_Kestrel__Certificates__Default__Password: "${ASPNETCORE_Kestrel__Certificates__Default__Password}"

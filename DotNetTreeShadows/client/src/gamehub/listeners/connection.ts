@@ -14,7 +14,7 @@ export default function connectListeners(connection:HubConnection){
     connection.onreconnecting(() => store.dispatch(setConnectionState(connection.state)));
 
     connection.onreconnected(() => {
-        console.log("onReconnected")
+        console.log("onReconnected", store.getState().session.id)
         store.dispatch(setConnectionState(connection.state))
         store.dispatch(connectToSession(store.getState().session.id));
     })
