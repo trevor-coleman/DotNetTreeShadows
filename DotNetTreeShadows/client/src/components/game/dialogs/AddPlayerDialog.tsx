@@ -40,7 +40,6 @@ const AddPlayerDialog: FunctionComponent<AddPlayerDialogProps> = (props: AddPlay
     };
 
     async function inviteFriends() {
-        console.log("inviting to session:", sessionId, checked);
         await dispatch(inviteFriendsToSession(checked, sessionId));
         setChecked([]);
     }

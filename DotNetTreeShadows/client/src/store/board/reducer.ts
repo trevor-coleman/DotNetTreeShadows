@@ -45,7 +45,6 @@ const boardSlice = createSlice({
       }));
     builder.addCase(updateSession,
       (state, action: PayloadAction<SessionUpdate>) => {
-      console.log(action.payload.board ? "there is a board":"no board")
       return  action.payload.board
           ? ({
             ...state,

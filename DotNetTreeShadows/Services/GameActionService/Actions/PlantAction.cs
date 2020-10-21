@@ -25,12 +25,13 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       Hex target = (Hex)context.Target;
       
       PlayerBoard playerBoard = PlayerBoard.Get( game, context.PlayerId );
-      int tileCode = board.Get( origin );
-      tileCode = Tile.SetPieceType( tileCode, PieceType.Seed );
-      tileCode = Tile.SetTreeType( tileCode, playerBoard.TreeType );
+      int targetCode = board.Get( target );
+      targetCode = Tile.SetPieceType( targetCode, PieceType.Seed );
+      targetCode = Tile.SetTreeType( targetCode, playerBoard.TreeType );
       playerBoard.SpendLight( (int) context.Cost );
+      playerBoard.Pieces( PieceType.Seed).DecreaseAvailable();
       game.SetPlayerBoard( context.PlayerId, playerBoard );
-      board.Set(origin, tileCode);
+      board.Set(target, targetCode);
       game.TilesActiveThisTurn = game.TilesActiveThisTurn.Append( origin ).ToArray();
       game.TilesActiveThisTurn = game.TilesActiveThisTurn.Append( target ).ToArray();
       PlayerBoard.Set( game, context.PlayerId, playerBoard );
@@ -52,6 +53,8 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
         ValidIf.TargetTileIsEmpty,
         ValidIf.TargetIsWithinRangeOfOrigin,
         ValidIf.GrowthInShadowAllowed,
+        ValidIf.TargetHasNotBeenActiveThisTurn,
+        ValidIf.OriginHasNotBeenActiveThisTurn,
       };
 
     

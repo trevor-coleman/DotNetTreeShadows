@@ -17,8 +17,6 @@ const getToken = (state: RootState): string | null => {
     return state.auth.token
 }
 
-console.log("process.env.TREE_SHADOWS_API_URL", process.env.TREE_SHADOWS_API_URL)
-
 const initStore = () => {
     let store: any;
     let thing = "";

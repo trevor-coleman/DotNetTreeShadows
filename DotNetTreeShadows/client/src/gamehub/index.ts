@@ -22,7 +22,7 @@ const connection: HubConnection = new signalR
     }
   })
   .withAutomaticReconnect([0, 2000, 2000, 2000, 2000, 2000])
-  .configureLogging(signalR.LogLevel.Trace)
+  .configureLogging(signalR.LogLevel.Information)
   .build();
 
 applyListeners(connection);
@@ -31,7 +31,7 @@ applyListeners(connection);
 
 
 const tryConnectToSession = async (sessionId: string) => {
-  console.log(`Connecting to Session ${sessionId}`);
+  console.groupCollapsed(`Connecting to Session ${sessionId}`)
   if (connection.state != "Connected") {
     console.log("Hub is not connected")
     try {
@@ -39,9 +39,11 @@ const tryConnectToSession = async (sessionId: string) => {
       if(store.getState().signalR.connectionState != connection.state) {
         store.dispatch(setConnectionState(connection.state));
       }
+      console.groupEnd();
       tryConnectToSession(sessionId);
     } catch (e) {
       setTimeout(() => {
+        console.groupEnd();
         tryConnectToSession(sessionId)
       }, 2000);
     }
@@ -50,10 +52,11 @@ const tryConnectToSession = async (sessionId: string) => {
     console.log("Hub is connected -- connecting to session", sessionId)
     await connection.send("ConnectToSession", sessionId.toString())
     store.dispatch(setConnectedSession(sessionId));
+    console.groupEnd();
     return
   } catch (e) {
     console.error(e)
-    console.log(`ConnectToSession - catch -- ${sessionId})`);
+    console.groupEnd();
     setTimeout(() => connection.send("ConnectToSession", sessionId), 2000)
   }
 }

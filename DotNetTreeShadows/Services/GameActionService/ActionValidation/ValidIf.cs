@@ -51,7 +51,11 @@ namespace dotnet_tree_shadows.Services.GameActionService.ActionValidation {
     public static bool TargetTileIsNotEmpty (ActionContext context) => 
       Tile.GetTreeType( context.Board!.Get((Hex)context.Target!) ) != null;
 
-    public static bool TileHasNotBeenActiveThisTurn (ActionContext context) {
+    public static bool TargetHasNotBeenActiveThisTurn (ActionContext context) {
+      Hex[] activeTiles = context.Game!.TilesActiveThisTurn ?? new Hex[0]; 
+      return activeTiles.All( t => t != context.Target );
+    }
+    public static bool OriginHasNotBeenActiveThisTurn (ActionContext context) {
       Hex[] activeTiles = context.Game!.TilesActiveThisTurn ?? new Hex[0]; 
       return activeTiles.All( t => t != context.Origin );
     }
@@ -59,9 +63,16 @@ namespace dotnet_tree_shadows.Services.GameActionService.ActionValidation {
     public static bool TilePieceTypeIsLargeTree (ActionContext context) => 
       Tile.GetPieceType( context.Board!.Get((Hex) context.Target!)) == PieceType.LargeTree;
 
-    public static bool TargetIsWithinRangeOfOrigin (ActionContext context) =>
-      Hex.Distance( (Hex)context.Origin!, (Hex) context.Target! ) <
-      ((int?) Tile.GetTreeType( context.Board!.Get( (Hex) context.Origin! ) ) ?? 0 );
+    public static bool TargetIsWithinRangeOfOrigin (ActionContext context) {
+      int distance = Hex.Distance( (Hex) context.Origin!, (Hex) context.Target! );
+      int height = Tile.GetPieceHeight( context.Board!.Get( (Hex) context.Origin ) );
+      return distance <= height;
+    }
+
+    public static bool TargetIsOnEdgeOfBoard (ActionContext context) {
+      Hex h = (Hex) context.Target!;
+      return Math.Abs( h.Q ) == 3 || Math.Abs( h.R ) == 3 || Math.Abs( h.R ) == 3;
+    }
 
   }
 }

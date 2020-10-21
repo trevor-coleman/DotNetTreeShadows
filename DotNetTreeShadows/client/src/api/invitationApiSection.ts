@@ -12,7 +12,6 @@ export default class InvitationApiSection extends AApiSection {
     }
 
     async getAll(): Promise<AxiosResponse<Invitation[]>> {
-        console.log("getting all");
         return await axios.get(`invitations`);
     }
 

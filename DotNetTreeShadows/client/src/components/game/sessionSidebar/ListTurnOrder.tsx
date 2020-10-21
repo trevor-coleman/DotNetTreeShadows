@@ -53,8 +53,6 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (props: ListTurnOrd
     }
 
     const showInvitePlayers = ((turnOrder.length + invitedPlayers.length) < 4) && (playerId == host) && (status == GameStatus.Preparing);
-    console.log(`${status}-${typeof(status)}-${status == GameStatus.Preparing}`);
-
 
     return (
         <Paper>

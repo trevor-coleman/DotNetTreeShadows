@@ -62,6 +62,11 @@ export class Hex {
         return this.hexCode;
     }
 
+    public static IsOnEdge = (hexCode: number):boolean => {
+        const h = new Hex(hexCode);
+        return (Math.abs(h.q) == 3 || Math.abs(h.r) == 3 || Math.abs(h.s) == 3) && !(Math.abs(h.q) == 4 || Math.abs(h.r) == 4 || Math.abs(h.s) == 4);
+}
+
     public Equals = (other: Hex): boolean => this.q === other.q && this.r === other.r && this.s === other.s;
 
     public static test = ()=> {

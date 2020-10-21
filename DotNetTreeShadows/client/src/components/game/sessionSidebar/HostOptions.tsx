@@ -34,8 +34,6 @@ const HostOptions: FunctionComponent<GameStatusProps> = (props: GameStatusProps)
     const {gameOptions, status, turnOrder}= useTypedSelector(state => state.game);
 
     const readyToStart = turnOrder.length >= 2;
-    console.log(turnOrder, readyToStart);
-
     const LightTooltip = withStyles((theme: Theme) => ({
         tooltip: {
             backgroundColor: theme.palette.common.white,

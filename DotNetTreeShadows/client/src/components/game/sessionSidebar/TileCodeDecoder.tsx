@@ -34,7 +34,23 @@ const TileCodeDecoder: FunctionComponent<TileCodeDecoderProps> = (props: TileCod
   const pieceType = PieceType[Tile.GetPieceType(code) ?? 0 ];
   const treeType = TreeType[Tile.GetTreeType(code) ?? 0 ];
   const shadowHeight = Tile.GetShadowHeight(code) ?? 0
+  const tileTypeCode: number = Tile.GetTileType(code) ?? 0;
 
+  let tileType = "not set"
+  switch (tileTypeCode) {
+    case 0:
+      tileType = "empty";
+      break;
+    case 1:
+      tileType="Tree";
+      break;
+case 2:
+      tileType="Sky";
+      break;
+case 3:
+      tileType="Sun";
+      break;
+  }
 
 
   return (
@@ -52,6 +68,7 @@ const TileCodeDecoder: FunctionComponent<TileCodeDecoderProps> = (props: TileCod
           <ListItem ><ListItemText primary={pieceType} secondary={"PieceType"}/></ListItem>
           <ListItem ><ListItemText primary={treeType} secondary={"TreeType"}/></ListItem>
           <ListItem ><ListItemText primary={shadowHeight} secondary={"Shadow Height"}/></ListItem>
+          <ListItem ><ListItemText primary={tileType} secondary={"TileType"}/></ListItem>
 
         </List>
 

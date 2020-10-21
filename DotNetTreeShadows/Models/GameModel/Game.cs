@@ -43,7 +43,7 @@ namespace dotnet_tree_shadows.Models.GameModel {
 
     public GameOptionsDictionary GameOptions { get; set; } = new GameOptionsDictionary();
 
-    public Hex[] TilesActiveThisTurn { get; set; }
+    public Hex[] TilesActiveThisTurn { get; set; } = new Hex[0];
 
     [BsonRepresentation( BsonType.String )]
     [JsonConverter(typeof(StringEnumConverter))]

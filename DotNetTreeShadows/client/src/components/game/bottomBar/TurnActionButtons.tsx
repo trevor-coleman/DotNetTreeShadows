@@ -9,6 +9,7 @@ import {useTypedSelector} from "../../../store";
 import {clearCurrentAction, setCurrentAction} from '../../../store/game/reducer';
 import {GameActionType} from "../../../store/game/actions";
 import PlayerBoard from "../../../store/game/types/playerBoard";
+import {PieceType} from "../../../store/board/types/pieceType";
 
 const useStyles = makeStyles((theme: Theme) => (
   {
@@ -31,7 +32,8 @@ const TurnActionButtons = () => {
   const {currentTurn, turnOrder, currentAction, playerBoards} = useTypedSelector(state => state.game)
   const {id: playerId} = useTypedSelector(state => state.profile)
   const isPlayersTurn = (playerId == turnOrder[currentTurn]);
-  const light = PlayerBoard.GetLight(playerBoards[playerId]);
+  const playerBoardCode = playerBoards[playerId];
+  const light = PlayerBoard.GetLight(playerBoardCode);
 
   const currentActionType = currentAction?.type;
 
@@ -40,11 +42,48 @@ const TurnActionButtons = () => {
     else dispatch(setCurrentAction(actionType))
   }
 
+  const canDoAction = (actionType:GameActionType) => {
+    switch (actionType ){
+      case GameActionType.Buy:
+        return false;
+      case GameActionType.Plant:
+        console.log("Can do Plant")
+        return PlayerBoard.getPieces(playerBoardCode, PieceType.Seed).available > 0 && light > 0;
+
+      case GameActionType.Grow:
+        return false;
+      case GameActionType.Collect:
+        return false;
+      case GameActionType.EndTurn:
+        return true;
+      case GameActionType.StartGame:
+      case GameActionType.PlaceStartingTree:
+      case GameActionType.UndoAction:
+      case GameActionType.Resign:
+      case GameActionType.Kick:
+        return false;
+    }
+    return false;
+  }
+
+  const isDisabled = (actionType: GameActionType) => {
+    if(!isPlayersTurn) {
+      return true;
+    }
+    if(currentActionType != null && currentActionType != actionType) {
+      return true;
+    }
+    if(!canDoAction(actionType)) {
+      return true;
+    }
+    return false;
+
+  }
 
   const GameActionButton = ({actionType}: { actionType: GameActionType }) => (
     <Grid item>
       <Button
-        disabled={((currentActionType != null) && (currentActionType != actionType)) != !isPlayersTurn}
+        disabled={isDisabled(actionType)}
         color={currentActionType == actionType ? "secondary" : "primary"}
         className={classes.turnActionButton}
         size={"medium"}

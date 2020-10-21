@@ -38,7 +38,7 @@ namespace dotnet_tree_shadows.Services.GameActionService {
       bool valid = true;
       foreach ( Func<ActionContext, bool> v in Validators ) {
         if ( v.Invoke( ActionContext ) ) continue;
-        failed.Append( v.Method.Name );
+        failed = failed.Append( v.Method.Name ).ToArray();
         valid = false;
       }
 

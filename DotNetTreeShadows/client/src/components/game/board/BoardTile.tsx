@@ -13,6 +13,10 @@ import {SunPosition} from "../../../store/game/types/sunPosition";
 import treeColor from "../../helpers/treeColor";
 import Color from "color";
 import {useTypedSelector} from "../../../store";
+import GameScreen from "../GameScreen";
+import {GameStatus} from "../../../store/game/types/GameStatus";
+import {cursorTo} from "readline";
+import {GameOption} from "../../../store/game/types/GameOption";
 
 interface IBoardTileProps {
     onClick?: (hexCode: number) => void,
@@ -34,7 +38,10 @@ const BoardTile = (props: IBoardTileProps) => {
     const safeHexCode = (hexCode ? hexCode : 0) as number;
     const tileCode = useSelector((state:RootState)=>state.board.tiles[safeHexCode]);
     const sunPosition = useSelector((state:RootState)=>state.game.sunPosition) as SunPosition
+    const {status, turnOrder, currentTurn, gameOptions} = useTypedSelector(state => state.game);
     const origin = useTypedSelector(state => state.game.currentAction.origin)
+    const {id:playerId} = useTypedSelector(state => state.profile)
+
     const center = layout ? layout.hexToPixel(new Hex(safeHexCode)) : {x:60,y:60};
 
     const hex = new Hex(safeHexCode);
@@ -43,9 +50,8 @@ const BoardTile = (props: IBoardTileProps) => {
     const shadowHeight: number = Tile.GetShadowHeight(tileCode);
     const shaded = shadowHeight > 0;
 
-    const selected = hexCode && safeHexCode == origin;
-
     const sky = Math.abs(hex.q) == 4 || Math.abs(hex.r) == 4 || Math.abs(hex.s) == 4;
+
     let sun:boolean = false;
     switch (sunPosition) {
         case SunPosition.NorthWest:
@@ -69,6 +75,26 @@ const BoardTile = (props: IBoardTileProps) => {
 
 
     }
+
+    const isEligible = ():boolean => {
+        if(turnOrder[currentTurn] !== playerId) return false;
+        if (status === GameStatus.PlacingFirstTrees || status === GameStatus.PlacingSecondTrees) {
+            return (Hex.IsOnEdge(safeHexCode) && Tile.IsEmpty(tileCode)) && !(gameOptions[GameOption.PreventActionsInShadow] && Tile.IsShadowed(tileCode) )
+        }
+
+        return false;
+
+    }
+
+    const isSelected = (): boolean => {
+        if(status == GameStatus.InProgress) {
+            if (hexCode && safeHexCode == origin) return true;
+        }
+        return false;
+    }
+
+    const selected = isSelected();
+    const eligible = isEligible();
 
     const classes = useStyles(props);
 
@@ -113,10 +139,12 @@ const BoardTile = (props: IBoardTileProps) => {
 
     const size = layout?.size.x || 60;
 
+    const borderPercent = 0.33;
+
     return (<g>
         <circle cx={center.x}
                 cy={center.y} r={size/sizeFactor} fill={backgroundColor} strokeWidth={2} stroke={strokeColor}/>
-        {treeIcon ? <circle cx={center.x} cy={center.y} r={size/1.8} fill={Color(backgroundColor).lighten(2).toString()} strokeWidth={"0.2"} stroke={"#000"}/>:""}
+        {treeIcon ? <circle cx={center.x} cy={center.y} r={size*(1-borderPercent)} fill={Color(backgroundColor).lighten(1.8).toString()} strokeWidth={"0.2"} stroke={"#000"}/>:""}
         {sunIcon
             ? <image href={sunIcon} x={center.x - size / 2} y={center.y - size / 2} width={size} height={size}/>
             : ''}
@@ -129,8 +157,11 @@ const BoardTile = (props: IBoardTileProps) => {
         {selected
           ? <circle cx={center.x} cy={center.y} r={size/1.2} fill={"rgba(200,200,0,0.3)"} strokeWidth={"6"} stroke={"#CC0"}/>
           : ''}
+        {eligible
+          ? <circle cx={center.x} cy={center.y} r={size/1.2} fill={"rgba(0,255,0,0.3)"} strokeWidth={"10"} stroke={"#0C0"}/>
+          : ''}
         <circle onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={handleClick} cx={center.x}
-                cy={center.y} r={size/sizeFactor} fill={"rgba(1,1,1,0)"} strokeWidth={2} stroke={strokeColor}/>
+                cy={center.y} r={size/sizeFactor} fill={"rgba(255,255,255,0)"} strokeWidth={2} stroke={strokeColor}/>
     </g>)
 };
 

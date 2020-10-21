@@ -14,7 +14,7 @@ export default function treeColor (treeType: TreeType, opacity:number = 1):strin
             color= "#6d4c0a";
             break;
         case TreeType.Poplar:
-            color= "#144d23";
+            color= "#21773b";
             break;
     }
 

@@ -39,27 +39,21 @@ const GameScreen: FunctionComponent<FlexGameScreenProps> = (props: FlexGameScree
 
   const onLoad = async () => {
     await dispatch(fetchSession(sessionIdFromPath))
-    console.log("GAMESCREEN ONLOAD -- ", connectionState);
-    console.log("SessionIdFromPath: " , sessionIdFromPath, typeof(sessionIdFromPath))
     await gameHub.tryConnectToSession(sessionIdFromPath);
 
 
   }
 
   const cleanUp = async () => {
-    console.log("GAMESCREEN CLEANUP --")
     await dispatch(disconnectFromSession(sessionIdFromPath));
     dispatch(clearSession())
 
   }
 
   useEffect(() => {
-    console.log("gameScreen.useEffect")
-
       onLoad();
 
       return () => {
-        console.log("Cleanup")
         cleanUp();
       }
     },

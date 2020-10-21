@@ -9,8 +9,6 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import {PersistGate} from "redux-persist/integration/react";
 
-console.log(process.env.TREE_SHADOWS_API_URL);
-
 const {store, persistor} = persistedStore;
 
 const Loading = ()=><h1>HI EVERYBODY</h1>
