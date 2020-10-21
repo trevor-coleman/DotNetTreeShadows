@@ -31,7 +31,10 @@ const HostOptions: FunctionComponent<GameStatusProps> = (props: GameStatusProps)
     const [checked, setChecked] = React.useState<string[]>(["AssignTurnOrder"]);
     const {name: sessionName, id:sessionId, host} = useTypedSelector(state => state.session);
     const {id:playerId}= useTypedSelector(state => state.profile);
-    const {gameOptions, status}= useTypedSelector(state => state.game);
+    const {gameOptions, status, turnOrder}= useTypedSelector(state => state.game);
+
+    const readyToStart = turnOrder.length >= 2;
+    console.log(turnOrder, readyToStart);
 
     const LightTooltip = withStyles((theme: Theme) => ({
         tooltip: {
@@ -84,7 +87,7 @@ const HostOptions: FunctionComponent<GameStatusProps> = (props: GameStatusProps)
                     {gameOptionDescriptions.map(option=><GameOptionItem key={option.id} {...option}/>)}
                 </List>
                 <Box m={1} className={classes.startGameButtonContainer}>
-                    <Button className={classes.startGameButton} color={"secondary"} variant={"contained"} onClick={handleStartGame}>
+                    <Button className={classes.startGameButton} disabled={!readyToStart} color={"secondary"} variant={"contained"} onClick={handleStartGame}>
                         Start Game
                     </Button>
                 </Box>

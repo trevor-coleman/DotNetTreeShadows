@@ -10,8 +10,9 @@ import {TreeType} from "../../../store/board/types/treeType";
 import {PieceType} from "../../../store/board/types/pieceType";
 import {HexLayout} from "../../../store/board/types/HexLayout";
 import {SunPosition} from "../../../store/game/types/sunPosition";
-import treeColor from "../treeColor";
+import treeColor from "../../helpers/treeColor";
 import Color from "color";
+import {useTypedSelector} from "../../../store";
 
 interface IBoardTileProps {
     onClick?: (hexCode: number) => void,
@@ -33,6 +34,7 @@ const BoardTile = (props: IBoardTileProps) => {
     const safeHexCode = (hexCode ? hexCode : 0) as number;
     const tileCode = useSelector((state:RootState)=>state.board.tiles[safeHexCode]);
     const sunPosition = useSelector((state:RootState)=>state.game.sunPosition) as SunPosition
+    const origin = useTypedSelector(state => state.game.currentAction.origin)
     const center = layout ? layout.hexToPixel(new Hex(safeHexCode)) : {x:60,y:60};
 
     const hex = new Hex(safeHexCode);
@@ -41,7 +43,7 @@ const BoardTile = (props: IBoardTileProps) => {
     const shadowHeight: number = Tile.GetShadowHeight(tileCode);
     const shaded = shadowHeight > 0;
 
-
+    const selected = hexCode && safeHexCode == origin;
 
     const sky = Math.abs(hex.q) == 4 || Math.abs(hex.r) == 4 || Math.abs(hex.s) == 4;
     let sun:boolean = false;
@@ -97,7 +99,6 @@ const BoardTile = (props: IBoardTileProps) => {
             : null;
 
 
-
     const sunIcon: string | null = sky && sun
         ? Sun
         : null;
@@ -113,7 +114,7 @@ const BoardTile = (props: IBoardTileProps) => {
     const size = layout?.size.x || 60;
 
     return (<g>
-        <circle onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={handleClick} cx={center.x}
+        <circle cx={center.x}
                 cy={center.y} r={size/sizeFactor} fill={backgroundColor} strokeWidth={2} stroke={strokeColor}/>
         {treeIcon ? <circle cx={center.x} cy={center.y} r={size/1.8} fill={Color(backgroundColor).lighten(2).toString()} strokeWidth={"0.2"} stroke={"#000"}/>:""}
         {sunIcon
@@ -125,6 +126,11 @@ const BoardTile = (props: IBoardTileProps) => {
         {shaded
             ? <circle cx={center.x} cy={center.y} r={size/1.2} fill={"rgba(0,0,0,0.3)"} strokeWidth={"0.2"} stroke={"#000"}/>
             : ''}
+        {selected
+          ? <circle cx={center.x} cy={center.y} r={size/1.2} fill={"rgba(200,200,0,0.3)"} strokeWidth={"6"} stroke={"#CC0"}/>
+          : ''}
+        <circle onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={handleClick} cx={center.x}
+                cy={center.y} r={size/sizeFactor} fill={"rgba(1,1,1,0)"} strokeWidth={2} stroke={strokeColor}/>
     </g>)
 };
 

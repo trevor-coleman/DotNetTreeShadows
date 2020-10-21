@@ -2,6 +2,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AspNetCore.Identity.Mongo;
 using AspNetCore.Identity.Mongo.Model;
@@ -25,6 +26,8 @@ using dotnet_tree_shadows.Services.GameActionService;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace dotnet_tree_shadows {
   public class Startup {
@@ -38,7 +41,7 @@ namespace dotnet_tree_shadows {
       //MongoDb
       
       services.Configure<GameDatabaseSettings>( Configuration.GetSection( nameof(GameDatabaseSettings) ) );
-      services.AddSignalR();
+      services.AddSignalR().AddNewtonsoftJsonProtocol();
 
       string[] allowedOrigins = Configuration.GetSection( "CORS:AllowedOrigins" ).Get<string[]>() ?? new string[0];
       
@@ -161,7 +164,6 @@ namespace dotnet_tree_shadows {
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
       }
-      
       
       
       

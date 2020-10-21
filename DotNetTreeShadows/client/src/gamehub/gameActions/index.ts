@@ -15,9 +15,16 @@ async function SendPlaceStartingTree(hexCode: number) {
   store.dispatch(sentGameAction({type: GameActionType.StartGame}))
 }
 
+async function SendPlant(originCode: number, targetCode: number) {
+  await connection.send("Plant", store.getState().session.id, originCode, targetCode );
+  store.dispatch(sentGameAction({type: GameActionType.Plant}))
+}
+
+
 const gameActions = {
   startGame: SendStartGame,
-  placeFirstTree: SendPlaceStartingTree,
+  placeStartingTree: SendPlaceStartingTree,
+  plant: SendPlant,
 }
 
 export default  gameActions;

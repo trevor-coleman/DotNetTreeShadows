@@ -12,10 +12,10 @@ enum TileType {
 
 export class Tile {
 
-    public static GetShadowHeight = (tileCode: number):number => ((tileCode >> 4) & 3)  == 1 ? tileCode & 3 : 0;
+    public static GetShadowHeight = (tileCode: number):number => (tileCode >> 6) & 3;
 
     public static SetShadowHeight = (tileCode: number, shadowHeight:number):number => {
-        if ( Tile.GetTileType( tileCode ) !== TileType.Piece ) return tileCode;
+        if ( Tile.GetTileType( tileCode ) === TileType.Sky ) return tileCode;
         let result:number = tileCode & ~(3 << 6);
         result |= shadowHeight << 6;
         return result;

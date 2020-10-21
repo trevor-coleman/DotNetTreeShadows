@@ -9,11 +9,11 @@ namespace dotnet_tree_shadows.Services.Serializers {
   public class TilesDictionarySerializationProvider : IBsonSerializationProvider {
 
     public IBsonSerializer? GetSerializer (Type type) =>
-      type == typeof( Dictionary<Hex, int> )
+      type == typeof( TileDictionary )
         ? new TilesDictionarySerializer()
         : null;
 
-    public class TilesDictionarySerializer : DictionarySerializerBase<Dictionary<Hex, int>> {
+    public class TilesDictionarySerializer : DictionarySerializerBase<TileDictionary> {
 
       public TilesDictionarySerializer () : base(
           DictionaryRepresentation.Document,
@@ -21,7 +21,7 @@ namespace dotnet_tree_shadows.Services.Serializers {
           new Int32Serializer()
         ) { }
 
-      protected override Dictionary<Hex, int> CreateInstance () => new Dictionary<Hex, int>();
+      protected override TileDictionary CreateInstance () => new TileDictionary();
 
     }
 

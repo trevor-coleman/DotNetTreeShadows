@@ -5,16 +5,16 @@ import {Button, DialogContent, DialogActions, ListItem} from "@material-ui/core"
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContentText from "@material-ui/core/DialogContentText";
-import {useTypedSelector} from "../../store";
+import {useTypedSelector} from "../../../store";
 import List from "@material-ui/core/List";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import ListItemText from "@material-ui/core/ListItemText";
-import {showAddPlayerDialog, setAddPlayerDialogChecked} from '../../store/appState/reducer'
-import {inviteFriendsToSession} from "../../store/appState/reducer";
+import {showAddPlayerDialog, setAddPlayerDialogChecked} from '../../../store/appState/reducer'
+import {inviteFriendsToSession} from "../../../store/appState/reducer";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Checkbox from "@material-ui/core/Checkbox";
-import {RequestState} from "../../api/requestState";
+import {RequestState} from "../../../api/requestState";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 interface AddPlayerDialogProps {

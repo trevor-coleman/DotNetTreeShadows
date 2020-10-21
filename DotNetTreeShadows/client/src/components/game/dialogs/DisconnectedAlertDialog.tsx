@@ -7,13 +7,13 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-import {useTypedSelector} from "../../store";
+import {useTypedSelector} from "../../../store";
 import {HubConnectionState} from "@microsoft/signalr";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import gameHub from '../../gamehub'
+import gameHub from '../../../gamehub'
 import {Link} from "react-router-dom";
-import {ConnectionMessage} from "../../store/signalR/connectionMessage";
-import { retryConnection, retryTimeout } from '../../store/signalR/reducer';
+import {ConnectionMessage} from "../../../store/signalR/connectionMessage";
+import { retryConnection, retryTimeout } from '../../../store/signalR/reducer';
 import uuid from 'uuid-random';
 
 

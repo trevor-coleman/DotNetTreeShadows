@@ -9,6 +9,7 @@ namespace dotnet_tree_shadows.Models.Enums {
   public enum GameStatus {
     Preparing,
     PlacingFirstTrees,
+    PlacingSecondTrees,
     InProgress,
     Ended
   }

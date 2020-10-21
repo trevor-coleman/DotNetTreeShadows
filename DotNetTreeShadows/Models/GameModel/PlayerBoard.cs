@@ -128,7 +128,10 @@ namespace dotnet_tree_shadows.Models.GameModel {
 
     public static PlayerBoard Get (Game game, string playerId) => new PlayerBoard(game.PlayerBoards[playerId]);
 
-    public static void Set (Game game, string playerId, PlayerBoard playerBoard) => game.PlayerBoards[playerId] = playerBoard.BoardCode;
+    public static Game Set (Game game, string playerId, PlayerBoard playerBoard) {
+      game.PlayerBoards[playerId] = playerBoard.BoardCode;
+      return game;
+    }
 
   }
 }

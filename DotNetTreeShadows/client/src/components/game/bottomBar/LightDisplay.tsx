@@ -33,7 +33,7 @@ const LightDisplay: FunctionComponent<LightDisplayProps> = (props: LightDisplayP
     }
 
     return (<Box className={classes.root}>
-            <Typography variant={'subtitle1'} className={classes.title}>Light</Typography>
+            <Typography variant={'subtitle1'} className={classes.title}>Light - {light}</Typography>
         <Grid container spacing={1} >
             {lightArray.map(
                 ({filled,key}, index) => (

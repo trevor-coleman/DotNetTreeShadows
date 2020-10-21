@@ -3,7 +3,7 @@ import './App.css';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {CssBaseline} from "@material-ui/core";
 import HomeScreen from "./components/views/HomeScreen";
-import GameScreen from "./components/views/GameScreen";
+import GameScreen from "./components/game/GameScreen";
 import SignIn from "./components/views/SignIn";
 import PrivateRoute from "./routes/PrivateRoute";
 

@@ -1,10 +1,12 @@
 #nullable enable
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 
 namespace dotnet_tree_shadows.Models {
+  [TypeConverter(typeof(HexConverter))]
     public readonly struct Hex {
         public readonly int Q;
         public readonly int R;

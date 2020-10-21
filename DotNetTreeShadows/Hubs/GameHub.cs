@@ -132,17 +132,13 @@ namespace dotnet_tree_shadows.Hubs {
     }
 
     public async Task DoAction (AAction action) {
-      await Clients.Caller.SendAsync( "LogMessage", "starting DoAction" );
       if(action.Execute( out ActionContext context, out string failureMessage )) {
-        await Clients.Caller.SendAsync( "LogMessage", "committing" );
         await Commit( context );
-        await Clients.Caller.SendAsync( "LogMessage", "sendingUpdate" );
         await Clients.Group( context.SessionId ).SendAsync( "HandleSessionUpdate", new SessionUpdate() {
           SessionId = context.SessionId,
           Game = context.Game,
           Board = context.Board,
         } );
-        await Clients.Caller.SendAsync( "LogMessage", "sentUpdate" );
       } else {
         Console.WriteLine(failureMessage);
         await Clients.Caller.SendAsync( "LogMessage", failureMessage );
@@ -152,14 +148,21 @@ namespace dotnet_tree_shadows.Hubs {
     public async Task PlaceStartingTree (string sessionId, int origin) {
       await Clients.Caller.SendAsync( "LogMessage", $"Received Request - PlaceStartingTree ({sessionId} - {origin})" );
       UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
-      PlaceStartingTreeAction action = gameActionService.PlaceStartingTreeAction( sessionId, user.UserId, origin );
+      PlaceStartingTreeAction action = await gameActionService.PlaceStartingTreeAction( sessionId, user.UserId, origin );
       await DoAction( action );
     }
-
+    
     public async Task StartGame (string sessionId) {
       await Clients.Caller.SendAsync( "LogMessage", $"Received Request - StartGame ({sessionId})" );
       UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
       StartGameAction action = await gameActionService.StartGameAction( sessionId, user.UserId );
+      await DoAction( action );
+    }
+
+    public async Task Plant (string sessionId, int origin, int target) {
+      await Clients.Caller.SendAsync( "LogMessage", $"Received Request - Plant ({sessionId} - {origin})" );
+      UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
+      PlantAction action = await gameActionService.PlantAction( sessionId, user.UserId, origin, target );
       await DoAction( action );
     }
     

@@ -1,3 +1,4 @@
+using System;
 using dotnet_tree_shadows.Actions;
 using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.Authentication;
@@ -6,6 +7,7 @@ using dotnet_tree_shadows.Models.GameModel;
 using dotnet_tree_shadows.Models.SessionModel;
 
 namespace dotnet_tree_shadows.Services.GameActionService {
+  [Serializable]
   public class ActionContext {
     public GameActionType GameActionType { get; set; }
     public Game? Game { get; set; }

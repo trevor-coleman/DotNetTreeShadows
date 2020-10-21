@@ -29,7 +29,7 @@ namespace dotnet_tree_shadows.Services.GameActionService.ActionValidation {
     public static bool OnPlayersTurn (ActionContext context) =>
       context.Game!.CurrentPlayer == context.PlayerId;
 
-    public static bool PieceTypeIsTree (ActionContext context) =>
+    public static bool OriginPieceTypeIsTree (ActionContext context) =>
       (int) (Tile.GetPieceType( context.Board!.Get( (Hex) context.Origin! ) ) ?? 0) > (int) PieceType.Seed;
 
     public static bool PlayerCanAffordCost (ActionContext context) =>
@@ -37,7 +37,7 @@ namespace dotnet_tree_shadows.Services.GameActionService.ActionValidation {
 
     public static bool PlayerHasAvailablePiece (ActionContext context) =>
       PlayerBoard.Get( context.Game!, context.PlayerId ).Pieces( (PieceType) context.PieceType! ).Available > 0;
-
+    
     public static bool PlayerHasPieceOnPlayerBoard (ActionContext context) =>
       PlayerBoard.Get( context.Game!, context.PlayerId ).Pieces( (PieceType) context.PieceType! ).OnPlayerBoard > 0;
 
@@ -46,9 +46,9 @@ namespace dotnet_tree_shadows.Services.GameActionService.ActionValidation {
     public static bool TileBelongsToPlayer (ActionContext context) => 
       Tile.GetTreeType( context.Board!.Get((Hex)context.Target!) ) == PlayerBoard.Get( context.Game!, context.PlayerId ).TreeType;
     
-    public static bool TileIsEmpty (ActionContext context) => context.Target.HasValue && Tile.GetTreeType( context.Board!.Get( (Hex) context.Target ) ) == null;
+    public static bool TargetTileIsEmpty (ActionContext context) => context.Target.HasValue && Tile.GetTreeType( context.Board!.Get( (Hex) context.Target ) ) == null;
 
-    public static bool TileIsNotEmpty (ActionContext context) => 
+    public static bool TargetTileIsNotEmpty (ActionContext context) => 
       Tile.GetTreeType( context.Board!.Get((Hex)context.Target!) ) != null;
 
     public static bool TileHasNotBeenActiveThisTurn (ActionContext context) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import PlayerBoardDisplay from './PlayerBoardDisplay';
-import SidebarGrid from "../SidebarGrid";
+import SidebarGrid from "../layout/SidebarGrid";
 import AvailablePieces from "./AvailablePieces";
 
 const PlayerSidebar = () => {

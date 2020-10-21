@@ -17,7 +17,7 @@ import Divider from "@material-ui/core/Divider";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import IconButton from "@material-ui/core/IconButton";
 import {showAddPlayerDialog} from "../../../store/appState/reducer";
-import AddPlayerDialog from "../AddPlayerDialog";
+import AddPlayerDialog from "../dialogs/AddPlayerDialog";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import DeleteOutlineOutlinedIcon from "@material-ui/icons/DeleteOutlineOutlined";
 import {cancelSessionInvite} from "../../../store/signalR/actions";

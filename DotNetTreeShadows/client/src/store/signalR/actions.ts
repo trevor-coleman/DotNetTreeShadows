@@ -32,10 +32,7 @@ export const connectToSession = createAsyncThunk<void, string>('gamehub/connectT
 export const sendDisconnectFromSession = createAsyncThunk<void, string>('gamehub/disconnectFromSession',
     async (sessionId, thunkApi) => {
         try {
-            await gameHub.send(GameHubMethod.DisconnectFromSession, {
-                sessionId,
-                playerId: store.getState().profile.id
-            });
+            await gameHub.send(GameHubMethod.DisconnectFromSession, sessionId);
             return;
         } catch (e) {
             thunkApi.rejectWithValue(e.message ?? "disconnect failed");

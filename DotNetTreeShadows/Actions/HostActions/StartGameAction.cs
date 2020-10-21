@@ -20,7 +20,7 @@ namespace dotnet_tree_shadows.Actions.HostActions {
 
     protected override void DoAction () {
       if ( !Game.GameOptions.Has( GameOption.AssignTurnOrder ) ) {
-        GameOperations.RandomizeTurns( Game );
+        Game.RandomizeTurns();
       }
 
       Dictionary<string, int> newPlayerBoards = new Dictionary<string, int>();

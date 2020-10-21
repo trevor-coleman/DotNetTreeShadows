@@ -6,7 +6,7 @@ import SvgIcon from "@material-ui/core/SvgIcon";
 import {TreeType} from "../../../store/board/types/treeType";
 import {PieceType} from "../../../store/board/types/pieceType";
 import TreeSVG from "../../../svg/TreeSVG";
-import treeColor from "../treeColor";
+import treeColor from "../../helpers/treeColor";
 import Color from "color";
 
 interface TreeAvatarIconProps {

@@ -35,9 +35,9 @@ const TurnActionButtons = () => {
 
   const currentActionType = currentAction?.type;
 
-  const onClickActionButton = (gat: GameActionType) => {
-    if (gat == currentActionType) dispatch(clearCurrentAction())
-    else dispatch(setCurrentAction(gat))
+  const onClickActionButton = (actionType: GameActionType) => {
+    if (actionType == currentActionType) dispatch(clearCurrentAction())
+    else dispatch(setCurrentAction(actionType))
   }
 
 
@@ -50,7 +50,7 @@ const TurnActionButtons = () => {
         size={"medium"}
         variant="contained"
         onClick={() => onClickActionButton(actionType)}>
-        {actionType}
+        {GameActionType[actionType]}
       </Button>
     </Grid>)
 

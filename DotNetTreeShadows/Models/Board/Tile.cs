@@ -1,12 +1,13 @@
+using System;
 using dotnet_tree_shadows.Models.Enums;
 
 namespace dotnet_tree_shadows.Models {
   public class Tile {
 
-    public static int GetShadowHeight (in int tileCode) => tileCode >> 4 & 3;
+    public static int GetShadowHeight (in int tileCode) => tileCode >> 6 & 3;
 
     public static int SetShadowHeight (in int tileCode, int shadowHeight) {
-      if ( GetTileType( tileCode ) != TileType.Piece ) return tileCode;
+      if ( GetTileType( tileCode ) == TileType.Sky ) return tileCode;
       int result = tileCode & ~(3 << 6);
       result |= shadowHeight << 6;
       return result;
@@ -46,8 +47,8 @@ namespace dotnet_tree_shadows.Models {
       int result = tileCode;
       if ( pieceType == null ) return SetTileType( result, TileType.Empty );
       result = SetTileType( result, TileType.Piece );
-      result &= ~(3 << 2);
-      result |= (int) pieceType << 2;
+      result &= ~3;
+      result |= (int) pieceType;
       return result;
     }
 
@@ -55,8 +56,8 @@ namespace dotnet_tree_shadows.Models {
       int result = tileCode;
       if ( treeType == null ) return SetTileType( result, TileType.Empty );
       result = SetTileType( result, TileType.Piece );
-      result &= ~3;
-      result |= (int) treeType;
+      result &= ~(3 << 2);
+      result |= (int) treeType << 2;
       return result;
     }
 
@@ -85,8 +86,7 @@ namespace dotnet_tree_shadows.Models {
       GetTileType( tileCode ) != TileType.Sky &&
       (GetShadowHeight( tileCode ) == 0 || GetPieceTypeCode( tileCode ) > GetShadowHeight( tileCode ));
 
-    public static bool ProducesLight (in int tileCode) =>
-      GetTileType( tileCode ) == TileType.Piece && GetPieceTypeCode( tileCode ) > GetShadowHeight( tileCode );
+    public static bool ProducesLight (in int tileCode) => GetTileType( tileCode ) == TileType.Piece && GetPieceTypeCode( tileCode ) > GetShadowHeight( tileCode );
 
     private enum TileType {
 

@@ -1,22 +1,26 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
+using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.Enums;
+using dotnet_tree_shadows.Models.GameModel;
 using dotnet_tree_shadows.Utilities;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
 
 namespace dotnet_tree_shadows.Models {
-  [Serializable]
   public class Board {
 
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string? Id { get; set; }
     
-    public Dictionary<Hex, int> Tiles = new Dictionary<Hex, int>();
+    
+    public TileDictionary Tiles = new TileDictionary();
     
     public void Add (Hex h, int i) {
       Tiles.TryAdd( h, i );

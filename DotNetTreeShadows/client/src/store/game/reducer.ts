@@ -74,7 +74,7 @@ const gameSlice = createSlice({
             }
 
         }),
-        setActionOrigin: (state:GameState, action:PayloadAction<number>) => ({
+        setActionOrigin: (state:GameState, action:PayloadAction<number|null>) => ({
             ...state,
             currentAction: {
                 ...state.currentAction,

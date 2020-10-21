@@ -1,14 +1,19 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using dotnet_tree_shadows.Models.Enums;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace dotnet_tree_shadows.Models.GameModel {
   public class Game {
 
+    public TreeType[] RemainingTreeTypes { get; set; } =
+      { TreeType.Ash, TreeType.Aspen, TreeType.Birch, TreeType.Poplar };
     
     public Dictionary<string, int> PlayerBoards = new Dictionary<string, int>();
 
@@ -41,6 +46,7 @@ namespace dotnet_tree_shadows.Models.GameModel {
     public Hex[] TilesActiveThisTurn { get; set; }
 
     [BsonRepresentation( BsonType.String )]
+    [JsonConverter(typeof(StringEnumConverter))]
     public GameStatus Status { get; set; }
 
     public int LengthOfGame {
@@ -50,7 +56,24 @@ namespace dotnet_tree_shadows.Models.GameModel {
           : 3;
     }
 
-    public void AddPlayer (string playerId) { TurnOrder = TurnOrder.Append( playerId ).ToArray(); }
+    public void SetPlayerBoard (string playerId, PlayerBoard playerBoard) {
+      PlayerBoards[playerId] = playerBoard.BoardCode;
+    }
+
+    public void RandomizeTurns () {
+      Random random = new Random();
+      string[] array = TurnOrder.ToArray();
+      int n = array.Length;
+      
+      while ( n > 1 ) {
+        int k = random.Next( n-- );
+        string temp = array[n];
+        array[n] = array[k];
+        array[k] = temp;
+      }
+      TurnOrder = array;
+    }
+    
 
   }
 }
