@@ -15,6 +15,7 @@ import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import { signOut } from '../../store/auth/reducer';
 import {useDispatch} from "react-redux";
+import {useTypedSelector} from "../../store";
 
 
 const drawerWidth = 280;
@@ -71,6 +72,7 @@ export default function HomeScreen(props: IHomeScreenProps) {
     let { path, url } = useRouteMatch();
     const theme = useTheme();
     const dispatch=useDispatch();
+    const {name: userName} = useTypedSelector(state => state.profile)
     const [open, setOpen] = React.useState(true);
     const toggleDrawerOpen = () => {
         setOpen(!open);
@@ -90,7 +92,7 @@ export default function HomeScreen(props: IHomeScreenProps) {
                 <Toolbar>
                     <IconButton onClick={toggleDrawerOpen}><MenuIcon className={classes.menuIcon}/></IconButton>
                     <Typography variant="h6" noWrap className={classes.title}>
-                        TreeShadows
+                        TreeShadows - {userName}
                     </Typography>
                     <Button color="inherit" onClick={handleSignOut}>Sign Out</Button>
                 </Toolbar>
