@@ -18,5 +18,7 @@ export default interface Game {
     }
     gameOptions: {
         [option: string]: boolean | undefined,
-    }
+    },
+    tilesActiveThisTurn: number[],
+
 }

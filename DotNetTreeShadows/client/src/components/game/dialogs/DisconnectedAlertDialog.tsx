@@ -46,7 +46,7 @@ const DisconnectedAlertDialog: FunctionComponent<DisconnectedAlertProps> = (prop
           const retryId = uuid()
           dispatch(retryConnection(retryId))
           setTimeout(()=>dispatch(retryTimeout(retryId)), 60000)
-          gameHub.tryConnectToSession(sessionId)
+          gameHub.tryConnectToSession(sessionId);
         }}>Retry</Button>
         <Button component={Link} to={"/sessions"}>Exit Session</Button>
       </DialogActions>

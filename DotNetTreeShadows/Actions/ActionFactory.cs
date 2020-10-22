@@ -7,6 +7,7 @@ using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.Authentication;
 using dotnet_tree_shadows.Models.GameModel;
 using dotnet_tree_shadows.Services;
+using dotnet_tree_shadows.Services.GameActionService;
 
 namespace dotnet_tree_shadows.Actions {
   public class ActionFactory {

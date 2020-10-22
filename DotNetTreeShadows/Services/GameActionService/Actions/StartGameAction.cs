@@ -9,7 +9,7 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
     
     
     public StartGameAction (ActionContext context) { this.ActionContext = context; }
-    
+
     protected override ActionContext DoAction (ActionContext context) {
       
       if ( !context.Game.GameOptions.Has( GameOption.AssignTurnOrder ) ) {
@@ -26,14 +26,15 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       
       return context;
     }
-    
+
     protected override ActionContext ActionContext { get; }
 
     protected override IEnumerable<Func<ActionContext, bool>> Validators { get; } =
       new Func<ActionContext, bool> [] {
+        ValidIf.GameIsInPermittedState,
         ValidIf.PlayerIsHost,
         ValidIf.GameHasMinimumTwoPlayers,
       };
-    
+
   }
 }

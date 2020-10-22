@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.Authentication;
@@ -52,22 +53,22 @@ namespace dotnet_tree_shadows.Hubs {
     public async Task ConnectToSession (string sessionId) {
       UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
       await Groups.AddToGroupAsync( Context.ConnectionId, sessionId );
-      string[] membersAfter = hubGroupService.AddToGroup( sessionId, user.UserId );
+      IEnumerable<string> membersAfter = hubGroupService.AddToSession( sessionId, user.UserId );
       
       await Clients.Group( sessionId ).SendAsync( 
         "UpdateConnectedPlayers",
         sessionId,
-        membersAfter 
+        membersAfter.ToArray() 
         );
     }
 
     public async Task DisconnectFromSession (string sessionId) {
       UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
       await Groups.RemoveFromGroupAsync( Context.ConnectionId, sessionId );
-      string[] membersAfter = hubGroupService.RemoveFromGroup( sessionId, user.UserId );
+      IEnumerable<string> membersAfter = hubGroupService.RemoveFromSession( sessionId, user.UserId );
       
       await Clients.Group( sessionId )
-                   .SendAsync( "UpdateConnectedPlayers", sessionId, membersAfter);
+                   .SendAsync( "UpdateConnectedPlayers", sessionId, membersAfter.ToArray());
     }
 
     
@@ -90,13 +91,13 @@ namespace dotnet_tree_shadows.Hubs {
       await base.OnDisconnectedAsync( exception );
       UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
 
-      IEnumerable<string> groups = hubGroupService.PlayerGroups( user.UserId );
+      IEnumerable<string> groups = hubGroupService.PlayerSessions( user.UserId );
 
       foreach ( string groupId in groups ) {
         await Groups.RemoveFromGroupAsync( Context.ConnectionId, groupId );
-        string[] membersAfter = hubGroupService.RemoveFromGroup( groupId, user.UserId );
+        IEnumerable<string> membersAfter = hubGroupService.RemoveFromSession( groupId, user.UserId );
         await Clients.Group( groupId )
-                     .SendAsync( "UpdateConnectedPlayers",groupId, membersAfter  );
+                     .SendAsync( "UpdateConnectedPlayers",groupId, membersAfter.ToArray()  );
       }
     }
 
@@ -159,10 +160,32 @@ namespace dotnet_tree_shadows.Hubs {
       await DoAction( action );
     }
 
+    public async Task Buy (string sessionId, PieceType pieceType) {
+      await Clients.Caller.SendAsync( "LogMessage", $"Received Request - Buy ({sessionId} - {pieceType})" );
+      UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
+      BuyAction action = await gameActionService.BuyAction( sessionId, user.UserId, pieceType );
+      await DoAction( action );
+    }
+
     public async Task Plant (string sessionId, int origin, int target) {
-      await Clients.Caller.SendAsync( "LogMessage", $"Received Request - Plant ({sessionId} - {origin})" );
+      await Clients.Caller.SendAsync( "LogMessage", $"Received Request - Plant ({sessionId} - {origin} - {target})" );
       UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
       PlantAction action = await gameActionService.PlantAction( sessionId, user.UserId, origin, target );
+      await DoAction( action );
+    }
+    
+    public async Task Grow (string sessionId, int origin) {
+      await Clients.Caller.SendAsync( "LogMessage", $"Received Request - Grow ({sessionId} - {origin})" );
+      UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
+      GrowAction action = await gameActionService.GrowAction( sessionId, user.UserId, origin);
+      await DoAction( action );
+    }
+
+
+    public async Task EndTurn (string sessionId) {
+      await Clients.Caller.SendAsync( "LogMessage", $"Received Request - EndTurn ({sessionId})" );
+      UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
+      EndTurnAction action = await gameActionService.EndTurnAction( sessionId, user.UserId);
       await DoAction( action );
     }
     

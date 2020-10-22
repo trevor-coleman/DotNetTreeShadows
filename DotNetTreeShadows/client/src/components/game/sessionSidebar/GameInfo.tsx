@@ -33,15 +33,16 @@ const GameInfo: FunctionComponent<GameInfoProps> = (props: GameInfoProps) => {
   return (
     <Paper onClick={() => setOpen(!open)}>
       <Box p={2}>
-        <Box className={classes.titleWrapper}><Typography className={classes.title} variant={"subtitle1"}>{status}</Typography>
+        <Box className={classes.titleWrapper}><Typography className={classes.title} variant={"subtitle1"}>Game Settings</Typography>
         {open?<IconButton size={"small"} className={classes.expander} onClick={() => setOpen(!open)}>
           <Fade in={open}><ExpandLessIcon/></Fade>
         </IconButton>:
         <IconButton size={"small"} className={classes.expander} onClick={() => setOpen(!open)}>
           <Fade in={!open}><ExpandMoreIcon/></Fade>
         </IconButton>}</Box>
-        <Divider/>
-        <Collapse in={open}><List dense>
+        <Collapse in={open}>
+          <Divider/>
+          <List dense>
           {gameOptionDescriptions.map(({id, description, name}) => (
             <ListItem disabled={!(gameOptions[id] == true)} key={id}>
               <ListItemIcon>{

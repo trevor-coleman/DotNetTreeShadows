@@ -23,6 +23,8 @@ import DeleteOutlineOutlinedIcon from "@material-ui/icons/DeleteOutlineOutlined"
 import {cancelSessionInvite} from "../../../store/signalR/actions";
 import {GameStatus} from "../../../store/game/types/GameStatus";
 import {updateInvitation} from "../../../store/invitations/thunks";
+import Grid from "@material-ui/core/Grid";
+import Revolutions from './Revolutions';
 
 
 interface ListTurnOrderProps {
@@ -33,7 +35,7 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (props: ListTurnOrd
     const {} = props;
     const classes = useStyles();
     const dispatch = useDispatch();
-    const {playerBoards, turnOrder, currentTurn, status} = useTypedSelector(state => state.game);
+    const {playerBoards, turnOrder, currentTurn, status, firstPlayer} = useTypedSelector(state => state.game);
     const {players, host, invitedPlayers, connectedPlayers, id: sessionId} = useTypedSelector(state => state.session);
     const {friends, id: playerId} = useTypedSelector(state => state.profile);
     const {sessionInvites} = useTypedSelector(state => state.invitations);
@@ -52,12 +54,19 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (props: ListTurnOrd
          SessionInvites:`, sessionInvites)
     }
 
+    const turns = () => {
+        const result = [];
+        for (let i=0;i<turnOrder.length; i++ ) {
+            result.push(turnOrder[i+turnOrder.indexOf(firstPlayer) % turnOrder.length])
+        }
+    }
+
     const showInvitePlayers = ((turnOrder.length + invitedPlayers.length) < 4) && (playerId == host) && (status == GameStatus.Preparing);
 
     return (
         <Paper>
             <Box p={2}>
-                <Typography variant={'subtitle1'}>Turn Order - here</Typography>
+                <Typography variant={'subtitle1'}>Turn Order</Typography>
                 <Divider/>
                 <List>
                     {turnOrder.map((id: string) => {
@@ -99,7 +108,6 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (props: ListTurnOrd
                             <ListItemText primary={"Invite Players"}/>
                         </ListItem> : ""}
                 </List>
-
             </Box>
             <AddPlayerDialog/>
         </Paper>);

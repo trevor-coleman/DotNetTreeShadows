@@ -4,9 +4,9 @@ import {fetchBoard} from "./actions";
 import {Board} from "./types/board";
 import {updateSession} from "../session/reducer";
 import {SessionUpdate} from "../session/types";
-import {AddPieceToTileRequest} from "../../gamehub";
 import {signOut} from "../auth/reducer";
-import enhancedStore from "../store";
+import PlayerBoard from "../game/types/playerBoard";
+
 
 const stateWithTileAtH = (state: BoardState, tile: number, h: number): BoardState => ({
   ...state,
@@ -20,7 +20,17 @@ const stateWithTileAtH = (state: BoardState, tile: number, h: number): BoardStat
 export interface BoardState extends Board {
   loadingBoard: boolean;
   loadingBoardRejectedMessage: string | null;
-  displayTiles: { [hex: number]: number }
+  displayTiles: { [hex: number]: number };
+  treeTiles: number[];
+}
+
+const initialBoardState:BoardState = {
+  displayTiles: {},
+  loadingBoard: false,
+  loadingBoardRejectedMessage: null,
+  tiles: {},
+  treeTiles: []
+
 }
 
 const boardSlice = createSlice({
@@ -45,14 +55,15 @@ const boardSlice = createSlice({
       }));
     builder.addCase(updateSession,
       (state, action: PayloadAction<SessionUpdate>) => {
-      return  action.payload.board
+        const {board} = action.payload;
+        return board
           ? ({
             ...state,
-            ...action.payload.board
+            ...board,
           })
           : state
 
-  })
+      })
 
     builder.addCase(signOut, (state) => {
       }
@@ -63,14 +74,18 @@ const boardSlice = createSlice({
     updateTiles: (state, action: PayloadAction<Board>) => ({
       ...state,
       ...action.payload
-    })
+    }),
+    updatedTreeTiles: (state, action:PayloadAction<number[]>) => ({
+      ...state,
+      treeTiles: [...action.payload]
+    } )
 
   },
   name: "board",
-  initialState: {} as BoardState
+  initialState: initialBoardState
 })
 
 
-export const {} = boardSlice.actions;
+export const {updatedTreeTiles} = boardSlice.actions;
 export {fetchBoard};
 export default boardSlice.reducer;

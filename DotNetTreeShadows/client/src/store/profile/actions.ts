@@ -10,7 +10,7 @@ export const fetchProfile = createAsyncThunk<Profile, void, ExtraInfo>(
         const {api} = extra;
         const response = await api.profile.get();
         console.groupCollapsed("fetchProfile")
-      console.log(response.data);
+        console.log(response.data);
         console.groupEnd()
         return response.data;
     })

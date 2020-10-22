@@ -8,6 +8,7 @@ import ListTurnOrder from "./ListTurnOrder";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {GameStatus} from "../../../store/game/types/GameStatus";
 import TileCodeDecoder from "./TileCodeDecoder";
+import Revolutions from "./Revolutions";
 
 
 interface SessionSidebarProps {
@@ -26,6 +27,7 @@ const SessionSidebar: FunctionComponent<SessionSidebarProps> = (props: SessionSi
     const showHostOptions = (playerId == host) && (status == GameStatus.Preparing);
     return (
         <SidebarGrid>
+            <Revolutions/>
                 <ListTurnOrder/>
             {showHostOptions ? <HostOptions/> : <GameInfo/>}
             <TileCodeDecoder/>

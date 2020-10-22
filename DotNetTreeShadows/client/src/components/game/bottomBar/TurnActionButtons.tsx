@@ -10,6 +10,8 @@ import {clearCurrentAction, setCurrentAction} from '../../../store/game/reducer'
 import {GameActionType} from "../../../store/game/actions";
 import PlayerBoard from "../../../store/game/types/playerBoard";
 import {PieceType} from "../../../store/board/types/pieceType";
+import gameActions from "../../../gamehub/gameActions";
+import Tile from "../../../store/board/types/tile";
 
 const useStyles = makeStyles((theme: Theme) => (
   {
@@ -29,13 +31,12 @@ const TurnActionButtons = () => {
   const classes = useStyles();
   const {id: sessionId} = useSelector((state: RootState) => state.session)
   const dispatch = useDispatch();
-  const {currentTurn, turnOrder, currentAction, playerBoards} = useTypedSelector(state => state.game)
+  const {currentTurn, turnOrder, currentActionType, playerBoards, tilesActiveThisTurn} = useTypedSelector(state => state.game)
   const {id: playerId} = useTypedSelector(state => state.profile)
+  const {treeTiles, tiles} = useTypedSelector(state => state.board)
   const isPlayersTurn = (playerId == turnOrder[currentTurn]);
   const playerBoardCode = playerBoards[playerId];
   const light = PlayerBoard.GetLight(playerBoardCode);
-
-  const currentActionType = currentAction?.type;
 
   const onClickActionButton = (actionType: GameActionType) => {
     if (actionType == currentActionType) dispatch(clearCurrentAction())
@@ -45,13 +46,27 @@ const TurnActionButtons = () => {
   const canDoAction = (actionType:GameActionType) => {
     switch (actionType ){
       case GameActionType.Buy:
+        if(PlayerBoard.lowestPrice(playerBoardCode) <= light){
+          return true;
+        }
         return false;
       case GameActionType.Plant:
-        console.log("Can do Plant")
         return PlayerBoard.getPieces(playerBoardCode, PieceType.Seed).available > 0 && light > 0;
-
       case GameActionType.Grow:
-        return false;
+        let result = false;
+        if(!treeTiles) return false;
+        treeTiles.forEach(treeTile=> {
+          const treeTileCode = tiles[treeTile];
+          const treeTilePiece = Tile.GetPieceHeight(treeTileCode);
+          if(treeTilePiece > 2) return;
+          const largerPieces = PlayerBoard.getPieces(playerBoardCode,treeTilePiece + 1);
+          if(
+            largerPieces.available > 0
+            && light >= PlayerBoard.currentPrice(playerBoardCode, treeTilePiece +1)
+            && tilesActiveThisTurn.indexOf(treeTile) === -1) result = true;
+        });
+
+        return result;
       case GameActionType.Collect:
         return false;
       case GameActionType.EndTurn:
@@ -104,7 +119,7 @@ const TurnActionButtons = () => {
         </Grid>
         <Grid item container xs={4} spacing={1} direction={"column"}><Grid item><Button
           disabled={!isPlayersTurn} className={classes.endTurnButton}
-          color={light == 0 ? "secondary" : undefined} variant={"contained"}>End Turn</Button> </Grid>
+          color={light == 0 ? "secondary" : undefined} variant={"contained"} onClick={()=>gameActions.endTurn()}>End Turn</Button> </Grid>
           <Grid item><Button disabled={!isPlayersTurn && currentActionType == null}
                              className={classes.endTurnButton} variant={"contained"}>Undo</Button> </Grid>
         </Grid>

@@ -40,7 +40,7 @@ const tryConnectToSession = async (sessionId: string) => {
         store.dispatch(setConnectionState(connection.state));
       }
       console.groupEnd();
-      tryConnectToSession(sessionId);
+      setTimeout(()=>tryConnectToSession(sessionId), 1000);
     } catch (e) {
       setTimeout(() => {
         console.groupEnd();

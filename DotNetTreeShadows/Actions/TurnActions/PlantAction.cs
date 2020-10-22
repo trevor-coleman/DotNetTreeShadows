@@ -5,6 +5,7 @@ using dotnet_tree_shadows.Hubs;
 using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Models.GameModel;
+using dotnet_tree_shadows.Services.GameActionService;
 
 namespace dotnet_tree_shadows.Actions.TurnActions {
     public class PlantAction : ATurnActionWithOrigin {
@@ -46,8 +47,8 @@ namespace dotnet_tree_shadows.Actions.TurnActions {
           playerBoard.SpendLight( 1 );
           Game.PlayerBoards[PlayerId] = playerBoard.BoardCode;
           Board.Set(Origin, tileCode);
-          Game.TilesActiveThisTurn = Game.TilesActiveThisTurn.Append( Origin ).ToArray();
-          Game.TilesActiveThisTurn = Game.TilesActiveThisTurn.Append( Target ).ToArray();
+          Game.TilesActiveThisTurn = Game.TilesActiveThisTurn.Append( Origin.HexCode ).ToArray();
+          Game.TilesActiveThisTurn = Game.TilesActiveThisTurn.Append( Target.HexCode ).ToArray();
           PlayerBoard.Set( Game, PlayerId, playerBoard );
         }
 
@@ -59,8 +60,8 @@ namespace dotnet_tree_shadows.Actions.TurnActions {
           playerBoard.RecoverLight( 1 );
           Game.PlayerBoards[PlayerId] = playerBoard.BoardCode;
           Board.Set( Target, result );
-          Game.TilesActiveThisTurn = Game.TilesActiveThisTurn.Where( h => h != Target ).ToArray();
-            Game.TilesActiveThisTurn= Game.TilesActiveThisTurn.Where( h => h != Origin ).ToArray();
+          Game.TilesActiveThisTurn = Game.TilesActiveThisTurn.Where( h => h != Target.HexCode ).ToArray();
+          Game.TilesActiveThisTurn= Game.TilesActiveThisTurn.Where( h => h != Origin.HexCode ).ToArray();
         }
         
         public class Params : AActionParamsWithGameAndBoard {

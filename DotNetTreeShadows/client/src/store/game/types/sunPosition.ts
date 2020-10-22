@@ -1,8 +1,8 @@
 export enum SunPosition {
-    NorthWest,
-    NorthEast,
-    East,
-    SouthEast,
-    SouthWest,
-    West
+    NorthWest ="NorthWest",
+    NorthEast = "NorthEast",
+    East ="East",
+    SouthEast ="SouthEast",
+    SouthWest ="SouthWest",
+    West ="West"
 }

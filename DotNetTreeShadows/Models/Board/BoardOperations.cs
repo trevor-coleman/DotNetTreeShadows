@@ -32,8 +32,8 @@ namespace dotnet_tree_shadows.Models {
       return board.Tiles.Where( (kvp) => {
                      
                      (_, int value) = kvp;
-                     if(Tile.TreeTypeIs( value, treeType ) && Tile.ProducesLight( value )) Console.Write("\n\n>>>");
-                     Console.WriteLine($"{kvp.Value} - {treeType} - {Tile.TreeTypeIs( value, treeType )} - Produces: {Tile.ProducesLight( value )}  ");
+                     if(Tile.TreeTypeIs( value, treeType ) && Tile.ProducesLight( value )) Console.Write("\n\n>>>Counting Light");
+                     
                      
                      return Tile.TreeTypeIs( value, treeType ) && Tile.ProducesLight( value );
                    } )

@@ -27,17 +27,13 @@ const PlayerBoardDisplay: FunctionComponent<BuyingGridProps> = (props: BuyingGri
     const {name: sessionName} = useSelector((state: RootState) => state.session);
 
 
-    const size: number = width / 6
+    const size: number = width / 4.5
 
 
     const onBoardPieces: { [key: string]: number } = {};
 
     const ground: "Ground" = "Ground"
 
-    let newBoardCode = PlayerBoard.getPieces(boardCode, PieceType.MediumTree).decreaseOnPlayerBoard();
-    newBoardCode = PlayerBoard.getPieces(newBoardCode, PieceType.MediumTree).decreaseOnPlayerBoard();
-    newBoardCode = PlayerBoard.getPieces(newBoardCode, PieceType.SmallTree).decreaseOnPlayerBoard();
-    newBoardCode = PlayerBoard.getPieces(newBoardCode, PieceType.MediumTree).increaseOnPlayerBoard();
 
     return boardCode ?
         <Paper>
@@ -46,13 +42,12 @@ const PlayerBoardDisplay: FunctionComponent<BuyingGridProps> = (props: BuyingGri
                 <Divider className={classes.divider}/>
 
                 <Box className={classes.gridBox}><Grid container direction={'row'} spacing={2}>
-                    {PlayerBoard.MakeGrid(newBoardCode).map((col, index) => {
+                    {PlayerBoard.MakeGrid(boardCode).map((col, index) => {
                         console.log()
                         return <Grid className={classes.grid} item key={index.toString() + col.toString()}>
                             <PiecesGrid
                                 key={`${boardCode}-${index}-${col}`} index={index}
                                 col={col}
-                                boardCode={boardCode}
                                 size={size}/>
                         </Grid>
                     })}

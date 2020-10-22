@@ -32,7 +32,6 @@ namespace dotnet_tree_shadows.Models.GameModel {
     public string CurrentPlayer {
       get => TurnOrder[CurrentTurn];
     }
-
     public string[] TurnOrder { get; set; } = new string[0];
 
     [BsonRepresentation( BsonType.String )]
@@ -42,8 +41,8 @@ namespace dotnet_tree_shadows.Models.GameModel {
     public TokenStacks ScoringTokens { get; set; } = new TokenStacks();
 
     public GameOptionsDictionary GameOptions { get; set; } = new GameOptionsDictionary();
-
-    public Hex[] TilesActiveThisTurn { get; set; } = new Hex[0];
+    
+    public int[] TilesActiveThisTurn { get; set; } = new int[0];
 
     [BsonRepresentation( BsonType.String )]
     [JsonConverter(typeof(StringEnumConverter))]

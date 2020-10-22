@@ -20,13 +20,13 @@ namespace dotnet_tree_shadows.Services.GameActionService.ActionValidation {
       context.Game != null && context.Game.TurnOrder.Length >= 2;
 
     public static bool GameIsInPermittedState (ActionContext context) =>
-      context.PermittedGameStatus != null && context.Game != null && context.Game.Status == context.PermittedGameStatus;
+      context.PermittedGameStatuses != null && context.Game != null && context.PermittedGameStatuses.Any(status=>status == context.Game.Status);
 
     public static bool GrowthInShadowAllowed (ActionContext context) =>
       context.Game!.GameOptions.Has( GameOption.PreventActionsInShadow ) == false ||
       !Tile.IsShadowed( ((Hex) context.Origin!).HexCode );
 
-    public static bool OnPlayersTurn (ActionContext context) =>
+    public static bool IsPlayersTurn (ActionContext context) =>
       context.Game!.CurrentPlayer == context.PlayerId;
 
     public static bool OriginPieceTypeIsTree (ActionContext context) =>
@@ -34,6 +34,24 @@ namespace dotnet_tree_shadows.Services.GameActionService.ActionValidation {
 
     public static bool PlayerCanAffordCost (ActionContext context) =>
       PlayerBoard.Get( context.Game!, context.PlayerId ).Light >= context.Cost;
+    
+    public static bool PlayerCanAffordCostOfPiece (ActionContext context) {
+      PlayerBoard playerBoard = PlayerBoard.Get( context.Game!, context.PlayerId ); 
+      return playerBoard.Light >= playerBoard.Pieces( (PieceType) context.PieceType! ).NextPrice;
+    }
+
+    public static bool PlayerCanAffordToGrow (ActionContext context) {
+      PlayerBoard playerBoard = PlayerBoard.Get( context.Game!, context.PlayerId );
+      int tileCode = context.Board!.Get( (Hex) context.Origin! );
+      return Tile.GetPieceHeight( tileCode ) + 1 <= playerBoard.Light;
+    }
+
+    public static bool PlayerHasLargerPieceAvailable (ActionContext context) {
+      PieceType largerPiece = (PieceType) Tile.GetPieceHeight( context.Board!.Get( (Hex) context.Target! ) ) + 1;
+      return PlayerBoard.Get( context.Game!, context.PlayerId ).Pieces( largerPiece ).Available > 0;
+    } 
+    
+    public static bool TargetIsNotALargeTree (ActionContext context) => Tile.GetPieceType( context.Board!.Get( (Hex) context.Target! ) ) !=  PieceType.LargeTree;
 
     public static bool PlayerHasAvailablePiece (ActionContext context) =>
       PlayerBoard.Get( context.Game!, context.PlayerId ).Pieces( (PieceType) context.PieceType! ).Available > 0;
@@ -52,12 +70,12 @@ namespace dotnet_tree_shadows.Services.GameActionService.ActionValidation {
       Tile.GetTreeType( context.Board!.Get((Hex)context.Target!) ) != null;
 
     public static bool TargetHasNotBeenActiveThisTurn (ActionContext context) {
-      Hex[] activeTiles = context.Game!.TilesActiveThisTurn ?? new Hex[0]; 
-      return activeTiles.All( t => t != context.Target );
+      int[] activeTiles = context.Game!.TilesActiveThisTurn ?? new int[0]; 
+      return activeTiles.All( t => t != context.Target!.Value.HexCode );
     }
     public static bool OriginHasNotBeenActiveThisTurn (ActionContext context) {
-      Hex[] activeTiles = context.Game!.TilesActiveThisTurn ?? new Hex[0]; 
-      return activeTiles.All( t => t != context.Origin );
+      int[] activeTiles = context.Game!.TilesActiveThisTurn ?? new int[0]; 
+      return activeTiles.All( t => t != context.Origin!.Value.HexCode );
     }
     
     public static bool TilePieceTypeIsLargeTree (ActionContext context) => 
@@ -68,10 +86,12 @@ namespace dotnet_tree_shadows.Services.GameActionService.ActionValidation {
       int height = Tile.GetPieceHeight( context.Board!.Get( (Hex) context.Origin ) );
       return distance <= height;
     }
+    
+    
 
     public static bool TargetIsOnEdgeOfBoard (ActionContext context) {
       Hex h = (Hex) context.Target!;
-      return Math.Abs( h.Q ) == 3 || Math.Abs( h.R ) == 3 || Math.Abs( h.R ) == 3;
+      return Math.Abs( h.Q ) == 3 || Math.Abs( h.R ) == 3 || Math.Abs( h.S ) == 3;
     }
 
   }

@@ -6,6 +6,7 @@ namespace dotnet_tree_shadows.Models {
   public class TileDictionary : Dictionary<Hex, int> {
     public TileDictionary () : base() { }
     public TileDictionary (TileDictionary p) : base(p) { }
+    public TileDictionary (IDictionary<Hex, int> p) : base(p) { }
 
   }
 }

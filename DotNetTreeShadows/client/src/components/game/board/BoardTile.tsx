@@ -17,6 +17,9 @@ import GameScreen from "../GameScreen";
 import {GameStatus} from "../../../store/game/types/GameStatus";
 import {cursorTo} from "readline";
 import {GameOption} from "../../../store/game/types/GameOption";
+import {GameActionType} from "../../../store/game/actions";
+import PlayerBoard from "../../../store/game/types/playerBoard";
+import {handleTileClick} from "../../../store/game/gameActions";
 
 interface IBoardTileProps {
     onClick?: (hexCode: number) => void,
@@ -36,11 +39,13 @@ const BoardTile = (props: IBoardTileProps) => {
     const sizeFactor = props.sizeFactor ?? 1.2;
 
     const safeHexCode = (hexCode ? hexCode : 0) as number;
-    const tileCode = useSelector((state:RootState)=>state.board.tiles[safeHexCode]);
-    const sunPosition = useSelector((state:RootState)=>state.game.sunPosition) as SunPosition
-    const {status, turnOrder, currentTurn, gameOptions} = useTypedSelector(state => state.game);
-    const origin = useTypedSelector(state => state.game.currentAction.origin)
+    const tileCode = useTypedSelector(state=>state.board.tiles[safeHexCode]);
+    const sunPosition:SunPosition = useTypedSelector(state=>state.game.sunPosition);
+    const {status, turnOrder, currentTurn, gameOptions, currentActionType, tilesActiveThisTurn, playerBoards} = useTypedSelector(state => state.game);
+    const origin = useTypedSelector(state => state.game.currentActionOrigin)
+    const originCode = useTypedSelector(state=> origin ? state.board.tiles[origin] : 0);
     const {id:playerId} = useTypedSelector(state => state.profile)
+    const playerBoard = playerBoards[playerId];
 
     const center = layout ? layout.hexToPixel(new Hex(safeHexCode)) : {x:60,y:60};
 
@@ -48,11 +53,13 @@ const BoardTile = (props: IBoardTileProps) => {
     const pieceType: null | PieceType = propPiece == null ? Tile.GetPieceType(tileCode) as PieceType : propPiece;
     const treeType: null | TreeType = propTree == null ? Tile.GetTreeType(tileCode) as TreeType : propTree;
     const shadowHeight: number = Tile.GetShadowHeight(tileCode);
-    const shaded = shadowHeight > 0;
 
     const sky = Math.abs(hex.q) == 4 || Math.abs(hex.r) == 4 || Math.abs(hex.s) == 4;
+    const shaded = !sky && shadowHeight > 0;
+
 
     let sun:boolean = false;
+
     switch (sunPosition) {
         case SunPosition.NorthWest:
             sun = (hex.r == -4 || hex.s == 4)
@@ -72,16 +79,40 @@ const BoardTile = (props: IBoardTileProps) => {
         case SunPosition.West:
             sun = hex.q == -4 || hex.s == 4
             break;
-
-
     }
 
     const isEligible = ():boolean => {
         if(turnOrder[currentTurn] !== playerId) return false;
+        if(Hex.IsSky(safeHexCode)) return false;
+
         if (status === GameStatus.PlacingFirstTrees || status === GameStatus.PlacingSecondTrees) {
-            return (Hex.IsOnEdge(safeHexCode) && Tile.IsEmpty(tileCode)) && !(gameOptions[GameOption.PreventActionsInShadow] && Tile.IsShadowed(tileCode) )
+            return (Hex.IsOnEdge(safeHexCode)
+              && Tile.IsEmpty(tileCode))
+              && !(gameOptions[GameOption.PreventActionsInShadow]
+                && Tile.IsShadowed(tileCode) )
+        }
+        const pieceHeight = Tile.GetPieceHeight(tileCode);
+        if(currentActionType == GameActionType.Grow) {
+
+            return Tile.TreeTypeIs(tileCode, PlayerBoard.TreeType(playerBoard) )
+              && pieceHeight < 3
+              && pieceHeight + 1 <= PlayerBoard.GetLight(playerBoard)
+              && PlayerBoard.getPieces(playerBoard, pieceHeight + 1).available >0;
         }
 
+        if(currentActionType == GameActionType.Plant) {
+            console.log(tilesActiveThisTurn)
+            if(origin == null) {
+                return pieceHeight > 0
+                  && pieceHeight < 4
+                  && PlayerBoard.TreeType(playerBoards[playerId]) == treeType
+                  && tilesActiveThisTurn.indexOf(safeHexCode) == -1;
+            } else {
+                const distance = Hex.Distance( new Hex(origin), hex);
+                const originHeight = Tile.GetPieceHeight(originCode);
+                return distance <= originHeight && distance > 0 && Tile.IsEmpty(tileCode);
+            }
+        }
         return false;
 
     }
@@ -99,7 +130,7 @@ const BoardTile = (props: IBoardTileProps) => {
     const classes = useStyles(props);
 
     const handleClick = () => {
-        if (onClick && !sky) onClick(safeHexCode);
+        if (onClick && eligible && !sky) onClick(safeHexCode);
     }
 
     let backgroundColor: string;
@@ -125,6 +156,7 @@ const BoardTile = (props: IBoardTileProps) => {
             : null;
 
 
+
     const sunIcon: string | null = sky && sun
         ? Sun
         : null;
@@ -138,7 +170,7 @@ const BoardTile = (props: IBoardTileProps) => {
     }
 
     const size = layout?.size.x || 60;
-
+    const sunSize = size*2/1.18;
     const borderPercent = 0.33;
 
     return (<g>
@@ -146,7 +178,7 @@ const BoardTile = (props: IBoardTileProps) => {
                 cy={center.y} r={size/sizeFactor} fill={backgroundColor} strokeWidth={2} stroke={strokeColor}/>
         {treeIcon ? <circle cx={center.x} cy={center.y} r={size*(1-borderPercent)} fill={Color(backgroundColor).lighten(1.8).toString()} strokeWidth={"0.2"} stroke={"#000"}/>:""}
         {sunIcon
-            ? <image href={sunIcon} x={center.x - size / 2} y={center.y - size / 2} width={size} height={size}/>
+            ? <image href={sunIcon} x={center.x - sunSize / 2} y={center.y - sunSize / 2} width={sunSize} height={sunSize}/>
             : ''}
         {treeIcon
             ? <image href={treeIcon} x={center.x - size / 2} y={center.y - size / 2} width={size} height={size}/>
@@ -155,10 +187,10 @@ const BoardTile = (props: IBoardTileProps) => {
             ? <circle cx={center.x} cy={center.y} r={size/1.2} fill={"rgba(0,0,0,0.3)"} strokeWidth={"0.2"} stroke={"#000"}/>
             : ''}
         {selected
-          ? <circle cx={center.x} cy={center.y} r={size/1.2} fill={"rgba(200,200,0,0.3)"} strokeWidth={"6"} stroke={"#CC0"}/>
+          ? <circle cx={center.x} cy={center.y} r={size/1.2} fill={"rgba(0,0,255,0.2)"} strokeWidth={"10"} stroke={"#00F"}/>
           : ''}
         {eligible
-          ? <circle cx={center.x} cy={center.y} r={size/1.2} fill={"rgba(0,255,0,0.3)"} strokeWidth={"10"} stroke={"#0C0"}/>
+          ? <circle cx={center.x} cy={center.y} r={size/1.2} fill={"rgba(0,255,0,0.5)"} strokeWidth={"10"} stroke={"#0C0"}/>
           : ''}
         <circle onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={handleClick} cx={center.x}
                 cy={center.y} r={size/sizeFactor} fill={"rgba(255,255,255,0)"} strokeWidth={2} stroke={strokeColor}/>

@@ -23,18 +23,18 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       Board board = context.Board;
       Hex origin = (Hex)context.Origin;
       Hex target = (Hex)context.Target;
+      string playerId = context.PlayerId;
       
-      PlayerBoard playerBoard = PlayerBoard.Get( game, context.PlayerId );
+      PlayerBoard playerBoard = PlayerBoard.Get( game, playerId );
       int targetCode = board.Get( target );
       targetCode = Tile.SetPieceType( targetCode, PieceType.Seed );
       targetCode = Tile.SetTreeType( targetCode, playerBoard.TreeType );
-      playerBoard.SpendLight( (int) context.Cost );
+      playerBoard.SpendLight( 1 );
       playerBoard.Pieces( PieceType.Seed).DecreaseAvailable();
-      game.SetPlayerBoard( context.PlayerId, playerBoard );
+      game.SetPlayerBoard( playerId, playerBoard );
       board.Set(target, targetCode);
-      game.TilesActiveThisTurn = game.TilesActiveThisTurn.Append( origin ).ToArray();
-      game.TilesActiveThisTurn = game.TilesActiveThisTurn.Append( target ).ToArray();
-      PlayerBoard.Set( game, context.PlayerId, playerBoard );
+      game.TilesActiveThisTurn = game.TilesActiveThisTurn.Append( origin.HexCode ).ToArray();
+      game.TilesActiveThisTurn = game.TilesActiveThisTurn.Append( target.HexCode ).ToArray();
 
       context.Game = game;
       context.Board = board;
@@ -47,6 +47,8 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
 
     protected override IEnumerable<Func<ActionContext, bool>> Validators { get; } =
       new Func<ActionContext, bool> [] {
+        ValidIf.GameIsInPermittedState,
+        ValidIf.IsPlayersTurn,
         ValidIf.PlayerCanAffordCost,
         ValidIf.PlayerHasAvailablePiece,
         ValidIf.OriginPieceTypeIsTree,

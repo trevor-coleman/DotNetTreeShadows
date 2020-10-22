@@ -1,7 +1,7 @@
 
 using System.Text.Json.Serialization;
 
-namespace dotnet_tree_shadows.Actions {
+namespace dotnet_tree_shadows.Services.GameActionService {
   
   [JsonConverter( typeof( JsonStringEnumConverter ) )]  
   public enum GameActionType {

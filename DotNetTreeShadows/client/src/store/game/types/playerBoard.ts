@@ -19,10 +19,10 @@ export default class PlayerBoard {
 
     public static TreeType = (boardCode: number): TreeType => boardCode & 3 as TreeType;
 
-    public static seeds = (boardCode: number): PieceCount => PlayerBoard.DecodePieceCounts(boardCode, [8, 15], [12, 7])
-    public static smallTrees = (boardCode: number): PieceCount => PlayerBoard.DecodePieceCounts(boardCode, [15, 15], [19, 7])
-    public static mediumTrees = (boardCode: number): PieceCount => PlayerBoard.DecodePieceCounts(boardCode, [22, 7], [25, 7])
-    public static largeTrees = (boardCode: number): PieceCount => PlayerBoard.DecodePieceCounts(boardCode, [28, 3], [30, 3])
+    public static seeds = (boardCode: number): PieceCount => PlayerBoard.DecodePieceCounts(boardCode, [8, 15], [12, 7], 4)
+    public static smallTrees = (boardCode: number): PieceCount => PlayerBoard.DecodePieceCounts(boardCode, [15, 15], [19, 7], 4)
+    public static mediumTrees = (boardCode: number): PieceCount => PlayerBoard.DecodePieceCounts(boardCode, [22, 7], [25, 7], 3)
+    public static largeTrees = (boardCode: number): PieceCount => PlayerBoard.DecodePieceCounts(boardCode, [28, 3], [30, 3], 2)
 
     public static getPieces = (boardCode: number, piecetype: PieceType): PieceCount => {
         switch (piecetype) {
@@ -88,10 +88,20 @@ export default class PlayerBoard {
         return grid;
     }
 
-    private static DecodePieceCounts = (boardCode: number, available: number[], onPlayerBoard: number[]) => ({
+    public static lowestPrice = (boardCode: number):number => {
+        const pieceTypes: PieceType[] = [PieceType.Seed, PieceType.SmallTree, PieceType.MediumTree, PieceType.LargeTree];
+        let lowestPrice = Number.POSITIVE_INFINITY;
+        pieceTypes.forEach((pt)=>{
+        let currentPrice = PlayerBoard.currentPrice(boardCode, pt);
+        lowestPrice = Math.min(lowestPrice,currentPrice);}
+        )
+        return lowestPrice;
+    }
+
+    private static DecodePieceCounts = (boardCode: number, available: number[], onPlayerBoard: number[], max:number) => ({
         available: (boardCode >> available[0]) & available[1],
         onPlayerBoard: (boardCode >> onPlayerBoard[0]) & onPlayerBoard[1],
-        max: 4,
+        max,
         increaseAvailable: () => {
             let currentlyAvailable = (boardCode >> available[0]) & available[1];
             let result = boardCode & (~(available[1] << available[0]));
@@ -107,7 +117,7 @@ export default class PlayerBoard {
         increaseOnPlayerBoard: () => {
             let currentlyOnPlayerBoard = (boardCode >> onPlayerBoard[0]) & 7;
             let result = boardCode & (~(onPlayerBoard[1] << onPlayerBoard[0]));
-            result |= (currentlyOnPlayerBoard + 1) << onPlayerBoard[0];
+            result |= (Math.min(currentlyOnPlayerBoard + 1, max)) << onPlayerBoard[0];
             return result;
         },
         decreaseOnPlayerBoard: () => {
@@ -130,6 +140,7 @@ export default class PlayerBoard {
         const onPlayerBoard = PlayerBoard.getPieces(boardCode, pieceType).onPlayerBoard;
         return onPlayerBoard == 0 ? 0 : PlayerBoard.prices(pieceType)[onPlayerBoard-1];
     }
+
 }
 
 export type PieceDetails = { status: "Ready" | "Filled" | "Empty", price: string, key:string }

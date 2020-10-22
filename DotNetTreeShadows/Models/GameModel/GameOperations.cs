@@ -11,7 +11,6 @@ namespace dotnet_tree_shadows.Models.GameModel {
       TreeType treeType = game.RemainingTreeTypes[new Random().Next(game.RemainingTreeTypes.Length)];
       game.RemainingTreeTypes = game.RemainingTreeTypes.Where( tt => tt != treeType ).ToArray();
       PlayerBoard playerBoard = new PlayerBoard { TreeType = treeType };
-      Console.WriteLine($"Adding player - {treeType} - {playerBoard.TreeType}");
       game.PlayerBoards.Add( playerId, playerBoard.BoardCode );
       game.Scores.Add( playerId, new Scoring.Token[0] );
     }

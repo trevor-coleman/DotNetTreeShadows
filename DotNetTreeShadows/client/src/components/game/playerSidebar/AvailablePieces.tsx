@@ -54,6 +54,7 @@ const AvailablePieces: FunctionComponent<Props> = (props: Props) => {
                                         <TreeAvatarIcon
                                             pieceType={piece.pieceType}
                                             treeType={PlayerBoard.TreeType(boardCode)}
+                                            fontSize={"large"}
                                         />
                                     </Box>
                                 </Grid>)

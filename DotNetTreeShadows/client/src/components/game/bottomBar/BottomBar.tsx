@@ -19,8 +19,8 @@ const BottomBar: FunctionComponent<BottomBarProps> = (props: BottomBarProps) => 
     const {} = props;
     const classes = useStyles();
     const dispatch = useDispatch();
-    const {currentAction} = useTypedSelector(state => state.game)
-    const {type:currentActionType} = currentAction;
+    const {currentActionType} = useTypedSelector(state => state.game)
+
 
     return (
         <Paper className={classes.root}>

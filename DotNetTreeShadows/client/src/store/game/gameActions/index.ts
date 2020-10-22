@@ -7,6 +7,8 @@ import gameActions from "../../../gamehub/gameActions";
 import Tile from "../../board/types/tile";
 import playerBoard from "../types/playerBoard";
 import PlayerBoard from "../types/playerBoard";
+import {PieceType} from "../../board/types/pieceType";
+import {TreeType} from "../../board/types/treeType";
 
 const {store} = enhancedStore;
 
@@ -18,34 +20,34 @@ export type ActionStage =
 
 export async function handleTileClick(hexCode: number) {
   const {turnOrder, currentTurn, status, playerBoards} = store.getState().game
-  const {type, stage, origin, target} = store.getState().game.currentAction;
+  const {currentActionType, currentActionStage, currentActionOrigin} = store.getState().game;
   const {id: sessionId} = store.getState().session;
   const {id: playerId} = store.getState().profile;
   const {tiles} = store.getState().board;
 
-  console.log(sessionId);
-
-  if (stage == "selectingAction" || stage == "selectingPiece" || playerId !== turnOrder[currentTurn]) return;
+  if (currentActionStage == "selectingAction" || currentActionStage == "selectingPiece" || playerId !== turnOrder[currentTurn]) return;
 
   if (status == GameStatus.PlacingFirstTrees || status == GameStatus.PlacingSecondTrees) {
     await gameActions.placeStartingTree(hexCode);
   }
 
-  switch (type) {
+  switch (currentActionType) {
     case GameActionType.Plant:
-      if (origin == null) {
+      if (currentActionOrigin == null) {
         if (Tile.GetTreeType(tiles[hexCode]) == PlayerBoard.TreeType(playerBoards[playerId])) {
           store.dispatch(setActionOrigin(hexCode));
         }
         return;
-      } else if (origin == hexCode) {
+      } else if (currentActionOrigin == hexCode) {
         store.dispatch(setActionOrigin(null));
         return
       }
-      await gameActions.plant(origin, hexCode)
-      store.dispatch(setActionOrigin(null));
+      await gameActions.plant(currentActionOrigin, hexCode)
+
       return;
     case GameActionType.Grow:
+      await gameActions.grow(hexCode);
+      return;
     case GameActionType.Buy:
     case GameActionType.EndTurn:
     case GameActionType.StartGame:
@@ -58,5 +60,14 @@ export async function handleTileClick(hexCode: number) {
       break;
 
   }
+
+}
+
+export async function handlePlayerBoardClick(pieceType: PieceType) {
+  console.log(`handleClick - ${pieceType} - ${store.getState().currentActionType}`)
+  if(store.getState().game.currentActionType != GameActionType.Buy) return;
+
+  await gameActions.buy(pieceType);
+
 
 }

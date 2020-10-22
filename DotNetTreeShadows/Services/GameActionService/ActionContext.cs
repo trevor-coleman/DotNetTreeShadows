@@ -19,7 +19,7 @@ namespace dotnet_tree_shadows.Services.GameActionService {
     public Session? Session { get; set; }
     public UserModel? User { get; set; }
     public Board? Board { get; set; }
-    public GameStatus? PermittedGameStatus { get; set; }
+    public GameStatus[]? PermittedGameStatuses { get; set; }
     public int? Cost { get; set; }
     public PieceType? PieceType { get; set; }
     

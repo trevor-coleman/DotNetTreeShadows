@@ -67,10 +67,11 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
 
     protected override IEnumerable<Func<ActionContext, bool>> Validators { get; } =
       new Func<ActionContext, bool> [] {
-        ValidIf.TargetIsOnEdgeOfBoard,
+        ValidIf.GameIsInPermittedState,
         ValidIf.TargetIsValidTile,
+        ValidIf.TargetIsOnEdgeOfBoard,
         ValidIf.TargetTileIsEmpty,
-        ValidIf.OnPlayersTurn,
+        ValidIf.IsPlayersTurn,
       };
     
   }

@@ -47,7 +47,15 @@ namespace dotnet_tree_shadows.Models.GameModel {
       get => (int) TreeType;
     }
 
-    public int Light { get; set; }
+    private int light = 0;
+    
+    public int Light {
+      get => light;
+      set =>
+        light = value > 30
+                  ? 30
+                  : value;
+    }
 
     private int lightCode {
       get => (int) Light << 2;
@@ -89,7 +97,7 @@ namespace dotnet_tree_shadows.Models.GameModel {
 
       public int OnPlayerBoard {
         get => onPlayerBoard.Value;
-        private set => onPlayerBoard.Value = value;
+        private set => onPlayerBoard.Value = Math.Min(value, maxOnBoard);
       }
 
       public int NextPrice {
