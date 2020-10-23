@@ -40,6 +40,12 @@ async function SendGrow (originCode:number) {
   store.dispatch(clearCurrentAction());
 }
 
+async function SendCollect (originCode:number) {
+  await connection.send("Collect", sessionId(), originCode);
+  store.dispatch(sentGameAction({type:GameActionType.Collect}));
+  store.dispatch(clearCurrentAction());
+}
+
 const gameActions = {
   startGame: SendStartGame,
   placeStartingTree: SendPlaceStartingTree,
@@ -47,6 +53,7 @@ const gameActions = {
   buy: SendBuy,
   endTurn: SendEndTurn,
   grow: SendGrow,
+  collect: SendCollect,
 }
 
 export default gameActions;

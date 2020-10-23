@@ -49,6 +49,8 @@ namespace dotnet_tree_shadows.Models.Shadow {
       return result;
     }
     
+    
+    
     public static TileDictionary UpdateAllShadows (Board board, SunPosition sunPos) {
       TileDictionary shadows = GetShadows( board, sunPos );
       return new TileDictionary(board.Tiles.Select(

@@ -4,6 +4,7 @@ import {GameStatus} from "./GameStatus";
 
 export default interface Game {
     status: GameStatus;
+    turnCount: number;
     turnOrder: string[];
     firstPlayer: string;
     playerBoards: { [playerId: string]: number }

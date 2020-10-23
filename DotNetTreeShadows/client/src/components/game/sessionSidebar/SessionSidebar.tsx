@@ -17,19 +17,12 @@ interface SessionSidebarProps {
 //COMPONENT
 const SessionSidebar: FunctionComponent<SessionSidebarProps> = (props: SessionSidebarProps) => {
     const {} = props;
-    const classes = useStyles();
-    const dispatch = useDispatch();
-    const {id: playerId} = useTypedSelector(state => state.profile);
-    const {host} = useTypedSelector(state => state.session);
-    const {status} = useTypedSelector(state => state.game);
 
-
-    const showHostOptions = (playerId == host) && (status == GameStatus.Preparing);
     return (
         <SidebarGrid>
             <Revolutions/>
                 <ListTurnOrder/>
-            {showHostOptions ? <HostOptions/> : <GameInfo/>}
+            <GameInfo/>
             <TileCodeDecoder/>
         </SidebarGrid>
             );

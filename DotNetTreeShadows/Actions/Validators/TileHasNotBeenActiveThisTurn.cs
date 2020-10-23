@@ -14,8 +14,8 @@ namespace dotnet_tree_shadows.Actions.Validators {
 
         public override bool IsValid {
           get {
-            Hex[] activeTiles = game.TilesActiveThisTurn ?? new Hex[0]; 
-            return activeTiles.All( t => t != origin );
+            int[] activeTiles = game.TilesActiveThisTurn; 
+            return activeTiles.All( t => t != origin.HexCode );
           }
         }
         public override string? FailureMessage {

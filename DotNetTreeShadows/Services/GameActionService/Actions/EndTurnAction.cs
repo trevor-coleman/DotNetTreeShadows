@@ -22,9 +22,9 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       string[] turnOrder = game.TurnOrder;
       game.CurrentTurn++;
       game.CurrentTurn %= turnOrder.Length;
+      game.turnCount++;
       game.TilesActiveThisTurn = new int[0];
       if ( game.FirstPlayer != game.CurrentPlayer ) return context;
-      
       game.CurrentTurn++;
       game.CurrentTurn%= turnOrder.Length;
       game.FirstPlayer = turnOrder[game.CurrentTurn];

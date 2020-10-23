@@ -180,6 +180,13 @@ namespace dotnet_tree_shadows.Hubs {
       GrowAction action = await gameActionService.GrowAction( sessionId, user.UserId, origin);
       await DoAction( action );
     }
+    
+    public async Task Collect (string sessionId, int origin) {
+      await Clients.Caller.SendAsync( "LogMessage", $"Received Request - Collect ({sessionId} - {origin})" );
+      UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
+      CollectAction action = await gameActionService.CollectAction( sessionId, user.UserId, origin);
+      await DoAction( action );
+    }
 
 
     public async Task EndTurn (string sessionId) {

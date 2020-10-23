@@ -24,8 +24,8 @@ export default class PlayerBoard {
     public static mediumTrees = (boardCode: number): PieceCount => PlayerBoard.DecodePieceCounts(boardCode, [22, 7], [25, 7], 3)
     public static largeTrees = (boardCode: number): PieceCount => PlayerBoard.DecodePieceCounts(boardCode, [28, 3], [30, 3], 2)
 
-    public static getPieces = (boardCode: number, piecetype: PieceType): PieceCount => {
-        switch (piecetype) {
+    public static GetPieces = (boardCode: number, pieceType: PieceType): PieceCount => {
+        switch (pieceType) {
             case PieceType.Seed:
                 return PlayerBoard.seeds(boardCode);
             case PieceType.SmallTree:
@@ -34,8 +34,8 @@ export default class PlayerBoard {
                 return PlayerBoard.mediumTrees(boardCode);
             case PieceType.LargeTree:
                 return PlayerBoard.largeTrees(boardCode);
-
         }
+        throw new Error(`Invalid pieceType: ${pieceType} - ${PieceType[pieceType]} `)
     }
 
     public static spaces = (pieceType: PieceType) => {
@@ -70,7 +70,7 @@ export default class PlayerBoard {
         pieceTypes.forEach(pt => {
             const column: PieceDetails[] = [];
             const spaces = PlayerBoard.spaces(pt);
-            const onPlayerBoard = PlayerBoard.getPieces(boardCode, pt).onPlayerBoard;
+            const onPlayerBoard = PlayerBoard.GetPieces(boardCode, pt).onPlayerBoard;
             for (let i = 0; i < spaces; i++) {
                 const status = i <= onPlayerBoard - 1
                         ? "Filled"
@@ -137,7 +137,7 @@ export default class PlayerBoard {
     }
 
     static currentPrice(boardCode: number, pieceType: PieceType) {
-        const onPlayerBoard = PlayerBoard.getPieces(boardCode, pieceType).onPlayerBoard;
+        const onPlayerBoard = PlayerBoard.GetPieces(boardCode, pieceType).onPlayerBoard;
         return onPlayerBoard == 0 ? 0 : PlayerBoard.prices(pieceType)[onPlayerBoard-1];
     }
 

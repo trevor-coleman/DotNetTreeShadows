@@ -83,6 +83,20 @@ namespace dotnet_tree_shadows.Services.GameActionService {
       return new GrowAction( context );
     }
 
+ public async Task<CollectAction> CollectAction (string sessionId, string playerId, int origin) {
+      ActionContext context = new ActionContext {
+        GameActionType = GameActionType.Collect,
+        SessionId = sessionId,
+        PlayerId = playerId,
+        Origin = new Hex( origin ),
+        Target = new Hex( origin )
+      };
+
+      context = await HydrateContext( context );
+
+      return new CollectAction( context );
+    }
+
     public async Task<StartGameAction> StartGameAction (string sessionId, string playerId) {
       ActionContext context = new ActionContext {
         GameActionType = GameActionType.StartGame, SessionId = sessionId, PlayerId = playerId

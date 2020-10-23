@@ -6,6 +6,7 @@ import {createSessionAndFetchProfile, fetchSession} from './thunks'
 import {sendManySessionInvites, updateInvitationStatus} from "../invitations/actions";
 import {Invitation} from "../invitations/types/invitation";
 import {signOut} from "../auth/reducer";
+import {useTypedSelector} from "../index";
 
 
 export interface SessionState extends Session {
@@ -128,6 +129,8 @@ const sessionSlice = createSlice({
 
   }
 });
+
+export const useSessionId = ()=>useTypedSelector(state=>state.session.id);
 
 
 export const {updateSession, clearSession, updateConnectedPlayers} = sessionSlice.actions;

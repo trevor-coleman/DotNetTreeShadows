@@ -6,6 +6,8 @@ import {SessionUpdate} from "../../store/session/types";
 import Tile from "../../store/board/types/tile";
 import PlayerBoard from "../../store/game/types/playerBoard";
 import { updatedTreeTiles } from "../../store/board/reducer";
+import {TreeType} from "../../store/board/types/treeType";
+import {updateTreeTiles} from "../../store/board/thunks";
 
 const {store} = enhancedStore;
 
@@ -31,19 +33,7 @@ export default function connectListeners(connection: HubConnection) {
     console.groupEnd()
     if (store.getState().session.id == sessionUpdate.sessionId) {
       store.dispatch(updateSession(sessionUpdate));
-
-      const {tiles} = store.getState().board;
-      const {id:playerId} = store.getState().profile.id;
-      const {playerBoards} = store.getState().game;
-
-      const boardCode = playerBoards[playerId];
-      const treeTiles: number[] = [];
-      for(let tile in tiles) {
-        if(tiles.hasOwnProperty(tile) && Tile.GetTreeType(tiles[tile]) == PlayerBoard.TreeType(boardCode)) {
-          treeTiles.push(parseInt(tile));
-        }
-      }
-      store.dispatch(updatedTreeTiles(treeTiles))
+      store.dispatch(updateTreeTiles());
     };
   })
 

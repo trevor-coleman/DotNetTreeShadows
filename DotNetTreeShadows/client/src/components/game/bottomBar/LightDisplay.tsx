@@ -2,11 +2,12 @@ import React, {FunctionComponent} from 'react';
 import {useDispatch} from 'react-redux';
 import {makeStyles, Theme} from '@material-ui/core/styles';
 import {useTypedSelector} from "../../../store";
-import PlayerBoard from "../../../store/game/types/playerBoard";
 import {Box} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
+import {useLight, usePlayerBoard} from "../../../store/playerBoard/reducer";
+import {usePlayerId} from "../../../store/profile/reducer";
 
 
 interface LightDisplayProps {
@@ -14,12 +15,9 @@ interface LightDisplayProps {
 
 //COMPONENT
 const LightDisplay: FunctionComponent<LightDisplayProps> = (props: LightDisplayProps) => {
-    const {} = props;
     const classes = useStyles();
-    const dispatch = useDispatch();
-    const {id} = useTypedSelector(state => state.profile);
-    const boardCode: number = useTypedSelector(state => state.game.playerBoards[id]);
-    const light = PlayerBoard.GetLight(boardCode);
+    const id = usePlayerId();
+    const light = useLight();
 
     const numberOfRows = 3;
 
@@ -28,7 +26,7 @@ const LightDisplay: FunctionComponent<LightDisplayProps> = (props: LightDisplayP
     for (let i = 0; i < 30; i++) {
         lightArray.push({
             filled: i < light,
-            key: `${id}-${boardCode}-${i}`,
+            key: `${id}-light-${i}`,
         });
     }
 

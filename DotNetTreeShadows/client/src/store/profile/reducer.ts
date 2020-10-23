@@ -7,6 +7,7 @@ import {deleteSession} from "../session/actions";
 import {sendManySessionInvites} from "../invitations/actions";
 import {Invitation} from "../invitations/types/invitation";
 import { signOut } from "../auth/reducer";
+import {useTypedSelector} from "../index";
 
 export interface SessionSummary {
     id: string,
@@ -102,6 +103,10 @@ const profileSlice = createSlice({
     initialState: initialProfileState
 })
 
+export const useProfile = ()=> useTypedSelector(state=>state.profile)
+export const usePlayerId = ()=> useTypedSelector(state=>state.profile.id)
+export const useIsHost = ()=> useTypedSelector(state => state.profile.id == state.session.host)
+export const useIsPlayersTurn = ()=> useTypedSelector(state => state.profile.id == state.game.turnOrder[state.game.currentTurn])
 
 export const {clearProfile} = profileSlice.actions;
 export {fetchProfile};

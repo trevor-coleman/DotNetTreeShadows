@@ -7,7 +7,7 @@ import {ExtraInfo} from "../extraInfo";
 export const fetchProfile = createAsyncThunk<Profile, void, ExtraInfo>(
     'profile/fetchProfile',
     async (_, {extra}): Promise<Profile> => {
-        const {api} = extra;
+      const {api} = extra;
         const response = await api.profile.get();
         console.groupCollapsed("fetchProfile")
         console.log(response.data);

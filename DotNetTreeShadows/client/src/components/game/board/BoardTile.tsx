@@ -3,9 +3,7 @@ import Tile from '../../../store/board/types/tile'
 import TreeSVG from '../../../svg/TreeSVG';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Sun from '../../../svg/sun-svgrepo-com.svg';
-import {RootState} from "../../../store/store";
 import {Hex} from "../../../store/board/types/Hex";
-import {useSelector} from "react-redux";
 import {TreeType} from "../../../store/board/types/treeType";
 import {PieceType} from "../../../store/board/types/pieceType";
 import {HexLayout} from "../../../store/board/types/HexLayout";
@@ -13,13 +11,12 @@ import {SunPosition} from "../../../store/game/types/sunPosition";
 import treeColor from "../../helpers/treeColor";
 import Color from "color";
 import {useTypedSelector} from "../../../store";
-import GameScreen from "../GameScreen";
 import {GameStatus} from "../../../store/game/types/GameStatus";
-import {cursorTo} from "readline";
 import {GameOption} from "../../../store/game/types/GameOption";
 import {GameActionType} from "../../../store/game/actions";
-import PlayerBoard from "../../../store/game/types/playerBoard";
-import {handleTileClick} from "../../../store/game/gameActions";
+import {useTile} from "../../../store/board/reducer";
+import {useSunPosition} from "../../../store/game/reducer";
+import {PlayerBoardInfo, usePlayerBoard} from "../../../store/playerBoard/reducer";
 
 interface IBoardTileProps {
     onClick?: (hexCode: number) => void,
@@ -37,15 +34,16 @@ const BoardTile = (props: IBoardTileProps) => {
 
     const {outline, onClick, onMouseEnter, onMouseLeave, layout, hexCode, pieceType: propPiece, treeType: propTree} = props;
     const sizeFactor = props.sizeFactor ?? 1.2;
+    const playerBoard:PlayerBoardInfo = usePlayerBoard();
 
     const safeHexCode = (hexCode ? hexCode : 0) as number;
-    const tileCode = useTypedSelector(state=>state.board.tiles[safeHexCode]);
-    const sunPosition:SunPosition = useTypedSelector(state=>state.game.sunPosition);
-    const {status, turnOrder, currentTurn, gameOptions, currentActionType, tilesActiveThisTurn, playerBoards} = useTypedSelector(state => state.game);
+    const tileCode = useTile(safeHexCode);
+    const sunPosition:SunPosition = useSunPosition()
+    const {status, turnOrder, currentTurn, gameOptions, currentActionType, tilesActiveThisTurn} = useTypedSelector(state => state.game);
     const origin = useTypedSelector(state => state.game.currentActionOrigin)
     const originCode = useTypedSelector(state=> origin ? state.board.tiles[origin] : 0);
+
     const {id:playerId} = useTypedSelector(state => state.profile)
-    const playerBoard = playerBoards[playerId];
 
     const center = layout ? layout.hexToPixel(new Hex(safeHexCode)) : {x:60,y:60};
 
@@ -93,19 +91,18 @@ const BoardTile = (props: IBoardTileProps) => {
         }
         const pieceHeight = Tile.GetPieceHeight(tileCode);
         if(currentActionType == GameActionType.Grow) {
-
-            return Tile.TreeTypeIs(tileCode, PlayerBoard.TreeType(playerBoard) )
+            return Tile.TreeTypeIs(tileCode, playerBoard.treeType)
               && pieceHeight < 3
-              && pieceHeight + 1 <= PlayerBoard.GetLight(playerBoard)
-              && PlayerBoard.getPieces(playerBoard, pieceHeight + 1).available >0;
+              && pieceHeight + 1 <= playerBoard.light
+              && (playerBoard.pieces[PieceType[pieceHeight + 1]]?.available ?? 0) > 0
+              && tilesActiveThisTurn.indexOf(safeHexCode) == -1;
         }
 
+
         if(currentActionType == GameActionType.Plant) {
-            console.log(tilesActiveThisTurn)
             if(origin == null) {
                 return pieceHeight > 0
-                  && pieceHeight < 4
-                  && PlayerBoard.TreeType(playerBoards[playerId]) == treeType
+                  && playerBoard.treeType == treeType
                   && tilesActiveThisTurn.indexOf(safeHexCode) == -1;
             } else {
                 const distance = Hex.Distance( new Hex(origin), hex);
@@ -113,6 +110,12 @@ const BoardTile = (props: IBoardTileProps) => {
                 return distance <= originHeight && distance > 0 && Tile.IsEmpty(tileCode);
             }
         }
+
+        if(currentActionType == GameActionType.Collect) {
+          return pieceHeight == 3 && playerBoard.treeType == treeType &&
+                 tilesActiveThisTurn.indexOf(safeHexCode) == -1;
+        }
+
         return false;
 
     }
@@ -192,6 +195,7 @@ const BoardTile = (props: IBoardTileProps) => {
         {eligible
           ? <circle cx={center.x} cy={center.y} r={size/1.2} fill={"rgba(0,255,0,0.5)"} strokeWidth={"10"} stroke={"#0C0"}/>
           : ''}
+        {/*<text x={center.x - size/2} y={center.y-size/4} fontSize={'2em'} stroke="#000" strokeWidth="1px" dy="1em"> {hex.toString()} </text>*/}
         <circle onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={handleClick} cx={center.x}
                 cy={center.y} r={size/sizeFactor} fill={"rgba(255,255,255,0)"} strokeWidth={2} stroke={strokeColor}/>
     </g>)

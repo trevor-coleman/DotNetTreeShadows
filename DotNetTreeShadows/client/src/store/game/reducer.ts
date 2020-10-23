@@ -1,29 +1,31 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {SunPosition} from "./types/sunPosition";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { SunPosition } from "./types/sunPosition";
 import Game from "./types/game";
-import {fetchGame, GameActionType} from "./actions";
-import {updateSession} from "../session/reducer";
-import {SessionUpdate} from "../session/types";
-import {GameStatus} from "./types/GameStatus";
-import {ActionStage} from "./gameActions";
-import {IGameActionRequest} from "../../gamehub/gameActions/ActionFactory";
-import {PieceType} from "../board/types/pieceType";
-import {signOut} from "../auth/reducer";
-import storage from 'redux-persist/lib/storage';
-import persistReducer from "redux-persist/es/persistReducer";
-
+import { fetchGame, GameActionType } from "./actions";
+import { updateSession } from "../session/reducer";
+import { SessionUpdate } from "../session/types";
+import { GameStatus } from "./types/GameStatus";
+import { ActionStage } from "./gameActions";
+import { PieceType } from "../board/types/pieceType";
+import { signOut } from "../auth/reducer";
+import { useTypedSelector } from "../index";
+import { GameOption } from "./types/GameOption";
 
 export interface GameState extends Game {
-  currentActionType: GameActionType | null,
-  currentActionStage: ActionStage,
-  currentActionOrigin: number | null,
-  currentActionTarget: number | null,
-  currentActionPieceType: PieceType | null,
-  blacklist: string[]
+  revolutionAlertCount: number;
+  turnAlertCount: number;
+  currentActionType: GameActionType | null;
+  currentActionStage: ActionStage;
+  currentActionOrigin: number | null;
+  currentActionTarget: number | null;
+  currentActionPieceType: PieceType | null;
+  blacklist: string[];
 }
 
-
 const initialGameState: GameState = {
+  revolutionAlertCount: 0,
+  turnAlertCount: -1,
+  turnCount: 0,
   currentTurn: 0,
   firstPlayer: "",
   gameOptions: {},
@@ -40,37 +42,57 @@ const initialGameState: GameState = {
   currentActionOrigin: null,
   currentActionTarget: null,
   currentActionPieceType: null,
-  blacklist: ['currentActionType','currentActionStage', 'currentActionOrigin', 'currentActionTarget', 'currentActionPieceType']
-}
+  blacklist: [
+    "currentActionType",
+    "currentActionStage",
+    "currentActionOrigin",
+    "currentActionTarget",
+    "currentActionPieceType"
+  ]
+};
 
 const gameSlice = createSlice({
-  name: 'game',
+  name: "game",
   extraReducers: builder => {
-    builder.addCase(updateSession, (state, action: PayloadAction<SessionUpdate>) =>
-      action.payload.game ? ({
-        ...state,
-        ...action.payload.game
-      }) : state)
-    builder.addCase(signOut, (state) => initialGameState);
+    builder.addCase(
+      updateSession,
+      (state, action: PayloadAction<SessionUpdate>) =>
+        action.payload.game
+          ? {
+              ...state,
+              ...action.payload.game
+            }
+          : state
+    );
+    builder.addCase(signOut, state => initialGameState);
   },
   initialState: initialGameState,
   reducers: {
-    gameOptionUpdate: (state: GameState, action: PayloadAction<{ sessionId: string, gameOption: string, value: boolean }>) => {
-      const {gameOption, value} = action.payload;
-      return ({
+    gameOptionUpdate: (
+      state: GameState,
+      action: PayloadAction<{
+        sessionId: string;
+        gameOption: string;
+        value: boolean;
+      }>
+    ) => {
+      const { gameOption, value } = action.payload;
+      return {
         ...state,
         gameOptions: {
           ...state.gameOptions,
-          [gameOption]: value || undefined,
+          [gameOption]: value || undefined
         }
-      });
+      };
     },
     setCurrentAction: (state, action: PayloadAction<GameActionType>) => ({
       ...state,
       currentActionType: action.payload
-
     }),
-    setActionOrigin: (state: GameState, action: PayloadAction<number | null>) => ({
+    setActionOrigin: (
+      state: GameState,
+      action: PayloadAction<number | null>
+    ) => ({
       ...state,
       currentActionOrigin: action.payload
     }),
@@ -80,15 +102,48 @@ const gameSlice = createSlice({
       currentActionStage: null,
       currentActionOrigin: null,
       currentActionTarget: null,
-      currentActionPieceType: null,
-    })
+      currentActionPieceType: null
+    }),
+    showedRevolutionAlert: (state, action: PayloadAction<number>) => ({
+      ...state,
+      revolutionAlertCount: action.payload
+    }),
+    playedEndTurnSound: (state, action: PayloadAction<number>) => ({
+      ...state,
+      turnAlertCount: action.payload
+    }),
 
   }
+});
 
-})
+export const useSunPosition = () =>
+  useTypedSelector(state => state.game.sunPosition);
+export const useGameStatus = () => useTypedSelector(state => state.game.status);
+export const useTurnAlertCounts = () =>
+  useTypedSelector(state => {
+    return {
+      count: state.game.revolutionAlertCount ?? 0,
+      revolution: state.game.revolution,
+      gameLength: state.game.gameOptions[GameOption.LongGame] ? 4 : 3,
+      turnCount: state.game.turnCount,
+      turnAlertCount: state.game.turnAlertCount,
+    };
+  });
+export const useFirstPlayerName = () =>
+  useTypedSelector(
+    state => state.session.players[state.game.firstPlayer]?.name ?? ""
+  );
 
+export const useScoreTokens = (playerId?:string)=> useTypedSelector(state => state.game.scores[playerId ?? state.profile.id]);
 
-export const {gameOptionUpdate, setActionOrigin, setCurrentAction, clearCurrentAction} = gameSlice.actions;
-export {fetchGame};
+export const {
+  gameOptionUpdate,
+  setActionOrigin,
+  setCurrentAction,
+  clearCurrentAction,
+  showedRevolutionAlert,
+  playedEndTurnSound,
+
+} = gameSlice.actions;
+export { fetchGame };
 export default gameSlice.reducer;
-

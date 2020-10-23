@@ -57,7 +57,8 @@ export class Tile {
     return result;
   }
 
-  public static TreeTypeIs = (tileCode: number, treeType: TreeType): boolean => {
+  public static TreeTypeIs = (tileCode: number, treeType: TreeType | null): boolean => {
+    if(treeType == null) return false;
     return Tile.GetTreeType(tileCode) === treeType;
   }
 

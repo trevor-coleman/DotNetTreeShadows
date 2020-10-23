@@ -18,6 +18,7 @@ import {GameOption} from "../../../store/game/types/GameOption";
 import ActionFactory from "../../../gamehub/gameActions/ActionFactory";
 import gameActions from "../../../gamehub/gameActions";
 import {GameStatus} from "../../../store/game/types/GameStatus";
+import ListTurnOrder from './ListTurnOrder';
 
 
 interface GameStatusProps {
@@ -60,7 +61,7 @@ const HostOptions: FunctionComponent<GameStatusProps> = (props: GameStatusProps)
         }
 
         return (
-            <LightTooltip title={description} aria-label={`${id}-tooltip`} placement={"right-end"}><ListItem dense onClick={()=>handleCheck(id, !optionState)}>
+            <ListItem dense onClick={()=>handleCheck(id, !optionState)}>
                 <ListItemIcon>
                     <Checkbox
                         edge="start"
@@ -70,16 +71,14 @@ const HostOptions: FunctionComponent<GameStatusProps> = (props: GameStatusProps)
                         inputProps={{'aria-labelledby': `checkbox-list-${id}`}}
                     />
                 </ListItemIcon>
-                <ListItemText primary={name}/>
-            </ListItem></LightTooltip>
+                <ListItemText primary={name} secondary={description}/>
+            </ListItem>
         );
     }
 
 
-    return (
-        <Paper>
-            <Box p={2}>
-                <Typography variant={"subtitle1"}>{GameStatus[status]}</Typography>
+    return (<Box p={2}>
+                <Typography variant={"subtitle1"}>Game Options</Typography>
                 <Divider/>
                 <List>
                     {gameOptionDescriptions.map(option=><GameOptionItem key={option.id} {...option}/>)}
@@ -90,7 +89,7 @@ const HostOptions: FunctionComponent<GameStatusProps> = (props: GameStatusProps)
                     </Button>
                 </Box>
             </Box>
-        </Paper>);
+    )
 };
 
 const useStyles = makeStyles((theme: Theme) => ({

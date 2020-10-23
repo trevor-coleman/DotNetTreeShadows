@@ -8,6 +8,7 @@ import {fetchBoard} from "../board/actions";
 import {fetchSessionFromApi} from "./actions";
 import {Board} from "../board/types/board";
 import Game from "../game/types/game";
+import {updateTreeTiles} from "../board/thunks";
 
 export const createSessionAndFetchProfile = () => async (dispatch: AppDispatch) => {
     const session:Session = unwrapResult(await dispatch(createSession())) as Session
@@ -24,6 +25,5 @@ export const fetchSession = (sessionId: string) => async (dispatch: AppDispatch)
     const game = unwrapResult(await dispatch(fetchGame(session.id))) as Game;
     const board = unwrapResult(await dispatch(fetchBoard(session.id))) as Board;
     dispatch(updateSession({sessionId:session.id, session,game,board}))
-    await dispatch(fetchProfile());
-
+    dispatch(updateTreeTiles());
 };

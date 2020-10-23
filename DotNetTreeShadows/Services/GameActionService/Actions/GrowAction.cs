@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.GameModel;
+using dotnet_tree_shadows.Models.Shadow;
 using dotnet_tree_shadows.Services.GameActionService.ActionValidation;
 
 namespace dotnet_tree_shadows.Services.GameActionService.Actions {
@@ -51,6 +52,8 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       playerBoard.SpendLight( price );
       game.SetPlayerBoard( playerId, playerBoard );
       board[origin] = resultingTile;
+      board.Tiles = Shadow.UpdateAllShadows( board, game.SunPosition );
+
 
       game.TilesActiveThisTurn = game.TilesActiveThisTurn.Where( h => h != origin.HexCode ).Append( origin.HexCode ).ToArray();
       

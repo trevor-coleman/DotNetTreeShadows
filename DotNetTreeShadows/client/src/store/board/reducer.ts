@@ -6,6 +6,7 @@ import {updateSession} from "../session/reducer";
 import {SessionUpdate} from "../session/types";
 import {signOut} from "../auth/reducer";
 import PlayerBoard from "../game/types/playerBoard";
+import {useTypedSelector} from "../index";
 
 
 const stateWithTileAtH = (state: BoardState, tile: number, h: number): BoardState => ({
@@ -21,6 +22,7 @@ export interface BoardState extends Board {
   loadingBoard: boolean;
   loadingBoardRejectedMessage: string | null;
   displayTiles: { [hex: number]: number };
+  eligibleTiles: number[];
   treeTiles: number[];
 }
 
@@ -29,6 +31,7 @@ const initialBoardState:BoardState = {
   loadingBoard: false,
   loadingBoardRejectedMessage: null,
   tiles: {},
+  eligibleTiles: [],
   treeTiles: []
 
 }
@@ -56,6 +59,10 @@ const boardSlice = createSlice({
     builder.addCase(updateSession,
       (state, action: PayloadAction<SessionUpdate>) => {
         const {board} = action.payload;
+
+
+
+
         return board
           ? ({
             ...state,
@@ -84,6 +91,8 @@ const boardSlice = createSlice({
   name: "board",
   initialState: initialBoardState
 })
+
+export const useTile = (hexCode: number)=>useTypedSelector(state=>state.board.tiles[hexCode]);
 
 
 export const {updatedTreeTiles} = boardSlice.actions;

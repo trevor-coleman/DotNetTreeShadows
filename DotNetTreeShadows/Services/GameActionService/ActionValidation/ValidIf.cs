@@ -78,7 +78,7 @@ namespace dotnet_tree_shadows.Services.GameActionService.ActionValidation {
       return activeTiles.All( t => t != context.Origin!.Value.HexCode );
     }
     
-    public static bool TilePieceTypeIsLargeTree (ActionContext context) => 
+    public static bool TargetIsLargeTree (ActionContext context) => 
       Tile.GetPieceType( context.Board!.Get((Hex) context.Target!)) == PieceType.LargeTree;
 
     public static bool TargetIsWithinRangeOfOrigin (ActionContext context) {
@@ -93,6 +93,8 @@ namespace dotnet_tree_shadows.Services.GameActionService.ActionValidation {
       Hex h = (Hex) context.Target!;
       return Math.Abs( h.Q ) == 3 || Math.Abs( h.R ) == 3 || Math.Abs( h.S ) == 3;
     }
+
+    
 
   }
 }

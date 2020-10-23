@@ -10,7 +10,7 @@ import treeColor from "../../helpers/treeColor";
 import Color from "color";
 
 interface TreeAvatarIconProps {
-  treeType: TreeType,
+  treeType?: TreeType | null,
   pieceType?: PieceType,
   text?: string,
   active?: boolean,
@@ -29,7 +29,8 @@ interface styleProps extends TreeAvatarIconProps {
 
 //COMPONENT
 const TreeAvatarIcon: FunctionComponent<TreeAvatarIconProps> = (props: TreeAvatarIconProps) => {
-  const {treeType, text, gridHeader, empty, size: propSize} = props;
+  const {text, gridHeader, empty, size: propSize} = props;
+  const treeType = props.treeType ?? TreeType.Poplar;
   const pieceType = props.pieceType ?? PieceType.MediumTree;
   const active = props.active ?? true;
   const highlight = props.highlight ?? false;

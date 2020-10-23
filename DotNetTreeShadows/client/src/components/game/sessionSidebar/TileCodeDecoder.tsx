@@ -66,12 +66,10 @@ case 3:
         <Divider/>
         <List>
           <ListItem ><ListItemText primary={pieceType} secondary={"PieceType"}/></ListItem>
-          <ListItem ><ListItemText primary={treeType} secondary={"TreeType"}/></ListItem>
+          <ListItem ><ListItemText primary={`${treeType} - ${Tile.GetTreeType(code)}`} secondary={"TreeType"}/></ListItem>
           <ListItem ><ListItemText primary={shadowHeight} secondary={"Shadow Height"}/></ListItem>
           <ListItem ><ListItemText primary={tileType} secondary={"TileType"}/></ListItem>
-
         </List>
-
       </Box>
     </Paper>);
 };

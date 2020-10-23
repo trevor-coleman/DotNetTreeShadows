@@ -11,7 +11,7 @@ function App() {
     return (
         <Router>
             <CssBaseline/>
-            <Switch>
+            <Switch> 
                 <PrivateRoute exact path={"/sessions/:sessionId"}><GameScreen/></PrivateRoute>
                 <Route exact path={"/auth"} component={SignIn}/>
                 <PrivateRoute path={"/"} component={HomeScreen}><HomeScreen/></PrivateRoute>

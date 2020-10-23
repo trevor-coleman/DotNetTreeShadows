@@ -7,7 +7,7 @@ import BoardTile from './BoardTile';
 import {Hex} from '../../../store/board/types/Hex';
 import {useTypedSelector} from "../../../store";
 import Box from "@material-ui/core/Box";
-import {handleTileClick} from "../../../store/game/gameActions";
+import handleTileClick from "../../../store/game/gameActions/handleTileClick";
 
 
 interface IGameBoardProps {

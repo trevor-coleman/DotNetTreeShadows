@@ -23,6 +23,7 @@ import DisconnectedAlertDialog from "./dialogs/DisconnectedAlertDialog";
 import {Alert} from "@material-ui/lab";
 import Collapse from "@material-ui/core/Collapse";
 import {HubConnectionState} from "@microsoft/signalr";
+import TurnAlertSnackBar from './dialogs/TurnAlertSnackBar';
 
 
 interface FlexGameScreenProps {
@@ -38,10 +39,8 @@ const GameScreen: FunctionComponent<FlexGameScreenProps> = (props: FlexGameScree
   const {connectionState} = useTypedSelector(state => state.signalR);
 
   const onLoad = async () => {
-    await dispatch(fetchSession(sessionIdFromPath))
+    console.log("fetchSession!")
     await gameHub.tryConnectToSession(sessionIdFromPath);
-
-
   }
 
   const cleanUp = async () => {
@@ -98,8 +97,10 @@ const GameScreen: FunctionComponent<FlexGameScreenProps> = (props: FlexGameScree
       <Box className={classes.rightPanel}>
         <div className={classes.toolbarSpacer}/>
         <PlayerSidebar/>
+        <TurnAlertSnackBar />
       </Box>
       <DisconnectedAlertDialog/>
+
     </Container>
   );
 };

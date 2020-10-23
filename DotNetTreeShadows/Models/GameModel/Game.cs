@@ -37,7 +37,8 @@ namespace dotnet_tree_shadows.Models.GameModel {
     [BsonRepresentation( BsonType.String )]
     public SunPosition SunPosition { get; set; } = SunPosition.NorthWest;
 
-    
+    public int turnCount { get; set; } = 0;
+
     public TokenStacks ScoringTokens { get; set; } = new TokenStacks();
 
     public GameOptionsDictionary GameOptions { get; set; } = new GameOptionsDictionary();
