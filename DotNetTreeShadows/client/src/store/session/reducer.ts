@@ -131,7 +131,7 @@ const sessionSlice = createSlice({
 });
 
 export const useSessionId = ()=>useTypedSelector(state=>state.session.id);
-
+export const usePlayers=()=>useTypedSelector(state => state.session.players);
 
 export const {updateSession, clearSession, updateConnectedPlayers} = sessionSlice.actions;
 export {createSession, fetchSession, createSessionAndFetchProfile};

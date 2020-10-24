@@ -1,5 +1,6 @@
 import {TreeType} from "../../store/board/types/treeType";
 import Color from "color";
+import interpolate from "color-interpolate";
 
 export default function treeColor (treeType: TreeType, opacity:number = 1):string  {
     let color:string = "#fff";
@@ -19,6 +20,9 @@ export default function treeColor (treeType: TreeType, opacity:number = 1):strin
     }
 
     return Color(color).alpha(opacity).toString();
+}
 
-
+const tileColorMap = interpolate(['#3a5c2b', "#89ba7e"])
+export function tileColor (distance:number) {
+  return tileColorMap(distance / 3);
 }

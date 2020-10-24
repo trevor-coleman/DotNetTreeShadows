@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using dotnet_tree_shadows.Models.Enums;
 using MongoDB.Bson;
@@ -39,7 +40,7 @@ namespace dotnet_tree_shadows.Models.GameModel {
 
     public int turnCount { get; set; } = 0;
 
-    public TokenStacks ScoringTokens { get; set; } = new TokenStacks();
+    public TokenStacks ScoringTokens { get; set; } = TokenStacks.StartingStacks;
 
     public GameOptionsDictionary GameOptions { get; set; } = new GameOptionsDictionary();
     

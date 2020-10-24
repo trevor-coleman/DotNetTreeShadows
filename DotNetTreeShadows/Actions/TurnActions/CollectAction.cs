@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using dotnet_tree_shadows.Actions.Validators;
@@ -34,7 +35,7 @@ namespace dotnet_tree_shadows.Actions.TurnActions {
       Board[Origin] = Tile.Empty;
       playerBoard.Pieces( PieceType.LargeTree ).IncreaseOnPlayerBoard();
       if ( ScoreTokens.Take(Game, Origin, out Scoring.Token token )) {
-        if ( token != Scoring.Token.NullToken) Game.Scores[PlayerId] = playerScore!.Append( token ).ToArray();
+        if ( token != null) Game.Scores[PlayerId] = playerScore!.Append( token ).ToArray();
       }
       PlayerBoard.Set( Game, PlayerId, playerBoard );
     }

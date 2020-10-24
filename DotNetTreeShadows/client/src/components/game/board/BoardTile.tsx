@@ -8,7 +8,7 @@ import {TreeType} from "../../../store/board/types/treeType";
 import {PieceType} from "../../../store/board/types/pieceType";
 import {HexLayout} from "../../../store/board/types/HexLayout";
 import {SunPosition} from "../../../store/game/types/sunPosition";
-import treeColor from "../../helpers/treeColor";
+import treeColor, { tileColor } from "../../helpers/treeColor";
 import Color from "color";
 import {useTypedSelector} from "../../../store";
 import {GameStatus} from "../../../store/game/types/GameStatus";
@@ -17,6 +17,10 @@ import {GameActionType} from "../../../store/game/actions";
 import {useTile} from "../../../store/board/reducer";
 import {useSunPosition} from "../../../store/game/reducer";
 import {PlayerBoardInfo, usePlayerBoard} from "../../../store/playerBoard/reducer";
+import EmptyOneLeaf from '../../../svg/exports/Empty-OneLeaf.svg'
+import EmptyTwoLeaf from '../../../svg/exports/Empty-TwoLeaf.svg'
+import EmptyThreeLeaf from '../../../svg/exports/Empty-ThreeLeaf.svg'
+import EmptyFourLeaf from '../../../svg/exports/Empty-FourLeaf.svg'
 
 interface IBoardTileProps {
     onClick?: (hexCode: number) => void,
@@ -120,6 +124,8 @@ const BoardTile = (props: IBoardTileProps) => {
 
     }
 
+
+
     const isSelected = (): boolean => {
         if(status == GameStatus.InProgress) {
             if (hexCode && safeHexCode == origin) return true;
@@ -149,7 +155,7 @@ const BoardTile = (props: IBoardTileProps) => {
                 backgroundColor = treeColor(treeType)
             }
     } else {
-        backgroundColor = "#acbeac";
+        backgroundColor = "#bec6b9";
     }
 
     const treeIcon: string | null = sky
@@ -159,6 +165,14 @@ const BoardTile = (props: IBoardTileProps) => {
             : null;
 
 
+    const emptyLeaves = ()=> {
+      switch (Hex.Distance(hex, new Hex(0))) {
+        case 0: return EmptyFourLeaf;
+        case 1: return EmptyThreeLeaf;
+        case 2: return EmptyTwoLeaf;
+        case 3: return EmptyOneLeaf;
+      }
+    }
 
     const sunIcon: string | null = sky && sun
         ? Sun
@@ -176,29 +190,134 @@ const BoardTile = (props: IBoardTileProps) => {
     const sunSize = size*2/1.18;
     const borderPercent = 0.33;
 
-    return (<g>
-        <circle cx={center.x}
-                cy={center.y} r={size/sizeFactor} fill={backgroundColor} strokeWidth={2} stroke={strokeColor}/>
-        {treeIcon ? <circle cx={center.x} cy={center.y} r={size*(1-borderPercent)} fill={Color(backgroundColor).lighten(1.8).toString()} strokeWidth={"0.2"} stroke={"#000"}/>:""}
-        {sunIcon
-            ? <image href={sunIcon} x={center.x - sunSize / 2} y={center.y - sunSize / 2} width={sunSize} height={sunSize}/>
-            : ''}
-        {treeIcon
-            ? <image href={treeIcon} x={center.x - size / 2} y={center.y - size / 2} width={size} height={size}/>
-            : ''}
-        {shaded
-            ? <circle cx={center.x} cy={center.y} r={size/1.2} fill={"rgba(0,0,0,0.3)"} strokeWidth={"0.2"} stroke={"#000"}/>
-            : ''}
-        {selected
-          ? <circle cx={center.x} cy={center.y} r={size/1.2} fill={"rgba(0,0,255,0.2)"} strokeWidth={"10"} stroke={"#00F"}/>
-          : ''}
-        {eligible
-          ? <circle cx={center.x} cy={center.y} r={size/1.2} fill={"rgba(0,255,0,0.5)"} strokeWidth={"10"} stroke={"#0C0"}/>
-          : ''}
+    const rotateAngle =
+      hex.q < 0
+        ? hex.r <= 0
+          ? hex.s >= 0
+            ? 270
+            : 0
+          : hex.s > 0
+          ? 200
+          : 150
+        : hex.r > 0
+        ? hex.s > 0
+          ? 10
+          : 90
+        : hex.s > 0
+        ? 330
+        : 30;
+
+    return (
+      <g>
+        <circle
+          cx={center.x}
+          cy={center.y}
+          r={size / sizeFactor}
+          fill={new Color(backgroundColor).alpha(Hex.IsSky(safeHexCode) || treeIcon ? 1 : 0.2).toString()}
+          strokeWidth={2}
+          stroke={strokeColor}
+        />
+        {Hex.IsSky(safeHexCode) ? (
+          ""
+        ) : (
+          <g>
+            <image
+              href={emptyLeaves()}
+              x={center.x - (size/1.2) / 2}
+              y={center.y - (size/1.2) / 2}
+              width={size/1.2}
+              transform={`rotate(${rotateAngle}, ${center.x},${center.y})`}
+              height={size/1.2}
+            />
+          </g>
+        )}
+        {treeIcon ? (
+          <circle
+            cx={center.x}
+            cy={center.y}
+            r={size * (1 - borderPercent)}
+            fill={Color(backgroundColor)
+              .lighten(1.8)
+              .toString()}
+            strokeWidth={"0.2"}
+            stroke={"#000"}
+          />
+        ) : (
+          ""
+        )}
+        {sunIcon ? (
+          <image
+            href={sunIcon}
+            x={center.x - sunSize / 2}
+            y={center.y - sunSize / 2}
+            width={sunSize}
+            height={sunSize}
+          />
+        ) : (
+          ""
+        )}
+        {treeIcon ? (
+          <image
+            href={treeIcon}
+            x={center.x - size / 2}
+            y={center.y - size / 2}
+            width={size}
+            height={size}
+          />
+        ) : (
+          ""
+        )}
+        {shaded ? (
+          <circle
+            cx={center.x}
+            cy={center.y}
+            r={size / 1.2}
+            fill={"rgba(0,0,0,0.4)"}
+            strokeWidth={"0.2"}
+            stroke={"#000"}
+          />
+        ) : (
+          ""
+        )}
+        {selected ? (
+          <circle
+            cx={center.x}
+            cy={center.y}
+            r={size / 1.2}
+            fill={"rgba(0,0,0,0)"}
+            strokeWidth={"20"}
+            stroke={"#FF0"}
+          />
+        ) : (
+          ""
+        )}
+
+        {eligible ? (
+          <circle
+            cx={center.x}
+            cy={center.y}
+            r={size / 1.2}
+            fill={"rgba(0,255,0,0)"}
+            strokeWidth={"10"}
+            stroke={"#F0F"}
+          />
+        ) : (
+          ""
+        )}
         {/*<text x={center.x - size/2} y={center.y-size/4} fontSize={'2em'} stroke="#000" strokeWidth="1px" dy="1em"> {hex.toString()} </text>*/}
-        <circle onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={handleClick} cx={center.x}
-                cy={center.y} r={size/sizeFactor} fill={"rgba(255,255,255,0)"} strokeWidth={2} stroke={strokeColor}/>
-    </g>)
+        <circle
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onClick={handleClick}
+          cx={center.x}
+          cy={center.y}
+          r={size / sizeFactor}
+          fill={"rgba(255,255,255,0)"}
+          strokeWidth={2}
+          stroke={strokeColor}
+        />
+      </g>
+    );
 };
 
 const useStyles = makeStyles({

@@ -1,12 +1,13 @@
+using System;
 using System.Collections.Generic;
 
 namespace dotnet_tree_shadows.Models.GameModel {
   
   public class ScoreTokens {
 
-    public static bool Take (Game game, in Hex h, out Scoring.Token token) {
+    public static bool Take (Game game, in Hex h, out Scoring.Token? token) {
       TokenStacks stacks = game.ScoringTokens;
-      token = Scoring.Token.NullToken;
+      token = null;
       int leaves = 4 - Hex.Distance( h, Hex.Zero );
       while ( leaves > 0 ) {
         if ( stacks.TryGetValue( leaves, out int[] scores ) && scores.Length != 0 ) {

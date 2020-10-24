@@ -59,7 +59,38 @@ const GameBoard: FunctionComponent<IGameBoardProps> = (props: IGameBoardProps) =
     return (
         <Box p={2}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${viewPortSize.x} ${viewPortSize.y}`}>
-                <polyline id="hexagon" points={pointString} fill={"#c7ec94"}/>
+              <defs>
+                <radialGradient id="grad1"
+                                cx="50%"
+                                cy="50%"
+                                r="50%"
+                                fx="50%"
+                                fy="50%">
+                  <stop offset="6%" style={
+                    {stopColor: "#2b7224",
+                      stopOpacity:1
+                    }} />
+                  <stop offset="24%" style={{
+                    stopColor: "#418b3b",
+                    stopOpacity: 1
+                  }} />
+                  <stop offset="48%" style={{
+                    stopColor: "#628b53",
+                    stopOpacity: 1
+                  }} />
+                  <stop offset="64%" style={{
+                    stopColor: "#759a6b",
+                    stopOpacity: 1
+                  }} />
+<stop offset="86%" style={{
+                    stopColor: "#919a6b",
+                    stopOpacity: 1
+                  }} />
+                  <stop offset="100%"
+                        style={{stopColor:"#d3ba8d", stopOpacity:1}} />
+                </radialGradient>
+              </defs>
+              <polyline id="hexagon" points={pointString} fill={"url(#grad1)"}/>
                 {tiles ? Object.keys(tiles).map(hexCodeString => {
                     const hexCode = parseInt(hexCodeString);
                     new Hex(hexCode);

@@ -20,7 +20,7 @@ export type PlayerBoardInfo = {
   lowestPrice: number,
 }
 
-type PlayerBoardsState = {
+export type PlayerBoardsState = {
   [playerId: string]: PlayerBoardInfo
 }
 
@@ -85,10 +85,10 @@ const playerBoardsSlice = createSlice({
 
 })
 
-export const useSelectPlayerBoard = (playerId: string) => useTypedSelector(state => state.playerBoards[playerId]);
-export const usePlayerBoard = () => useTypedSelector(state => state.playerBoards[state.profile.id]);
+export const useSelectPlayerBoard = (playerId: string) => useTypedSelector(state => state.playerBoards[playerId] ?? stateFromBoardCode(0));
+export const usePlayerBoard = () => useTypedSelector(state => state.playerBoards[state.profile.id] ?? stateFromBoardCode(0));
 export const usePlayerBoardPieceType = (pieceType:PieceType) => useTypedSelector(state => state.playerBoards[PieceType[pieceType]])
-export const useLight= ()=>useTypedSelector(state => state.playerBoards[state.profile.id].light);
+export const useLight= ()=>useTypedSelector(state => state.playerBoards[state.profile.id]?.light ?? 0);
 
 export const {updatePlayerBoard} = playerBoardsSlice.actions;
 export default playerBoardsSlice.reducer;

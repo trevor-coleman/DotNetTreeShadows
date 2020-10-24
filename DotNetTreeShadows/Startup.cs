@@ -86,6 +86,8 @@ namespace dotnet_tree_shadows {
 
       BsonSerializer.RegisterSerializationProvider( new HexSerializationProvider() );
       BsonSerializer.RegisterSerializationProvider( new TilesDictionarySerializationProvider() );
+      BsonSerializer.RegisterSerializationProvider( new IntArrayOfIntDictionarySerializationProvider() );
+      BsonSerializer.RegisterSerializationProvider( new TokenStacksSerializationProvider() );
       
 
 

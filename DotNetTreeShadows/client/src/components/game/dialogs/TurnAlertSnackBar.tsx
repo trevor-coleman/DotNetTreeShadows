@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -38,7 +38,7 @@ const TurnAlertSnackBar: FunctionComponent<TurnAlertSnackBarProps> = (props: Tur
   const classes = useStyles();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const {count, revolution, gameLength, turnCount, turnAlertCount} = useTurnAlertCounts()
+  const turnAlerts = useTurnAlertCounts()
   const firstPlayerName = useFirstPlayerName()
   const isPlayersTurn = useIsPlayersTurn();
 
@@ -46,22 +46,30 @@ const TurnAlertSnackBar: FunctionComponent<TurnAlertSnackBarProps> = (props: Tur
   const [playEndTurnSound] = useSound(endTurn);
   const [playYourTurnSound] = useSound(yourTurn);
 
-  if (turnCount > turnAlertCount) {
+  const {count, revolution, gameLength, turnCount, turnAlertCount} = turnAlerts;
 
-    if (isPlayersTurn) {
-      playYourTurnSound()
-    }
-    else {
-      if (count < revolution) {
-        console.log(count, revolution);
-        playEndOfRevolution();
-        dispatch(showedRevolutionAlert(revolution))
-      } else {
-        playEndTurnSound();
+  useEffect(()=>{
+    if (turnCount > turnAlertCount) {
+
+      if (isPlayersTurn) {
+        playYourTurnSound()
       }
-    }
-    dispatch(playedEndTurnSound(turnCount))
-  }
+      else {
+        if (count < revolution) {
+          console.log(count, revolution);
+          playEndOfRevolution();
+          dispatch(showedRevolutionAlert(revolution))
+        }
+        else {
+          playEndTurnSound();
+        }
+      }
+      console.log("right here")
+      dispatch(playedEndTurnSound(turnCount))
+    }},
+    [turnAlerts])
+
+
 
 
 
@@ -70,7 +78,6 @@ const TurnAlertSnackBar: FunctionComponent<TurnAlertSnackBarProps> = (props: Tur
     if (reason === 'clickaway') {
       return;
     }
-
     setOpen(false);
   };
 
@@ -99,7 +106,7 @@ const TurnAlertSnackBar: FunctionComponent<TurnAlertSnackBarProps> = (props: Tur
                  </IconButton>}>
             <AlertTitle>End of Round {revolution}</AlertTitle>
             {`Beginning revolution ${revolution +
-                                     1} of ${gameLength} First player is now ${firstPlayerName}`}{" "}
+                                     1} of ${gameLength}. First player is now ${firstPlayerName}`}{" "}
           </Alert>
         </Snackbar>
       </div>);

@@ -24,6 +24,8 @@ import {Alert} from "@material-ui/lab";
 import Collapse from "@material-ui/core/Collapse";
 import {HubConnectionState} from "@microsoft/signalr";
 import TurnAlertSnackBar from './dialogs/TurnAlertSnackBar';
+import GameOverDialog from './dialogs/GameOverDialog';
+import { signOutAndClearStore } from '../../store/auth/thunks';
 
 
 interface FlexGameScreenProps {
@@ -60,7 +62,7 @@ const GameScreen: FunctionComponent<FlexGameScreenProps> = (props: FlexGameScree
   )
 
   const handleSignOut = () => {
-    dispatch(signOut())
+    dispatch(signOutAndClearStore())
   };
 
   return (
@@ -100,6 +102,7 @@ const GameScreen: FunctionComponent<FlexGameScreenProps> = (props: FlexGameScree
         <TurnAlertSnackBar />
       </Box>
       <DisconnectedAlertDialog/>
+      <GameOverDialog/>
 
     </Container>
   );

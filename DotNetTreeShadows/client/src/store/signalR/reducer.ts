@@ -6,7 +6,7 @@ import uuid from 'uuid-random'
 import {GameActionType} from "../game/actions";
 
 
-interface SignalrState {
+export interface SignalrState {
   connectionState: HubConnectionState;
   connectionMessage: ConnectionMessage | null;
   connectedSession: string | null

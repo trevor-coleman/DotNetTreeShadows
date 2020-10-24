@@ -37,8 +37,8 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       playerBoard.SpendLight( 4 ); 
       board[origin] = Tile.Empty;
       playerBoard.Pieces( PieceType.LargeTree ).IncreaseOnPlayerBoard();
-      if ( ScoreTokens.Take(game, origin, out Scoring.Token token )) {
-        if ( token != Scoring.Token.NullToken) game.Scores[playerId] = playerScore!.Append( token ).ToArray();
+      if ( ScoreTokens.Take(game, origin, out Scoring.Token? token )) {
+        if ( token != null) game.Scores[playerId] = playerScore!.Append( token ).ToArray();
       }
       PlayerBoard.Set( game, playerId, playerBoard );
       board.Tiles = Shadow.UpdateAllShadows( board, game.SunPosition );

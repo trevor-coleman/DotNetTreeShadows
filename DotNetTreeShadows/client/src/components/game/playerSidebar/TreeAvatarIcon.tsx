@@ -8,6 +8,7 @@ import {PieceType} from "../../../store/board/types/pieceType";
 import TreeSVG from "../../../svg/TreeSVG";
 import treeColor from "../../helpers/treeColor";
 import Color from "color";
+import Sun from '../../../svg/sun-svgrepo-com.svg';
 
 interface TreeAvatarIconProps {
   treeType?: TreeType | null,

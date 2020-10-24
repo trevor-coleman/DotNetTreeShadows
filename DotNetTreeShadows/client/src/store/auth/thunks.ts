@@ -6,6 +6,8 @@ import {fetchInvitations} from "../invitations/actions";
 import {registerNewUser, signIn} from "./actions";
 import {NewUserInfo} from "./types/newUserInfo";
 import Api from "../../api/api";
+import { signOut } from "./reducer";
+import { clearStore } from '../rootReducer';
 
 export const signInAndFetchProfile = (credentials: SignInCredentials) => async (dispatch: AppDispatch) => {
   dispatch(clearProfile());
@@ -14,6 +16,11 @@ export const signInAndFetchProfile = (credentials: SignInCredentials) => async (
   await dispatch(fetchInvitations());
   return result != null;
 };
+
+export const signOutAndClearStore = () => async (dispatch: AppDispatch) => {
+  dispatch(signOut());
+  dispatch(clearStore());
+}
 
 export const registerAndSignIn = (newUserInfo: NewUserInfo) => async (dispatch: AppDispatch, _: any, api: Api) => {
   try {

@@ -16,6 +16,7 @@ import Button from "@material-ui/core/Button";
 import { signOut } from '../../store/auth/reducer';
 import {useDispatch} from "react-redux";
 import {useTypedSelector} from "../../store";
+import { signOutAndClearStore } from '../../store/auth/thunks';
 
 
 const drawerWidth = 280;
@@ -79,7 +80,7 @@ export default function HomeScreen(props: IHomeScreenProps) {
     };
 
     const handleSignOut = () => {
-        dispatch(signOut())
+        dispatch(signOutAndClearStore())
     }
 
 

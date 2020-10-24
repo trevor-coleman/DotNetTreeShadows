@@ -5,21 +5,17 @@ using System.Linq;
 namespace dotnet_tree_shadows.Models.GameModel {
     public class Scoring {
 
-        public readonly struct Token {
-            public readonly int Leaves;
-            public readonly int Points;
+        public class Token {
 
-            public Token (int leaves, int points) {
-                Points = points;
-                Leaves = leaves;
-            }
+          public Token (int leaves, int points) {
+            Leaves = leaves;
+            Points = points;
+          }
 
-            public static Token NullToken {
-              get => new Token( 0, 0 );
-            }
+          public int Leaves { get; set; }
 
-            public static bool operator == (Token a, Token b) => a.Leaves == b.Leaves && a.Points == b.Points;
-            public static bool operator != (Token a, Token b) => !(a == b);
+          public int Points { get; set; }
+
         }
 
         public Dictionary<string, PlayerScore> playerScores;
@@ -94,9 +90,9 @@ namespace dotnet_tree_shadows.Models.GameModel {
             }
 
           
-            public bool Take (int numberOfLeaves, out Token token) {
+            public bool Take (int numberOfLeaves, out Token? token) {
                 int points = 0;
-                token = Token.NullToken;
+                token = null;
               
 
                 for (int i = numberOfLeaves; i >= 0; i--) {
