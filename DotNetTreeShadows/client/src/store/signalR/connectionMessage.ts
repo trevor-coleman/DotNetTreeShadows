@@ -7,6 +7,7 @@ export enum ConnectionMessage {
 }
 
 export function getConnectionMessage(currentState:HubConnectionState, nextState: HubConnectionState):ConnectionMessage|null {
+
   if(currentState == HubConnectionState.Disconnected  && nextState == HubConnectionState.Connecting) {
     return ConnectionMessage.ConnectingToServer;
   }

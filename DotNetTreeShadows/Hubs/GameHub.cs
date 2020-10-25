@@ -56,18 +56,20 @@ namespace dotnet_tree_shadows.Hubs {
       await Groups.AddToGroupAsync( Context.ConnectionId, sessionId );
       IEnumerable<string> membersAfter = hubGroupService.AddToSession( sessionId, user.UserId );
 
-      Task<Session?> sessionTask = sessionService.Get( sessionId );
+      Task<Session> sessionTask = sessionService.Get( sessionId );
       Task<Game> gameTask = gameService.Get( sessionId );
       Task<Board> boardTask = boardService.Get( sessionId );
-
+      
+      SessionUpdate sessionUpdate = new SessionUpdate {
+        SessionId = sessionId,
+        Session = await sessionTask,
+        Game = await gameTask,
+        Board = await boardTask
+      };
+      
       await Clients.Caller.SendAsync(
           "HandleSessionUpdate",
-          new SessionUpdate {
-            SessionId = sessionId,
-            Session = await sessionTask,
-            Game = await gameTask,
-            Board = await boardTask
-          }
+          sessionUpdate   
         );
 
       await Clients.Group( sessionId ).SendAsync( "UpdateConnectedPlayers", sessionId, membersAfter.ToArray() );

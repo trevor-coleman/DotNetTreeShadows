@@ -12,7 +12,7 @@ import Box from "@material-ui/core/Box";
 import PlayerBoard from "../../../store/game/types/playerBoard";
 import TreeAvatarIcon from "../playerSidebar/TreeAvatarIcon";
 import Typography from "@material-ui/core/Typography";
-import FriendAvatar from "../../FriendAvatar";
+import FriendAvatar from "../../friends/FriendAvatar";
 import Divider from "@material-ui/core/Divider";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import IconButton from "@material-ui/core/IconButton";
@@ -23,6 +23,7 @@ import DeleteOutlineOutlinedIcon from "@material-ui/icons/DeleteOutlineOutlined"
 import { GameStatus } from "../../../store/game/types/GameStatus";
 import { updateInvitation } from "../../../store/invitations/thunks";
 import Emoji from "a11y-react-emoji";
+import CollapsingBox from '../../CollapsingBox';
 
 interface ListTurnOrderProps {}
 
@@ -92,11 +93,10 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
     status == GameStatus.Preparing;
 
   return (
-    <Paper>
-      <Box p={2}>
+    <CollapsingBox title={"Turn Order"}>
         <Typography variant={"subtitle1"}>Turn Order</Typography>
         <Divider />
-        <List>
+        <List dense>
           {turns().map((id: string) => {
             let isConnected = connectedPlayers
               ? connectedPlayers.indexOf(id) >= 0
@@ -170,9 +170,7 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
             ""
           )}
         </List>
-      </Box>
-      <AddPlayerDialog />
-    </Paper>
+    </CollapsingBox>
   );
 };
 

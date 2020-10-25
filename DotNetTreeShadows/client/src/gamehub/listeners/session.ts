@@ -20,7 +20,6 @@ export default function connectListeners(connection: HubConnection) {
     console.groupCollapsed("GameHub: UpdateConnectedPlayers")
     console.log(connectedPlayers);
     console.groupEnd()
-    store.dispatch(fetchSession(sessionId));
     store.dispatch(updateConnectedPlayers({
       sessionId,
       connectedPlayers
@@ -32,7 +31,7 @@ export default function connectListeners(connection: HubConnection) {
     console.groupCollapsed("GameHub: HandleSessionUpdate")
     console.log(sessionUpdate);
     console.groupEnd()
-    if (store.getState().session.id == sessionUpdate.sessionId) {
+    if (!store.getState().session.id || store.getState().session.id == sessionUpdate.sessionId) {
       store.dispatch(updateSession(sessionUpdate));
       store.dispatch(updateTreeTiles());
       store.dispatch(updateFocus());

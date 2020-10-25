@@ -17,7 +17,7 @@ import {RequestState} from "../../api/requestState";
 import { showRemoveFriendConfirmDialog, setFriendToRemove } from '../../store/appState/reducer';
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
-import FriendAvatar from "../FriendAvatar";
+import FriendAvatar from "./FriendAvatar";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
 

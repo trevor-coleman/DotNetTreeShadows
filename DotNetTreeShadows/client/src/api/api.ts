@@ -5,6 +5,11 @@ import GameApiSection from "./gameApiSection";
 import InvitationApiSection from "./invitationApiSection";
 import ProfileApiSection from "./profileApiSection";
 import BoardApiSection from "./boardApiSection";
+import { Store } from 'redux';
+import { signOutAndClearStore } from '../store/auth/thunks';
+import { AppStore } from '../store/store';
+
+
 
 export default class Api {
 
@@ -19,7 +24,7 @@ export default class Api {
     private getToken:()=>string|null = ()=>null;
 
     public static Create(getToken: ()=>string|null, baseURL:string) {
-        return new Api(getToken, baseURL)
+      return new Api(getToken, baseURL)
     }
 
     constructor(getToken:()=>string|null , baseURL: string) {
@@ -35,8 +40,9 @@ export default class Api {
 
         axios.interceptors.request.use(this.axiosInterceptor);
 
-    }
 
+
+    }
 
     private axiosInterceptor = (config: AxiosRequestConfig) => {
         const token = this.getToken() ?? null;
@@ -49,4 +55,16 @@ export default class Api {
             } : {...config.headers}
         }
     }
+
+  public addInterceptors(store:AppStore): void {
+    axios.interceptors.response.use(response => {
+      return response;
+    }, error => {
+      if (error.response.status === 401) {
+        store.dispatch(signOutAndClearStore())
+      }
+      return error;
+    });
+
+  }
 }

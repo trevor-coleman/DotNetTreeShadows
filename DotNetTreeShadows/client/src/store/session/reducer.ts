@@ -108,6 +108,8 @@ const sessionSlice = createSlice({
   initialState: initialSessionState,
   reducers: {
     updateSession: (state: SessionState, action: PayloadAction<SessionUpdate>) => {
+      console.log("updateSession :", action);
+
       return action.payload.session
         ? {
           ...state,
@@ -115,9 +117,11 @@ const sessionSlice = createSlice({
           firstLoad: false
         } : state
     },
-    clearSession: (() => ({
+    clearSession: ( state => {
+      console.log("clearSession")
+      return {
       ...initialSessionState
-    })),
+    }}),
     updateConnectedPlayers(state: SessionState, action: PayloadAction<{ sessionId: string, connectedPlayers: string[] }>) {
       const {sessionId, connectedPlayers} = action.payload
       return sessionId == state.id ? {

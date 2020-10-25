@@ -2,7 +2,7 @@ import React, {FunctionComponent} from 'react';
 import {useDispatch} from 'react-redux';
 import {makeStyles, Theme} from '@material-ui/core/styles';
 import {Avatar} from "@material-ui/core";
-import {useTypedSelector} from "../store";
+import {useTypedSelector} from "../../store";
 import PersonIcon from '@material-ui/icons/Person';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 interface FriendAvatarProps {

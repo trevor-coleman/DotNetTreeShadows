@@ -22,16 +22,18 @@ interface TreeAvatarIconProps {
   size?: number,
   fontSize?: "inherit" | "default" | "large" | "small" | undefined,
   highlight?: boolean,
+  icon?: string,
+  color?: string
 
 }
 
 interface styleProps extends TreeAvatarIconProps {
-  color: string,
+  color:string
 }
 
 //COMPONENT
 const TreeAvatarIcon: FunctionComponent<TreeAvatarIconProps> = (props: TreeAvatarIconProps) => {
-  const {text, gridHeader, empty, size: propSize} = props;
+  const {text, gridHeader, empty, size: propSize, icon} = props;
   const treeType = props.treeType ?? TreeType.Poplar;
   const pieceType = props.pieceType ?? PieceType.MediumTree;
   const active = props.active ?? true;
@@ -63,19 +65,19 @@ const TreeAvatarIcon: FunctionComponent<TreeAvatarIconProps> = (props: TreeAvata
 
   const scaledSize:number = size * scale;
 
-  const color = treeColor(treeType, active ? 1 : 0.2);
+  const color:string  = props.color ?? treeColor(treeType, active ? 1 : 0.2);
 
   let styleProps = {
     ...props,
     connected,
-    color
+    color: color
   };
 
   const classes = useStyles(styleProps);
 
   useDispatch();
 
-  const svgTree = TreeSVG(treeType, pieceType)
+  const svgTree = icon ?? TreeSVG(treeType, pieceType)
 
 
   const borderString =

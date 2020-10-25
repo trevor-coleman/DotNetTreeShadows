@@ -4,6 +4,12 @@ import {ConnectionMessage, getConnectionMessage} from "./connectionMessage";
 import {signOut} from "../auth/reducer";
 import uuid from 'uuid-random'
 import {GameActionType} from "../game/actions";
+import {
+  clearSession,
+  updateSession,
+  updateConnectedPlayers
+} from "../session/reducer";
+import { SessionUpdate } from '../session/types';
 
 
 export interface SignalrState {
@@ -29,6 +35,19 @@ const initialSignalRState: SignalrState = {
 const signalrSlice = createSlice({
   extraReducers: builder=>{
     builder.addCase(signOut, () => initialSignalRState);
+    builder.addCase(clearSession, (state)=> ({
+      ...state,
+      connectedSession: null,
+      connectionMessage: ConnectionMessage.ConnectingToServer,
+    }))
+    builder.addCase(updateSession, (state, action: PayloadAction<SessionUpdate>)=>{
+      const {sessionId} = action.payload;
+      return {
+        ...state,
+        connectedSession: sessionId,
+        connectionMessage: null,
+      }
+    })
   },
   initialState: initialSignalRState,
   name: "signalR",
@@ -38,7 +57,7 @@ const signalrSlice = createSlice({
       const currentState = state.connectionState;
 
       const connectionMessage = getConnectionMessage(currentState, connectionState)
-
+      console.log(`SET CONNECTION - ${currentState} - ${connectionMessage}`)
       return {
         ...state,
         connectionState,

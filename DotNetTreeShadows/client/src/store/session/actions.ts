@@ -19,7 +19,7 @@ export const createSession = createAsyncThunk<Session, void,ExtraInfo>(
 export const fetchSessionFromApi = createAsyncThunk<Session, string, ExtraInfo>(
     "session/fetchSessionFromApi",
     async (sessionId:string, {extra}) => {
-        const api = extra.api
+      const api = extra.api
         const response = await api.session.get(sessionId);
         return response.data;
     });

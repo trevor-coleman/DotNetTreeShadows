@@ -29,46 +29,50 @@ const BottomBar: FunctionComponent<BottomBarProps> = (
   const isHost = useIsHost();
 
   return (
-    <Paper className={classes.root}>
-      <Box p={2}>
-        {status == GameStatus.Preparing
-         ? (
-             isHost
-             ? (
-                 <HostOptions />)
-             : (
-                 <PreGameInstructions />))
-         : <Grid container spacing={2}>
-          <Grid item xs={5}>
-            <LightDisplay />
-          </Grid>
-          <Grid item>
-            <Divider
-              orientation="vertical"
-              flexItem
-              style={{ height: "100%" }}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            {status == GameStatus.PlacingFirstTrees ||
-              status == GameStatus.PlacingSecondTrees ? (
-              <ActionInstructions />
-            ) : currentActionType == null ? (
-              <TurnActionButtons />
+    <Box p={2} className={classes.root}>
+      <Paper>
+        <Box p={2}>
+          {status == GameStatus.Preparing ? (
+            isHost ? (
+              <HostOptions />
             ) : (
-              <ActionInstructions />
-            )}
-          </Grid>
-        </Grid>}
-      </Box>
-    </Paper>
+              <PreGameInstructions />
+            )
+          ) : (
+            <Grid container spacing={2}>
+              <Grid item xs={5}>
+                <LightDisplay />
+              </Grid>
+              <Grid item>
+                <Divider
+                  orientation="vertical"
+                  flexItem
+                  style={{ height: "100%" }}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                {status == GameStatus.PlacingFirstTrees ||
+                status == GameStatus.PlacingSecondTrees ? (
+                  <ActionInstructions />
+                ) : currentActionType == null ? (
+                  <TurnActionButtons />
+                ) : (
+                  <ActionInstructions />
+                )}
+              </Grid>
+            </Grid>
+          )}
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     height: "fit-content",
-    width: "100%"
+    width: "100%",
+    backgroundColor: "#c9c9c9"
   }
 }));
 

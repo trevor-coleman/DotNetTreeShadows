@@ -34,7 +34,10 @@ const initStore = () => {
             },
             serializableCheck: {ignoredActions: ["persist/PERSIST"]}
         })]
-    }); //.concat(logger)});
+    });
+
+    api.addInterceptors(store);
+
     const persistor = persistStore(store);
 
     return {
@@ -47,6 +50,7 @@ const initStore = () => {
 export type AppThunk = ThunkAction<void, RootState, Api, Action<string>>
 
 const enhancedStore = initStore();
+export type AppStore = typeof enhancedStore.store;
 const {store} = enhancedStore
 
 export default enhancedStore;

@@ -58,6 +58,20 @@ const GameBoard: FunctionComponent<IGameBoardProps> = (props: IGameBoardProps) =
         pointString += `${points[i].x}, ${points[i].y} `;
     }
 
+    const nextPoints = [];
+    for (let i = 0; i < 360; i += 60) {
+        const radians = Math.PI / 180 * i
+        nextPoints.push({
+            x: origin.x + (size - buffer) / 2 * Math.cos(radians),
+            y: origin.y + (size - buffer) / 2 * Math.sin(radians)
+        })
+    }
+
+    let nextPointString = "";
+    for (let i = 0; i < nextPoints.length; i++) {
+        nextPointString += `${points[i].x}, ${points[i].y} `;
+    }
+
     const layout = new HexLayout(Orientation.Pointy, tileSize, origin)
 
     return (
@@ -115,14 +129,14 @@ const GameBoard: FunctionComponent<IGameBoardProps> = (props: IGameBoardProps) =
                 }}
               />
               <stop
-                offset="86%"
+                offset="85%"
                 style={{
                   stopColor: "#919a6b",
                   stopOpacity: 1
                 }}
               />
               <stop
-                offset="110%"
+                offset="100%"
                 style={{ stopColor: "#d3ba8d", stopOpacity: 1 }}
               />
             </radialGradient>

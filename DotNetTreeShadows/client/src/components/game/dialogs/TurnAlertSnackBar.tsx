@@ -86,12 +86,6 @@ const TurnAlertSnackBar: FunctionComponent<TurnAlertSnackBarProps> = (props: Tur
 
   return (
       <div>
-        <Button onClick={() => {
-          playEndOfRevolution();
-          setOpen(true);
-        }}>
-          Toggle Snackbar
-        </Button>
         <Snackbar open={open}
                   className={classes.root}
                   autoHideDuration={6000}

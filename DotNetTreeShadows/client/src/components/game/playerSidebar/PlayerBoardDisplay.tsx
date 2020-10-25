@@ -10,6 +10,7 @@ import PiecesGrid from "./PiecesGrid";
 import AvailablePieces from "./AvailablePieces";
 import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
+import CollapsingBox from '../../CollapsingBox';
 
 interface BuyingGridProps {
     width?: number
@@ -36,11 +37,7 @@ const PlayerBoardDisplay: FunctionComponent<BuyingGridProps> = (props: BuyingGri
 
 
     return boardCode ?
-        <Paper>
-            <Box p={2}>
-                <Typography variant={'subtitle1'}>Player Board</Typography>
-                <Divider className={classes.divider}/>
-
+        <CollapsingBox title="Player Board">
                 <Box className={classes.gridBox}><Grid container direction={'row'} spacing={2}>
                     {PlayerBoard.MakeGrid(boardCode).map((col, index) => {
 
@@ -53,8 +50,7 @@ const PlayerBoardDisplay: FunctionComponent<BuyingGridProps> = (props: BuyingGri
                     })}
                 </Grid>
                 </Box>
-            </Box>
-        </Paper>
+        </CollapsingBox>
         : <div/>
 };
 

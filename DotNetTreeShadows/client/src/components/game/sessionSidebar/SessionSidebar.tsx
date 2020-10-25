@@ -21,7 +21,6 @@ const SessionSidebar: FunctionComponent<SessionSidebarProps> = (props: SessionSi
           <ListTurnOrder/>
           <ScoreTokenPiles/>
             <GameInfo/>
-            <TileCodeDecoder/>
         </SidebarGrid>
             );
 };

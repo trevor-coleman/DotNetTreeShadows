@@ -2,24 +2,24 @@ import React, {FunctionComponent, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {makeStyles} from '@material-ui/core/styles';
 import {Box, Typography} from "@material-ui/core";
-import {useTypedSelector} from "../store";
+import {useTypedSelector} from "../../store";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import {Link} from "react-router-dom";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
-import {deleteSession, fetchSessionFromApi} from "../store/session/actions";
+import {deleteSession, fetchSessionFromApi} from "../../store/session/actions";
 import DeleteOutlineOutlinedIcon from "@material-ui/icons/DeleteOutlineOutlined";
-import {createSessionAndFetchProfile} from "../store/session/thunks";
+import {createSessionAndFetchProfile} from "../../store/session/thunks";
 import SessionInviteList from "./SessionInvites";
 import Paper from "@material-ui/core/Paper";
 import ListItemText from "@material-ui/core/ListItemText";
-import FriendAvatar from "./FriendAvatar";
+import FriendAvatar from "../friends/FriendAvatar";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import AddIcon from '@material-ui/icons/Add';
-import {fetchProfile} from "../store/profile/reducer";
-import {fetchInvitations} from "../store/invitations/reducer";
+import {fetchProfile} from "../../store/profile/reducer";
+import {fetchInvitations} from "../../store/invitations/reducer";
 
 interface SessionsProps {
 }

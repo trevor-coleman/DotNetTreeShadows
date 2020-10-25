@@ -4,13 +4,13 @@ import {makeStyles} from '@material-ui/core/styles';
 import {Box} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import DebugToolbar from "./DebugToolbar";
+import DebugToolbar from "../DebugToolbar";
 import AddFriendCard from "./AddFriendCard";
-import FriendRequestList from "./friends/FriendRequestList";
-import FriendList from "./friends/FriendList";
+import FriendRequestList from "./FriendRequestList";
+import FriendList from "./FriendList";
 import Grid from "@material-ui/core/Grid";
-import {fetchFriendProfiles, fetchProfile} from "../store/profile/actions";
-import {fetchInvitations} from "../store/invitations/actions";
+import {fetchFriendProfiles, fetchProfile} from "../../store/profile/actions";
+import {fetchInvitations} from "../../store/invitations/actions";
 
 interface FriendsProps {
 }
