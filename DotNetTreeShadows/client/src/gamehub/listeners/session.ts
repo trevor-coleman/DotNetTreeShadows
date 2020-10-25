@@ -8,6 +8,7 @@ import PlayerBoard from "../../store/game/types/playerBoard";
 import { updatedTreeTiles } from "../../store/board/reducer";
 import {TreeType} from "../../store/board/types/treeType";
 import {updateTreeTiles} from "../../store/board/thunks";
+import { updateFocus } from '../../store/game/thunks';
 
 const {store} = enhancedStore;
 
@@ -34,6 +35,7 @@ export default function connectListeners(connection: HubConnection) {
     if (store.getState().session.id == sessionUpdate.sessionId) {
       store.dispatch(updateSession(sessionUpdate));
       store.dispatch(updateTreeTiles());
+      store.dispatch(updateFocus());
     };
   })
 

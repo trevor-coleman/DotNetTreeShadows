@@ -58,7 +58,6 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
     const toCancel = sessionInvites.find(
       inv => inv.resourceId == sessionId && inv.recipientId == recipientId
     );
-    console.log(toCancel);
     if (toCancel) {
       await dispatch(updateInvitation(toCancel, "Cancelled"));
     } else {
@@ -73,27 +72,19 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
   }
 
   const turns = () => {
-    if(firstPlayer==null) return  turnOrder;
+    if (firstPlayer == null) return turnOrder;
     const result = [];
-    console.log("turnOrder: ", turnOrder)
-    console.log("firstPlayer: ", firstPlayer)
+
     const fp = turnOrder.indexOf(firstPlayer);
 
-
-    console.log("fp:" , fp)
     for (let i = 0; i < turnOrder.length; i++) {
-      const adjustedIndex = (i + fp) % turnOrder.length
-      console.log("adj ix: ", adjustedIndex);
-      result.push(
-        turnOrder[adjustedIndex]
-      );
+      const adjustedIndex = (i + fp) % turnOrder.length;
+
+      result.push(turnOrder[adjustedIndex]);
     }
-    console.log(result);
+
     return result;
   };
-
-  console.log(turns());
-
 
   const showInvitePlayers =
     turnOrder.length + invitedPlayers.length < 4 &&

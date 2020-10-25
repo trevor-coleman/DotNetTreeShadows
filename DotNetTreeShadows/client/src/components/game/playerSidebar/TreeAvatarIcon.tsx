@@ -9,6 +9,7 @@ import TreeSVG from "../../../svg/TreeSVG";
 import treeColor from "../../helpers/treeColor";
 import Color from "color";
 import Sun from '../../../svg/sun-svgrepo-com.svg';
+import Divider from '@material-ui/core/Divider';
 
 interface TreeAvatarIconProps {
   treeType?: TreeType | null,
@@ -79,7 +80,7 @@ const TreeAvatarIcon: FunctionComponent<TreeAvatarIconProps> = (props: TreeAvata
 
   const borderString =
     gridHeader
-      ? `2px outset ${color}`
+      ? ``
       : empty
       ? "1px dashed grey"
       : highlight
@@ -95,13 +96,28 @@ const TreeAvatarIcon: FunctionComponent<TreeAvatarIconProps> = (props: TreeAvata
         ? text
         : <SvgIcon fontSize={props.fontSize ?? "large"}>
           <svg className={classes.svg} xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${size} ${size}`}>
+            <filter id="avatar-shadow" width="1.5" height="1.5" x="-.25" y="-.25">
+              <feGaussianBlur in="SourceAlpha"
+                              stdDeviation="2.5"
+                              result="blur" />
+              <feColorMatrix result="bluralpha" type="matrix" values="1 0 0 0   0
+             0 1 0 0   0
+             0 0 1 0   0
+             0 0 0 0.4 0 " />
+              <feOffset in="bluralpha" dx="1" dy="1" result="offsetBlur" />
+              <feMerge>
+                <feMergeNode in="offsetBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
             {gridHeader ? "" :
               <circle cx={center} cy={center} r={size / 2} fill={Color(color).lighten(2).toString()}/>}
               <image href={svgTree} x={center - (scaledSize * 0.5)} y={center - (scaledSize * 0.5)}
-                     width={scaledSize} height={scaledSize}/>
+                     width={scaledSize} height={scaledSize} filter="url(#avatar-shadow)"/>
           </svg>
         </SvgIcon>}
-    </Avatar>);
+    </Avatar>
+  )
 };
 
 const useStyles = makeStyles((theme: Theme) => ({

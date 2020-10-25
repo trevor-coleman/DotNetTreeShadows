@@ -43,7 +43,7 @@ const PlayerBoardDisplay: FunctionComponent<BuyingGridProps> = (props: BuyingGri
 
                 <Box className={classes.gridBox}><Grid container direction={'row'} spacing={2}>
                     {PlayerBoard.MakeGrid(boardCode).map((col, index) => {
-                        console.log()
+
                         return <Grid className={classes.grid} item key={index.toString() + col.toString()}>
                             <PiecesGrid
                                 key={`${boardCode}-${index}-${col}`} index={index}

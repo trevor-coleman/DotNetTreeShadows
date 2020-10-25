@@ -8,16 +8,20 @@ import {Hex} from '../../../store/board/types/Hex';
 import {useTypedSelector} from "../../../store";
 import Box from "@material-ui/core/Box";
 import handleTileClick from "../../../store/game/gameActions/handleTileClick";
+import FocusMask from './FocusMask';
+import { useFocus } from '../../../store/board/reducer';
 
 
 interface IGameBoardProps {
     width?: number | string
+
 }
 
 //COMPONENT
 const GameBoard: FunctionComponent<IGameBoardProps> = (props: IGameBoardProps) => {
     useStyles(props);
     useDispatch();
+    const focus = useFocus();
 
     const {tiles} = useTypedSelector(state => state.board);
 
@@ -57,50 +61,138 @@ const GameBoard: FunctionComponent<IGameBoardProps> = (props: IGameBoardProps) =
     const layout = new HexLayout(Orientation.Pointy, tileSize, origin)
 
     return (
-        <Box p={2}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${viewPortSize.x} ${viewPortSize.y}`}>
-              <defs>
-                <radialGradient id="grad1"
-                                cx="50%"
-                                cy="50%"
-                                r="50%"
-                                fx="50%"
-                                fy="50%">
-                  <stop offset="6%" style={
-                    {stopColor: "#2b7224",
-                      stopOpacity:1
-                    }} />
-                  <stop offset="24%" style={{
-                    stopColor: "#418b3b",
-                    stopOpacity: 1
-                  }} />
-                  <stop offset="48%" style={{
-                    stopColor: "#628b53",
-                    stopOpacity: 1
-                  }} />
-                  <stop offset="64%" style={{
-                    stopColor: "#759a6b",
-                    stopOpacity: 1
-                  }} />
-<stop offset="86%" style={{
-                    stopColor: "#919a6b",
-                    stopOpacity: 1
-                  }} />
-                  <stop offset="100%"
-                        style={{stopColor:"#d3ba8d", stopOpacity:1}} />
-                </radialGradient>
-              </defs>
-              <polyline id="hexagon" points={pointString} fill={"url(#grad1)"}/>
-                {tiles ? Object.keys(tiles).map(hexCodeString => {
-                    const hexCode = parseInt(hexCodeString);
-                    new Hex(hexCode);
-                    return <BoardTile key={hexCode} onClick={async () => {
-                        handleTileClick(hexCode);
-                    }
-                    }
-                                      hexCode={hexCode} layout={layout}/>;
-                }) : ""}</svg>
-        </Box>);
+      <Box p={2}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox={`0 0 ${viewPortSize.x} ${viewPortSize.y}`}
+        >
+          <defs>
+            <filter id="shadow" width="1.5" height="1.5" x="-.5" y="-.5">
+              <feGaussianBlur in="SourceAlpha"
+                              stdDeviation="2.5"
+                              result="blur" />
+              <feColorMatrix result="bluralpha" type="matrix" values="1 0 0 0   0
+             0 1 0 0   0
+             0 0 1 0   0
+             0 0 0 0.4 0 " />
+              <feOffset in="bluralpha" dx="3" dy="3" result="offsetBlur" />
+              <feMerge>
+                <feMergeNode in="offsetBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <radialGradient
+              id="grad1"
+              cx="50%"
+              cy="50%"
+              r="50%"
+              fx="50%"
+              fy="50%"
+            >
+              <stop
+                offset="6%"
+                style={{ stopColor: "#2b7224", stopOpacity: 1 }}
+              />
+              <stop
+                offset="24%"
+                style={{
+                  stopColor: "#418b3b",
+                  stopOpacity: 1
+                }}
+              />
+              <stop
+                offset="48%"
+                style={{
+                  stopColor: "#628b53",
+                  stopOpacity: 1
+                }}
+              />
+              <stop
+                offset="64%"
+                style={{
+                  stopColor: "#759a6b",
+                  stopOpacity: 1
+                }}
+              />
+              <stop
+                offset="86%"
+                style={{
+                  stopColor: "#919a6b",
+                  stopOpacity: 1
+                }}
+              />
+              <stop
+                offset="110%"
+                style={{ stopColor: "#d3ba8d", stopOpacity: 1 }}
+              />
+            </radialGradient>
+
+            <mask
+              id="focus-clip"
+              x={0}
+              y={0}
+              width={size}
+              height={size}
+              maskUnits={"userSpaceOnUse"}
+              maskContentUnits={"userSpaceOnUse"}
+            >
+              <polyline
+                id="hexagon"
+                points={pointString}
+                fill={"#fff"}
+                mask="url(#focus-clip)"
+                pointerEvents={"none"}
+              />
+
+              {focus.on
+                ? focus.tiles.map(h => (
+                    <FocusMask
+                      key={`focusMask-${h}`}
+                      hexCode={h}
+                      layout={layout}
+                    />
+                  ))
+                : ""}
+              {focus.originHexCode ? (
+                <FocusMask hexCode={focus.originHexCode} layout={layout} />
+              ) : (
+                ""
+              )}
+            </mask>
+          </defs>
+
+          <polyline id="hexagon" points={pointString} fill={"url(#grad1)"} />
+          {tiles
+            ? Object.keys(tiles).map(hexCodeString => {
+                const hexCode = parseInt(hexCodeString);
+                new Hex(hexCode);
+                return (
+                  <BoardTile
+                    key={hexCode}
+                    onClick={async () => {
+                      handleTileClick(hexCode);
+                    }}
+                    hexCode={hexCode}
+                    layout={layout}
+                  />
+                );
+              })
+            : ""}
+
+          {focus.on ? (
+            <polyline
+              id="hexagon"
+              points={pointString}
+              pointerEvents={"none"}
+              fill={"rgba(0,0,0, 0.2)"}
+              mask="url(#focus-clip)"
+            />
+          ) : (
+            ""
+          )}
+        </svg>
+      </Box>
+    );
 };
 
 const useStyles = makeStyles({root: {}});

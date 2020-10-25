@@ -12,7 +12,6 @@ export default class GameApiSection extends AApiSection {
     let result;
         try {
         result = await axios.post(`/sessions/${sessionId}/actions`, actionRequest);
-        console.log(result);
     } catch (e) {
             console.log(e.response.data);
             return {data: e.response.data};

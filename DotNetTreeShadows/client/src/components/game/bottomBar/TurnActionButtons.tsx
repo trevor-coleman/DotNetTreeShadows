@@ -6,13 +6,14 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {Typography} from "@material-ui/core";
 import {useTypedSelector} from "../../../store";
-import {clearCurrentAction, setCurrentAction} from '../../../store/game/reducer';
+import {clearCurrentAction} from '../../../store/game/reducer';
 import {GameActionType} from "../../../store/game/actions";
 import {PieceType} from "../../../store/board/types/pieceType";
 import gameActions from "../../../gamehub/gameActions";
 import Tile from "../../../store/board/types/tile";
 import {useLight, usePlayerBoard} from "../../../store/playerBoard/reducer";
 import {useSessionId} from "../../../store/session/reducer";
+import { setGameAction } from '../../../store/game/thunks';
 
 const useStyles = makeStyles((theme: Theme) => (
   {
@@ -42,15 +43,14 @@ const TurnActionButtons = () => {
 
   const onClickActionButton = (actionType: GameActionType) => {
     if (actionType == currentActionType) dispatch(clearCurrentAction())
-    else dispatch(setCurrentAction(actionType))
+    else dispatch(setGameAction(actionType))
   }
 
   const canDoAction = (actionType:GameActionType) => {
     let result = false;
     switch (actionType ){
       case GameActionType.Buy:
-
-        if(light > 0 && playerBoard.lowestPrice){
+        if(light > 0 && light >= playerBoard.lowestPrice){
           return true;
         }
         return false;

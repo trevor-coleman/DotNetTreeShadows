@@ -26,6 +26,7 @@ import {HubConnectionState} from "@microsoft/signalr";
 import TurnAlertSnackBar from './dialogs/TurnAlertSnackBar';
 import GameOverDialog from './dialogs/GameOverDialog';
 import { signOutAndClearStore } from '../../store/auth/thunks';
+import DiscardAlertDialog from './dialogs/DiscardAlertDialog';
 
 
 interface FlexGameScreenProps {
@@ -103,6 +104,7 @@ const GameScreen: FunctionComponent<FlexGameScreenProps> = (props: FlexGameScree
       </Box>
       <DisconnectedAlertDialog/>
       <GameOverDialog/>
+      <DiscardAlertDialog/>
 
     </Container>
   );

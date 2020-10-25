@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { clearCurrentAction, useGameStatus } from '../../../store/game/reducer';
@@ -10,6 +10,10 @@ import { useTypedSelector } from "../../../store";
 import GameScreen from '../GameScreen';
 import { GameStatus } from '../../../store/game/types/GameStatus';
 import { useIsPlayersTurn } from '../../../store/profile/reducer';
+import {
+  subscribeAutoCloseBuyMenu, unsubscribeAutoCloseBuyMenu,
+} from '../../../store/game/subscriptions';
+
 
 interface ActionInstructionsProps {
 }
@@ -27,12 +31,18 @@ const ActionInstructions: FunctionComponent<ActionInstructionsProps> = (props: A
   const classes = useStyles();
   const dispatch = useDispatch();
   const currentActionType = useTypedSelector(state => state.game.currentActionType);
-  const origin = useTypedSelector(state => state.game.currentActionOrigin);
+  const origin = useTypedSelector(state => state.board.originHexCode);
   const handleCancel = () => {
     dispatch(clearCurrentAction());
   };
   const status = useGameStatus();
   const isPlayersTurn = useIsPlayersTurn();
+
+  useEffect(()=>{
+    subscribeAutoCloseBuyMenu();
+    return ()=>unsubscribeAutoCloseBuyMenu();
+
+  })
 
   const getInstructions = (): Instruction => {
 

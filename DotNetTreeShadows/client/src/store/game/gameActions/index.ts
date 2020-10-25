@@ -1,6 +1,7 @@
 import enhancedStore from "../../store";
 import handleTileClick from "./handleTileClick";
 import handlePlayerBoardClick from "./handlePlayerBoardClick";
+import { useTypedSelector } from '../../index';
 
 export {handleTileClick, handlePlayerBoardClick}
 
@@ -11,4 +12,3 @@ export type ActionStage =
   | "selectingPiece"
   | "selectingTiles"
   | null
-

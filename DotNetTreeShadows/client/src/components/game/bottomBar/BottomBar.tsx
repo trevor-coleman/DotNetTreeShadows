@@ -31,7 +31,14 @@ const BottomBar: FunctionComponent<BottomBarProps> = (
   return (
     <Paper className={classes.root}>
       <Box p={2}>
-        <Grid container spacing={2}>
+        {status == GameStatus.Preparing
+         ? (
+             isHost
+             ? (
+                 <HostOptions />)
+             : (
+                 <PreGameInstructions />))
+         : <Grid container spacing={2}>
           <Grid item xs={5}>
             <LightDisplay />
           </Grid>
@@ -43,13 +50,7 @@ const BottomBar: FunctionComponent<BottomBarProps> = (
             />
           </Grid>
           <Grid item xs={6}>
-            {status == GameStatus.Preparing ? (
-              isHost ? (
-                <HostOptions />
-              ) : (
-                <PreGameInstructions />
-              )
-            ) : status == GameStatus.PlacingFirstTrees ||
+            {status == GameStatus.PlacingFirstTrees ||
               status == GameStatus.PlacingSecondTrees ? (
               <ActionInstructions />
             ) : currentActionType == null ? (
@@ -58,7 +59,7 @@ const BottomBar: FunctionComponent<BottomBarProps> = (
               <ActionInstructions />
             )}
           </Grid>
-        </Grid>
+        </Grid>}
       </Box>
     </Paper>
   );

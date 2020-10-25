@@ -2,7 +2,7 @@ import {TreeType} from "../../store/board/types/treeType";
 import Color from "color";
 import interpolate from "color-interpolate";
 
-export default function treeColor (treeType: TreeType, opacity:number = 1):string  {
+export default function treeColor (treeType: TreeType|null, opacity:number = 1):string  {
     let color:string = "#fff";
     switch (treeType as TreeType) {
         case TreeType.Aspen:
@@ -17,6 +17,8 @@ export default function treeColor (treeType: TreeType, opacity:number = 1):strin
         case TreeType.Poplar:
             color= "#21773b";
             break;
+      default:
+        color="#c9c9c9"
     }
 
     return Color(color).alpha(opacity).toString();

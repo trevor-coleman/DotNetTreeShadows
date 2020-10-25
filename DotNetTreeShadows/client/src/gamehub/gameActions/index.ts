@@ -2,7 +2,7 @@ import gameHub from "../index"
 import enhancedStore from "../../store/store";
 import {sentGameAction} from "../../store/signalR/reducer";
 import {GameActionType} from "../../store/game/actions";
-import {setActionOrigin, clearCurrentAction} from "../../store/game/reducer";
+import {clearCurrentAction} from "../../store/game/reducer";
 import {PieceType} from "../../store/board/types/pieceType";
 
 const {connection} = gameHub;

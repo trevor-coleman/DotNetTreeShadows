@@ -18,11 +18,19 @@ const rootReducer = combineReducers({
   session: sessionReducer,
   appState: appStateReducer,
   signalR: signalrReducer,
-  playerBoards: playerBoardsReducer
+  playerBoards: playerBoardsReducer,
 });
 
 export type RootReducerState = CombinedState<{
-  auth: AuthState; invitations: InvitationsState; profile: ProfileState; board: BoardState; game: GameState; session: SessionState; appState: AppState; signalR: SignalrState; playerBoards: PlayerBoardsState;
+  auth: AuthState;
+  invitations: InvitationsState;
+  profile: ProfileState;
+  board: BoardState;
+  game: GameState;
+  session: SessionState;
+  appState: AppState;
+  signalR: SignalrState;
+  playerBoards: PlayerBoardsState;
 }> | undefined;
 
 export const clearStore = () => (

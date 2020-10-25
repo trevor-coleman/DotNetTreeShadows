@@ -29,9 +29,9 @@ const PiecesGrid = (props: Props) => {
 
   return (
     <Grid container item direction={'column'} spacing={1}>
-      <Grid item>
-        <TreeAvatarIcon treeType={playerBoard.treeType} pieceType={pieceType} gridHeader/>
-      </Grid>
+      {/*<Grid item>*/}
+      {/*  <TreeAvatarIcon treeType={playerBoard.treeType} pieceType={pieceType} gridHeader/>*/}
+      {/*</Grid>*/}
       {col.map(({status, price, key}: PieceDetails, pieceIndex) => {
         const pieces = playerBoard.pieces[PieceType[pieceType]];
         const highlight = currentActionType ==

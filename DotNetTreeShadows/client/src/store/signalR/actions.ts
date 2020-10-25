@@ -71,7 +71,6 @@ const cancelSessionInviteAsync = createAsyncThunk<void, Invitation, ExtraInfo>(
       GameHubMethod.CancelSessionInvite,
       invitation
     );
-    console.log(result);
     return result;
   }
 );

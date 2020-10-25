@@ -10,15 +10,14 @@ import { PieceType } from "../board/types/pieceType";
 import { signOut } from "../auth/reducer";
 import { useTypedSelector } from "../index";
 import { GameOption } from "./types/GameOption";
+import { action } from 'typesafe-actions';
+import { RootState } from '../store';
+import { useEffect } from 'react';
 
 export interface GameState extends Game {
   revolutionAlertCount: number;
   turnAlertCount: number;
   currentActionType: GameActionType | null;
-  currentActionStage: ActionStage;
-  currentActionOrigin: number | null;
-  currentActionTarget: number | null;
-  currentActionPieceType: PieceType | null;
   blacklist: string[];
 }
 
@@ -38,15 +37,9 @@ const initialGameState: GameState = {
   tilesActiveThisTurn: [],
   status: GameStatus.Preparing,
   currentActionType: null,
-  currentActionStage: null,
-  currentActionOrigin: null,
-  currentActionTarget: null,
-  currentActionPieceType: null,
   blacklist: [
     "currentActionType",
     "currentActionStage",
-    "currentActionOrigin",
-    "currentActionTarget",
     "currentActionPieceType"
   ]
 };
@@ -57,10 +50,10 @@ const gameSlice = createSlice({
     builder.addCase(
       updateSession,
       (state, action: PayloadAction<SessionUpdate>) =>
-        action.payload.game
+          action.payload.game
           ? {
               ...state,
-              ...action.payload.game
+              ...action.payload.game,
             }
           : state
     );
@@ -89,20 +82,9 @@ const gameSlice = createSlice({
       ...state,
       currentActionType: action.payload
     }),
-    setActionOrigin: (
-      state: GameState,
-      action: PayloadAction<number | null>
-    ) => ({
-      ...state,
-      currentActionOrigin: action.payload
-    }),
     clearCurrentAction: state => ({
       ...state,
       currentActionType: null,
-      currentActionStage: null,
-      currentActionOrigin: null,
-      currentActionTarget: null,
-      currentActionPieceType: null
     }),
     showedRevolutionAlert: (state, action: PayloadAction<number>) => ({
       ...state,
@@ -140,7 +122,6 @@ export const useScores = ()=>useTypedSelector(state => state.game.scores);
 
 export const {
   gameOptionUpdate,
-  setActionOrigin,
   setCurrentAction,
   clearCurrentAction,
   showedRevolutionAlert,
@@ -149,3 +130,5 @@ export const {
 } = gameSlice.actions;
 export { fetchGame };
 export default gameSlice.reducer;
+
+

@@ -51,20 +51,23 @@ const TurnAlertSnackBar: FunctionComponent<TurnAlertSnackBarProps> = (props: Tur
   useEffect(()=>{
     if (turnCount > turnAlertCount) {
 
+      if(count < revolution) {
+        setOpen(true);
+        dispatch(showedRevolutionAlert(revolution))
+      }
+
       if (isPlayersTurn) {
         playYourTurnSound()
       }
       else {
         if (count < revolution) {
-          console.log(count, revolution);
           playEndOfRevolution();
-          dispatch(showedRevolutionAlert(revolution))
+
         }
         else {
           playEndTurnSound();
         }
       }
-      console.log("right here")
       dispatch(playedEndTurnSound(turnCount))
     }},
     [turnAlerts])

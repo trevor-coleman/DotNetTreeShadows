@@ -31,7 +31,7 @@ applyListeners(connection);
 
 
 const tryConnectToSession = async (sessionId: string) => {
-  console.groupCollapsed(`Connecting to Session ${sessionId}`)
+  console.groupCollapsed(`Connecting to Session ${sessionId} - ${connection.state}`)
   if (connection.state != "Connected") {
     console.log("Hub is not connected")
     try {

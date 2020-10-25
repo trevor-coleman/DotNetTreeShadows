@@ -69,15 +69,5 @@ export class Hex {
 
     public Equals = (other: Hex): boolean => this.q === other.q && this.r === other.r && this.s === other.s;
 
-    public static test = ()=> {
-        for (let i = -4; i <= 4; i++) {
-            for (let j = -4; j <= 4; j++) {
-                let k = 0 - i - j;
-                const h = Hex.Create( i, j, k );
-                console.log("--->",  h.hexCode.toString(2));
-                console.log(`(${i}, ${j}, ${k}) => [${h.q}, ${h.r}, ${h.s}]`)
 
-            }
-        }
-    }
 }
