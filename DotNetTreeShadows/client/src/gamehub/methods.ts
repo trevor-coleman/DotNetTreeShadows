@@ -1,8 +1,8 @@
 export enum GameHubMethod {
-    ConnectToSession= "ConnectToSession",
-    DisconnectFromSession= "DisconnectFromSession",
-    SetGameOption="SetGameOption",
-    CancelSessionInvite="CancelSessionInvite",
-    DoAction="DoAction",
-
+  ConnectToSession = "ConnectToSession",
+  DisconnectFromSession = "DisconnectFromSession",
+  SetGameOption = "SetGameOption",
+  SetLinkEnabled = "SetLinkEnabled",
+  CancelSessionInvite = "CancelSessionInvite",
+  DoAction = "DoAction"
 }

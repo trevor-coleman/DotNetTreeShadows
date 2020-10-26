@@ -24,7 +24,19 @@ export const fetchSessionFromApi = createAsyncThunk<Session, string, ExtraInfo>(
         return response.data;
     });
 
+export const joinSession = createAsyncThunk<void, string, ExtraInfo>(
+    "session/joinSession",
+    async (sessionId: string, thunkApi) => {
+      const {extra} = thunkApi;
+      const api = extra.api;
+      const response = await api.session.join(sessionId);
+      if(response.status != 204) {
+        console.log("Rejecting!")
+                                  return thunkApi.rejectWithValue(response.data);
+                                 }
+      return response.data;
 
+    });
 
 export const deleteSession = createAsyncThunk<string, string, ExtraInfo>(
     "session/deleteSession",

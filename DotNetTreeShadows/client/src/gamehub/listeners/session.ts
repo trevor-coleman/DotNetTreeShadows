@@ -1,6 +1,11 @@
 import {HubConnection} from "@microsoft/signalr";
 import enhancedStore from "../../store/store";
-import {fetchSession, updateConnectedPlayers, updateSession} from "../../store/session/reducer";
+import {
+  fetchSession,
+  updateConnectedPlayers,
+  updateSession,
+  updateLinkEnabled
+} from "../../store/session/reducer";
 import {gameOptionUpdate} from '../../store/game/reducer';
 import {SessionUpdate} from "../../store/session/types";
 import Tile from "../../store/board/types/tile";
@@ -36,6 +41,15 @@ export default function connectListeners(connection: HubConnection) {
       store.dispatch(updateTreeTiles());
       store.dispatch(updateFocus());
     };
+  })
+
+  connection.on("UpdateLinkEnabled", (sessionId: string, value: boolean)=> {
+    store.dispatch(
+      updateLinkEnabled({
+        sessionId,
+        value
+      })
+    );
   })
 
   connection.on("HandleActionFailure", (message: string) => {

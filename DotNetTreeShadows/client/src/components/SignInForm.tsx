@@ -10,6 +10,7 @@ import {SignInCredentials} from "../store/auth/types/signInCredentials";
 import {signInAndFetchProfile} from "../store/auth/thunks";
 import {useTypedSelector} from "../store";
 import Alert from '@material-ui/lab/Alert';
+import SignInFields from './SignInFields';
 
 interface ISignInFormProps {
 }
@@ -32,35 +33,7 @@ const SignInForm: FunctionComponent<ISignInFormProps> = (props: ISignInFormProps
     return <Card className={classes.SignInForm}>
         <CardContent>
             <Typography variant="h5">Sign In</Typography>
-            <form
-                noValidate
-                autoComplete="off">
-                <div><TextField
-                    required
-                    id="email"
-                    label="email"
-                    type="email"
-                    autoComplete="email"
-                    className={classes.TextInput}
-                    value={email}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}/></div>
-                <div><TextField
-                    required
-                    id="password"
-                    label="password"
-                    type="password"
-                    autoComplete="password"
-                    className={classes.TextInput} value={password}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}/></div>
-                <div><Button
-                    variant="outlined"
-                    disabled={email.length < 3 && password.length < 3}
-                    color="primary" onClick={() => signIn({
-                    email,
-                    password
-                })}>Sign In</Button></div>
-            </form>
-            {signedInRejectedMessage ? <Alert severity="warning">{signedInRejectedMessage}</Alert>:""}
+            <SignInFields/>
         </CardContent>
     </Card>;
 };

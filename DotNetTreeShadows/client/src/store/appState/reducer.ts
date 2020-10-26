@@ -5,11 +5,23 @@ import { removeFriendFromProfile } from "../profile/actions";
 import { RequestState } from "../../api/requestState";
 import { inviteFriendsToSession } from "./addPlayerDialog/actions";
 import { Session, SessionUpdate } from "../session/types";
-import { fetchSessionFromApi } from "../session/actions";
+import { fetchSessionFromApi, joinSession } from "../session/actions";
 import { updateSession } from "../session/reducer";
 import { signOut } from "../auth/reducer";
 import { useTypedSelector } from "../index";
 import { PieceType } from "../board/types/pieceType";
+
+interface RejectedAction<ThunkArg> {
+  type: string
+  payload: any
+  error: any
+  meta: {
+    requestId: string
+    arg: ThunkArg
+    aborted: boolean
+    condition: boolean
+  }
+}
 
 export interface AppState {
   friendList: {
@@ -25,12 +37,17 @@ export interface AppState {
     checked: string[];
   };
   discardAlertDialog: { open: boolean; pieceType: PieceType | null };
+  join: {
+    requestState: RequestState;
+    requestSession: string | null;
+    failureMessage: string |null;
+  };
 }
 
 const initialAppState: AppState = {
   friendList: {
     showRemoveFriendConfirmDialog: false,
-    friendToRemove: null,
+    friendToRemove: null
   },
   addPlayerDialog: {
     lastSession: null,
@@ -38,17 +55,56 @@ const initialAppState: AppState = {
     requestState: RequestState.Idle,
     message: null,
     lastRequest: null,
-    checked: [],
+    checked: []
   },
   discardAlertDialog: {
-    open:false,
+    open: false,
     pieceType: PieceType.SmallTree
+  },
+  join: {
+    requestState: RequestState.Idle,
+    requestSession: null,
+    failureMessage: "",
   }
-}
+};
 
 const appStateSlice = createSlice({
   name: "game",
   extraReducers: builder => {
+    builder.addCase(joinSession.pending, (state, action) => {
+      console.log("PENDING:" ,action.meta.arg);
+      return ({...state,
+      join: {
+        ...state.join,
+        requestState: RequestState.Pending,
+        requestSession: action.meta.arg,
+        failureMessage: null,
+      }
+    })}
+        );
+    builder.addCase(joinSession.fulfilled, (state, action) => {
+      if(action.meta.arg !== state.join.requestSession) return state;
+      return {
+        ...state,
+        join: {
+          ...state.join,
+          requestState: RequestState.Fulfilled,
+        }
+      };
+    });
+    builder.addCase(joinSession.rejected, (state, action) => {
+      if (action.meta.arg !== state.join.requestSession) return state;
+      console.log(action.payload);
+      return {
+        ...state,
+        join: {
+          ...state.join,
+          requestState: RequestState.Rejected,
+          requestSession: null,
+          failureMessage: "Failed",
+        }
+      };
+    });
     builder.addCase(
       removeFriendFromProfile.fulfilled,
       (state: AppState, action: Action) => ({
@@ -78,14 +134,18 @@ const appStateSlice = createSlice({
       updateSession,
       (state: AppState, action: PayloadAction<SessionUpdate>) => {
         const { sessionId } = action.payload;
-        if (sessionId == state.addPlayerDialog.lastSession) return state;
+
+        const join = sessionId === state.join.requestSession ? {...initialAppState.join} : state.join;
+
+        const addPlayerDialog = sessionId == state.addPlayerDialog.lastSession ? state.addPlayerDialog : {
+          ...initialAppState.addPlayerDialog,
+          lastSession: sessionId
+        }
 
         return {
           ...state,
-          addPlayerDialog: {
-            ...initialAppState.addPlayerDialog,
-            lastSession: sessionId
-          }
+          join,
+          addPlayerDialog
         };
       }
     );
@@ -115,17 +175,19 @@ const appStateSlice = createSlice({
         open: action.payload
       }
     }),
-    showDiscardAlertDialog: (state, action: PayloadAction<{ open: boolean, pieceType?: PieceType | null }>) => {
-      const {open, pieceType} = action.payload;
-      return (
-          {
-            ...state,
-            discardAlertDialog: {
-              ...state.discardAlertDialog,
-              open: open,
-              pieceType: pieceType ?? state.discardAlertDialog.pieceType
-            },
-          });
+    showDiscardAlertDialog: (
+      state,
+      action: PayloadAction<{ open: boolean; pieceType?: PieceType | null }>
+    ) => {
+      const { open, pieceType } = action.payload;
+      return {
+        ...state,
+        discardAlertDialog: {
+          ...state.discardAlertDialog,
+          open: open,
+          pieceType: pieceType ?? state.discardAlertDialog.pieceType
+        }
+      };
     },
 
     setAddPlayerDialogChecked: (
@@ -178,7 +240,17 @@ const appStateSlice = createSlice({
   }
 });
 
-export const useDiscardAlertDialog = () => useTypedSelector(state => state.appState.discardAlertDialog);
-export const {showRemoveFriendConfirmDialog, setFriendToRemove, showAddPlayerDialog, setInviteFriendsToSessionState, setAddPlayerDialogChecked, clearAddPlayerDialogCheckForPlayers, showDiscardAlertDialog} = appStateSlice.actions;
+export const useDiscardAlertDialog = () =>
+  useTypedSelector(state => state.appState.discardAlertDialog);
+export const useJoin = () => useTypedSelector(state => state.appState.join);
+export const {
+  showRemoveFriendConfirmDialog,
+  setFriendToRemove,
+  showAddPlayerDialog,
+  setInviteFriendsToSessionState,
+  setAddPlayerDialogChecked,
+  clearAddPlayerDialogCheckForPlayers,
+  showDiscardAlertDialog
+} = appStateSlice.actions;
 export { inviteFriendsToSession };
 export default appStateSlice.reducer;

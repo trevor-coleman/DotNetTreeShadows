@@ -44,6 +44,7 @@ namespace dotnet_tree_shadows.Hubs {
       this.boardService = boardService;
       this.hubGroupService = hubGroupService;
       this.gameActionService = gameActionService;
+      
     }
 
     public async Task NewMessage (string senderId, string message) {
@@ -88,6 +89,13 @@ namespace dotnet_tree_shadows.Hubs {
       await Clients.Group( request.SessionId ).SendAsync( "UpdateGameOptions", request );
       game.GameOptions.Set( request.GameOption, request.Value );
       await gameService.Update( game.Id, game );
+    }
+
+    public async Task SetLinkEnabled (string sessionId, bool value) {
+      Session session = await sessionService.Get( sessionId );
+      await Clients.Group( sessionId ).SendAsync( "UpdateLinkEnabled", sessionId, value );
+      session.LinkEnabled = value;
+      await sessionService.Update( sessionId, session );
     }
 
     public override async Task OnDisconnectedAsync (Exception exception) {

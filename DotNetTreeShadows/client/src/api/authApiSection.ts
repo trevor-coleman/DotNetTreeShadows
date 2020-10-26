@@ -10,7 +10,9 @@ export default class AuthApiSection extends AApiSection {
     }
 
     async registerNewUser(newUserInfo: NewUserInfo) {
-        return await axios.post("auth/register", newUserInfo);
+      const result = await axios.post("auth/register", newUserInfo);
+      console.log(result)
+      return result;
     }
 
 

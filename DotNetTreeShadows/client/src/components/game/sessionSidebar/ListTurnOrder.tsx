@@ -1,8 +1,8 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { useTypedSelector } from "../../../store";
-import { List } from "@material-ui/core";
+import { List, Switch, ListSubheader } from "@material-ui/core";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
@@ -24,6 +24,11 @@ import { GameStatus } from "../../../store/game/types/GameStatus";
 import { updateInvitation } from "../../../store/invitations/thunks";
 import Emoji from "a11y-react-emoji";
 import CollapsingBox from '../../CollapsingBox';
+import { CheckBox, Check } from '@material-ui/icons';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { sendLinkEnabled } from '../../../store/signalR/actions';
+import { useLocation } from "react-router-dom";
 
 interface ListTurnOrderProps {}
 
@@ -34,6 +39,7 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
   const {} = props;
   const classes = useStyles();
   const dispatch = useDispatch();
+  const location= useLocation();
   const {
     playerBoards,
     turnOrder,
@@ -46,14 +52,26 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
     host,
     invitedPlayers,
     connectedPlayers,
-    id: sessionId
+    id: sessionId,
+      linkEnabled,
   } = useTypedSelector(state => state.session);
   const { friends, id: playerId } = useTypedSelector(state => state.profile);
   const { sessionInvites } = useTypedSelector(state => state.invitations);
+  const [copySuccess, setCopySuccess] = useState(false);
+
+  async function copyToClipboard(e: React.MouseEvent<HTMLLIElement> | React.MouseEvent<HTMLAnchorElement> | React.MouseEvent<HTMLDivElement>) {
+    setCopySuccess(false);
+    await navigator.clipboard.writeText(`${window.location.href.replace(
+        "sessions",
+        "join")} `)
+    setCopySuccess(true);
+  };
 
   const openAddPlayerDialog = () => {
     dispatch(showAddPlayerDialog(true));
   };
+
+  console.log(location)
 
   async function cancelInvitation(recipientId: string) {
     const toCancel = sessionInvites.find(
@@ -71,6 +89,8 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
       );
     }
   }
+
+
 
   const turns = () => {
     if (firstPlayer == null) return turnOrder;
@@ -94,8 +114,6 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
 
   return (
     <CollapsingBox title={"Turn Order"}>
-        <Typography variant={"subtitle1"}>Turn Order</Typography>
-        <Divider />
         <List dense>
           {turns().map((id: string) => {
             let isConnected = connectedPlayers
@@ -158,7 +176,7 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
             <div />
           )}
           {showInvitePlayers ? (
-            <ListItem button onClick={openAddPlayerDialog}>
+            <><ListItem button onClick={openAddPlayerDialog}>
               <ListItemAvatar>
                 <Avatar>
                   <PersonAddIcon />
@@ -166,16 +184,30 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
               </ListItemAvatar>
               <ListItemText primary={"Invite Players"} />
             </ListItem>
+           <ListItem button>
+             <ListItemAvatar>
+               <Switch checked={linkEnabled} onChange={() => {dispatch(sendLinkEnabled(sessionId, !linkEnabled))}} name="checkedA" />
+             </ListItemAvatar>
+             <ListItemText primary={"Enable"} />
+           </ListItem><ListItem button onClick={copyToClipboard}><ListItemText className={classes.link} primary={`${window.location.href.replace("sessions",
+                  "join")} `} secondary={copySuccess ? "Copied!" : "Click to Copy"}/>
+           </ListItem>
+            </>
           ) : (
             ""
           )}
+
         </List>
+
     </CollapsingBox>
   );
 };
 
 const useStyles = makeStyles((theme: Theme) => ({
-  root: {}
+  root: {},
+  link: {maxWidth: 220,
+    overflowWrap:"break-word",
+    wordWrap:"break-word"}
 }));
 
 export default ListTurnOrder;

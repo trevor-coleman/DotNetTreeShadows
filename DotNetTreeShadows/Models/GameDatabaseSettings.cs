@@ -17,8 +17,8 @@ namespace dotnet_tree_shadows.Models {
     public string ConnectionString {
       get {
         if ( string.IsNullOrEmpty( User ) || string.IsNullOrEmpty( Password ) ) return $@"mongodb://{Host}:{Port}";
-        return $"mongodb://{User}:{Password}@{Host}:{Port}";
-
+        if(Host == "localhost" || Host == "127.0.0.1") return $"mongodb://{User}:{Password}@{Host}:{Port}";
+        return $"mongodb+srv://{User}:{Password}@{Host}?retryWrites=true&w=majority";
       }
     }
 

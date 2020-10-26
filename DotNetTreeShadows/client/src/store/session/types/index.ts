@@ -5,6 +5,7 @@ export type Session = {
     id:string,
     name: string,
     host: string,
+    linkEnabled: boolean,
     invitations: string[],
     invitedPlayers: string[],
     players: {[player: string]: {

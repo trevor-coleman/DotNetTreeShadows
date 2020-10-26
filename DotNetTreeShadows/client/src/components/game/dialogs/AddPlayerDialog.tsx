@@ -111,7 +111,7 @@ const AddPlayerDialog: FunctionComponent<AddPlayerDialogProps> = (props: AddPlay
                                     </ListItemSecondaryAction>
                                 </ListItem>
                             })}
-                        </List>}</DialogContent>
+                        </List>}
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
                         Cancel
@@ -119,7 +119,7 @@ const AddPlayerDialog: FunctionComponent<AddPlayerDialogProps> = (props: AddPlay
                     {canAddMorePlayers || checked.length != 0 ? <Button onClick={inviteFriends} color="primary">
                         Invite
                     </Button> : <div/>}
-                </DialogActions>
+                </DialogActions></DialogContent>
             </Dialog>
         </div>
     );

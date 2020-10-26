@@ -27,14 +27,14 @@ import { signOutAndClearStore } from "../../store/auth/thunks";
 import DiscardAlertDialog from "./dialogs/DiscardAlertDialog";
 import AddPlayerDialog from './dialogs/AddPlayerDialog';
 
-interface FlexGameScreenProps {}
+interface GameScreenProps {dummy?:boolean}
 
 //COMPONENT
-const GameScreen: FunctionComponent<FlexGameScreenProps> = (
-  props: FlexGameScreenProps
+const GameScreen: FunctionComponent<GameScreenProps> = (
+  props: GameScreenProps
 ) => {
-  const {} = props;
-  const classes = useStyles();
+  const {dummy} = props;
+  const classes = useStyles(props);
   const dispatch = useDispatch();
   const { sessionId: sessionIdFromPath } = useParams();
   const { name: sessionName } = useTypedSelector(state => state.session);
@@ -42,6 +42,7 @@ const GameScreen: FunctionComponent<FlexGameScreenProps> = (
 
   const onLoad = async () => {
     dispatch(clearSession());
+    if(dummy) return;
     await gameHub.tryConnectToSession(sessionIdFromPath);
   };
 
@@ -106,7 +107,8 @@ const GameScreen: FunctionComponent<FlexGameScreenProps> = (
       </Box>
       <TurnAlertSnackBar />
       <AddPlayerDialog />
-      <DisconnectedAlertDialog />
+
+      {dummy ? "": <DisconnectedAlertDialog />}
       <GameOverDialog />
       <DiscardAlertDialog />
     </Container>
@@ -120,7 +122,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: "100vh",
     width: "100vw",
     maxWidth: "100vw",
-    overflow: "hidden"
+    overflow: "hidden",
+    filter: ({ dummy }:GameScreenProps) => dummy ? "blur(4px)":undefined,
   },
   leftPanel: {
     flexShrink: 0,

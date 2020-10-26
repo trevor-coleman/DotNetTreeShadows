@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {signIn, registerNewUser} from "./actions";
+import { useTypedSelector } from '../index';
 
 export interface AuthState {
     authInProgress: boolean,
@@ -80,6 +81,7 @@ const authSlice = createSlice({
     initialState: initialState
 })
 
+export const useSignedIn = () => useTypedSelector(state => state.auth.signedIn);
 
 export const {signOut, setToken} = authSlice.actions;
 export {signIn, registerNewUser};

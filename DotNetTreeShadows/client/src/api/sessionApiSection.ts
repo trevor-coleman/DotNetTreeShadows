@@ -13,4 +13,8 @@ export default class SessionApiSection extends AApiSection {
     async delete(id: string) {
         return await axios.delete(`sessions/${id}`)
     }
+
+  public async join(sessionId: string)  {
+    return await axios.post(`profiles/me/sessions/${sessionId}`);
+  }
 }

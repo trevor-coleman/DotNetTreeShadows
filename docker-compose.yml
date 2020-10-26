@@ -22,18 +22,17 @@ services:
   dotnet-treeshadows-server:
     build:
       context: .
-      dockerfile: DockerFile-FromMS
+      dockerfile: DockerFile
       args:
         - NODE_ENV=production
-        - TREE_SHADOWS_API_URL="${TREE_SHADOWS_API_URL}"
     restart: always
     ports:
-      - "80:80"
-      - "443:443"
+      - "8080:8080"
     environment:
-      ASPNETCORE_URLS: "http://+:80;https://+:443"
+      TREE_SHADOWS_API_URL: "/api/"
+      ASPNETCORE_URLS: "http://+:8080"
       ASPNETCORE_Kestrel__Certificates__Default__Path: "./webserver.pfx"
       ASPNETCORE_Kestrel__Certificates__Default__Password: "${ASPNETCORE_Kestrel__Certificates__Default__Password}"
-      MongoDB__Host: "mongo"
+      MongoDB__Host: "shadowy-forest.5zlky.gcp.mongodb.net"
     depends_on:
       - mongo

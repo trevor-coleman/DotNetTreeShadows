@@ -7,6 +7,7 @@ import { gameOptionUpdate } from "../game/reducer";
 import { GameHubMethod } from "../../gamehub/methods";
 import { Invitation } from "../invitations/types/invitation";
 import { ExtraInfo } from "../extraInfo";
+import { updateLinkEnabled } from "../session/reducer";
 
 const { store } = enhancedStore;
 
@@ -34,6 +35,30 @@ export const sendDisconnectFromSession = createAsyncThunk<void, string>(
       return;
     } catch (e) {
       thunkApi.rejectWithValue(e.message ?? "disconnect failed");
+    }
+  }
+);
+
+export const sendLinkEnabled = (sessionId: string,
+                              value: boolean) => async (dispatch: AppDispatch) => {
+  ;
+  dispatch(updateLinkEnabled({sessionId, value}));
+  await dispatch(sendLinkEnabledUpdate({sessionId, value}))
+};
+
+const sendLinkEnabledUpdate = createAsyncThunk(
+  "gamehub/sendLinkEnabled",
+  async (update: { sessionId: string; value: boolean }) => {
+    try {
+      await gameHub.send(
+        GameHubMethod.SetLinkEnabled,
+        update.sessionId,
+        update.value
+      );
+      return;
+    } catch (e) {
+      console.error(e.message);
+      return e.message ?? "failed to update option";
     }
   }
 );

@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AspNetCore.Identity.Mongo.Model;
+using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -24,15 +25,18 @@ namespace dotnet_tree_shadows.Controllers {
         private readonly UserManager<UserModel> userManager;
         private readonly RoleManager<MongoRole> roleManager;
         private IConfiguration configuration;
-        
+      
+
         public AuthController (
                 UserManager<UserModel> userManager,
                 RoleManager<MongoRole> roleManager,
                 IConfiguration configuration
+      
             ) {
             this.userManager =userManager;
             this.roleManager = roleManager;
             this.configuration = configuration;
+      
         }
         
         [HttpPost]  
@@ -71,28 +75,41 @@ namespace dotnet_tree_shadows.Controllers {
         [HttpPost]
         [Route( "register" )]
         public async Task<IActionResult> Register ([FromBody] RegisterModel model) {
+          try {
             UserModel userModelExists = await userManager.FindByEmailAsync( model.Email );
-            if(userModelExists != null) return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User already exists!" });
+            if ( userModelExists != null )
+              return StatusCode(
+                  StatusCodes.Status409Conflict,
+                  new Response { Status = "Error", Message = "User already exists!" }
+                );
+
             if ( model.InviteCode != "ilovetrees" ) return Status403Forbidden();
-            
+
             UserModel userModel = new UserModel() {
-                                                             Email = model.Email,
-                                                             SecurityStamp = Guid.NewGuid().ToString(),
-                                                             UserName = model.Username
-                                                         };
-            
+              Email = model.Email, SecurityStamp = Guid.NewGuid().ToString(), UserName = model.Username
+            };
+
             IdentityResult result = await userManager.CreateAsync( userModel, model.Password );
-            if (!await roleManager.RoleExistsAsync(UserRoles.User))  
-                await roleManager.CreateAsync(new MongoRole(UserRoles.User));  
-  
-            if (await roleManager.RoleExistsAsync(UserRoles.User))  
-            {  
-                await userManager.AddToRoleAsync(userModel, UserRoles.User);  
+            if ( !await roleManager.RoleExistsAsync( UserRoles.User ) )
+              await roleManager.CreateAsync( new MongoRole( UserRoles.User ) );
+
+            if ( await roleManager.RoleExistsAsync( UserRoles.User ) ) {
+              await userManager.AddToRoleAsync( userModel, UserRoles.User );
             }
-            
+
             return result.Succeeded
-                       ? Ok( new Response { Status = "Success", Message = "Created user successfully." } )
-                       : StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed. Please try again." });
+                     ? Ok( new Response { Status = "Success", Message = "Created user successfully." } )
+                     : StatusCode(
+                         StatusCodes.Status500InternalServerError,
+                         new Response { Status = "Error", Message = "User creation failed. Please try again." }
+                       );
+          }
+          catch (Exception e) {
+            return StatusCode(
+                StatusCodes.Status503ServiceUnavailable,
+                new Response { Status = "Register Failed", Message = e.Message + e.StackTrace }
+              );
+          }
         }
 
         [HttpPost, Route( "register-admin" )]
