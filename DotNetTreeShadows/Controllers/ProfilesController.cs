@@ -1,5 +1,10 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using dotnet_tree_shadows.Hubs;
 using dotnet_tree_shadows.Models.Authentication;
+using dotnet_tree_shadows.Models.Enums;
+using dotnet_tree_shadows.Models.GameModel;
 using dotnet_tree_shadows.Models.ProfileModel;
 using dotnet_tree_shadows.Models.SessionModel;
 using dotnet_tree_shadows.Services;
@@ -7,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
 
@@ -17,10 +23,16 @@ namespace dotnet_tree_shadows.Controllers {
 
     private readonly UserManager<UserModel> userManager;
     private readonly InvitationService invitationService;
+    private readonly SessionService sessionService;
+    private readonly GameService gameService;
+    private readonly IHubContext<GameHub> gameHubContext;
 
-    public ProfilesController (UserManager<UserModel> userManager, InvitationService invitationService) {
+    public ProfilesController (UserManager<UserModel> userManager, InvitationService invitationService, SessionService sessionService, GameService gameService, IHubContext<GameHub> gameHubContext) {
       this.userManager = userManager;
       this.invitationService = invitationService;
+      this.sessionService = sessionService;
+      this.gameService = gameService;
+      this.gameHubContext = gameHubContext;
     }
 
     [HttpGet( "{id:length(24)}", Name = "GetProfile" )]
@@ -90,6 +102,35 @@ namespace dotnet_tree_shadows.Controllers {
 
       return userModel.Sessions.ToArray();
     }
+
+    [HttpPost]
+    [Route( "me/sessions/{sessionId:length(24)}" )]
+    [Authorize( Roles = UserRoles.User, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme )]
+    public async Task<ActionResult> JoinSession ([FromRoute] string sessionId) {
+      Task<UserModel> userTask = userManager.GetUserAsync( HttpContext.User );
+      Task<Game> gameTask = gameService.Get( sessionId );
+      Session? session = await sessionService.Get( sessionId );
+      if ( session == null ) return Status404NotFound( "Session" );
+      if ( session.LinkEnabled == false ) return Status400Invalid( "Session is private." );
+      if ( (session.Players.Count + session.Invitations.Length) >= 4 ) return Status400Invalid( "Session is full." );
+      Game game = await gameTask;
+      if ( game.Status != GameStatus.Preparing ) return Status400Invalid( "Game has started." );
+      UserModel user = await userTask;
+      if ( session.Players.Any( (kvp) => kvp.Key == user.UserId ) ) {
+        return NoContent();
+      }
+
+      user.AddSession( session );
+      List<Task> updateTasks = new List<Task> { userManager.UpdateAsync( user ) };
+      GameOperations.AddPlayer( game, user.UserId );
+      updateTasks.Add( gameService.Update( sessionId, game ) ); 
+      session.Players.Add( user.UserId, PlayerSummary.CreateFromUser( user ) );
+      updateTasks.Add( sessionService.Update( sessionId, session ) );
+      Task.WaitAll( updateTasks.ToArray() );
+      return NoContent();
+
+    }
+
 
   }
 }

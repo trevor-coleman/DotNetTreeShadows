@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useRef, useState } from "react";
+import React, { FunctionComponent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { useTypedSelector } from "../../../store";
@@ -7,28 +7,22 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import ListItemText from "@material-ui/core/ListItemText";
-import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
 import PlayerBoard from "../../../store/game/types/playerBoard";
 import TreeAvatarIcon from "../playerSidebar/TreeAvatarIcon";
-import Typography from "@material-ui/core/Typography";
 import FriendAvatar from "../../friends/FriendAvatar";
 import Divider from "@material-ui/core/Divider";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import IconButton from "@material-ui/core/IconButton";
 import { showAddPlayerDialog } from "../../../store/appState/reducer";
-import AddPlayerDialog from "../dialogs/AddPlayerDialog";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import DeleteOutlineOutlinedIcon from "@material-ui/icons/DeleteOutlineOutlined";
 import { GameStatus } from "../../../store/game/types/GameStatus";
 import { updateInvitation } from "../../../store/invitations/thunks";
 import Emoji from "a11y-react-emoji";
-import CollapsingBox from '../../CollapsingBox';
-import { CheckBox, Check } from '@material-ui/icons';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { sendLinkEnabled } from '../../../store/signalR/actions';
+import CollapsingBox from "../../CollapsingBox";
+import { sendLinkEnabled } from "../../../store/signalR/actions";
 import { useLocation } from "react-router-dom";
+import Collapse from '@material-ui/core/Collapse';
 
 interface ListTurnOrderProps {}
 
@@ -39,7 +33,7 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
   const {} = props;
   const classes = useStyles();
   const dispatch = useDispatch();
-  const location= useLocation();
+  const location = useLocation();
   const {
     playerBoards,
     turnOrder,
@@ -53,25 +47,30 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
     invitedPlayers,
     connectedPlayers,
     id: sessionId,
-      linkEnabled,
+    linkEnabled
   } = useTypedSelector(state => state.session);
   const { friends, id: playerId } = useTypedSelector(state => state.profile);
   const { sessionInvites } = useTypedSelector(state => state.invitations);
   const [copySuccess, setCopySuccess] = useState(false);
 
-  async function copyToClipboard(e: React.MouseEvent<HTMLLIElement> | React.MouseEvent<HTMLAnchorElement> | React.MouseEvent<HTMLDivElement>) {
+  async function copyToClipboard(
+    e:
+      | React.MouseEvent<HTMLLIElement>
+      | React.MouseEvent<HTMLAnchorElement>
+      | React.MouseEvent<HTMLDivElement>
+  ) {
     setCopySuccess(false);
-    await navigator.clipboard.writeText(`${window.location.href.replace(
-        "sessions",
-        "join")} `)
+    await navigator.clipboard.writeText(
+      `${window.location.href.replace("sessions", "join")} `
+    );
     setCopySuccess(true);
-  };
+  }
 
   const openAddPlayerDialog = () => {
     dispatch(showAddPlayerDialog(true));
   };
 
-  console.log(location)
+  console.log(location);
 
   async function cancelInvitation(recipientId: string) {
     const toCancel = sessionInvites.find(
@@ -89,8 +88,6 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
       );
     }
   }
-
-
 
   const turns = () => {
     if (firstPlayer == null) return turnOrder;
@@ -114,69 +111,69 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
 
   return (
     <CollapsingBox title={"Turn Order"}>
-        <List dense>
-          {turns().map((id: string) => {
-            let isConnected = connectedPlayers
-              ? connectedPlayers.indexOf(id) >= 0
-              : false;
+      <List dense>
+        {turns().map((id: string) => {
+          let isConnected = connectedPlayers
+            ? connectedPlayers.indexOf(id) >= 0
+            : false;
+          return (
+            <ListItem key={id} selected={turnOrder[currentTurn] == id}>
+              <ListItemAvatar>
+                <TreeAvatarIcon
+                  fontSize={"large"}
+                  active={false}
+                  connected={isConnected}
+                  treeType={PlayerBoard.TreeType(playerBoards[id])}
+                />
+              </ListItemAvatar>
+              <ListItemText
+                primary={`${
+                  id == playerId ? "You" : players[id]?.name ?? "Player"
+                }`}
+                secondary={
+                  firstPlayer == id ? (
+                    <>
+                      <Emoji symbol="☀️" label="firstPlayer" /> {"First Player"}{" "}
+                    </>
+                  ) : (
+                    ""
+                  )
+                }
+              />
+            </ListItem>
+          );
+        })}
+        {invitedPlayers ? (
+          invitedPlayers.map(id => {
             return (
               <ListItem key={id} selected={turnOrder[currentTurn] == id}>
                 <ListItemAvatar>
-                  <TreeAvatarIcon
-                    fontSize={"large"}
-                    active={false}
-                    connected={isConnected}
-                    treeType={PlayerBoard.TreeType(playerBoards[id])}
-                  />
+                  <FriendAvatar fontSize={"large"} id={id} />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={`${
-                    id == playerId ? "You" : players[id]?.name ?? "Player"
-                  }`}
-                  secondary={
-                    firstPlayer == id ? (
-                      <>
-                        <Emoji symbol="☀️" label="firstPlayer" />{" "}
-                        {"First Player"}{" "}
-                      </>
-                    ) : (
-                      ""
-                    )
+                  primary={
+                    friends.find(f => f.id == id)?.name ?? "Invited Player"
                   }
+                  secondary={"Invited"}
                 />
+                {playerId == host ? (
+                  <ListItemSecondaryAction>
+                    <IconButton onClick={() => cancelInvitation(id)}>
+                      <DeleteOutlineOutlinedIcon color={"secondary"} />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                ) : (
+                  ""
+                )}
               </ListItem>
             );
-          })}
-          {invitedPlayers ? (
-            invitedPlayers.map(id => {
-              return (
-                <ListItem key={id} selected={turnOrder[currentTurn] == id}>
-                  <ListItemAvatar>
-                    <FriendAvatar fontSize={"large"} id={id} />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      friends.find(f => f.id == id)?.name ?? "Invited Player"
-                    }
-                    secondary={"Invited"}
-                  />
-                  {playerId == host ? (
-                    <ListItemSecondaryAction>
-                      <IconButton onClick={() => cancelInvitation(id)}>
-                        <DeleteOutlineOutlinedIcon color={"secondary"} />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  ) : (
-                    ""
-                  )}
-                </ListItem>
-              );
-            })
-          ) : (
-            <div />
-          )}
-          {showInvitePlayers ? (
-            <><ListItem button onClick={openAddPlayerDialog}>
+          })
+        ) : (
+          <div />
+        )}
+        {showInvitePlayers ? (
+          <>
+            <ListItem button onClick={openAddPlayerDialog}>
               <ListItemAvatar>
                 <Avatar>
                   <PersonAddIcon />
@@ -184,30 +181,51 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
               </ListItemAvatar>
               <ListItemText primary={"Invite Players"} />
             </ListItem>
-           <ListItem button>
-             <ListItemAvatar>
-               <Switch checked={linkEnabled} onChange={() => {dispatch(sendLinkEnabled(sessionId, !linkEnabled))}} name="checkedA" />
-             </ListItemAvatar>
-             <ListItemText primary={"Enable"} />
-           </ListItem><ListItem button onClick={copyToClipboard}><ListItemText className={classes.link} primary={`${window.location.href.replace("sessions",
-                  "join")} `} secondary={copySuccess ? "Copied!" : "Click to Copy"}/>
-           </ListItem>
-            </>
-          ) : (
-            ""
-          )}
-
-        </List>
-
+            <Divider className={classes.linkDivider} />
+            <ListSubheader>Invitation Link</ListSubheader>
+            <ListItem>
+              <ListItemAvatar>
+                <Switch
+                  checked={linkEnabled}
+                  onChange={() => {
+                    dispatch(sendLinkEnabled(sessionId, !linkEnabled));
+                  }}
+                  name="checkedA"
+                />
+              </ListItemAvatar>
+              <ListItemText primary={"Enable"} />
+            </ListItem>
+            <Collapse in={linkEnabled}>
+              <ListItem button onClick={copyToClipboard}>
+                <ListItemText className={classes.link}
+                              primary={`${window.location.href.replace(
+                                  "sessions",
+                                  "join")} `}
+                              secondary={copySuccess
+                                         ? "Copied!"
+                                         : "Click to Copy"} />
+              </ListItem>
+            </Collapse>
+          </>
+        ) : (
+          ""
+        )}
+      </List>
     </CollapsingBox>
   );
 };
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {},
-  link: {maxWidth: 220,
-    overflowWrap:"break-word",
-    wordWrap:"break-word"}
+  linkDivider: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1)
+  },
+  link: {
+    maxWidth: 220,
+    overflowWrap: "break-word",
+    wordWrap: "break-word"
+  }
 }));
 
 export default ListTurnOrder;
