@@ -80,31 +80,31 @@ const BoardTile = (props: IBoardTileProps) => {
   const treeType: null | TreeType =
     propTree == null ? (Tile.GetTreeType(tileCode) as TreeType) : propTree;
   const shadowHeight: number = Tile.GetShadowHeight(tileCode);
-
+  const pieceHeight=Tile.GetPieceHeight(tileCode)
   const sky =
     Math.abs(hex.q) == 4 || Math.abs(hex.r) == 4 || Math.abs(hex.s) == 4;
-  const shaded = !sky && shadowHeight > 0 && focus.shouldShadow(hexCode);
+  const shaded = !sky && shadowHeight > 0 && shadowHeight >= pieceHeight && focus.shouldShadow(hexCode);
 
   let sun: boolean = false;
 
   switch (sunPosition) {
     case SunPosition.NorthWest:
-      sun = hex.r == -4 || hex.s == 4;
+      sun = hex.s != 0 && hex.r != 0 && (hex.r == -4 || hex.s == 4 );
       break;
     case SunPosition.NorthEast:
-      sun = hex.q == 4 || hex.r == -4;
+      sun = hex.q != 0 && hex.r != 0 &&  hex.q == 4 || hex.r == -4;
       break;
     case SunPosition.East:
-      sun = hex.q == 4 || hex.s == -4;
+      sun = hex.q != 0 && hex.s != 0 &&  hex.q == 4 || hex.s == -4;
       break;
     case SunPosition.SouthEast:
-      sun = hex.r == 4 || hex.s == -4;
+      sun = hex.s != 0 && hex.r != 0 &&  hex.r == 4 || hex.s == -4;
       break;
     case SunPosition.SouthWest:
-      sun = hex.q == -4 || hex.r == 4;
+      sun = hex.q != 0 && hex.r != 0 &&  hex.q == -4 || hex.r == 4;
       break;
     case SunPosition.West:
-      sun = hex.q == -4 || hex.s == 4;
+      sun = hex.q != 0 && hex.s != 0 &&  hex.q == -4 || hex.s == 4;
       break;
   }
 

@@ -24,8 +24,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
-using Google.Cloud.Diagnostics.AspNetCore;
-using Microsoft.Extensions.Logging;
 
 namespace dotnet_tree_shadows {
   public class Startup {
@@ -68,7 +66,7 @@ namespace dotnet_tree_shadows {
                                   : host == "localhost" 
                                     || host == "127.0.0.1"
                                     ? $"mongodb://{user}:{password}@{host}:{port}/{databaseName}?authSource=admin"
-                                    : $"mongodb+srv://{user}:{password}@{host}?retryWrites=true&w=majority";
+                                    : $"mongodb+srv://{user}:{password}@{host}/{databaseName}?retryWrites=true&w=majority";
       services.AddIdentityMongoDbProvider<UserModel, MongoRole>(
           identityOptions => {
             identityOptions.Password.RequiredLength = 6;
@@ -153,12 +151,11 @@ namespace dotnet_tree_shadows {
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure (IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory) {
+    public void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
       if ( env.IsDevelopment() ) {
         
         app.UseDeveloperExceptionPage();
       } else {
-        loggerFactory.AddGoogle(app.ApplicationServices, "tree-shadows");
         app.UseExceptionHandler( "/Error" );
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();

@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace dotnet_tree_shadows.Models.InvitationModel {
   public class FriendRequestRequest {
     
-    public string? Email { get; set; } = null;
+    public string? Recipient { get; set; } = null;
     
     [BsonRepresentation( BsonType.String )]
     public InvitationType InvitationType { get; set; }

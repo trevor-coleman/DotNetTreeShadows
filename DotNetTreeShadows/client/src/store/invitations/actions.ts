@@ -54,14 +54,15 @@ export const fetchInvitations = createAsyncThunk<InvitationsResponse, void, Extr
 
 export const sendFriendRequest = createAsyncThunk<void, string, ExtraInfo>(
     'invitations/sendFriendRequest',
-    async (email, {extra}) => {
-        const {api} = extra;
+    async (recipient, thunkAPI) => {
+        const {api} = thunkAPI.extra;
         try {
-            const response = await api.invitations.sendFriendRequest(email);
+            const response = await api.invitations.sendFriendRequest(recipient);
+            if(response.status != 200) return thunkAPI.rejectWithValue(JSON.parse(
+                response.request.response).message as string)
             return;
         } catch (e) {
-            console.log(e.response.data)
-            return;
+            return thunkAPI.rejectWithValue(e.message);
         }
     }
 )
@@ -76,8 +77,8 @@ export const updateInvitationStatus = createAsyncThunk<Invitation, { invitation:
             const response = await api.invitations.updateStatus(id, status);
             return response.data;
         } catch (e) {
-            console.log(e.response.data)
-            return e.response.data;
+            console.log(e.response)
+            return e.response;
         }
     }
 )

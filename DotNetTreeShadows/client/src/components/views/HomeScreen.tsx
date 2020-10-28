@@ -17,6 +17,8 @@ import { signOut } from '../../store/auth/reducer';
 import {useDispatch} from "react-redux";
 import {useTypedSelector} from "../../store";
 import { signOutAndClearStore } from '../../store/auth/thunks';
+import Box from '@material-ui/core/Box';
+import { Rules } from '../Rules';
 
 
 const drawerWidth = 280;
@@ -40,6 +42,8 @@ const useStyles = makeStyles((theme: Theme) =>
             flexGrow: 1,
         },
         content: {
+            backgroundColor: "#ececec",
+            minHeight:"100vh",
             paddingLeft: drawerWidth + theme.spacing(3),
             paddingTop: theme.spacing(3),
         },
@@ -99,12 +103,13 @@ export default function HomeScreen(props: IHomeScreenProps) {
                 </Toolbar>
             </AppBar>
             <div className={classes.toolbarSpacer}/>
-            <Container className={classes.content}>
+            <Box className={classes.content}>
                 <Route exact path={"/"}>Home</Route>
                 <Route exact path={`${path}sessions`} component={Sessions}/>
                 <Route exact path={`${path}friends`} component={Friends}/>
                 <Route exact path={`${path}account`} component={Account}/>
-            </Container>
+                <Route exact path={`${path}rules`} component={Rules}/>
+            </Box>
             <Drawer
                 className={classes.drawer}
                 variant="persistent"

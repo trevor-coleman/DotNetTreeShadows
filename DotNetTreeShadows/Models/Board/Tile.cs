@@ -65,9 +65,9 @@ namespace dotnet_tree_shadows.Models {
 
     public static int GetLight (in int tileCode) {
       if ( GetTileType( tileCode ) == TileType.Empty || GetTileType( tileCode ) == TileType.Sky ) return 0;
-      int pieceTypeValue = GetPieceTypeCode( tileCode );
-      return pieceTypeValue > GetShadowHeight( tileCode )
-               ? pieceTypeValue
+      int pieceHeight = GetPieceHeight( tileCode );
+      return pieceHeight > GetShadowHeight( tileCode )
+               ? pieceHeight
                : 0;
     }
 
@@ -86,7 +86,7 @@ namespace dotnet_tree_shadows.Models {
       GetTileType( tileCode ) != TileType.Sky &&
       (GetShadowHeight( tileCode ) == 0 || GetPieceTypeCode( tileCode ) > GetShadowHeight( tileCode ));
 
-    public static bool ProducesLight (in int tileCode) => GetTileType( tileCode ) == TileType.Piece && GetPieceTypeCode( tileCode ) > GetShadowHeight( tileCode );
+    public static bool ProducesLight (in int tileCode) => GetPieceHeight( tileCode ) > GetShadowHeight( tileCode );
 
     private enum TileType {
 

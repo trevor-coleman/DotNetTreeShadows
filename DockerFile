@@ -29,7 +29,5 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 COPY webserver.pfx .
-EXPOSE 8080
-EXPOSE 80
-EXPOSE 443
-ENTRYPOINT ["dotnet", "DotNetTreeShadows.dll"]
+#ENTRYPOINT ["dotnet", "DotNetTreeShadows.dll"]
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet DotNetTreeShadows.dll

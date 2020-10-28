@@ -31,6 +31,10 @@ const HomeSidebar: FunctionComponent<HomeSidebarProps> = (props: HomeSidebarProp
         path: "/account",
         exact: true
     });
+    let rulesMatch = useRouteMatch({
+        path: "/rules",
+        exact: true
+    });
 
 
 
@@ -46,6 +50,9 @@ const HomeSidebar: FunctionComponent<HomeSidebarProps> = (props: HomeSidebarProp
                 </ListItem>
                 <ListItem  selected={!!accountMatch} button component={Link} to={"/account"}>
                     <ListItemText>Account</ListItemText>
+                </ListItem>
+                <ListItem  selected={!!rulesMatch} button component={Link} to={"/rules"}>
+                    <ListItemText>Rules</ListItemText>
                 </ListItem>
             </List>
         </Box>);

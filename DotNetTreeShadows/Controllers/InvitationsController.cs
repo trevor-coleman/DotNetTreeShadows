@@ -295,7 +295,7 @@ namespace dotnet_tree_shadows.Controllers {
           Console.WriteLine( $"{i.RecipientName} - {i.Status}" );
           return i.RecipientId == recipient.UserId && i.Status == InvitationStatus.Pending;
         }))
-          return Status409Duplicate( $"fjdsjfksjlksjf invitation - {recipient.UserName}" );
+          return Status409Duplicate( $"invitation - {recipient.UserName}" );
         
         SessionInvite sessionInvitation = new SessionInvite(){
           SenderId = sender.UserId,
@@ -326,12 +326,15 @@ namespace dotnet_tree_shadows.Controllers {
     [HttpPost]
     [Route("friend-request")]
     public async Task<ActionResult> SendFriendRequest (FriendRequestRequest invitationInfo) {
-      string? recipientEmail = invitationInfo.Email;
-      if ( recipientEmail == null ) return Status400MissingRequiredField( "email" );
-
+      string? recipientEmailOrUsername = invitationInfo.Recipient;
+      if ( recipientEmailOrUsername == null ) return Status400MissingRequiredField( $"email or username - ({recipientEmailOrUsername})" );
+    
       UserModel sender = await userManager.GetUserAsync( HttpContext.User );
-      UserModel recipient = await userManager.FindByEmailAsync( recipientEmail );
-      if ( recipient == null ) return Status404NotFound( "recipient" );
+      UserModel recipient = await userManager.FindByEmailAsync( recipientEmailOrUsername );
+      if ( recipient == null ) {
+        recipient = await userManager.FindByNameAsync( recipientEmailOrUsername );
+        if (recipient == null) return Status404NotFound( "recipient" );
+      }
       
       if ( sender.HasFriend( recipient.UserId ) ) {
         return Status409Duplicate( "Friend" );

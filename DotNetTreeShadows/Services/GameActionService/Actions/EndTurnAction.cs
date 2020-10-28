@@ -30,6 +30,20 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       game.FirstPlayer = turnOrder[game.CurrentTurn];
       game.SunPosition =
         (SunPosition) (((int) game.SunPosition + 1) % Enum.GetNames( typeof( SunPosition ) ).Length);
+
+      if ( game.SunPosition == SunPosition.NorthWest ) {
+        game.Revolution++;
+        if ( game.Revolution == game.LengthOfGame ) {
+          
+          game.Status = GameStatus.Ended;
+          
+          context.Game = game;
+          context.Board = board;
+          
+          return context;
+        }
+      }
+      
       board.Tiles = Shadow.UpdateAllShadows( board, game.SunPosition );
       foreach (string playerId in game.TurnOrder ) {
         PlayerBoard playerBoard = PlayerBoard.Get( game, playerId );
@@ -39,12 +53,6 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
         game.SetPlayerBoard( playerId, playerBoard );
       }
       
-      if ( game.SunPosition != SunPosition.NorthWest ) return context;
-      game.Revolution++;
-      if ( game.Revolution != game.LengthOfGame ) return context;
-      
-      game.Status = GameStatus.Ended;
-
       context.Game = game;
       context.Board = board;
       

@@ -11,6 +11,7 @@ import Paper from "@material-ui/core/Paper";
 import {useHistory, useLocation, Redirect} from "react-router-dom";
 import {LocationState} from "../../routes/LocationState";
 import {useTypedSelector} from "../../store";
+import { Rules } from '../Rules';
 
 interface PublicPageProps {
 }

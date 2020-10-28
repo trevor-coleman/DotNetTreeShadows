@@ -14,6 +14,7 @@ import CollapsingBox from '../../CollapsingBox';
 
 interface BuyingGridProps {
     width?: number
+    id?: string|null
 }
 
 
@@ -23,7 +24,7 @@ const PlayerBoardDisplay: FunctionComponent<BuyingGridProps> = (props: BuyingGri
     const classes = useStyles();
     const theme = useTheme();
 
-    const playerId = useSelector((state: RootState) => state.profile.id);
+    const playerId = props.id ?? useSelector((state: RootState) => state.profile.id);
     const boardCode = useSelector((state: RootState) => state.game.playerBoards[playerId]);
     const {name: sessionName} = useSelector((state: RootState) => state.session);
 
@@ -43,6 +44,7 @@ const PlayerBoardDisplay: FunctionComponent<BuyingGridProps> = (props: BuyingGri
 
                         return <Grid className={classes.grid} item key={index.toString() + col.toString()}>
                             <PiecesGrid
+                                id={playerId}
                                 key={`${boardCode}-${index}-${col}`} index={index}
                                 col={col}
                                 size={size}/>

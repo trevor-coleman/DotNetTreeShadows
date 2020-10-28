@@ -10,10 +10,10 @@ export function pieceTypeName(pieceType:PieceType) {
         case PieceType.Seed:
             return "Seed";
         case PieceType.SmallTree:
-            return "Small Tree"
+            return "Small"
         case PieceType.MediumTree:
-            return "Medium Tree"
+            return "Medium"
         case PieceType.LargeTree:
-            return "Large Tree"
+            return "Large"
     }
 }

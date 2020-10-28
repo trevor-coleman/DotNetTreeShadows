@@ -22,10 +22,12 @@ import { Alert } from "@material-ui/lab";
 import Collapse from "@material-ui/core/Collapse";
 import { HubConnectionState } from "@microsoft/signalr";
 import TurnAlertSnackBar from "./dialogs/TurnAlertSnackBar";
-import GameOverDialog from "./dialogs/GameOverDialog";
+import GameOverDialog from "./dialogs/GameOverDialog/GameOverDialog";
 import { signOutAndClearStore } from "../../store/auth/thunks";
 import DiscardAlertDialog from "./dialogs/DiscardAlertDialog";
 import AddPlayerDialog from './dialogs/AddPlayerDialog';
+import RulesDialog from './dialogs/RulesDialog';
+import { showRulesDialog } from "../../store/appState/reducer";
 
 interface GameScreenProps {dummy?:boolean}
 
@@ -62,6 +64,9 @@ const GameScreen: FunctionComponent<GameScreenProps> = (
   const handleSignOut = () => {
     dispatch(signOutAndClearStore());
   };
+  const showRules = () => {
+    dispatch(showRulesDialog(true));
+  };
 
   return (
     <Container maxWidth={false} className={classes.root}>
@@ -73,6 +78,9 @@ const GameScreen: FunctionComponent<GameScreenProps> = (
           <Typography variant="h6" noWrap className={classes.title}>
             {sessionName} - {connectionState ?? undefined}
           </Typography>
+          <Button color="inherit" onClick={showRules}>
+            Rules
+          </Button>
           <Button color="inherit" onClick={handleSignOut}>
             Sign Out
           </Button>
@@ -111,6 +119,7 @@ const GameScreen: FunctionComponent<GameScreenProps> = (
       {dummy ? "": <DisconnectedAlertDialog />}
       <GameOverDialog />
       <DiscardAlertDialog />
+      <RulesDialog/>
     </Container>
   );
 };
@@ -128,7 +137,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   leftPanel: {
     flexShrink: 0,
     backgroundColor: "#c9c9c9",
-    width: 280,
+    width: 300,
     height: "100vh"
   },
   gamePanel: {

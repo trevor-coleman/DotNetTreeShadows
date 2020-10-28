@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using dotnet_tree_shadows.Models;
@@ -26,7 +27,8 @@ namespace dotnet_tree_shadows.Services {
                                                                                         session => new SessionSummary(
                                                                                                 session.Id,
                                                                                                 session.Name,
-                                                                                                session.Host
+                                                                                                session.Host,
+                                                                                                session.HostName
                                                                                             )
                                                                                     )
                                                                         };
@@ -43,9 +45,10 @@ namespace dotnet_tree_shadows.Services {
 
         public async Task<Session?> Get (string id) => (await sessions.FindAsync( session => session.Id == id )).FirstOrDefault();
 
-        public async Task<Session> Create (Session sessionDtoWithId) {
-          await sessions.InsertOneAsync( sessionDtoWithId );
-            return sessionDtoWithId;
+        public async Task<Session> Create (Session session) {
+          Console.WriteLine(session.HostName);
+          await sessions.InsertOneAsync( session );
+            return session;
         }
 
         public async Task Update (Session sessionIn) =>

@@ -20,6 +20,7 @@ const initialSessionState: SessionState = {
   loadingSessionState: RequestState.Idle,
   loadingSessionFailureMessage: null,
   host: "",
+  hostName: "",
   linkEnabled:true,
   id: "",
   invitations: [],

@@ -48,7 +48,6 @@ const Friends: FunctionComponent<FriendsProps> = (props: FriendsProps) => {
                 <Grid item xs={8}>
                     <FriendRequestList type={"sent"}/>
                 </Grid>
-                <Grid item xs={8}><DebugToolbar/></Grid>
             </Grid>
 
         </Box>);

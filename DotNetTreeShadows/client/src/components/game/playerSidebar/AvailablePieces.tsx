@@ -8,20 +8,27 @@ import { PieceType } from "../../../store/board/types/pieceType";
 import TreeAvatarIcon from "./TreeAvatarIcon";
 import Grid from "@material-ui/core/Grid";
 import CollapsingBox from "../../CollapsingBox";
+import { usePlayerId } from '../../../store/profile/reducer';
+import { useSelectPlayerBoard } from '../../../store/playerBoard/reducer';
 
 interface Props {
   width?: number;
+  id?: string|null
 }
 
 //COMPONENT
 const AvailablePieces: FunctionComponent<Props> = (props: Props) => {
   const classes = useStyles(props);
   const dispatch = useDispatch();
-  const boardCode = useTypedSelector(
-    state => state.game.playerBoards[state.profile.id]
-  );
+  const playerId = props.id ?? usePlayerId();
+  const playerBoard = useSelectPlayerBoard(playerId)
 
-  const available: number[] = PlayerBoard.available(boardCode);
+  const available: number[] = playerId ? [
+      playerBoard.pieces.Seed.available,
+      playerBoard.pieces.SmallTree.available,
+      playerBoard.pieces.MediumTree.available,
+      playerBoard.pieces.LargeTree.available,
+    ] : [];
 
   const availablePieces: { pieceType: PieceType; key: string }[][] = [];
 
@@ -30,7 +37,7 @@ const AvailablePieces: FunctionComponent<Props> = (props: Props) => {
     for (let i = 0; i < numberOfPieces; i++) {
       pieces.push({
         pieceType: pieceType as PieceType,
-        key: `${boardCode}-${pieceType}-${i}`
+        key: `${playerId}-${pieceType}-${i}`
       });
     }
     availablePieces[pieceType] = pieces;
@@ -50,7 +57,7 @@ const AvailablePieces: FunctionComponent<Props> = (props: Props) => {
                       <Box m={0.5}>
                         <TreeAvatarIcon
                           pieceType={piece.pieceType}
-                          treeType={PlayerBoard.TreeType(boardCode)}
+                          treeType={playerBoard.treeType}
                           fontSize={"large"}
                         />
                       </Box>

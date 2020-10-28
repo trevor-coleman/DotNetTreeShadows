@@ -32,7 +32,7 @@ namespace dotnet_tree_shadows.Models {
       return board.Tiles.Where( (kvp) => {
                      
                      (_, int value) = kvp;
-                     if(Tile.TreeTypeIs( value, treeType ) && Tile.ProducesLight( value )) Console.Write("\n\n>>>Counting Light");
+                     if(Tile.TreeTypeIs( value, treeType ) && Tile.ProducesLight( value )) Console.Write(">>>Counting Light: ");
                      
                      
                      return Tile.TreeTypeIs( value, treeType ) && Tile.ProducesLight( value );
@@ -40,7 +40,7 @@ namespace dotnet_tree_shadows.Models {
                .Aggregate(
                     0,
                     (l, p) => {
-                      Console.WriteLine($"{l} - {p.Key} - {p.Value} - {Tile.GetLight( p.Value )}");
+                      Console.WriteLine($"Total:{l} ||  (Hex:{p.Key.ToString()}, code: {p.Value}) || height:{Tile.GetPieceHeight( p.Value )} > {Tile.GetShadowHeight( p.Value )} ==> {Tile.GetLight( p.Value )}");
                       return l + Tile.GetLight( p.Value );
                     }
                      );

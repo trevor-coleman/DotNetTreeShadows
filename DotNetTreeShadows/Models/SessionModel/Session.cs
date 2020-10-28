@@ -12,6 +12,7 @@ namespace dotnet_tree_shadows.Models.SessionModel {
 
     public string Name { get; set; } = "Session";
     public string Host { get; set; } = "";
+    public string HostName { get; set; } = "";
     public string[] Invitations { get; set; } = new string[0];
     public string[] InvitedPlayers { get; set; } = new string[0];
     public Dictionary<string, PlayerSummary> Players { get; set; } = new Dictionary<string, PlayerSummary>();
@@ -20,7 +21,7 @@ namespace dotnet_tree_shadows.Models.SessionModel {
 
     [BsonIgnore]
     public SessionSummary Summary {
-      get => new SessionSummary( Id, Name, Host );
+      get => new SessionSummary( Id, Name, Host, HostName );
     }
 
     public bool HasPlayer (string id) => Players.ContainsKey( id ) || Host == id;

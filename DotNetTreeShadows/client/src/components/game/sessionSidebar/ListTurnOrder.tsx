@@ -13,7 +13,10 @@ import FriendAvatar from "../../friends/FriendAvatar";
 import Divider from "@material-ui/core/Divider";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import IconButton from "@material-ui/core/IconButton";
-import { showAddPlayerDialog } from "../../../store/appState/reducer";
+import {
+  showAddPlayerDialog,
+  showOtherPlayerPopover
+} from "../../../store/appState/reducer";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import DeleteOutlineOutlinedIcon from "@material-ui/icons/DeleteOutlineOutlined";
 import { GameStatus } from "../../../store/game/types/GameStatus";
@@ -23,6 +26,9 @@ import CollapsingBox from "../../CollapsingBox";
 import { sendLinkEnabled } from "../../../store/signalR/actions";
 import { useLocation } from "react-router-dom";
 import Collapse from '@material-ui/core/Collapse';
+import ScoringTokenAvatar from '../playerSidebar/ScoringTokenAvatar';
+import OtherPlayerPopover from './OtherPlayerPopover';
+
 
 interface ListTurnOrderProps {}
 
@@ -35,12 +41,12 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
   const dispatch = useDispatch();
   const location = useLocation();
   const {
-    playerBoards,
     turnOrder,
     currentTurn,
     status,
     firstPlayer
   } = useTypedSelector(state => state.game);
+  const playerBoards = useTypedSelector(state => state.playerBoards)
   const {
     players,
     host,
@@ -52,12 +58,11 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
   const { friends, id: playerId } = useTypedSelector(state => state.profile);
   const { sessionInvites } = useTypedSelector(state => state.invitations);
   const [copySuccess, setCopySuccess] = useState(false);
+  const [popoverProps, setPopoverProps] = useState<{anchorEl: HTMLElement | null, id:string | null}>({anchorEl: null, id: null});
+
 
   async function copyToClipboard(
-    e:
-      | React.MouseEvent<HTMLLIElement>
-      | React.MouseEvent<HTMLAnchorElement>
-      | React.MouseEvent<HTMLDivElement>
+    e: React.MouseEvent
   ) {
     setCopySuccess(false);
     await navigator.clipboard.writeText(
@@ -66,11 +71,21 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
     setCopySuccess(true);
   }
 
+
+  const showPopover = (e: React.MouseEvent<HTMLElement>, id: string) => {
+   if(id==playerId) return;
+    setPopoverProps({
+     anchorEl: e.currentTarget,
+     id
+   });
+   dispatch(showOtherPlayerPopover(true))
+  };
+
   const openAddPlayerDialog = () => {
     dispatch(showAddPlayerDialog(true));
   };
 
-  console.log(location);
+
 
   async function cancelInvitation(recipientId: string) {
     const toCancel = sessionInvites.find(
@@ -116,14 +131,16 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
           let isConnected = connectedPlayers
             ? connectedPlayers.indexOf(id) >= 0
             : false;
+          const isButton = Boolean(id !== playerId)
           return (
-            <ListItem key={id} selected={turnOrder[currentTurn] == id}>
+            <div key={id}><ListItem selected={turnOrder[currentTurn] == id}
+                      button={isButton as any} onClick={(e)=>showPopover(e, id)}>
               <ListItemAvatar>
                 <TreeAvatarIcon
                   fontSize={"large"}
                   active={false}
                   connected={isConnected}
-                  treeType={PlayerBoard.TreeType(playerBoards[id])}
+                  treeType={playerBoards[id].treeType}
                 />
               </ListItemAvatar>
               <ListItemText
@@ -140,7 +157,15 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
                   )
                 }
               />
+              <ListItemAvatar>
+                <ScoringTokenAvatar
+                  light
+                  size={24}
+                  score={playerBoards[id].light}
+                />
+              </ListItemAvatar>
             </ListItem>
+            </div>
           );
         })}
         {invitedPlayers ? (
@@ -166,6 +191,7 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
                   ""
                 )}
               </ListItem>
+
             );
           })
         ) : (
@@ -211,6 +237,7 @@ const ListTurnOrder: FunctionComponent<ListTurnOrderProps> = (
           ""
         )}
       </List>
+      <OtherPlayerPopover {...popoverProps} />
     </CollapsingBox>
   );
 };

@@ -9,6 +9,7 @@ import { useCollectedScoreTokens } from "../../../store/game/reducer";
 import Grid from "@material-ui/core/Grid";
 import { tileColor } from "../../helpers/treeColor";
 import { ScoringToken } from "../../../store/game/types/scoringToken";
+import ScoringTokenAvatar from './ScoringTokenAvatar';
 
 interface ScoreDisplayProps {}
 
@@ -27,26 +28,6 @@ const ScoreDisplay: FunctionComponent<ScoreDisplayProps> = (
     hideScores?: boolean;
   }
 
-  const ScoringTokenAvatar = (props: TokenProps) => {
-    const { token } = props;
-    const hideScores = props.hideScores ?? false;
-    const [open, setOpen] = useState(false);
-    const visible = hideScores ? open : true;
-
-    return (
-      <Avatar
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
-        style={{
-          backgroundColor: tileColor(4 - token.leaves),
-          color: "#fff",
-          cursor: "default"
-        }}
-      >
-        {visible ? `${token.points}` : " "}
-      </Avatar>
-    );
-  };
 
   const compareTokens = (a: ScoringToken, b: ScoringToken): number =>
     a.leaves == b.leaves ? b.points - a.points : b.leaves - a.leaves;

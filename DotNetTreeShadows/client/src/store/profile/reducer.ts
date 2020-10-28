@@ -13,6 +13,7 @@ export interface SessionSummary {
     id: string,
     name:string,
     host:string,
+  hostName:string,
 }
 
 export interface ProfileState extends Profile {

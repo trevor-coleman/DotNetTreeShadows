@@ -10,8 +10,8 @@ const PlayerSidebar = () => {
 
   return <div>
     <SidebarGrid>
-    <PlayerBoardDisplay/>
-    <AvailablePieces/>
+      <AvailablePieces/>
+      <PlayerBoardDisplay/>
       {scoreTokens?.length > 0 ? <ScoreDisplay/>:""}
     </SidebarGrid>
   </div>

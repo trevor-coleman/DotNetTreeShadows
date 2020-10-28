@@ -3,8 +3,8 @@ import {fetchProfile} from "../profile/actions";
 import {fetchInvitations, sendFriendRequest, updateInvitationStatus} from "./actions";
 import {Invitation, InvitationStatus} from "./types/invitation";
 
-export const addFriend = (email: string) => async (dispatch: AppDispatch) => {
-  await dispatch(sendFriendRequest(email));
+export const addFriend = (friendInfo: string) => async (dispatch: AppDispatch) => {
+  await dispatch(sendFriendRequest(friendInfo));
   await dispatch(fetchProfile());
   await dispatch(fetchInvitations());
 };

@@ -15,10 +15,10 @@ export default class InvitationApiSection extends AApiSection {
         return await axios.get(`invitations`);
     }
 
-    async sendFriendRequest(email: string) {
+    async sendFriendRequest(recipient: string) {
         const friendRequestRequest = {
             type: "FriendRequest",
-            email
+            recipient
         }
 
         return await axios.post('invitations/friend-request', friendRequestRequest);
