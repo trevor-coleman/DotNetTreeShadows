@@ -7,7 +7,7 @@
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=60c2b2de_002D6925_002D403f_002D9c0d_002D3903a22f022d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="StartGameActionTest #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
-    &lt;TestId&gt;NUnit3x::D6E1E4C9-D523-4152-9824-E9D421E5E2AC::.NETCoreApp,Version=v3.1::TestShadows.StartGameActionTest&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::D8801332-3890-4169-9461-B62C78B89DC7::.NETCoreApp,Version=v3.1::DotNetTreeShadows.Tests.ScoreTokensTest.FourLeafTokensAreTakenInOrder&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	

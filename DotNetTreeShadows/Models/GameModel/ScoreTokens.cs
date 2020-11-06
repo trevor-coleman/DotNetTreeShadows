@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace dotnet_tree_shadows.Models.GameModel {
   
@@ -13,7 +14,7 @@ namespace dotnet_tree_shadows.Models.GameModel {
         if ( stacks.TryGetValue( leaves, out int[] scores ) && scores.Length != 0 ) {
           Stack<int> stack = new Stack<int>(scores);
           token = new Scoring.Token( leaves, stack.Pop() );
-          stacks[leaves] = stack.ToArray();
+          stacks[leaves] = stack.Reverse().ToArray();
           return true;
         }
 

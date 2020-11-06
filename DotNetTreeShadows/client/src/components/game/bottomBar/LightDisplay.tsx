@@ -23,7 +23,7 @@ const LightDisplay: FunctionComponent<LightDisplayProps> = (props: LightDisplayP
 
     const lightArray: { filled: boolean, key: string }[] = []
 
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 20; i++) {
         lightArray.push({
             filled: i < light,
             key: `${id}-light-${i}`,

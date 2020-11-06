@@ -52,8 +52,8 @@ namespace dotnet_tree_shadows.Models.GameModel {
     public int Light {
       get => light;
       set =>
-        light = value > 30
-                  ? 30
+        light = value > 20
+                  ? 20
                   : value;
     }
 
