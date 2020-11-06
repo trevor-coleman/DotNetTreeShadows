@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using dotnet_tree_shadows.Actions.Validators;
 using dotnet_tree_shadows.Hubs;
 using dotnet_tree_shadows.Models;
@@ -20,7 +21,7 @@ namespace dotnet_tree_shadows.Actions.HostActions {
     }
 
     protected override void DoAction () {
-      if ( !Game.GameOptions.Has( GameOption.AssignTurnOrder ) ) {
+      if ( !Game.GameOptions.Contains( GameOption.AssignTurnOrder ) ) {
         Game.RandomizeTurns();
       }
 

@@ -20,7 +20,9 @@ const Revolutions: FunctionComponent<YearsDisplayProps> = (props: YearsDisplayPr
   const dispatch = useDispatch();
   const {gameOptions, revolution} = useTypedSelector(state => state.game);
 
-  const gameLength = gameOptions[GameOption.LongGame] == true ? 4 : 3;
+  const gameLength = gameOptions.indexOf("LongGame") !== -1 ? 4 : 3;
+  console.log(gameOptions, "LongGame",
+      gameOptions.indexOf("LongGame"))
 
   const YearIcon = ({sun}: { sun: boolean }) => {
     return (<Grid item><YearAvatarIcon sun={sun} size={40}/></Grid>)

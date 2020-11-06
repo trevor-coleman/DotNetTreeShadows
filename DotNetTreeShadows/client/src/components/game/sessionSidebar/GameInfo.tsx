@@ -33,28 +33,55 @@ const GameInfo: FunctionComponent<GameInfoProps> = (props: GameInfoProps) => {
   return (
     <Paper onClick={() => setOpen(!open)}>
       <Box p={2}>
-        <Box className={classes.titleWrapper}><Typography className={classes.title} variant={"subtitle1"}>Game Settings</Typography>
-        {open?<IconButton size={"small"} className={classes.expander} onClick={() => setOpen(!open)}>
-          <Fade in={open}><ExpandLessIcon/></Fade>
-        </IconButton>:
-        <IconButton size={"small"} className={classes.expander} onClick={() => setOpen(!open)}>
-          <Fade in={!open}><ExpandMoreIcon/></Fade>
-        </IconButton>}</Box>
+        <Box className={classes.titleWrapper}>
+          <Typography className={classes.title} variant={"subtitle1"}>
+            Game Settings
+          </Typography>
+          {open ? (
+            <IconButton
+              size={"small"}
+              className={classes.expander}
+              onClick={() => setOpen(!open)}
+            >
+              <Fade in={open}>
+                <ExpandLessIcon />
+              </Fade>
+            </IconButton>
+          ) : (
+            <IconButton
+              size={"small"}
+              className={classes.expander}
+              onClick={() => setOpen(!open)}
+            >
+              <Fade in={!open}>
+                <ExpandMoreIcon />
+              </Fade>
+            </IconButton>
+          )}
+        </Box>
         <Collapse in={open}>
-          <Divider/>
+          <Divider />
           <List dense>
-          {gameOptionDescriptions.map(({id, description, name}) => (
-            <ListItem disabled={!(gameOptions[id] == true)} key={id}>
-              <ListItemIcon>{
-                gameOptions[id]
-                  ? <CheckIcon color={"primary"}/>
-                  : <NotInterestedIcon/>}
-              </ListItemIcon>
-              <ListItemText primary={name} secondary={description}/>
-            </ListItem>))}
-        </List></Collapse>
+            {gameOptionDescriptions.map(({ id, description, name }) => {
+              const isEnabled: boolean = gameOptions.indexOf(id) != -1;
+              return (
+                <ListItem disabled={!isEnabled} key={id}>
+                  <ListItemIcon>
+                    {isEnabled ? (
+                      <CheckIcon color={"primary"} />
+                    ) : (
+                      <NotInterestedIcon />
+                    )}
+                  </ListItemIcon>
+                  <ListItemText primary={name} secondary={description} />
+                </ListItem>
+              );
+            })}
+          </List>
+        </Collapse>
       </Box>
-    </Paper>);
+    </Paper>
+  );
 };
 
 const useStyles = makeStyles((theme: Theme) => ({

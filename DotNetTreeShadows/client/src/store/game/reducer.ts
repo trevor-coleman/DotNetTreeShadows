@@ -27,7 +27,7 @@ const initialGameState: GameState = {
   turnCount: 0,
   currentTurn: 0,
   firstPlayer: "",
-  gameOptions: {},
+  gameOptions: [],
   playerBoards: {},
   revolution: 0,
   sunPosition: SunPosition.NorthWest,
@@ -65,17 +65,19 @@ const gameSlice = createSlice({
       state: GameState,
       action: PayloadAction<{
         sessionId: string;
-        gameOption: string;
+        gameOption: GameOption;
         value: boolean;
       }>
     ) => {
-      const { gameOption, value } = action.payload;
+
+      const gameOptions = action.payload.value ?
+          state.gameOptions.filter(id=>id!==action.payload.gameOption).concat([action.payload.gameOption])
+                             : state.gameOptions.filter(id => id !== action.payload.gameOption)
+
+
       return {
         ...state,
-        gameOptions: {
-          ...state.gameOptions,
-          [gameOption]: value || undefined
-        }
+        gameOptions,
       };
     },
     setCurrentAction: (state, action: PayloadAction<GameActionType>) => ({
@@ -106,7 +108,7 @@ export const useTurnAlertCounts = () =>
     return {
       count: state.game.revolutionAlertCount ?? 0,
       revolution: state.game.revolution,
-      gameLength: state.game.gameOptions[GameOption.LongGame] ? 4 : 3,
+      gameLength: state.game.gameOptions.indexOf("LongGame") !== -1 ? 4 : 3,
       turnCount: state.game.turnCount,
       turnAlertCount: state.game.turnAlertCount,
     };

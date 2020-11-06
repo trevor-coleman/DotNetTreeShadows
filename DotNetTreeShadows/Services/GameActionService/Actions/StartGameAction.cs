@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Models.GameModel;
 using dotnet_tree_shadows.Services.GameActionService.ActionValidation;
@@ -12,7 +13,7 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
 
     protected override ActionContext DoAction (ActionContext context) {
       
-      if ( !context.Game.GameOptions.Has( GameOption.AssignTurnOrder ) ) {
+      if ( !context.Game.GameOptions.Contains( GameOption.AssignTurnOrder ) ) {
         context.Game.RandomizeTurns();
       }
       

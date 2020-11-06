@@ -5,6 +5,7 @@ using System.Linq;
 using dotnet_tree_shadows.Models.Enums;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -41,8 +42,8 @@ namespace dotnet_tree_shadows.Models.GameModel {
     public int turnCount { get; set; } = 0;
 
     public TokenStacks ScoringTokens { get; set; } = TokenStacks.StartingStacks;
-
-    public GameOptionsDictionary GameOptions { get; set; } = new GameOptionsDictionary();
+    
+    public string[] GameOptions { get; set; } = new string[0];
     
     public int[] TilesActiveThisTurn { get; set; } = new int[0];
 
@@ -52,7 +53,7 @@ namespace dotnet_tree_shadows.Models.GameModel {
 
     public int LengthOfGame {
       get =>
-        GameOptions.Has( GameOption.LongGame )
+        GameOptions.Contains( GameOption.LongGame )
           ? 4
           : 3;
     }

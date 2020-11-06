@@ -14,6 +14,7 @@ import { updatedTreeTiles } from "../../store/board/reducer";
 import {TreeType} from "../../store/board/types/treeType";
 import {updateTreeTiles} from "../../store/board/thunks";
 import { updateFocus } from '../../store/game/thunks';
+import { GameOption } from '../../store/game/types/GameOption';
 
 const {store} = enhancedStore;
 
@@ -61,7 +62,7 @@ export default function connectListeners(connection: HubConnection) {
     store.dispatch(fetchSession(sessionId))
   })
 
-  connection.on("UpdateGameOptions", (request: { sessionId: string, gameOption: string, value: boolean }) => {
+  connection.on("UpdateGameOptions", (request: { sessionId: string, gameOption: GameOption, value: boolean }) => {
     if (store.getState().session.id != request.sessionId) return;
     store.dispatch(gameOptionUpdate(request))
   })

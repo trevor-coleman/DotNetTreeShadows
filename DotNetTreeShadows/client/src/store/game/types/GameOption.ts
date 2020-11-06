@@ -1,5 +1,1 @@
-export enum GameOption {
-    LongGame="LongGame",
-    PreventActionsInShadow="PreventActionsInShadow",
-    AssignTurnOrder="AssignTurnOrder"
-}
+export type GameOption = "LongGame" | "PreventActionsInShadow" | "AssignTurnOrder"

@@ -108,7 +108,7 @@ export const useFocus = () =>
   useTypedSelector(state => {
     const { focusTiles, originHexCode } = state.board;
     const preventActionsInShadow =
-      state.game.gameOptions[GameOption.PreventActionsInShadow];
+      state.game.gameOptions.indexOf("PreventActionsInShadow") !== -1;
     return {
       on: focusTiles && focusTiles.length > 0,
       tiles: focusTiles,

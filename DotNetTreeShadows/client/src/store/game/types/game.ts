@@ -1,6 +1,7 @@
 import {SunPosition} from "./sunPosition";
 import {ScoringToken} from "./scoringToken";
 import {GameStatus} from "./GameStatus";
+import { GameOption } from './GameOption';
 
 export default interface Game {
     status: GameStatus;
@@ -17,9 +18,7 @@ export default interface Game {
     scores: {
         [playerId: string]: ScoringToken[]
     }
-    gameOptions: {
-        [option: string]: boolean | undefined,
-    },
+    gameOptions: GameOption[],
     tilesActiveThisTurn: number[],
 
 }

@@ -23,7 +23,7 @@ namespace dotnet_tree_shadows.Services.GameActionService.ActionValidation {
       context.PermittedGameStatuses != null && context.Game != null && context.PermittedGameStatuses.Any(status=>status == context.Game.Status);
 
     public static bool GrowthInShadowAllowed (ActionContext context) =>
-      context.Game!.GameOptions.Has( GameOption.PreventActionsInShadow ) == false ||
+      context.Game!.GameOptions.Contains( GameOption.PreventActionsInShadow ) == false ||
       !Tile.IsShadowed( ((Hex) context.Origin!).HexCode );
 
     public static bool IsPlayersTurn (ActionContext context) =>

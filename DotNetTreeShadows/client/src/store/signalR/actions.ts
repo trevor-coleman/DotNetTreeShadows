@@ -68,11 +68,12 @@ export const setGameOption = (
   value: boolean,
   sessionId: string
 ) => async (dispatch: AppDispatch) => {
-  const newGameOptions = {
-    ...store.getState().game.gameOptions,
-    [gameOption]: value ? value : undefined
-  };
-  dispatch(gameOptionUpdate(newGameOptions));
+  dispatch(gameOptionUpdate({
+    gameOption,
+    value,
+    sessionId
+  }));
+
   await dispatch(
     sendGameOptionUpdate({
       gameOption,

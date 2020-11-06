@@ -1,3 +1,4 @@
+using System.Linq;
 using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Models.GameModel;
@@ -14,7 +15,7 @@ namespace dotnet_tree_shadows.Actions.Validators {
         }
 
         public override bool IsValid {
-            get => game.GameOptions.Has( GameOption.PreventActionsInShadow ) == false || !Tile.IsShadowed( tileCode );
+            get => game.GameOptions.Contains( GameOption.PreventActionsInShadow ) == false || !Tile.IsShadowed( tileCode );
         }
         public override string? FailureMessage {
           get => "Growth in shadow is not permitted.";

@@ -15,6 +15,7 @@ import { setGameOption } from "../../../store/signalR/actions";
 import { GameOption } from "../../../store/game/types/GameOption";
 import gameActions from "../../../gamehub/gameActions";
 import Grid from "@material-ui/core/Grid";
+import game from '../../../store/game/types/game';
 
 interface GameStatusProps {}
 
@@ -53,11 +54,11 @@ const HostOptions: FunctionComponent<GameStatusProps> = (
     name,
     description
   }: {
-    id: string;
+    id: GameOption;
     name: string;
     description: string;
   }) => {
-    const optionState = gameOptions[id] ?? false;
+    const optionState = gameOptions.indexOf(id) !== -1 ?? false;
 
     function handleCheck(gameOption: string, value: boolean) {
       dispatch(setGameOption(gameOption as GameOption, value, sessionId));
@@ -119,7 +120,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default HostOptions;
 
-export const gameOptionDescriptions = [
+export const gameOptionDescriptions: {
+  id: GameOption,
+  name:string,
+  description: string,
+}[] = [
   {
     id: "LongGame",
     name: "Long Game",

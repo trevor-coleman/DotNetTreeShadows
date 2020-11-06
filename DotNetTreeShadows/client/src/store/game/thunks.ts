@@ -57,7 +57,7 @@ export const setGameAction = (currentActionType: GameActionType) => (dispatch: A
         Hex.IsOnEdge(hexCode) &&
         Tile.IsEmpty(tileCode) &&
         !(
-          gameOptions[GameOption.PreventActionsInShadow] &&
+          gameOptions.indexOf("PreventActionsInShadow") !== -1 &&
           Tile.IsShadowed(tileCode)
         )
       );

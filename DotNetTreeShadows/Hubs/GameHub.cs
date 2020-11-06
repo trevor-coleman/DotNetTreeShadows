@@ -87,8 +87,16 @@ namespace dotnet_tree_shadows.Hubs {
     public async Task SetGameOption (SetGameOptionRequest request) {
       Game game = await gameService.Get( request.SessionId );
       await Clients.Group( request.SessionId ).SendAsync( "UpdateGameOptions", request );
-      game.GameOptions.Set( request.GameOption, request.Value );
+      if ( request.Value ) {
+        game.GameOptions = game.GameOptions.Where( i => i != request.GameOption )
+                               .Append( request.GameOption )
+                               .ToArray();
+      } else {
+        game.GameOptions = game.GameOptions.Where( i => i != request.GameOption ).ToArray();
+      }
+      
       await gameService.Update( game.Id, game );
+      
     }
 
     public async Task SetLinkEnabled (string sessionId, bool value) {
@@ -195,7 +203,7 @@ namespace dotnet_tree_shadows.Hubs {
     public class SetGameOptionRequest {
 
       public string SessionId { get; set; }
-      public GameOption GameOption { get; set; }
+      public string GameOption { get; set; }
       public bool Value { get; set; }
 
     }
