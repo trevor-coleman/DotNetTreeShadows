@@ -80,31 +80,35 @@ const BoardTile = (props: IBoardTileProps) => {
   const treeType: null | TreeType =
     propTree == null ? (Tile.GetTreeType(tileCode) as TreeType) : propTree;
   const shadowHeight: number = Tile.GetShadowHeight(tileCode);
-  const pieceHeight=Tile.GetPieceHeight(tileCode)
+  const pieceHeight = Tile.GetPieceHeight(tileCode);
   const sky =
     Math.abs(hex.q) == 4 || Math.abs(hex.r) == 4 || Math.abs(hex.s) == 4;
-  const shaded = !sky && shadowHeight > 0 && shadowHeight >= pieceHeight && focus.shouldShadow(hexCode);
+  const shaded =
+    !sky &&
+    shadowHeight > 0 &&
+    shadowHeight >= pieceHeight &&
+    focus.shouldShadow(hexCode);
 
   let sun: boolean = false;
 
   switch (sunPosition) {
     case SunPosition.NorthWest:
-      sun = hex.s != 0 && hex.r != 0 && (hex.r == -4 || hex.s == 4 );
+      sun = hex.s != 0 && hex.r != 0 && (hex.r == -4 || hex.s == 4);
       break;
     case SunPosition.NorthEast:
-      sun = hex.q != 0 && hex.r != 0 &&  hex.q == 4 || hex.r == -4;
+      sun = (hex.q != 0 && hex.r != 0 && hex.q == 4) || hex.r == -4;
       break;
     case SunPosition.East:
-      sun = hex.q != 0 && hex.s != 0 &&  hex.q == 4 || hex.s == -4;
+      sun = (hex.q != 0 && hex.s != 0 && hex.q == 4) || hex.s == -4;
       break;
     case SunPosition.SouthEast:
-      sun = hex.s != 0 && hex.r != 0 &&  hex.r == 4 || hex.s == -4;
+      sun = (hex.s != 0 && hex.r != 0 && hex.r == 4) || hex.s == -4;
       break;
     case SunPosition.SouthWest:
-      sun = hex.q != 0 && hex.r != 0 &&  hex.q == -4 || hex.r == 4;
+      sun = (hex.q != 0 && hex.r != 0 && hex.q == -4) || hex.r == 4;
       break;
     case SunPosition.West:
-      sun = hex.q != 0 && hex.s != 0 &&  hex.q == -4 || hex.s == 4;
+      sun = (hex.q != 0 && hex.s != 0 && hex.q == -4) || hex.s == 4;
       break;
   }
 
@@ -188,42 +192,67 @@ const BoardTile = (props: IBoardTileProps) => {
       ? 330
       : 30;
 
+  const treeScale = pieceHeight == 0 ?
+                    0.6 :
+                    pieceHeight == 1 ?
+                    0.65 :
+                    pieceHeight == 2 ?
+                    0.8 :
+                    pieceHeight == 3 ?
+                    1.0 : 0;
+  console.log(treeScale);
+
   return (
     <g>
+      <circle onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onClick={handleClick}
+              cx={center.x}
+              cy={center.y}
+              r={(
+                  size / sizeFactor)}
+              fill={new Color(backgroundColor)
+                  .alpha(0)
+                  .toString()}
+              strokeWidth={Hex.IsSky(hexCode)
+                           ? 0
+                           : 2}
+              stroke={strokeColor} />
+
+
       <circle
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}
         cx={center.x}
         cy={center.y}
-        r={size / sizeFactor}
+        r={(size / sizeFactor) * treeScale}
         fill={new Color(backgroundColor)
-          .alpha(Hex.IsSky(hexCode) ? 0 : treeIcon ? 1 :  0.2)
+          .alpha(treeIcon ? 1 : 0)
           .toString()}
-        strokeWidth={Hex.IsSky(hexCode)
-                     ? 0
-                     :2}
+        strokeWidth={Hex.IsSky(hexCode) ? 0 : 0}
         stroke={strokeColor}
       />
 
       {Hex.IsSky(hexCode) ? (
-          ""
+        ""
       ) : (
-          <image
-              pointerEvents={"none"}
-            href={emptyLeaves()}
-            x={center.x - size / 1.2 / 2}
-            y={center.y - size / 1.2 / 2}
-            width={size / 1.2}
-            transform={`rotate(${rotateAngle}, ${center.x},${center.y})`}
-            height={size / 1.2}
-          />
+        <image
+          pointerEvents={"none"}
+          href={emptyLeaves()}
+          x={center.x - size / 1.2 / 2}
+          y={center.y - size / 1.2 / 2}
+          width={size / 1.2}
+          transform={`rotate(${rotateAngle}, ${center.x},${center.y})`}
+          height={size / 1.2}
+        />
       )}
       {treeIcon ? (
-        <circle pointerEvents={"none"}
+        <circle
+          pointerEvents={"none"}
           cx={center.x}
           cy={center.y}
-          r={size * (1 - borderPercent)}
+          r={size * (1 - borderPercent) * treeScale}
           fill={Color(backgroundColor)
             .lighten(1.8)
             .toString()}
@@ -233,7 +262,8 @@ const BoardTile = (props: IBoardTileProps) => {
         ""
       )}
       {sunIcon ? (
-        <image pointerEvents={"none"}
+        <image
+          pointerEvents={"none"}
           href={sunIcon}
           x={center.x - sunSize / 2}
           y={center.y - sunSize / 2}
@@ -243,26 +273,33 @@ const BoardTile = (props: IBoardTileProps) => {
       ) : (
         ""
       )}
-      {shaded
-       ? (
-           <circle pointerEvents={"none"}
-                   cx={center.x}
-                   cy={center.y}
-                   r={size / (treeIcon ? 1.5: 1.2)}
-                   fill={"rgba(0,25,0,0.4)"}
-                   strokeWidth={"0.2"}
-                   stroke={"#000"} />)
-       : (
-           "")}
+      {shaded ? (
+        <>
+          <circle
+            pointerEvents={"none"}
+            cx={center.x}
+            cy={center.y}
+            r={(size / (treeIcon ? 1.5 : 1.2))}
+            fill={`rgba(0,25,0,${treeIcon ? 0.5 : 0.2})`}
+            strokeWidth={"0.2"}
+            stroke={"#000"}
+          />
+        </>
+      ) : (
+        ""
+      )}
       {treeIcon ? (
-        <image pointerEvents={"none"}
-          href={treeIcon}
-          x={center.x - size / 2}
-          y={center.y - size / 2}
-          width={size}
-          height={size}
-               filter={"url(#shadow)"}
-        />
+        <>
+          <image
+            pointerEvents={"none"}
+            href={treeIcon}
+            x={center.x - size / 2}
+            y={center.y - size / 2}
+            width={size}
+            height={size}
+            filter={"url(#shadow)"}
+          />
+        </>
       ) : (
         ""
       )}

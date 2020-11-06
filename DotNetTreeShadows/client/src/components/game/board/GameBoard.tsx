@@ -10,6 +10,7 @@ import Box from "@material-ui/core/Box";
 import handleTileClick from "../../../store/game/gameActions/handleTileClick";
 import FocusMask from './FocusMask';
 import { useFocus } from '../../../store/board/reducer';
+import TileShadow from './TileShadow';
 
 
 interface IGameBoardProps {
@@ -176,6 +177,16 @@ const GameBoard: FunctionComponent<IGameBoardProps> = (props: IGameBoardProps) =
           </defs>
 
           <polyline id="hexagon" points={pointString} fill={"url(#grad1)"} />
+
+          {tiles
+           ? Object.keys(tiles).map(hexCodeString => {
+                const hexCode = parseInt(hexCodeString);
+                new Hex(hexCode);
+                return (
+                    <TileShadow key={hexCode} hexCode={hexCode} layout={layout} />);
+              })
+           : ""}
+
           {tiles
             ? Object.keys(tiles).map(hexCodeString => {
                 const hexCode = parseInt(hexCodeString);
