@@ -42,6 +42,7 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       }
       PlayerBoard.Set( game, playerId, playerBoard );
       board.Tiles = Shadow.UpdateAllShadows( board, game.SunPosition );
+      game.TilesActiveThisTurn = game.TilesActiveThisTurn.Where( h => h != origin.HexCode ).Append( origin.HexCode ).ToArray();
       
       
       return context;
