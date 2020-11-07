@@ -148,6 +148,22 @@ namespace dotnet_tree_shadows.Hubs {
         await Clients.Caller.SendAsync( "LogMessage", failureMessage );
       }
     }
+    
+    public async Task UndoAction (AAction action) {
+      if ( action.Execute( out ActionContext context, out string failureMessage ) ) {
+        await Commit( context );
+        await Clients.Group( context.SessionId )
+                     .SendAsync(
+                          "HandleSessionUpdate",
+                          new SessionUpdate {
+                            SessionId = context.SessionId, Game = context.Game, Board = context.Board
+                          }
+                        );
+      } else {
+        Console.WriteLine( failureMessage );
+        await Clients.Caller.SendAsync( "LogMessage", failureMessage );
+      }
+    }
 
     public async Task PlaceStartingTree (string sessionId, int origin) {
       await Clients.Caller.SendAsync( "LogMessage", $"Received Request - PlaceStartingTree ({sessionId} - {origin})" );
