@@ -47,6 +47,36 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       
       return context;
     }
-    
+
+    protected override ActionContext UndoAction (ActionContext context) {
+      if ( context.Game == null ) throw new InvalidOperationException("Action context missing required property (Game)");
+      if ( context.Board == null ) throw new InvalidOperationException("Action context missing required property (Board)");
+      if ( context.Origin == null ) throw new InvalidOperationException("Action context missing required property (Origin)");
+      if ( context.Target == null ) throw new InvalidOperationException("Action context missing required property (Target)");
+
+      string playerId = context.PlayerId;
+      Game game = context.Game;
+      Board board = context.Board;
+      Hex origin = (Hex) context.Origin; 
+      
+      PlayerBoard playerBoard = PlayerBoard.Get( game, playerId );
+      Scoring.Token[] playerScore = game.Scores[playerId];
+      playerBoard.RecoverLight( 4 ); 
+      board[origin] = Tile.Create( PieceType.LargeTree, playerBoard.TreeType );
+      playerBoard.Pieces( PieceType.LargeTree ).DecreaseOnPlayerBoard();
+      
+      Scoring.Token toReturn = game.Scores[playerId][game.Scores[playerId].Length - 1];
+
+      ScoreTokens.Return(game, toReturn);
+      
+      PlayerBoard.Set( game, playerId, playerBoard );
+      
+      board.Tiles = Shadow.UpdateAllShadows( board, game.SunPosition );
+      
+      game.TilesActiveThisTurn = game.TilesActiveThisTurn.Where( h => h != origin.HexCode ).ToArray();
+      
+      return context;
+    }
+
   }
 }

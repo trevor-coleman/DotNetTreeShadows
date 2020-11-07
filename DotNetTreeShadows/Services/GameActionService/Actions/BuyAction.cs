@@ -30,7 +30,25 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       return context;
 
     }
-    
+
+    protected override ActionContext UndoAction (ActionContext context) {
+      if ( context.Game == null ) throw new InvalidOperationException("Action context missing required property (Game)");
+      if ( context.PieceType == null ) throw new InvalidOperationException("Action context missing required property (PieceType)");
+      
+      Game game = context.Game;
+      PieceType pieceType = (PieceType) context.PieceType;
+      PlayerBoard playerBoard = PlayerBoard.Get( game, context.PlayerId );
+      int price = playerBoard.Pieces( pieceType ).LastPrice;
+      playerBoard.RecoverLight( price );
+      playerBoard.Pieces( pieceType).IncreaseOnPlayerBoard();
+      playerBoard.Pieces( pieceType).DecreaseAvailable();
+      game.SetPlayerBoard( context.PlayerId, playerBoard );
+      
+      context.Game = game;
+      
+      return context;
+    }
+
     protected override ActionContext ActionContext { get; }
 
 

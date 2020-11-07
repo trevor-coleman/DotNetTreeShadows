@@ -63,5 +63,39 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       return context;
     }
 
+    protected override ActionContext UndoAction (ActionContext context) {
+      if ( context.Game == null ) throw new InvalidOperationException("Action context missing required property (Game)");
+      if ( context.Board == null ) throw new InvalidOperationException("Action context missing required property (Board)");
+      if ( context.Origin == null ) throw new InvalidOperationException("Action context missing required property (Origin)");
+      if ( context.Target == null ) throw new InvalidOperationException("Action context missing required property (Target)");
+
+      Game game = context.Game;
+      Board board = context.Board;
+      Hex origin = context.Origin.Value;
+      string playerId = context.PlayerId;
+      
+      int tileCode = board[origin];
+      int shrinkingTypeCode = (int) (Tile.GetPieceType( tileCode ) ?? 0);
+      int shrunkTypeCode = shrinkingTypeCode - 1;
+      int price = shrunkTypeCode;
+      PlayerBoard playerBoard = PlayerBoard.Get( game, playerId );
+
+      playerBoard.Pieces( (PieceType) shrunkTypeCode ).DecreaseAvailable();
+      int resultingTile = Tile.SetPieceType( tileCode, (PieceType) shrunkTypeCode );
+      playerBoard.Pieces( (PieceType) shrinkingTypeCode ).IncreaseOnPlayerBoard();
+      playerBoard.RecoverLight( price );
+      game.SetPlayerBoard( playerId, playerBoard );
+      board[origin] = resultingTile;
+      board.Tiles = Shadow.UpdateAllShadows( board, game.SunPosition );
+
+
+      game.TilesActiveThisTurn = game.TilesActiveThisTurn.Where( h => h != origin.HexCode ).ToArray();
+      
+      context.Game = game;
+      context.Board = board;
+
+      return context;
+    }
+
   }
 }

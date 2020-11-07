@@ -28,6 +28,8 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       return context;
     }
 
+    protected override ActionContext UndoAction (ActionContext context) => context;
+
     protected override ActionContext ActionContext { get; }
 
     protected override IEnumerable<Func<ActionContext, bool>> Validators { get; } =
