@@ -18,7 +18,7 @@ const Revolutions: FunctionComponent<YearsDisplayProps> = (props: YearsDisplayPr
   const {} = props;
   const classes = useStyles();
   const dispatch = useDispatch();
-  const {gameOptions, revolution} = useTypedSelector(state => state.game);
+  const {gameOptions, revolution, turnOrder} = useTypedSelector(state => state.game);
 
   const gameLength = gameOptions.indexOf("LongGame") !== -1 ? 4 : 3;
   console.log(gameOptions, "LongGame",
@@ -37,17 +37,24 @@ const Revolutions: FunctionComponent<YearsDisplayProps> = (props: YearsDisplayPr
   return (
     <Paper>
       <Box p={2}>
-        <Typography variant={'subtitle1'}>Revolutions</Typography>
-        <Divider/>
+        <Typography variant={"subtitle1"}>Revolution {revolution+1} of {gameLength}</Typography>
+        <Divider />
         <Box p={2}>
-          <Grid container spacing={1} direction={"row"} alignItems={"center"} justify={"center"}>
-            {years.map((year, index) => <YearIcon key={index+"revolution"+new Date()} sun={year}/>)}
+          <Grid
+            container
+            spacing={1}
+            direction={"row"}
+            alignItems={"center"}
+            justify={"center"}
+          >
+            {years.map((year, index) => (
+              <YearIcon key={index + "revolution" + new Date()} sun={year} />
+            ))}
           </Grid>
         </Box>
       </Box>
     </Paper>
-
-  )
+  );
 };
 
 const useStyles = makeStyles((theme: Theme) => ({
