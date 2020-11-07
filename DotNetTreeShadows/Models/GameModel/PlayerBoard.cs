@@ -107,6 +107,9 @@ namespace dotnet_tree_shadows.Models.GameModel {
             : prices[OnPlayerBoard - 1];
       }
 
+      public int LastPrice { get => OnPlayerBoard == maxOnBoard ?
+        -1 : prices[OnPlayerBoard];  }
+
       public void IncreaseAvailable () => Available++;
       public void DecreaseAvailable () => Available--;
       public void IncreaseOnPlayerBoard () => OnPlayerBoard++;
