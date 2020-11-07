@@ -24,5 +24,15 @@ namespace dotnet_tree_shadows.Models.GameModel {
       return false;
     }
 
+    public static void Return (Game game, Scoring.Token toReturn) {
+      TokenStacks stacks = game.ScoringTokens;
+
+      if ( !stacks.TryGetValue( toReturn.Leaves, out int[] scores ) ) throw new InvalidOperationException("Tried to return token to non-existent stack");
+      Stack<int> stack = new Stack<int>(scores);
+      stack.Push( toReturn.Points );
+      stacks[toReturn.Leaves] = stack.Reverse().ToArray();
+
+    }
+
   }
 }
