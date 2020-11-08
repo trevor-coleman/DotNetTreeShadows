@@ -89,7 +89,7 @@ namespace dotnet_tree_shadows.Services.GameActionService {
         SessionId = sessionId,
         PlayerId = playerId,
         Origin = new Hex( origin ),
-        Target = new Hex( origin )
+        Target = new Hex( origin ),
       };
 
       context = await HydrateContext( context );
@@ -162,7 +162,7 @@ namespace dotnet_tree_shadows.Services.GameActionService {
           context.Session = await sessionTask;
           context.PermittedGameStatuses = new[] { GameStatus.Preparing };
           break;
-        case GameActionType.UndoAction: break;
+        case GameActionType.Undo: break;
         case GameActionType.Resign: break;
         case GameActionType.Kick: break;
         default: throw new ArgumentOutOfRangeException( nameof(context.GameActionType), context.GameActionType, null );

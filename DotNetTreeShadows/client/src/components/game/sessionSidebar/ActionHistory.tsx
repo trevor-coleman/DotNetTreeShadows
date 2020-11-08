@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import CollapsingBox from "../../CollapsingBox";
 import { useActionHistoryData } from "../../../store/game/reducer";
-import { GameActionType } from "../../../store/game/actions";
+import { GameActionType, actionTypeName } from "../../../store/game/actions";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -92,11 +92,12 @@ const ActionHistory: FunctionComponent<ActionHistoryProps> = (
                 </div>
               );
             }
-            return actionType == GameActionType.EndTurn ? (
-              <TurnSeparator key={id} playerId={playerId} />
-            ) : (
+            return actionType == GameActionType.EndTurn
+                   ? (
+                       <TurnSeparator key={id} playerId={playerId} />)
+                   : (
               <div key={id}>
-                {index == 0 ? <TurnSeparator playerId={playerId} /> : null}
+                {index == 0 || actionType == GameActionType.PlaceStartingTree ? <TurnSeparator playerId={playerId} /> : null}
                 <ListItem
                   dense
                   selected={(!!origin && id==hoverItem)}
@@ -112,12 +113,12 @@ const ActionHistory: FunctionComponent<ActionHistoryProps> = (
                   <ListItemAvatar className={classes.actionHistoryIcon}>
                     <TreeAvatarIcon
                         fontSize={"large"}
-                        active={false}
+                        active={true}
                         treeType={playerBoards[playerId].treeType}
                         pieceType={pieceType ?? PieceType.SmallTree}
                     />
                   </ListItemAvatar>
-                  <ListItemText primary={GameActionType[actionType!]} secondary={pieceType ? pieceTypeName(pieceType, true):undefined} />
+                  <ListItemText primary={actionTypeName(actionType, pieceType)}/>
                 </ListItem>
               </div>
             );

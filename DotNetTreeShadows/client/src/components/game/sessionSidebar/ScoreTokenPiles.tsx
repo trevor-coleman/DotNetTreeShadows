@@ -39,7 +39,7 @@ const ScoreTokenPiles: FunctionComponent<ScoreTokenPilesProps> = (
       const tokens = scoringTokens[s];
       result.push({
         leaves: parseInt(s),
-        topValue: tokens[0],
+        topValue: tokens[tokens.length-1],
         remaining: tokens.length
       });
     }

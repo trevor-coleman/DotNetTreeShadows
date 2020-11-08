@@ -2,6 +2,7 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import {AppDispatch} from '../../store'
 import Game from "./types/game";
 import {ExtraInfo} from "../extraInfo";
+import { PieceType, pieceTypeName } from '../board/types/pieceType';
 
 
 export const fetchGame = createAsyncThunk<Game, string, ExtraInfo>('game/fetchGame',
@@ -53,5 +54,32 @@ export enum GameActionType {
   Undo,
   Resign,
   Kick,
+}
+
+export function actionTypeName (actionType?:GameActionType, pieceType?: PieceType ):string {
+  switch (actionType) {
+    case GameActionType.Plant:
+      return "Plant Seed";
+    case GameActionType.EndTurn:
+      return "End Turn";
+    case GameActionType.StartGame:
+      return "Start Game"
+    case GameActionType.PlaceStartingTree:
+      return "Place Starting Tree"
+    case GameActionType.Buy:
+      return "Buy " + (pieceType !== undefined ? pieceTypeName(pieceType, true) :"");
+    case GameActionType.Grow:
+      return "Grow " + (
+          pieceType
+          ? pieceTypeName(pieceType, true)
+          : "");
+    case GameActionType.Collect:
+    case GameActionType.Undo:
+    case GameActionType.Kick:
+    case GameActionType.Resign:
+    default:
+      return actionType !== undefined ? GameActionType[actionType] : "None";
+
+  }
 }
 

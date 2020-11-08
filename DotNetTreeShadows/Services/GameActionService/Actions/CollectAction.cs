@@ -92,9 +92,10 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       board[origin] = Tile.Create( PieceType.LargeTree, playerBoard.TreeType );
       playerBoard.Pieces( PieceType.LargeTree ).DecreaseOnPlayerBoard();
 
-      Scoring.Token toReturn = game.Scores[playerId][game.Scores[playerId].Length - 1];
-
-      ScoreTokens.Return( game, toReturn );
+      Scoring.Token toReturn = playerScore[^1];
+      game.ScoringTokens = ScoreTokens.Return( game, toReturn );
+      playerScore = playerScore.Take( playerScore.Length - 1 ).ToArray();
+      game.Scores[playerId] = playerScore;
 
       PlayerBoard.Set( game, playerId, playerBoard );
 

@@ -67,7 +67,7 @@ namespace dotnet_tree_shadows.Actions {
           board = await boardService.Get( sessionId );
           actionParams = new PlaceStartingTreeAction.Params( actionRequest, playerId, game, board );
           break;
-        case GameActionType.UndoAction:
+        case GameActionType.Undo:
         case GameActionType.Resign:
         case GameActionType.Kick:
         default:

@@ -12,7 +12,7 @@ namespace dotnet_tree_shadows.Services.GameActionService.ActionValidation {
 
     public static bool OriginIsValidTile (ActionContext context) =>
       context.Origin != null && IsValidHex( (Hex) context.Origin );
-
+    
     public static bool TargetIsValidTile (ActionContext context) =>
       context.Target != null && IsValidHex( (Hex) context.Target! );
 
@@ -57,7 +57,7 @@ namespace dotnet_tree_shadows.Services.GameActionService.ActionValidation {
       PlayerBoard.Get( context.Game!, context.PlayerId ).Pieces( (PieceType) context.PieceType! ).Available > 0;
     
     public static bool PlayerHasPieceOnPlayerBoard (ActionContext context) =>
-      PlayerBoard.Get( context.Game!, context.PlayerId ).Pieces( (PieceType) context.PieceType! ).OnPlayerBoard > 0;
+      PlayerBoard.Get( context.Game!, context.PlayerId ).Pieces( context.PieceType!.Value ).OnPlayerBoard > 0;
 
     public static bool PlayerIsHost (ActionContext context) => context.Session!.Host == context.PlayerId;
     
@@ -94,7 +94,13 @@ namespace dotnet_tree_shadows.Services.GameActionService.ActionValidation {
       return Math.Abs( h.Q ) == 3 || Math.Abs( h.R ) == 3 || Math.Abs( h.S ) == 3;
     }
 
-    
+    public static bool TargetIsSeed (ActionContext context) =>
+      Tile.GetPieceType( context.Board!.Get((Hex) context.Target!)) == PieceType.Seed;
+
+    public static bool TargetIsNotSeed (ActionContext context) =>
+      Tile.GetPieceType( context.Board!.Get((Hex) context.Target!)) != PieceType.Seed;
+
+    public static bool PlayerHasLargeTreeOnPlayerBoard (ActionContext context) => PlayerBoard.Get( context.Game!, context.PlayerId ).Pieces( PieceType.LargeTree ).OnPlayerBoard > 0;
 
   }
 }

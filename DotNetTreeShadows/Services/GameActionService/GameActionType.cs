@@ -13,7 +13,7 @@ namespace dotnet_tree_shadows.Services.GameActionService {
         StartGame,
         PlaceStartingTree,
         PlaceSecondTree,
-        UndoAction,
+        Undo,
         Resign,
         Kick,
     }

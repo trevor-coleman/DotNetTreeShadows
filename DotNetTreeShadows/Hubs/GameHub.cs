@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.Authentication;
 using dotnet_tree_shadows.Models.Enums;
@@ -149,9 +151,11 @@ namespace dotnet_tree_shadows.Hubs {
       }
     }
     
-    public async Task UndoAction (AAction action) {
-      if ( action.Execute( out ActionContext context, out string failureMessage ) ) {
+    public async Task UndoAction (AAction action, string actionId) {
+      if ( action.UnExecute( out ActionContext context, actionId, out string failureMessage ) ) {
+        context.Game!.RemoveGameAction( actionId );
         await Commit( context );
+        Console.WriteLine($"SessionId: {context.SessionId}");
         await Clients.Group( context.SessionId )
                      .SendAsync(
                           "HandleSessionUpdate",
@@ -214,6 +218,54 @@ namespace dotnet_tree_shadows.Hubs {
       UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
       EndTurnAction action = await gameActionService.EndTurnAction( sessionId, user.UserId );
       await DoAction( action );
+    }
+
+    public async Task Undo (string sessionId) {
+      await Clients.Caller.SendAsync( "LogMessage", $"Received Request - Undo ({sessionId})" );
+      UserModel user = await userManager.GetUserAsync( Context.GetHttpContext().User );
+      Game game = await gameService.Get( sessionId );
+      
+      if ( game.TryGetLastAction(out GameActionData? gameActionData) ) {
+        if(gameActionData!.PlayerId != user.UserId) {
+          await Clients.Caller.SendAsync( "LogMessage", $"Cant Undo -- Not your action ({sessionId})" );
+          return;
+        }
+        string playerId = gameActionData.PlayerId;
+        int? origin = gameActionData.Origin;
+
+        AAction? action = gameActionData.ActionType switch {
+          GameActionType.Buy => await gameActionService.BuyAction(
+                                    sessionId,
+                                    playerId,
+                                    (PieceType) gameActionData.PieceType!
+                                  ),
+          GameActionType.Plant => await gameActionService.PlantAction(
+                                      sessionId,
+                                      playerId,
+                                      (int) gameActionData.Origin!,
+                                      (int) gameActionData.Target!
+                                    ),
+          GameActionType.Grow => await gameActionService.GrowAction( sessionId, playerId, (int) origin! ),
+          GameActionType.Collect => await gameActionService.CollectAction( sessionId, playerId, (int) origin!),
+          GameActionType.EndTurn => null,
+          GameActionType.StartGame => null,
+          GameActionType.PlaceStartingTree => null,
+          GameActionType.PlaceSecondTree => null,
+          GameActionType.Undo => null,
+          GameActionType.Resign => null,
+          GameActionType.Kick => null,
+          _ => null
+        };
+        
+        if(action == null) {
+          await Clients.Caller.SendAsync( "LogMessage", $"Cannot Undo this Action ({sessionId})" );
+          return;
+        }
+
+        await UndoAction( action, gameActionData.Id );
+      }
+      
+      
     }
 
     public class SetGameOptionRequest {
