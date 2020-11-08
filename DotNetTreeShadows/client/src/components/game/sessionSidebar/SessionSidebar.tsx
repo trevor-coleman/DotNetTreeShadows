@@ -6,6 +6,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import TileCodeDecoder from "./TileCodeDecoder";
 import Revolutions from "./Revolutions";
 import ScoreTokenPiles from './ScoreTokenPiles';
+import ActionHistory from './ActionHistory';
 
 
 interface SessionSidebarProps {
@@ -20,6 +21,7 @@ const SessionSidebar: FunctionComponent<SessionSidebarProps> = (props: SessionSi
             <Revolutions/>
           <ListTurnOrder/>
           <ScoreTokenPiles/>
+          <ActionHistory/>
             <GameInfo/>
         </SidebarGrid>
             );

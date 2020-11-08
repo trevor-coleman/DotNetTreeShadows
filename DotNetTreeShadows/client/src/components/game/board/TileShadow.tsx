@@ -34,8 +34,6 @@ const TileShadow = (props: ITileShadowProps) => {
       ? 1.0
       : 0;
 
-  console.log(treeScale);
-
   const center = layout
     ? layout.hexToPixel(new Hex(hexCode))
     : {

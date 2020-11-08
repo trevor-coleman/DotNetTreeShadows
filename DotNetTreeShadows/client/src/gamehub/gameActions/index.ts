@@ -46,6 +46,11 @@ async function SendCollect (originCode:number) {
   store.dispatch(clearCurrentAction());
 }
 
+async function SendUndo () {
+  await connection.send("Undo", sessionId());
+  store.dispatch(sentGameAction({type:GameActionType.Undo}));
+}
+
 const gameActions = {
   startGame: SendStartGame,
   placeStartingTree: SendPlaceStartingTree,
@@ -54,6 +59,7 @@ const gameActions = {
   endTurn: SendEndTurn,
   grow: SendGrow,
   collect: SendCollect,
+  undo: SendUndo
 }
 
 export default gameActions;

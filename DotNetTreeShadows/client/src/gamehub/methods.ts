@@ -4,5 +4,6 @@ export enum GameHubMethod {
   SetGameOption = "SetGameOption",
   SetLinkEnabled = "SetLinkEnabled",
   CancelSessionInvite = "CancelSessionInvite",
-  DoAction = "DoAction"
+  DoAction = "DoAction",
+  Undo = "Undo",
 }

@@ -68,7 +68,7 @@ export default async function handleTileClick(hexCode: number) {
     case GameActionType.Buy:
     case GameActionType.EndTurn:
     case GameActionType.StartGame:
-    case GameActionType.UndoAction:
+    case GameActionType.Undo:
     case GameActionType.Kick:
     case GameActionType.Resign:
 

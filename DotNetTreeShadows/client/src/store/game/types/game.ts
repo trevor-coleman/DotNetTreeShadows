@@ -2,6 +2,7 @@ import {SunPosition} from "./sunPosition";
 import {ScoringToken} from "./scoringToken";
 import {GameStatus} from "./GameStatus";
 import { GameOption } from './GameOption';
+import { GameActionData } from './GameActionData';
 
 export default interface Game {
     status: GameStatus;
@@ -20,5 +21,7 @@ export default interface Game {
     }
     gameOptions: GameOption[],
     tilesActiveThisTurn: number[],
+  undoActions: GameActionData[],
+  actionHistory: GameActionData[],
 
 }

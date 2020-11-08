@@ -5,6 +5,7 @@ using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Models.GameModel;
 using dotnet_tree_shadows.Models.Shadow;
 using dotnet_tree_shadows.Services.GameActionService.ActionValidation;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace dotnet_tree_shadows.Services.GameActionService.Actions {
   public class EndTurnAction : AAction {
@@ -15,7 +16,8 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
     protected override ActionContext DoAction (ActionContext context) {
       if ( context.Game == null ) throw new InvalidOperationException("Action context missing required property (Game)");
       if ( context.Board == null ) throw new InvalidOperationException("Action context missing required property (Board)");
-      
+      GameActionData actionData = MakeActionData(context);
+
       Game game = context.Game;
       Board board = context.Board;
       
@@ -24,7 +26,11 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       game.CurrentTurn %= turnOrder.Length;
       game.turnCount++;
       game.TilesActiveThisTurn = new int[0];
-      if ( game.FirstPlayer != game.CurrentPlayer ) return context;
+      
+      if ( game.FirstPlayer != game.CurrentPlayer ) {
+        game.AddGameAction( actionData);
+        return context;
+      }
       game.CurrentTurn++;
       game.CurrentTurn%= turnOrder.Length;
       game.FirstPlayer = turnOrder[game.CurrentTurn];
@@ -36,10 +42,9 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
         if ( game.Revolution == game.LengthOfGame ) {
           
           game.Status = GameStatus.Ended;
-          
+          game.AddGameAction( actionData);
           context.Game = game;
           context.Board = board;
-          
           return context;
         }
       }
@@ -52,14 +57,12 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
         playerBoard.RecoverLight( earnedLight );
         game.SetPlayerBoard( playerId, playerBoard );
       }
-      
-      context.Game = game;
-      context.Board = board;
-      
+      game.AddGameAction( actionData);
       return context;
     }
 
     protected override ActionContext UndoAction (ActionContext context) => context;
+    protected override GameActionData MakeActionData (ActionContext context) => new GameActionData(context.PlayerId, GameActionType.EndTurn, null, null, null);
 
     protected override ActionContext ActionContext { get; }
 
@@ -67,6 +70,11 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       new Func<ActionContext, bool> [] {
         ValidIf.IsPlayersTurn,
         ValidIf.GameIsInPermittedState,
+      };
+    
+    protected override IEnumerable<Func<ActionContext, bool>> UndoValidators { get; } =
+      new Func<ActionContext, bool> [] {
+        _=>false, 
       };
     
 

@@ -50,7 +50,7 @@ export enum GameActionType {
   EndTurn,
   StartGame,
   PlaceStartingTree,
-  UndoAction,
+  Undo,
   Resign,
   Kick,
 }

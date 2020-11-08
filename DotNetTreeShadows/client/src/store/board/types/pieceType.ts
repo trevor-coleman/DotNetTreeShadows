@@ -5,15 +5,19 @@ export enum PieceType {
     LargeTree
 }
 
-export function pieceTypeName(pieceType:PieceType) {
+export function pieceTypeName(pieceType:PieceType, long?:boolean) {
     switch (pieceType) {
         case PieceType.Seed:
             return "Seed";
         case PieceType.SmallTree:
-            return "Small"
+            return long ? "Small Tree" : "Small";
         case PieceType.MediumTree:
-            return "Medium"
+            return long
+                   ? "Medium Tree"
+                   :"Medium"
         case PieceType.LargeTree:
-            return "Large"
+            return long
+                   ? "Large Tree"
+                   :"Large"
     }
 }

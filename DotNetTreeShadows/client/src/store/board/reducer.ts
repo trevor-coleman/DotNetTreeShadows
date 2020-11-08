@@ -89,6 +89,16 @@ const boardSlice = createSlice({
       ...state,
       focusTiles: [...action.payload]
     }),
+    focusTiles: (state, action: PayloadAction<number[]>) => (
+        {
+          ...state,
+          focusTiles: [...state.focusTiles, ...action.payload]
+        }),
+    unfocusTiles: (state, action: PayloadAction<number[]>) => (
+        {
+          ...state,
+          focusTiles: state.focusTiles.filter(tile=>action.payload.indexOf(tile) == -1)
+        }),
     setActionOrigin: (
       state: BoardState,
       action: PayloadAction<number | null>
@@ -101,6 +111,7 @@ const boardSlice = createSlice({
   initialState: initialBoardState
 });
 
+export const useBoard = ()=>useTypedSelector(state => state.board.tiles);
 export const useTile = (hexCode: number) =>
   useTypedSelector(state => state.board.tiles[hexCode]);
 export const useOrigin = ()=>useTypedSelector(state => state.board.originHexCode)
@@ -127,6 +138,7 @@ export const useFocus = () =>
   });
 
 export const {
+  focusTiles, unfocusTiles,
   updatedTreeTiles,
   updateFocusTiles,
   setActionOrigin

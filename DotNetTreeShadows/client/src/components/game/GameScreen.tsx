@@ -138,7 +138,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexShrink: 0,
     backgroundColor: "#c9c9c9",
     width: 300,
-    height: "100vh"
+    height: "100vh",
+    overflow:"scroll",
   },
   gamePanel: {
     display: "flex",
@@ -164,7 +165,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: "#c9c9c9",
     width: 280,
     flexShrink: 0,
-    height: "100vh"
+    height: "100vh",
+    overflow: "scroll",
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1

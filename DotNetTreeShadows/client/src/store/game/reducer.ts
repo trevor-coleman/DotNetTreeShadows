@@ -41,7 +41,9 @@ const initialGameState: GameState = {
     "currentActionType",
     "currentActionStage",
     "currentActionPieceType"
-  ]
+  ],
+  actionHistory: [],
+  undoActions:[],
 };
 
 const gameSlice = createSlice({
@@ -121,6 +123,13 @@ export const useFirstPlayerName = () =>
 export const useCollectedScoreTokens = (playerId?:string)=> useTypedSelector(state => state.game.scores[playerId ?? state.profile.id] ?? []);
 export const useScoringTokenPiles = ()=> useTypedSelector(state => state.game.scoringTokens)
 export const useScores = ()=>useTypedSelector(state => state.game.scores);
+
+export const useActionHistoryData = () =>
+  useTypedSelector(state => ({
+    actionHistory: state.game.actionHistory,
+    players: state.session.players,
+    playerBoards: state.playerBoards
+  }));
 
 export const {
   gameOptionUpdate,

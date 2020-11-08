@@ -18,7 +18,7 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       if ( context.Origin == null ) throw new InvalidOperationException("Action context missing required property (Origin)");
       if ( context.Target == null ) throw new InvalidOperationException("Action context missing required property (Target)");
       if ( context.Cost == null ) throw new InvalidOperationException("Action context missing required property (Cost)");
-      
+      GameActionData actionData = MakeActionData(context);
       Game game = context.Game;
       Board board = context.Board;
       Hex origin = (Hex)context.Origin;
@@ -35,10 +35,8 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       board.Set(target, targetCode);
       game.TilesActiveThisTurn = game.TilesActiveThisTurn.Where( t=>t!=origin.HexCode ).Append( origin.HexCode ).ToArray();
       game.TilesActiveThisTurn = game.TilesActiveThisTurn.Where( t=>t!=origin.HexCode ).Append( target.HexCode ).ToArray();
-
-      context.Game = game;
-      context.Board = board;
-
+      
+      game.AddGameAction( actionData);
       return context;
 
     }
@@ -62,13 +60,18 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       game.SetPlayerBoard( playerId, playerBoard );
       board.Set(target, Tile.Empty);
       game.TilesActiveThisTurn = game.TilesActiveThisTurn.Where( t=>t!=origin.HexCode ).ToArray();
-      game.TilesActiveThisTurn = game.TilesActiveThisTurn.Where( t=>t!=origin.HexCode ).ToArray();
-
-      context.Game = game;
-      context.Board = board;
-
+      game.TilesActiveThisTurn = game.TilesActiveThisTurn.Where( t=>t!=target.HexCode ).ToArray();
+      
       return context;
     }
+
+    protected override GameActionData MakeActionData (ActionContext context) => 
+      new GameActionData(
+        context.PlayerId, 
+        context.GameActionType, 
+        context.Origin!.Value.HexCode, 
+        context.Target!.Value.HexCode, 
+        PieceType.Seed);
 
     protected override ActionContext ActionContext { get; }
 
@@ -84,6 +87,14 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
         ValidIf.GrowthInShadowAllowed,
         ValidIf.TargetHasNotBeenActiveThisTurn,
         ValidIf.OriginHasNotBeenActiveThisTurn,
+      };
+
+    protected override IEnumerable<Func<ActionContext, bool>> UndoValidators { get; } =
+      new Func<ActionContext, bool> [] {
+        ValidIf.GameIsInPermittedState,
+        ValidIf.IsPlayersTurn,
+        ValidIf.PlayerHasPieceOnPlayerBoard,
+        ValidIf.TargetIsSeed,
       };
 
     

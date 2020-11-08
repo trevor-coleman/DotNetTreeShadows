@@ -18,6 +18,9 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       if ( context.Game == null ) throw new InvalidOperationException("Action context missing required property (Game)");
       if ( context.Board == null ) throw new InvalidOperationException("Action context missing required property (Board)");
       if ( context.Origin == null ) throw new InvalidOperationException("Action context missing required property (Origin)");
+      GameActionData actionData = MakeActionData(context);
+
+      
       
       Game game = context.Game;
       Board board = context.Board;
@@ -34,6 +37,7 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       
       board = BoardOperations.CastShadow(board, origin ,game.SunPosition  );
 
+      game.AddGameAction( actionData );
       switch ( game.Status ) {
         case GameStatus.PlacingFirstTrees when game.CurrentTurn == game.TurnOrder.Length - 1:
           game.Status = GameStatus.PlacingSecondTrees;
@@ -64,6 +68,7 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
     }
 
     protected override ActionContext UndoAction (ActionContext context)  => context;
+    protected override GameActionData MakeActionData (ActionContext context) => new GameActionData(context.PlayerId, GameActionType.PlaceStartingTree, context.Origin!.Value.HexCode, PieceType.SmallTree);
 
     protected override ActionContext ActionContext { get; }
 
@@ -74,6 +79,11 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
         ValidIf.TargetIsOnEdgeOfBoard,
         ValidIf.TargetTileIsEmpty,
         ValidIf.IsPlayersTurn,
+      };
+    
+    protected override IEnumerable<Func<ActionContext, bool>> UndoValidators { get; } =
+      new Func<ActionContext, bool> [] {
+        _=>false
       };
     
   }

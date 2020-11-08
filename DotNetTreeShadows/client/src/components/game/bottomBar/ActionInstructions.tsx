@@ -88,7 +88,7 @@ const ActionInstructions: FunctionComponent<ActionInstructionsProps> = (props: A
       case GameActionType.EndTurn:
       case GameActionType.StartGame:
       case GameActionType.PlaceStartingTree:
-      case GameActionType.UndoAction:
+      case GameActionType.Undo:
       case GameActionType.Resign:
       case GameActionType.Kick:
       default:

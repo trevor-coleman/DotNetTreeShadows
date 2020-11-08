@@ -8,6 +8,7 @@ import {useTypedSelector} from "../../../store";
 import {GameOption} from "../../../store/game/types/GameOption";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
+import CollapsingBox from '../../CollapsingBox';
 
 
 interface YearsDisplayProps {
@@ -35,11 +36,7 @@ const Revolutions: FunctionComponent<YearsDisplayProps> = (props: YearsDisplayPr
   }
 
   return (
-    <Paper>
-      <Box p={2}>
-        <Typography variant={"subtitle1"}>Revolution {revolution+1} of {gameLength}</Typography>
-        <Divider />
-        <Box p={2}>
+      <CollapsingBox title={`Revolution ${revolution+1} of ${gameLength}`}>
           <Grid
             container
             spacing={1}
@@ -51,9 +48,7 @@ const Revolutions: FunctionComponent<YearsDisplayProps> = (props: YearsDisplayPr
               <YearIcon key={index + "revolution" + new Date()} sun={year} />
             ))}
           </Grid>
-        </Box>
-      </Box>
-    </Paper>
+      </CollapsingBox>
   );
 };
 

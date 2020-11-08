@@ -200,7 +200,6 @@ const BoardTile = (props: IBoardTileProps) => {
                     0.8 :
                     pieceHeight == 3 ?
                     1.0 : 0;
-  console.log(treeScale);
 
   return (
     <g>
@@ -273,21 +272,7 @@ const BoardTile = (props: IBoardTileProps) => {
       ) : (
         ""
       )}
-      {shaded ? (
-        <>
-          <circle
-            pointerEvents={"none"}
-            cx={center.x}
-            cy={center.y}
-            r={(size / (treeIcon ? 1.5 : 1.2))}
-            fill={`rgba(0,25,0,${treeIcon ? 0.5 : 0.2})`}
-            strokeWidth={"0.2"}
-            stroke={"#000"}
-          />
-        </>
-      ) : (
-        ""
-      )}
+
       {treeIcon ? (
         <>
           <image
@@ -303,7 +288,22 @@ const BoardTile = (props: IBoardTileProps) => {
       ) : (
         ""
       )}
-
+      {shaded
+       ? (
+           <>
+             <circle pointerEvents={"none"}
+                     cx={center.x}
+                     cy={center.y}
+                     r={(
+                         size / 1.22)}
+                     fill={`rgba(0,25,0,${treeIcon
+                                          ? 0.4
+                                          : 0.3})`}
+                     strokeWidth={"0.2"}
+                     stroke={"#000"} />
+           </>)
+       : (
+           "")}
       {selected ? (
         <circle
           cx={center.x}
