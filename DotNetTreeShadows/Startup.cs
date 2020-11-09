@@ -1,4 +1,3 @@
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -23,12 +22,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
+using Mongo.Migration.Startup;
+using Mongo.Migration.Startup.DotNetCore;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 
 namespace dotnet_tree_shadows {
   public class Startup {
-    
 
     private readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -38,34 +38,23 @@ namespace dotnet_tree_shadows {
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices (IServiceCollection services) {
       //MongoDb
-      
-      services.Configure<GameDatabaseSettings>( Configuration.GetSection( nameof(GameDatabaseSettings) ) );
+
       services.AddSignalR().AddNewtonsoftJsonProtocol();
+      services.Configure<GameDatabaseSettings>( Configuration.GetSection( nameof(GameDatabaseSettings) ) );
 
-      string[] allowedOrigins = Configuration.GetSection( "CORS:AllowedOrigins" ).Get<string[]>() ?? new string[0];
-
-      services.AddCors(
-          options => {
-            options.AddPolicy(
-                MyAllowSpecificOrigins,
-                builder => { builder.WithOrigins( allowedOrigins ).AllowAnyHeader().AllowAnyMethod(); }
-              );
-          }
-        );
-      
       string host = Configuration.GetSection( nameof(GameDatabaseSettings) )["Host"];
       string port = Configuration.GetSection( nameof(GameDatabaseSettings) )["Port"];
       string user = Configuration.GetSection( nameof(GameDatabaseSettings) )["User"];
       string password = Configuration.GetSection( nameof(GameDatabaseSettings) )["Password"];
       string databaseName = Configuration.GetSection( nameof(GameDatabaseSettings) )["DatabaseName"];
-      
-      string connectionString = (string.IsNullOrEmpty( user ) 
-                                 || string.IsNullOrEmpty( password ))
+
+      string connectionString = string.IsNullOrEmpty( user ) || string.IsNullOrEmpty( password )
                                   ? $"mongodb://127.0.0.1:{port}"
-                                  : host == "localhost" 
-                                    || host == "127.0.0.1"
+                                  : host == "localhost" || host == "127.0.0.1"
                                     ? $"mongodb://{user}:{password}@{host}:{port}/{databaseName}?authSource=admin"
                                     : $"mongodb+srv://{user}:{password}@{host}/{databaseName}?retryWrites=true&w=majority";
+
+      services.AddSingleton<IMongoClient>( new MongoClient( connectionString ) );
       services.AddIdentityMongoDbProvider<UserModel, MongoRole>(
           identityOptions => {
             identityOptions.Password.RequiredLength = 6;
@@ -80,10 +69,21 @@ namespace dotnet_tree_shadows {
             mongoIdentityOptions.RolesCollection = "Roles";
           }
         );
-      
-      MongoClient mongoClient = new MongoClient( connectionString );
-      services.AddSingleton<IMongoClient>( mongoClient );
-      
+
+      services.AddMigration(
+          new MongoMigrationSettings { ConnectionString = connectionString, Database = databaseName }
+        );
+
+      string[] allowedOrigins = Configuration.GetSection( "CORS:AllowedOrigins" ).Get<string[]>() ?? new string[0];
+
+      services.AddCors(
+          options => {
+            options.AddPolicy(
+                MyAllowSpecificOrigins,
+                builder => { builder.WithOrigins( allowedOrigins ).AllowAnyHeader().AllowAnyMethod(); }
+              );
+          }
+        );
 
       BsonSerializer.RegisterSerializationProvider( new HexSerializationProvider() );
       BsonSerializer.RegisterSerializationProvider( new TilesDictionarySerializationProvider() );
@@ -156,15 +156,12 @@ namespace dotnet_tree_shadows {
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
       if ( env.IsDevelopment() ) {
-        
         app.UseDeveloperExceptionPage();
       } else {
         app.UseExceptionHandler( "/Error" );
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
       }
-      
-      
 
       app.UseHttpsRedirection();
       app.UseStaticFiles();
