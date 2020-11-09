@@ -7,9 +7,8 @@ namespace dotnet_tree_shadows.Services {
   public class BoardService {
 
     private readonly IMongoCollection<Board> boards;
-
-    public BoardService (IGameDatabaseSettings settings) {
-      MongoClient client = new MongoClient( settings.ConnectionString );
+    
+    public BoardService (IGameDatabaseSettings settings, IMongoClient client) {
       IMongoDatabase? database = client.GetDatabase( settings.DatabaseName );
       boards = database.GetCollection<Board>( settings.BoardsCollectionName );
     }

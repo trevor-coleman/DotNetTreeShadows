@@ -14,9 +14,8 @@ namespace dotnet_tree_shadows.Services {
       private readonly UserManager<UserModel> userManager;
       private readonly IMongoCollection<Invitation> invitations;
 
-        public InvitationService (IGameDatabaseSettings settings) {
-          MongoClient client = new MongoClient( settings.ConnectionString );
-            IMongoDatabase database = client.GetDatabase( settings.DatabaseName );
+        public InvitationService (IGameDatabaseSettings settings, IMongoClient client) {
+          IMongoDatabase database = client.GetDatabase( settings.DatabaseName );
             invitations = database.GetCollection<Invitation>( settings.InvitationsCollectionName );
         }
 

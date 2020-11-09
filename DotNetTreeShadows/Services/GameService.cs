@@ -9,8 +9,7 @@ namespace dotnet_tree_shadows.Services {
 
     private readonly IMongoCollection<Game> games;
 
-    public GameService (IGameDatabaseSettings settings) {
-      MongoClient client = new MongoClient( settings.ConnectionString );
+    public GameService (IGameDatabaseSettings settings, IMongoClient client) {
       IMongoDatabase? database = client.GetDatabase( settings.DatabaseName );
       games = database.GetCollection<Game>( settings.GamesCollectionName );
     }

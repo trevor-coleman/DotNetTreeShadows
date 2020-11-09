@@ -24,6 +24,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
+using MongoDB.Driver;
 
 namespace dotnet_tree_shadows {
   public class Startup {
@@ -57,9 +58,7 @@ namespace dotnet_tree_shadows {
       string user = Configuration.GetSection( nameof(GameDatabaseSettings) )["User"];
       string password = Configuration.GetSection( nameof(GameDatabaseSettings) )["Password"];
       string databaseName = Configuration.GetSection( nameof(GameDatabaseSettings) )["DatabaseName"];
-
-
-
+      
       string connectionString = (string.IsNullOrEmpty( user ) 
                                  || string.IsNullOrEmpty( password ))
                                   ? $"mongodb://127.0.0.1:{port}"
@@ -81,6 +80,10 @@ namespace dotnet_tree_shadows {
             mongoIdentityOptions.RolesCollection = "Roles";
           }
         );
+      
+      MongoClient mongoClient = new MongoClient( connectionString );
+      services.AddSingleton<IMongoClient>( mongoClient );
+      
 
       BsonSerializer.RegisterSerializationProvider( new HexSerializationProvider() );
       BsonSerializer.RegisterSerializationProvider( new TilesDictionarySerializationProvider() );

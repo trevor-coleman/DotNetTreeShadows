@@ -1,7 +1,9 @@
+using Microsoft.Extensions.Configuration;
+
 #pragma warning disable 8618
 namespace dotnet_tree_shadows.Models {
   public class GameDatabaseSettings : IGameDatabaseSettings {
-
+    
     public string Host { get; set; }
     public int Port { get; set; }
     public string DatabaseName { get; set; }
