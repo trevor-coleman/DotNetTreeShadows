@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Services.GameActionService;
+using Mongo.Migration.Documents;
+using Mongo.Migration.Documents.Attributes;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
@@ -10,8 +12,10 @@ using Newtonsoft.Json.Converters;
 
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
+
 namespace dotnet_tree_shadows.Models.GameModel {
-  public class Game {
+  [StartUpVersion("0.0.2")]
+  public class Game:IDocument {
 
     public GameActionData[] ActionHistory = new GameActionData[0];
 
@@ -139,5 +143,6 @@ namespace dotnet_tree_shadows.Models.GameModel {
     public bool ActionIsLastAction (string actionId) =>
       UndoActions.Length != 0 && UndoActions.Last().Id == actionId;
 
+    public DocumentVersion Version { get; set; }
   }
 }

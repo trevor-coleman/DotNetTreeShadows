@@ -1,11 +1,14 @@
 using System;
 using dotnet_tree_shadows.Models.Enums;
+using Mongo.Migration.Documents;
+using Mongo.Migration.Documents.Attributes;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 // ReSharper disable MemberCanBeProtected.Global
 
 namespace dotnet_tree_shadows.Models.InvitationModel {
-  public class Invitation {
+  [RuntimeVersion("0.0.1")]
+  public class Invitation: IDocument {
 
     [BsonId]
     [BsonRepresentation( BsonType.ObjectId )]
@@ -39,6 +42,8 @@ namespace dotnet_tree_shadows.Models.InvitationModel {
       i.SenderId == SenderId && i.RecipientId == RecipientId && i.InvitationType == InvitationType;
 
     public virtual bool Involves (string id) => id == SenderId || id == RecipientId;
+
+    public DocumentVersion Version { get; set; }
 
   }
 }

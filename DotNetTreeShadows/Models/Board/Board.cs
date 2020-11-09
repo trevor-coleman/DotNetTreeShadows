@@ -8,12 +8,15 @@ using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Models.GameModel;
 using dotnet_tree_shadows.Utilities;
+using Mongo.Migration.Documents;
+using Mongo.Migration.Documents.Attributes;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
 
 namespace dotnet_tree_shadows.Models {
-  public class Board {
+  [RuntimeVersion("0.0.1")]
+  public class Board:IDocument {
 
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
@@ -35,6 +38,8 @@ namespace dotnet_tree_shadows.Models {
       get => Tiles[hexCode];
       set => Tiles[hexCode] = value;
     }
+
+    public DocumentVersion Version { get; set; }
 
   }
 }

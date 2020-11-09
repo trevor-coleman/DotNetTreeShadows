@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using dotnet_tree_shadows.Models.GameModel;
+using Mongo.Migration.Documents;
+using Mongo.Migration.Documents.Attributes;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace dotnet_tree_shadows.Models.SessionModel {
-  public class Session {
+  [RuntimeVersion("0.0.1")]
+  public class Session:IDocument {
 
     [BsonId]
     [BsonRepresentation( BsonType.ObjectId )]
@@ -24,6 +27,8 @@ namespace dotnet_tree_shadows.Models.SessionModel {
     }
 
     public bool HasPlayer (string id) => Players.ContainsKey( id ) || Host == id;
+
+    public DocumentVersion Version { get; set; }
 
   }
 }

@@ -4,9 +4,12 @@ using AspNetCore.Identity.Mongo.Model;
 using dotnet_tree_shadows.Controllers;
 using dotnet_tree_shadows.Models.ProfileModel;
 using dotnet_tree_shadows.Models.SessionModel;
+using Mongo.Migration.Documents;
+using Mongo.Migration.Documents.Attributes;
 
 namespace dotnet_tree_shadows.Models.Authentication {
-    public class UserModel:MongoUser {
+  [RuntimeVersion("0.0.1")]  
+  public class UserModel:MongoUser, IDocument {
       public string UserId {
             get => Id.ToString();
         }
@@ -69,9 +72,8 @@ namespace dotnet_tree_shadows.Models.Authentication {
         UserName = request.Name ?? UserName;
         Email = request.Email ?? Email;
       }
-      
-      
-      
+
+      public DocumentVersion Version { get; set; }
 
     }
 }
