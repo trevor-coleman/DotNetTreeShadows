@@ -89,6 +89,7 @@ export const useSelectPlayerBoard = (playerId: string) => useTypedSelector(state
 export const usePlayerBoard = () => useTypedSelector(state => state.playerBoards[state.profile.id] ?? stateFromBoardCode(0));
 export const usePlayerBoardPieceType = (pieceType:PieceType) => useTypedSelector(state => state.playerBoards[PieceType[pieceType]])
 export const useLight= ()=>useTypedSelector(state => state.playerBoards[state.profile.id]?.light ?? 0);
+export const useTreeType = ()=>useTypedSelector(state => state.playerBoards[state.profile.id].treeType ?? TreeType.Ash)
 
 export const {updatePlayerBoard} = playerBoardsSlice.actions;
 export default playerBoardsSlice.reducer;

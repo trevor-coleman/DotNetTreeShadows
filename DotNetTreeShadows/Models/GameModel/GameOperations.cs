@@ -7,7 +7,8 @@ namespace dotnet_tree_shadows.Models.GameModel {
   public static class GameOperations {
     
     public static void AddPlayer (Game game, string playerId) {
-      game.TurnOrder = game.TurnOrder.Append( playerId ).ToArray();
+      if(game.TurnOrder.Length == 4) return;
+      game.TurnOrder = game.TurnOrder.Where(id=> id!=playerId).Append( playerId ).ToArray();
       TreeType treeType = game.RemainingTreeTypes[new Random().Next(game.RemainingTreeTypes.Length)];
       game.RemainingTreeTypes = game.RemainingTreeTypes.Where( tt => tt != treeType ).ToArray();
       PlayerBoard playerBoard = new PlayerBoard { TreeType = treeType };

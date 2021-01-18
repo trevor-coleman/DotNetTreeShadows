@@ -18,8 +18,6 @@ const ScoringTokenAvatar: FunctionComponent<ScoringTokenAvatarProps> = (
 ) => {
   const { token, light, score } = props;
   const hideScores = props.hideScores ?? false;
-  const [open, setOpen] = useState(false);
-  const visible = hideScores ? open : true;
   const classes = useStyles(props);
   const dispatch = useDispatch();
 
@@ -27,11 +25,9 @@ const ScoringTokenAvatar: FunctionComponent<ScoringTokenAvatarProps> = (
 
   return (
     <Avatar
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
       className={classes.root}
     >
-      {visible ? `${points}` : " "}
+      {!hideScores ? `${points}` : " "}
     </Avatar>
   );
 };
@@ -43,13 +39,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: ({ token, light, score }: ScoringTokenAvatarProps) =>
       light ? score??0 > 0 ? "#edb000" : "#72CEE0" : tileColor(4 - (token?.leaves ?? 0)),
     color: ({ token, light, score }: ScoringTokenAvatarProps) =>
-      theme.palette.getContrastText(light
-                                    ? score ?? 0 > 0
+      light
+      ? theme.palette.getContrastText(score ?? 0 > 0
                                       ? "#edb000"
-                                      : "#72CEE0"
-                                    : tileColor(4 - (
-              token?.leaves ?? 0))
-      ),
+                                      : "#72CEE0")
+      : "#fff",
     cursor: "default"
   }
 }));

@@ -7,13 +7,13 @@ namespace DotNetTreeShadows.Tests {
   [TestFixture]
   public class ScoreTokensTest {
 
-    private Game Game;
-    private Hex Hex;
+    private Game game;
+    private Hex hex;
 
     [SetUp]
     public void SetUp () {
-      Game = new Game();
-      Hex = new Hex(0);
+      game = new Game();
+      hex = new Hex(0);
     }
 
     [Test]
@@ -21,7 +21,7 @@ namespace DotNetTreeShadows.Tests {
       int[] expectedResults = { 22, 21, 20 };
 
       foreach ( int t in expectedResults ) {
-        bool result = ScoreTokens.Take( Game, Hex, out Scoring.Token? token );
+        bool result = ScoreTokens.Take( game, hex, out Scoring.Token? token );
         Assert.IsTrue( result );
         Assert.AreEqual( t, token.Points);
       }

@@ -13,6 +13,7 @@ import { useIsPlayersTurn } from '../../../store/profile/reducer';
 import {
   subscribeAutoCloseBuyMenu, unsubscribeAutoCloseBuyMenu,
 } from '../../../store/game/subscriptions';
+import ActionInformation from './ActionInformation';
 
 
 interface ActionInstructionsProps {
@@ -76,15 +77,19 @@ const ActionInstructions: FunctionComponent<ActionInstructionsProps> = (props: A
         return {
           headline: "Plant",
           actionInstruction: origin == null
-                             ? "Select a tree to act as the origin"
+                             ? "Select a tree to act as the origin. Larger trees can plant further away."
                              : "Select a tile to plant your seed.",
         };
       case GameActionType.Grow:
         return {
           headline: "Grow",
-          actionInstruction: "Select a seed or tree to grow.",
+          actionInstruction: "Select a seed or tree on the board to grow.",
         };
       case GameActionType.Collect:
+        return {
+          headline: "Collect",
+          actionInstruction: "Select a large tree to remove and collect a score token.",
+        };
       case GameActionType.EndTurn:
       case GameActionType.StartGame:
       case GameActionType.PlaceStartingTree:
@@ -101,19 +106,24 @@ const ActionInstructions: FunctionComponent<ActionInstructionsProps> = (props: A
 
   };
 
+
+
   const {headline, actionInstruction, buttonText, hideButton} = getInstructions();
 
   return (
-      <Grid container spacing={2}>
-        <Grid item><Typography variant={'subtitle1'}>{headline}</Typography></Grid>
+      <Grid container spacing={0}>
+        <Grid item className={classes.title}><Typography variant={'subtitle1'}>{headline}</Typography></Grid>
         <Grid container
               item
+              spacing={2}
               className={classes.container}
               direction={"column"}
               xs={12}>
           <Grid item className={classes.instruction}>
-            <Typography variant={"h6"}
-                        paragraph>{actionInstruction}</Typography>
+            <Typography variant={"h6"}>{actionInstruction}</Typography>
+          </Grid>
+          <Grid item className={classes.prices}>
+            <ActionInformation />
           </Grid>
           <Grid item container className={classes.cancelButton}>
             <Grid item className={classes.buttonSpacer} />
@@ -129,12 +139,13 @@ const ActionInstructions: FunctionComponent<ActionInstructionsProps> = (props: A
 const useStyles = makeStyles((theme: Theme) => (
     {
       root: {},
+      title: {
+      },
       container: {
         flexGrow: 1,
         width: "100%",
       },
       instruction: {
-        flexGrow: 1,
       },
       cancelButton: {
         alignItems: "flex-end",
@@ -143,6 +154,8 @@ const useStyles = makeStyles((theme: Theme) => (
       buttonSpacer: {
         flexGrow: 1,
       },
+      prices: {
+        paddingBottom: theme.spacing(2)},
     }));
 
 export default ActionInstructions;

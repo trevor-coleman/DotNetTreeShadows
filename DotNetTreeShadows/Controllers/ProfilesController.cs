@@ -123,8 +123,8 @@ namespace dotnet_tree_shadows.Controllers {
       user.AddSession( session );
       List<Task> updateTasks = new List<Task> { userManager.UpdateAsync( user ) };
       GameOperations.AddPlayer( game, user.UserId );
-      updateTasks.Add( gameService.Update( sessionId, game ) ); 
       session.Players.Add( user.UserId, PlayerSummary.CreateFromUser( user ) );
+      updateTasks.Add( gameService.Update( sessionId, game ) );
       updateTasks.Add( sessionService.Update( sessionId, session ) );
       Task.WaitAll( updateTasks.ToArray() );
       return NoContent();

@@ -4,6 +4,7 @@ import SidebarGrid from "../layout/SidebarGrid";
 import AvailablePieces from "./AvailablePieces";
 import ScoreDisplay from './ScoreDisplay';
 import { useCollectedScoreTokens } from '../../../store/game/reducer';
+import ActionInformation from '../bottomBar/ActionInformation';
 
 const PlayerSidebar = () => {
   const scoreTokens = useCollectedScoreTokens();
@@ -12,7 +13,8 @@ const PlayerSidebar = () => {
     <SidebarGrid>
       <AvailablePieces/>
       <PlayerBoardDisplay/>
-      {scoreTokens?.length > 0 ? <ScoreDisplay/>:""}
+      <ScoreDisplay/>
+      <ActionInformation/>
     </SidebarGrid>
   </div>
 }

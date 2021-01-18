@@ -22,6 +22,52 @@ interface ScoreTokenPilesProps {}
 
 type ScoreTokenPile = { leaves: number; topValue: number; remaining: number };
 
+export const LeafToken = (pile: ScoreTokenPile) => {
+  const classes = useStyles();
+  const size = 80;
+  const scale = 0.6;
+  const color = pile.topValue
+                ? tileColor(4 - pile.leaves)
+                : "lightgrey";
+
+  const icon = (leaves: number) => {
+    switch (leaves) {
+      case 1:
+        return EmptyOneLeaf
+      case 2:
+        return EmptyTwoLeaf
+      case 3:
+        return EmptyThreeLeaf
+      case 4:
+        return EmptyFourLeaf
+    }
+  }
+
+  return (
+      <Avatar style={{backgroundColor: color}}><SvgIcon fontSize="large">
+        <svg className={classes.svg}
+             xmlns="http://www.w3.org/2000/svg"
+             viewBox={`0 0 ${size} ${size}`}>
+          <circle cx={Math.ceil(size / 2) - 1}
+                  cy={Math.ceil(size / 2) - 1}
+                  r={0.8 * size / 2}
+                  stroke={color}
+                  strokeWidth={2}
+                  fill={"rgba(255,255,255,0.9)"} />
+          <image href={icon(pile.leaves)}
+                 x={(
+                     size * (
+                     1 - scale) * 0.5)}
+                 y={(
+                     size * (
+                     1 - scale) * 0.5)}
+                 width={size * scale}
+                 height={size * scale}
+                 fill={"#ffffff"} />
+        </svg>
+      </SvgIcon></Avatar>);
+};
+
 //COMPONENT
 const ScoreTokenPiles: FunctionComponent<ScoreTokenPilesProps> = (
   props: ScoreTokenPilesProps
@@ -49,38 +95,7 @@ const ScoreTokenPiles: FunctionComponent<ScoreTokenPilesProps> = (
     return result;
   };
 
-  const LeafToken = (pile: ScoreTokenPile) => {
-    const size = 80;
-    const scale = 0.6;
-    const color = pile.topValue ? tileColor(4 - pile.leaves) : "lightgrey";
 
-    const icon = (leaves:number)=>{
-      switch (leaves) {
-        case 1: return EmptyOneLeaf
-        case 2: return EmptyTwoLeaf
-        case 3: return EmptyThreeLeaf
-        case 4: return EmptyFourLeaf
-      }
-    }
-
-    return (
-        <Avatar style={{backgroundColor: color}}><SvgIcon fontSize="large"><svg
-          className={classes.svg}
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox={`0 0 ${size} ${size}`}
-        >
-          <circle cx={Math.ceil(size/2)-1}
-                  cy={Math.ceil(size/2)-1}
-                  r={0.8 * size / 2}
-                  stroke={color}
-                  strokeWidth = {2}
-                  fill={"rgba(255,255,255,0.9)" } />
-          <image href={icon(pile.leaves)} x={(size*(1-scale)*0.5)} y={(
-            size * (1 - scale) * 0.5)} width={size*scale} height={size*scale} fill={"#ffffff"}/>
-        </svg>
-        </SvgIcon></Avatar>
-    );
-  };
 
   return (
     <CollapsingBox title="Scoring Tokens">

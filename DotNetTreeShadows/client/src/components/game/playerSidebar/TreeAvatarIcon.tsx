@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import {useDispatch} from 'react-redux';
 import {makeStyles, Theme} from '@material-ui/core/styles';
 import {Avatar} from "@material-ui/core";
@@ -41,11 +41,9 @@ const TreeAvatarIcon: FunctionComponent<TreeAvatarIconProps> = (props: TreeAvata
 
   let connected = props.connected ?? false;
 
-
   let size = 48//propSize ?? 24;
   let center = size / 2;
   let scale: number;
-
 
   switch (pieceType) {
     case PieceType.Seed:
@@ -67,6 +65,8 @@ const TreeAvatarIcon: FunctionComponent<TreeAvatarIconProps> = (props: TreeAvata
 
   const color:string  = props.color ?? treeColor(treeType, active ? 1 : 0.2);
 
+
+
   let styleProps = {
     ...props,
     connected,
@@ -78,7 +78,6 @@ const TreeAvatarIcon: FunctionComponent<TreeAvatarIconProps> = (props: TreeAvata
   useDispatch();
 
   const svgTree = icon ?? TreeSVG(treeType, pieceType)
-
 
   const borderString =
     gridHeader

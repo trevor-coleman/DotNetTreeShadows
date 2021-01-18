@@ -13,6 +13,7 @@ import { GameOption } from "./types/GameOption";
 import { action } from 'typesafe-actions';
 import { RootState } from '../store';
 import { useEffect } from 'react';
+import { ScoringToken } from './types/scoringToken';
 
 export interface GameState extends Game {
   revolutionAlertCount: number;
@@ -120,7 +121,9 @@ export const useFirstPlayerName = () =>
     state => state.session.players[state.game.firstPlayer]?.name ?? ""
   );
 
-export const useCollectedScoreTokens = (playerId?:string)=> useTypedSelector(state => state.game.scores[playerId ?? state.profile.id] ?? []);
+export const usePlayerHasCollectedScoringTokens = (playerId?: string|null): boolean => useTypedSelector(
+    state => state.game.scores[playerId ?? state.profile.id]?.length > 0 ?? false);
+export const useCollectedScoreTokens = (playerId?:string|null): ScoringToken[]=> useTypedSelector(state => state.game.scores[playerId ?? state.profile.id] ?? []);
 export const useScoringTokenPiles = ()=> useTypedSelector(state => state.game.scoringTokens)
 export const useScores = ()=>useTypedSelector(state => state.game.scores);
 
@@ -137,7 +140,6 @@ export const {
   clearCurrentAction,
   showedRevolutionAlert,
   playedEndTurnSound,
-
 } = gameSlice.actions;
 export { fetchGame };
 export default gameSlice.reducer;

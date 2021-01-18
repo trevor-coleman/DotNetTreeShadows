@@ -7,6 +7,9 @@ import { useTypedSelector } from '../../../store';
 import { showOtherPlayerPopover } from "../../../store/appState/reducer";
 import PlayerBoardDisplay from '../playerSidebar/PlayerBoardDisplay';
 import AvailablePieces from '../playerSidebar/AvailablePieces';
+import ScoreDisplay from '../playerSidebar/ScoreDisplay';
+import { useCollectedScoreTokens } from '../../../store/game/reducer';
+import { ScoringToken } from '../../../store/game/types/scoringToken';
 
 interface OtherPlayerPopoverProps {
   anchorEl: HTMLElement | null;
@@ -19,8 +22,6 @@ const OtherPlayerPopover: FunctionComponent<OtherPlayerPopoverProps> = (props: O
   const classes = useStyles();
   const dispatch = useDispatch();
   const open = useTypedSelector(state => state.appState.otherPlayerPopover.open)
-
-
 
   return (
       <Popover
@@ -38,8 +39,9 @@ const OtherPlayerPopover: FunctionComponent<OtherPlayerPopoverProps> = (props: O
           }}
       >
         <Box p={2}>
-          <PlayerBoardDisplay id={id}/>
+          <ScoreDisplay hideScores={true} id={id} />
           <AvailablePieces id={id}/>
+          <PlayerBoardDisplay id={id} />
         </Box>
       </Popover>
       );
@@ -47,7 +49,6 @@ const OtherPlayerPopover: FunctionComponent<OtherPlayerPopoverProps> = (props: O
 
 const useStyles = makeStyles((theme: Theme) => (
     {
-      root: {},
     }));
 
 export default OtherPlayerPopover;

@@ -14,6 +14,7 @@ import { GameStatus } from "../../../store/game/types/GameStatus";
 import PreGameInstructions from "./PreGameInstructions";
 import { useIsHost } from "../../../store/profile/reducer";
 import HostOptions from "../sessionSidebar/HostOptions";
+import ActionInformation from "./ActionInformation";
 
 interface BottomBarProps {}
 
@@ -29,41 +30,49 @@ const BottomBar: FunctionComponent<BottomBarProps> = (
   const isHost = useIsHost();
 
   return (
-    <Box p={2} className={classes.root}>
-      <Paper>
-        <Box p={2}>
-          {status == GameStatus.Preparing ? (
-            isHost ? (
-              <HostOptions />
-            ) : (
-              <PreGameInstructions />
-            )
+    <Box p={1} className={classes.root}>
+      <Grid container spacing={1} direction={"column"} className={classes.topGrid}>
+
+        <Grid item container>
+          <Paper>
+            <Box p={2}>
+        {status == GameStatus.Preparing ? (
+          isHost ? (
+            <HostOptions />
           ) : (
-            <Grid container spacing={2}>
-              <Grid item xs={5}>
-                <LightDisplay />
+            <PreGameInstructions />
+          )
+        ) : (
+
+              <Grid item container spacing={2}>
+                <Grid item xs={3}>
+                  <LightDisplay />
+                </Grid>
+                <Grid item>
+                  <Divider
+                    orientation="vertical"
+                    flexItem
+                    style={{ height: "100%" }}
+                  />
+                </Grid>
+                <Grid item xs={8}>
+                  {status == GameStatus.PlacingFirstTrees ||
+                  status == GameStatus.PlacingSecondTrees ? (
+                    <ActionInstructions />
+                  ) : currentActionType == null ? (
+                    <TurnActionButtons />
+                  ) : (
+                    <ActionInstructions />
+                  )}
+                </Grid>
               </Grid>
-              <Grid item>
-                <Divider
-                  orientation="vertical"
-                  flexItem
-                  style={{ height: "100%" }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                {status == GameStatus.PlacingFirstTrees ||
-                status == GameStatus.PlacingSecondTrees ? (
-                  <ActionInstructions />
-                ) : currentActionType == null ? (
-                  <TurnActionButtons />
-                ) : (
-                  <ActionInstructions />
-                )}
-              </Grid>
-            </Grid>
-          )}
-        </Box>
-      </Paper>
+
+        )}
+            </Box>
+          </Paper>
+        </Grid>
+
+      </Grid>
     </Box>
   );
 };
@@ -71,9 +80,14 @@ const BottomBar: FunctionComponent<BottomBarProps> = (
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     height: "fit-content",
+    paddingBottom: theme.spacing(2),
     width: "100%",
     backgroundColor: "#c9c9c9"
-  }
+  },
+  topGrid: {
+    height: "fit-content",
+    width: "100%",
+  },
 }));
 
 export default BottomBar;

@@ -34,7 +34,7 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       game.SetPlayerBoard( playerId, playerBoard );
       board.Set(target, targetCode);
       game.TilesActiveThisTurn = game.TilesActiveThisTurn.Where( t=>t!=origin.HexCode ).Append( origin.HexCode ).ToArray();
-      game.TilesActiveThisTurn = game.TilesActiveThisTurn.Where( t=>t!=origin.HexCode ).Append( target.HexCode ).ToArray();
+      game.TilesActiveThisTurn = game.TilesActiveThisTurn.Where( t=>t!=target.HexCode ).Append( target.HexCode ).ToArray();
       
       game.AddGameAction( actionData);
       return context;

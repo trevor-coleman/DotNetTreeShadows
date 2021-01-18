@@ -11,17 +11,20 @@ import { tileColor } from "../../helpers/treeColor";
 import { ScoringToken } from "../../../store/game/types/scoringToken";
 import ScoringTokenAvatar from './ScoringTokenAvatar';
 
-interface ScoreDisplayProps {}
+interface ScoreDisplayProps {
+  hideScores ?: boolean;
+  id?: string|null;
+}
 
 //COMPONENT
 const ScoreDisplay: FunctionComponent<ScoreDisplayProps> = (
   props: ScoreDisplayProps
 ) => {
-  const {} = props;
+  const {id} = props;
   const classes = useStyles();
   const dispatch = useDispatch();
-  const scoreTokens = useCollectedScoreTokens();
-  const hideScores = false;
+  const hideScores: boolean = props.hideScores || false;
+  const scoreTokens = useCollectedScoreTokens(id);
 
   interface TokenProps {
     token: { leaves: number; points: number };
@@ -38,20 +41,20 @@ const ScoreDisplay: FunctionComponent<ScoreDisplayProps> = (
         <Typography variant={"subtitle1"}>Collected Score Tokens</Typography>
         <Divider className={classes.divider} />
         <Grid container spacing={2} direction={"row"}>
-          {scoreTokens
+          {scoreTokens && scoreTokens.length > 0 ? scoreTokens
             .slice()
             .sort(compareTokens)
             .map((token, index) => (
               <Grid item key={`${token.leaves}-${token.points}-${index}`}>
                 <ScoringTokenAvatar token={token} hideScores={hideScores} />
               </Grid>
-            ))}
+            )):(
+           <Grid item>
+             <Typography className={classes.noneText}>None</Typography>
+          </Grid>)
+
+          }
         </Grid>
-        {hideScores && scoreTokens.length > 0 ? (
-          <Typography variant={"caption"}>Hover to see score</Typography>
-        ) : (
-          ""
-        )}
       </Box>
     </Paper>
   );
@@ -61,6 +64,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {},
   divider: {
     marginBottom: theme.spacing(1)
+  },
+  noneText: {
+    color: theme.palette.grey.A200
   }
 }));
 
