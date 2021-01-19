@@ -1,6 +1,6 @@
 import { AApiSection } from "./aApiSection";
 import { SignInCredentials } from "../store/auth/types/signInCredentials";
-import axios, { AxiosResponse, AxiosError } from "axios";
+import axios, { AxiosResponse} from "axios";
 import { NewUserInfo } from "../store/auth/types/newUserInfo";
 
 export type AuthApiResult = {
@@ -89,12 +89,10 @@ export default class AuthApiSection extends AApiSection {
     await axios
       .post("auth/check-if-duplicate", {username})
       .then(response => {
-        console.log(response);
         result.success = true;
         result.isDuplicate = response.data;
       })
-      .catch(error => {
-        console.log(error.response);
+      .catch(() => {
         result.success = false;
       });
 
