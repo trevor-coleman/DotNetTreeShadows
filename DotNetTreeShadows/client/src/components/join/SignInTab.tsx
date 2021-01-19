@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import { SignInCredentials } from "../../store/auth/types/signInCredentials";
 import { useTypedSelector } from "../../store";
 import { Box } from '@material-ui/core';
+import { useSignInRejectedMessage } from '../../store/auth/selectors';
 
 interface SignInTabProps {
   credentials: SignInCredentials;
@@ -20,9 +21,7 @@ const SignInTab: FunctionComponent<SignInTabProps> = (
   const dispatch = useDispatch();
 
   const [error, setError] = useState(false);
-  const signedInRejectedMessage = useTypedSelector(
-    state => state.auth.signedInRejectedMessage
-  );
+  const signInRejectedMessage = useSignInRejectedMessage();
 
   const setEmail = (email: string) =>
     setCredentials({

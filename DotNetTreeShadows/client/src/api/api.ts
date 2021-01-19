@@ -63,7 +63,7 @@ export default class Api {
       if (error.response.status === 401) {
         store.dispatch(signOutAndClearStore())
       }
-      return error;
+      return Promise.reject(error);
     });
 
   }

@@ -8,7 +8,7 @@ namespace dotnet_tree_shadows.Models.Authentication {
         [Required(ErrorMessage = "Username is required")]
         public string Username { get; set; }
         
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Please provide a valid email address.")]
         [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
         

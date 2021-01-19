@@ -10,6 +10,7 @@ import {SignInCredentials} from "../store/auth/types/signInCredentials";
 import {signInAndFetchProfile} from "../store/auth/thunks";
 import {useTypedSelector} from "../store";
 import Alert from '@material-ui/lab/Alert';
+import { useSignInRejectedMessage } from '../store/auth/selectors';
 
 interface ISignInFieldsProps {
   hideButton?:boolean,
@@ -20,8 +21,7 @@ const SignInFields: FunctionComponent<ISignInFieldsProps> = (props: ISignInField
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(false);
-    const signedInRejectedMessage = useTypedSelector(state => state.auth.signedInRejectedMessage)
+    const signInRejectedMessage = useSignInRejectedMessage();
 
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -59,7 +59,7 @@ const SignInFields: FunctionComponent<ISignInFieldsProps> = (props: ISignInField
                     password
                 })}>Sign In</Button></div>
             </form>
-            {signedInRejectedMessage ? <Alert severity="warning">{signedInRejectedMessage}</Alert>:""}
+            {signInRejectedMessage ? <Alert severity="warning">{signInRejectedMessage}</Alert>:""}
         </div>;
 };
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -11,6 +12,7 @@ using dotnet_tree_shadows.Models.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
@@ -44,7 +46,8 @@ namespace dotnet_tree_shadows.Controllers {
         public async Task<IActionResult> Login([FromBody] LoginModel model)  
         {
           UserModel userModel = await userManager.FindByEmailAsync(model.Email);
-            if ( userModel == null || !await userManager.CheckPasswordAsync( userModel, model.Password ) ) return Unauthorized();
+          if ( userModel == null ) return UserNotFound();
+          if (!await userManager.CheckPasswordAsync( userModel, model.Password ) ) return InvalidPassword();
             IList<string> userRoles = await userManager.GetRolesAsync(userModel);  
   
             List<Claim> authClaims = new List<Claim>  
@@ -72,6 +75,34 @@ namespace dotnet_tree_shadows.Controllers {
             return Ok(userModel.UserId);
         }  
 
+        protected ObjectResult InvalidPassword () =>
+          StatusCode(
+              StatusCodes.Status400BadRequest,
+              new Response {
+                Status = "Error",
+                Message = "Password and username do not match."
+              }
+            );
+         
+        protected ObjectResult UserNotFound () =>
+          StatusCode(
+              StatusCodes.Status400BadRequest,
+              new Response {
+                Status = "Error",
+                Message = "Could not find user with that email."
+              }
+            );
+
+        protected ObjectResult InvalidInviteCode () =>
+          StatusCode(
+              StatusCodes.Status400BadRequest,
+              new Response {
+                Status = "Error",
+                Message = "A valid invite code is required to register."
+              }
+            );
+
+        
         [HttpPost]
         [Route( "register" )]
         public async Task<IActionResult> Register ([FromBody] RegisterModel model) {
@@ -80,10 +111,18 @@ namespace dotnet_tree_shadows.Controllers {
             if ( userModelExists != null )
               return StatusCode(
                   StatusCodes.Status409Conflict,
-                  new Response { Status = "Error", Message = "User already exists!" }
+                  new Response { Status = "Error", Message = "A user with that email already exists. Please sign in, or use a different email." }
+                );
+            
+            UserModel userNameExists = await userManager.FindByNameAsync( model.Username );
+            if ( userNameExists != null )
+              return StatusCode(
+                  StatusCodes.Status409Conflict,
+                  new Response { Status = "Error", Message = "A user with that username already exists. Please sign in, or use a different email." }
                 );
 
-            if ( model.InviteCode != "ilovetrees" ) return Status403Forbidden();
+
+            if ( model.InviteCode != "ilovetrees" ) return InvalidInviteCode();
 
             UserModel userModel = new UserModel() {
               Email = model.Email, SecurityStamp = Guid.NewGuid().ToString(), UserName = model.Username
@@ -110,6 +149,14 @@ namespace dotnet_tree_shadows.Controllers {
                 new Response { Status = "Register Failed", Message = e.Message + e.StackTrace }
               );
           }
+        }
+
+        [HttpPost, Route( "check-if-duplicate" )]
+        public async Task<IActionResult> CheckIfDuplicate ([FromBody] CheckForDuplicatesModel model) {
+          string username = model.Username;
+          Console.WriteLine($"Checking: {username}");
+          UserModel userModelExists = await userManager.FindByNameAsync( username );
+          return Ok( userModelExists != null );
         }
 
         [HttpPost, Route( "register-admin" )]

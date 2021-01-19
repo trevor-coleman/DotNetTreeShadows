@@ -17,12 +17,6 @@ interface ISignInFormProps {
 
 //COMPONENT
 const SignInForm: FunctionComponent<ISignInFormProps> = (props: ISignInFormProps) => {
-
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState(false);
-    const signedInRejectedMessage = useTypedSelector(state => state.auth.signedInRejectedMessage)
-
     const classes = useStyles();
     const dispatch = useDispatch();
 
