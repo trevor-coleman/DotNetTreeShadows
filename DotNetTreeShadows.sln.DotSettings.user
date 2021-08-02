@@ -9,6 +9,7 @@
   &lt;TestAncestor&gt;
     &lt;TestId&gt;NUnit3x::D8801332-3890-4169-9461-B62C78B89DC7::.NETCoreApp,Version=v3.1::DotNetTreeShadows.Tests.ScoreTokensTest.FourLeafTokensAreTakenInOrder&lt;/TestId&gt;
     &lt;TestId&gt;NUnit3x::D8801332-3890-4169-9461-B62C78B89DC7::.NETCoreApp,Version=v3.1::DotNetTreeShadows.Tests.GameTests.UsersAddedToGameAppearInTurnOrder&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::D8801332-3890-4169-9461-B62C78B89DC7::.NETCoreApp,Version=v3.1::DotNetTreeShadows.Test.TestService.AddAMemberToAGroup&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	

@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 using dotnet_tree_shadows.Models;
 using dotnet_tree_shadows.Models.Authentication;
-using dotnet_tree_shadows.Models.Enums;
 using dotnet_tree_shadows.Models.GameModel;
 using dotnet_tree_shadows.Models.SessionModel;
 using dotnet_tree_shadows.Services;
@@ -62,15 +59,19 @@ namespace dotnet_tree_shadows.Hubs {
       Task<Session> sessionTask = sessionService.Get( sessionId );
       Task<Game> gameTask = gameService.Get( sessionId );
       Task<Board> boardTask = boardService.Get( sessionId );
+
+      Session session = await sessionTask;
+      Game game = await gameTask;
+      
       
       SessionUpdate sessionUpdate = new SessionUpdate {
         SessionId = sessionId,
-        Session = await sessionTask,
-        Game = await gameTask,
+        Session = session,
+        Game = game,
         Board = await boardTask
       };
       
-      await Clients.Caller.SendAsync(
+      await Clients.Group( sessionId ).SendAsync(
           "HandleSessionUpdate",
           sessionUpdate   
         );
@@ -83,6 +84,7 @@ namespace dotnet_tree_shadows.Hubs {
       await Groups.RemoveFromGroupAsync( Context.ConnectionId, sessionId );
       IEnumerable<string> membersAfter = hubGroupService.RemoveFromSession( sessionId, user.UserId );
 
+      
       await Clients.Group( sessionId ).SendAsync( "UpdateConnectedPlayers", sessionId, membersAfter.ToArray() );
     }
 

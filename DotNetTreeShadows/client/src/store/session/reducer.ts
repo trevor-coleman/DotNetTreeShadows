@@ -144,6 +144,19 @@ const sessionSlice = createSlice({
         ...initialSessionState
       };
     },
+    updatePlayers(state: SessionState, action: PayloadAction<{sessionId: string, players: {[player: string]: {
+          name: string
+        }}}>){
+      
+      const {sessionId, players} = action.payload;
+      console.log(sessionId, players)
+      return sessionId == state.id
+             ? {
+          ...state,
+          players
+        }
+             : state;
+    },
     updateConnectedPlayers(
       state: SessionState,
       action: PayloadAction<{ sessionId: string; connectedPlayers: string[] }>
@@ -171,7 +184,7 @@ const sessionSlice = createSlice({
 export const useSessionId = ()=>useTypedSelector(state=>state.session.id);
 export const usePlayers=()=>useTypedSelector(state => state.session.players);
 
-export const {updateSession, clearSession, updateConnectedPlayers, updateLinkEnabled} = sessionSlice.actions;
+export const {updateSession, clearSession, updateConnectedPlayers, updatePlayers, updateLinkEnabled} = sessionSlice.actions;
 export {createSession, fetchSession, createSessionAndFetchProfile};
 export default sessionSlice.reducer;
 

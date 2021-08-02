@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,18 @@ namespace dotnet_tree_shadows.Services {
       new ConcurrentDictionary<string, IEnumerable<string>>();
 
     public IEnumerable<string> AddToSession (string sessionId, string playerId) {
-      SessionsForPlayer.AddOrUpdate( playerId, new[] { sessionId }, (_, l) => l.Where(id=> id!=sessionId).Append( sessionId ) );
-      IEnumerable<string> sessionPlayers = PlayersForSession.AddOrUpdate( sessionId, new[] { playerId }, (_, l) => l.Where(id=> id!=playerId).Append( playerId ) );
+      SessionsForPlayer.AddOrUpdate(
+          playerId,
+          new[] { sessionId },
+          (_, l) => l.Where( id => id != sessionId ).Append( sessionId )
+        );
+
+      IEnumerable<string> sessionPlayers = PlayersForSession.AddOrUpdate(
+          sessionId,
+          new[] { playerId },
+          (_, players) => players.Where( id => id != playerId ).Append( playerId )
+        );
+
       return sessionPlayers;
     }
 
@@ -29,18 +40,14 @@ namespace dotnet_tree_shadows.Services {
       sessionsAfter = playerGroups.Where( id => id != sessionId );
       SessionsForPlayer.AddOrUpdate( playerId, sessionsAfter, (_, groups) => groups.Where( id => id != sessionId ) );
       return sessionsAfter;
-      
     }
-    
+
     public IEnumerable<string> RemovePlayerFromSession (string sessionId, string playerId) {
       IEnumerable<string> playersAfter = new string[0];
       if ( PlayersForSession.TryGetValue( sessionId, out IEnumerable<string>? sessionPlayers ) )
         playersAfter = sessionPlayers.Where( id => id != playerId );
-        PlayersForSession.AddOrUpdate(
-            sessionId,
-            playersAfter,
-            (_, players) => players.Where( id => id != playerId )
-          );
+
+      PlayersForSession.AddOrUpdate( sessionId, playersAfter, (_, players) => players.Where( id => id != playerId ) );
 
       return playersAfter;
     }
