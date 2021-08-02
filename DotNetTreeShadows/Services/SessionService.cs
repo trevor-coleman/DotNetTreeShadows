@@ -37,7 +37,6 @@ namespace dotnet_tree_shadows.Services {
       (await sessions.FindAsync( session => session.Id == id )).FirstOrDefault();
 
     public async Task<Session> Create (Session session) {
-      Console.WriteLine( session.HostName );
       await sessions.InsertOneAsync( session );
       return session;
     }

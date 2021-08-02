@@ -44,7 +44,7 @@ namespace dotnet_tree_shadows.Services.GameActionService {
         PieceType = pieceType
       };
 
-      Console.WriteLine( pieceType );
+      
 
       context = await HydrateContext( context );
 

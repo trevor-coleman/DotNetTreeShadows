@@ -131,7 +131,6 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       PieceType grownType = (PieceType) ((int)growingType + 1); 
       PlayerBoard playerBoard = PlayerBoard.Get( context.Game!, context.PlayerId );
       bool discarded = !playerBoard.Pieces( growingType ).CanReturnSafely();
-      Console.WriteLine($"Grow Action Discarded: {discarded} - PieceType: {growingType} -  Return Safely: {playerBoard.Pieces( growingType ).CanReturnSafely()}");
       return new GameActionData(
           context.PlayerId,
           GameActionType.Grow,

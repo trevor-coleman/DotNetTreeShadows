@@ -154,7 +154,6 @@ namespace dotnet_tree_shadows.Controllers {
         [HttpPost, Route( "check-if-duplicate" )]
         public async Task<IActionResult> CheckIfDuplicate ([FromBody] CheckForDuplicatesModel model) {
           string username = model.Username;
-          Console.WriteLine($"Checking: {username}");
           UserModel userModelExists = await userManager.FindByNameAsync( username );
           return Ok( userModelExists != null );
         }

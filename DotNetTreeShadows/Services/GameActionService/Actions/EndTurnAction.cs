@@ -53,7 +53,6 @@ namespace dotnet_tree_shadows.Services.GameActionService.Actions {
       foreach (string playerId in game.TurnOrder ) {
         PlayerBoard playerBoard = PlayerBoard.Get( game, playerId );
         int earnedLight = BoardOperations.CountLight( board, playerBoard.TreeType );
-        Console.WriteLine($"{playerId} - {earnedLight}");
         playerBoard.RecoverLight( earnedLight );
         game.SetPlayerBoard( playerId, playerBoard );
       }

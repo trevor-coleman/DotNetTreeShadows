@@ -39,10 +39,7 @@ namespace dotnet_tree_shadows.Models {
                    } )
                .Aggregate(
                     0,
-                    (l, p) => {
-                      Console.WriteLine($"Total:{l} ||  (Hex:{p.Key.ToString()}, code: {p.Value}) || height:{Tile.GetPieceHeight( p.Value )} > {Tile.GetShadowHeight( p.Value )} ==> {Tile.GetLight( p.Value )}");
-                      return l + Tile.GetLight( p.Value );
-                    }
+                    (l, p) => l + Tile.GetLight( p.Value )
                      );
     }
     

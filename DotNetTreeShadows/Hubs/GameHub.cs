@@ -160,7 +160,6 @@ namespace dotnet_tree_shadows.Hubs {
       if ( action.UnExecute( out ActionContext context, actionId, out string failureMessage ) ) {
         context.Game!.RemoveGameAction( actionId );
         await Commit( context );
-        Console.WriteLine($"SessionId: {context.SessionId}");
         await Clients.Group( context.SessionId )
                      .SendAsync(
                           "HandleSessionUpdate",

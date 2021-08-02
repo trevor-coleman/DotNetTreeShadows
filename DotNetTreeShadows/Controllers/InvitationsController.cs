@@ -291,10 +291,7 @@ namespace dotnet_tree_shadows.Controllers {
         UserModel recipient = await userManager.FindByIdAsync( recipientId );
         if ( recipient == null ) return Status404NotFound( "Recipient" );
         if ( !recipient.HasFriend( sender.UserId ) ) return Status403Forbidden();
-        if ( (await invitationService.GetMany( session.Invitations )).Any( i => {
-          Console.WriteLine( $"{i.RecipientName} - {i.Status}" );
-          return i.RecipientId == recipient.UserId && i.Status == InvitationStatus.Pending;
-        }))
+        if ( (await invitationService.GetMany( session.Invitations )).Any( i => i.RecipientId == recipient.UserId && i.Status == InvitationStatus.Pending ))
           return Status409Duplicate( $"invitation - {recipient.UserName}" );
         
         SessionInvite sessionInvitation = new SessionInvite(){
