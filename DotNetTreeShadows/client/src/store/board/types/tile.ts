@@ -72,9 +72,10 @@ export class Tile {
 
   public static HasTree = (tileCode: number) => Tile.GetTileType(tileCode) !== TileType.Empty && Tile.GetPieceTypeCode(tileCode) > 0;
 
-  public static IsShadowed = (tileCode: number): boolean =>
-    Tile.GetTileType(tileCode) !== TileType.Sky &&
-    (Tile.GetShadowHeight(tileCode) === 0 || Tile.GetPieceTypeCode(tileCode) > Tile.GetShadowHeight(tileCode));
+  public static IsShadowed = (tileCode: number): boolean => {
+    if(Tile.GetTileType(tileCode) === TileType.Sky) return false;
+    return Tile.GetShadowHeight(tileCode) > 0 && Tile.GetShadowHeight(tileCode) >= Tile.GetPieceTypeCode(tileCode);
+  };
 
   public static ProducesLight = (tileCode: number): boolean =>
     Tile.GetTileType(tileCode) === TileType.Piece && Tile.GetPieceTypeCode(tileCode) > Tile.GetShadowHeight(tileCode);

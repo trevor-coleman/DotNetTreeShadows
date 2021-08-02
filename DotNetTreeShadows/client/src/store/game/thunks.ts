@@ -37,43 +37,47 @@ export const setGameAction = (currentActionType: GameActionType) => (dispatch: A
 
 
   const isEligible = (hexCode: number): boolean => {
-
+    const actionsAllowedInShadow = gameOptions.indexOf("PreventActionsInShadow") === -1
     const hex = new Hex(hexCode);
     const tileCode = tiles[hexCode];
     const treeType = Tile.GetTreeType(tileCode);
     const originTile = originHexCode !== null ? tiles[originHexCode] : null
-
-
     if (turnOrder[currentTurn] !== playerId) return false;
     if (Hex.IsSky(hexCode)) {
                               return false;
                             }
-
+    if(
+      !actionsAllowedInShadow &&
+      Tile.IsShadowed(tileCode)
+    ) {
+      return false
+    }
+    
     if (
       status === GameStatus.PlacingFirstTrees ||
       status === GameStatus.PlacingSecondTrees
     ) {
+      
       return (
+        
         Hex.IsOnEdge(hexCode) &&
-        Tile.IsEmpty(tileCode) &&
-        !(
-          gameOptions.indexOf("PreventActionsInShadow") !== -1 &&
-          Tile.IsShadowed(tileCode)
-        )
+        Tile.IsEmpty(tileCode)
       );
     }
     const pieceHeight = Tile.GetPieceHeight(tileCode);
+    const tileHasNotBeenActiveThisTurn = tilesActiveThisTurn.indexOf(hexCode) == -1;
     if (currentActionType == GameActionType.Grow) {
-      return Tile.TreeTypeIs(tileCode, playerBoard.treeType) && pieceHeight <
-             3 && pieceHeight + 1 <= playerBoard.light && (
-                 playerBoard.pieces[PieceType[pieceHeight + 1]]?.available ??
-                 0) > 0 && tilesActiveThisTurn.indexOf(hexCode) == -1;
+      const tileBelongsToPlayer = Tile.TreeTypeIs(tileCode, playerBoard.treeType);
+      const pieceCanGrow = pieceHeight < 3;
+      const playerCanAffordToGrow = pieceHeight + 1 <= playerBoard.light;
+      const playerHasPieceAvailable = (playerBoard.pieces[PieceType[pieceHeight + 1]]?.available ?? 0) > 0;
+      return tileBelongsToPlayer && pieceCanGrow && playerCanAffordToGrow && playerHasPieceAvailable && tileHasNotBeenActiveThisTurn;
     }
 
     if (currentActionType == GameActionType.Plant) {
       if (originHexCode === null) {
         return pieceHeight > 0 && playerBoard.treeType == treeType &&
-               tilesActiveThisTurn.indexOf(hexCode) == -1;
+               tileHasNotBeenActiveThisTurn;
       }
       else {
         const distance = Hex.Distance(new Hex(originHexCode), hex);
@@ -84,7 +88,7 @@ export const setGameAction = (currentActionType: GameActionType) => (dispatch: A
 
     if (currentActionType == GameActionType.Collect) {
       return pieceHeight == 3 && playerBoard.treeType == treeType &&
-             tilesActiveThisTurn.indexOf(hexCode) == -1;
+             tileHasNotBeenActiveThisTurn;
     }
 
     return false;

@@ -144,7 +144,10 @@ namespace dotnet_tree_shadows.Hubs {
                      .SendAsync(
                           "HandleSessionUpdate",
                           new SessionUpdate {
-                            SessionId = context.SessionId, Game = context.Game, Board = context.Board
+                            SessionId = context.SessionId,
+                            Game = context.Game,
+                            Board = context.Board,
+                            Session = context.Session
                           }
                         );
       } else {

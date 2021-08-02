@@ -82,9 +82,7 @@ namespace dotnet_tree_shadows.Models {
     public static bool HasTree (int tileCode) =>
       GetTileType( tileCode ) != TileType.Empty && GetPieceTypeCode( tileCode ) > 0;
 
-    public static bool IsShadowed (in int tileCode) =>
-      GetTileType( tileCode ) != TileType.Sky &&
-      (GetShadowHeight( tileCode ) == 0 || GetPieceTypeCode( tileCode ) > GetShadowHeight( tileCode ));
+    public static bool IsShadowed (in int tileCode) => GetTileType( tileCode ) != TileType.Sky && GetShadowHeight( tileCode ) >= GetPieceTypeCode( tileCode );
 
     public static bool ProducesLight (in int tileCode) => GetPieceHeight( tileCode ) > GetShadowHeight( tileCode );
 

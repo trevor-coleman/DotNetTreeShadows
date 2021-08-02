@@ -11,7 +11,6 @@ namespace dotnet_tree_shadows.Actions.Validators {
         public GrowthInShadowAllowed (in Hex target, Game game, Board board) {
           tileCode = board.Get( target );
             this.game = game;
-            
         }
 
         public override bool IsValid {
